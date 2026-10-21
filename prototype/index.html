@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>High-Fantasy Sandbox — Vertical Slice Prototype</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: #1a1a1a; color: #ddd; font-family: sans-serif; }
+    #info {
+      position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6);
+      padding: 10px 14px; border-radius: 6px; font-size: 14px; max-width: 320px;
+    }
+    #info h3 { margin: 0 0 6px 0; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <h3>High-Fantasy Sandbox Prototype</h3>
+    <div>WASD to move · Mouse to look</div>
+    <div>Click to attack (simple real-time)</div>
+    <div>Explore the ruins · Watch for danger</div>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x87a0b5);
+    scene.fog = new THREE.FogExp2(0x9bb0c0, 0.015);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 1.7, 8);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    document.body.appendChild(renderer.domElement);
+
+    // Lighting
+    const ambient = new THREE.AmbientLight(0x667788, 0.6);
+    scene.add(ambient);
+    const sun = new THREE.DirectionalLight(0xfff0dd, 0.9);
+    sun.position.set(20, 30, 10);
+    sun.castShadow = true;
+    scene.add(sun);
+
+    // Ground
+    const groundGeo = new THREE.PlaneGeometry(80, 80);
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0x3a5a40, roughness: 0.9 });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // Simple trees (cylinders + cones)
+    function addTree(x, z) {
+      const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.3, 0.4, 4, 8),
+        new THREE.MeshStandardMaterial({ color: 0x4a3728 })
+      );
+      trunk.position.set(x, 2, z);
+      trunk.castShadow = true;
+      scene.add(trunk);
+
+      const leaves = new THREE.Mesh(
+        new THREE.ConeGeometry(2.2, 5, 8),
+        new THREE.MeshStandardMaterial({ color: 0x2d5a3d })
+      );
+      leaves.position.set(x, 5.5, z);
+      leaves.castShadow = true;
+      scene.add(leaves);
+    }
+    for (let i = 0; i < 18; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 12 + Math.random() * 22;
+      addTree(Math.cos(angle) * dist, Math.sin(angle) * dist);
+    }
+
+    // Ruined pillars
+    function addPillar(x, z, h = 6) {
+      const pillar = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.6, 0.7, h, 8),
+        new THREE.MeshStandardMaterial({ color: 0x8a8a7a, roughness: 0.8 })
+      );
+      pillar.position.set(x, h / 2, z);
+      pillar.castShadow = true;
+      pillar.receiveShadow = true;
+      scene.add(pillar);
+    }
+    addPillar(-6, -4, 7);
+    addPillar(-3, -6, 5);
+    addPillar(2, -5, 8);
+    addPillar(5, -3, 4);
+
+    // Simple enemy (reddish box with telegraph)
+    const enemy = new THREE.Mesh(
+      new THREE.BoxGeometry(1.2, 2, 1.2),
+      new THREE.MeshStandardMaterial({ color: 0x8b3a3a })
+    );
+    enemy.position.set(4, 1, -2);
+    enemy.castShadow = true;
+    scene.add(enemy);
+    let enemyHealth = 3;
+    let telegraph = false;
+
+    // Player representation (simple capsule-like)
+    const playerBody = new THREE.Mesh(
+      new THREE.CapsuleGeometry(0.4, 1.2, 4, 8),
+      new THREE.MeshStandardMaterial({ color: 0x555555 })
+    );
+    playerBody.position.y = 1.1;
+    playerBody.visible = false; // camera is first/third hybrid for now
+    scene.add(playerBody);
+
+    // Controls
+    const controls = new PointerLockControls(camera, document.body);
+    scene.add(controls.getObject());
+
+    const keys = {};
+    document.addEventListener('keydown', (e) => keys[e.code] = true);
+    document.addEventListener('keyup', (e) => keys[e.code] = false);
+
+    document.addEventListener('click', () => {
+      if (!controls.isLocked) {
+        controls.lock();
+      } else {
+        // Simple attack
+        const dist = camera.position.distanceTo(enemy.position);
+        if (dist < 4) {
+          enemyHealth--;
+          enemy.material.color.setHex(0xff4444);
+          setTimeout(() => enemy.material.color.setHex(0x8b3a3a), 150);
+          if (enemyHealth <= 0) {
+            enemy.visible = false;
+            document.getElementById('info').innerHTML += '<div style="color:#8f8">Enemy defeated!</div>';
+          }
+        }
+      }
+    });
+
+    // Movement
+    const velocity = new THREE.Vector3();
+    const direction = new THREE.Vector3();
+    const speed = 8;
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (controls.isLocked) {
+        direction.z = Number(keys['KeyW']) - Number(keys['KeyS']);
+        direction.x = Number(keys['KeyD']) - Number(keys['KeyA']);
+        direction.normalize();
+
+        if (keys['KeyW'] || keys['KeyS']) velocity.z = -direction.z * speed;
+        else velocity.z = 0;
+        if (keys['KeyA'] || keys['KeyD']) velocity.x = direction.x * speed;
+        else velocity.x = 0;
+
+        controls.moveRight(velocity.x * 0.016);
+        controls.moveForward(velocity.z * 0.016);
+
+        // Keep player above ground
+        if (camera.position.y < 1.7) camera.position.y = 1.7;
+
+        // Simple enemy telegraph (pulse when close)
+        const dist = camera.position.distanceTo(enemy.position);
+        if (dist < 6 && enemy.visible) {
+          enemy.scale.y = 1 + Math.sin(Date.now() * 0.01) * 0.08;
+        } else {
+          enemy.scale.y = 1;
+        }
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
