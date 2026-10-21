@@ -27,8 +27,8 @@ The project starts extremely small: one tightly scoped vertical slice / concept 
 | 1 | Core player fantasy | Free-form adventurer who can be anything |
 | 2 | Tone | Wondrous and hopeful with real danger |
 | 3 | Scope | Start very small (mockups + demo concepts). Expand only after vertical slice works |
-| 4 | Character creation | Fully custom within limits. Start with **3 races** that have strong mechanical and cultural differences. Room to add more later |
-| 5 | Combat | Must stay feasible for solo + AI tools. Likely simpler than full real-time action (exact approach TBD) |
+| 4 | Character creation | Fully custom within limits. Start with **3 races**: Human, Elf, and Orc. Strong mechanical and cultural differences. Room to add more later. See `docs/races.md`. |
+| 5 | Combat | **Simple real-time** (jumping-off point). Free movement, click/tap to attack, large hitboxes, clear enemy telegraphs. Rely on AI-generated or simple triggered animations/VFX. |
 | 6 | Narrative structure | Mostly sandbox. Story and outcomes change with choices |
 | 7 | Progression | Hybrid: skills improve through use + discrete level-ups that grant traits/perks |
 | 8 | Exploration rewards | Unique stories, loot, environmental secrets. Open world is fairly dangerous |
@@ -46,14 +46,14 @@ The project starts extremely small: one tightly scoped vertical slice / concept 
 - 2–4 points of interest with environmental storytelling and simple interactables.
 - Basic movement and camera.
 - Simple interaction system (examine, pick up, talk to one NPC or trigger).
-- At least one simple encounter or threat that communicates danger.
+- At least one simple encounter or threat that communicates danger (using the simple real-time combat approach).
 - Stylized-but-grounded art style established via concept art and in-engine assets.
 - Placeholder or basic progression feedback (even if just UI stubs).
 
 ### Explicitly out of scope for Phase 1
 - Full open world
 - All 3 races fully playable with deep mechanics
-- Complete combat system
+- Polished or complex combat system
 - Multiple factions or large quest lines
 - Full progression trees
 - Multiplayer or networking
@@ -62,7 +62,8 @@ The project starts extremely small: one tightly scoped vertical slice / concept 
 ## 5. Core Systems (High-Level)
 
 ### Character & Races
-- Start with 3 races that are visually, culturally, and mechanically distinct.
+- Start with 3 races: **Human, Elf, and Orc** (details in `docs/races.md`).
+- Visually, culturally, and mechanically distinct.
 - Full customization within each race (appearance, background flavor).
 - Race differences should be readable in both visuals and early gameplay.
 
@@ -85,36 +86,38 @@ The project starts extremely small: one tightly scoped vertical slice / concept 
 - Sandbox framing with reactive elements.
 - Choices and reputation influence available stories and endings within the slice and beyond.
 
-### Combat (TBD — Feasibility Constraint)
-Possible directions to explore (pick one that is realistic with AI tools + basic coding):
-- Simple real-time with large hitboxes and clear telegraphs.
-- Action with pause or slow-motion targeting.
-- Light hybrid or structured exchanges.
-- Heavy reliance on AI-generated animations and VFX triggered simply.
+### Combat (Locked Jumping-Off Point)
+**Simple real-time**
+- Free player movement in the world.
+- Click / tap / button to attack.
+- Large, forgiving hitboxes.
+- Clear enemy telegraphs (wind-ups, visual cues) so the player can react.
+- Animations and VFX kept simple or AI-generated and triggered on events.
+- Goal for the prototype: make combat readable and functional, not flashy. Polish comes later.
 
 ## 6. Technical & Production Approach
 
 - **Solo developer** using AI tools for concept art, texture references, writing assistance, code generation, and asset iteration.
-- **Basic coding** — prefer engines or frameworks that allow rapid iteration (exact engine TBD; Godot, Unity, or similar are candidates).
+- **Basic coding** — prefer engines or frameworks that allow rapid iteration (exact engine TBD; Godot is a strong candidate for solo work).
 - **Art pipeline:** AI image generation for concepts and style references → stylized-but-grounded assets. Prioritize strong silhouettes, readable forms, atmospheric lighting, and painterly or grounded materials over hyper-realism.
 - **Version control:** This repository. Keep design docs, concepts, and code together.
 - **Iteration style:** Mockups and concept demos first. Only expand systems once the vertical slice feels good.
 
 ## 7. Suggested Initial Milestones
 
-1. **Style & Race Concepts** — Generate and lock visual direction + the 3 starting races (look, culture, one mechanical hook each).
+1. **Style & Race Concepts** — Done (Human, Elf, Orc + concept art direction).
 2. **Demo Zone Layout** — Block out or concept the small outdoor + interior area.
 3. **Vertical Slice Prototype** — Basic movement, camera, interaction, and one point of interest in-engine.
-4. **First Encounter** — Add a simple threat or interactive moment that shows danger + wonder.
+4. **First Encounter** — Add a simple threat using the simple real-time combat approach.
 5. **Playable Demo** — Something that can be shown or played for a few minutes that captures the fantasy.
 
 ## 8. Open Questions / Next Decisions
 
-- Exact names, cultures, and mechanical hooks for the 3 starting races.
 - Specific size and theme of the first demo zone.
-- Combat approach that is realistic with current tools.
-- Engine / framework choice.
+- Engine / framework choice (Godot recommended for solo).
 - Working title for the project.
+- Exact starting numbers for race stats and ability tuning.
+- One simple enemy type for the first encounter.
 
 ## 9. Repo Structure (Suggested)
 
@@ -130,4 +133,4 @@ Possible directions to explore (pick one that is realistic with AI tools + basic
 
 ---
 
-**Next immediate action:** Define the 3 starting races and generate a small set of stylized-but-grounded concept images for the visual north star and demo zone.
+**Combat jumping-off point locked:** Simple real-time with free movement, click-to-attack, large hitboxes, and clear telegraphs.
