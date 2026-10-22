@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Zone Prototype — Fallout-Inspired</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: #1a1a1a; color: #e0d8c8; font-family: 'Courier New', monospace; touch-action: none; }
+    #info {
+      position: absolute; top: 8px; left: 8px; background: rgba(20,16,12,0.85);
+      padding: 8px 12px; border: 1px solid #6a5a40; border-radius: 4px; font-size: 13px; max-width: 240px; z-index: 20;
+    }
+    #prompt {
+      position: absolute; bottom: 90px; left: 50%; transform: translateX(-50%);
+      background: rgba(20,16,12,0.9); border: 1px solid #8a7a50; padding: 8px 16px;
+      font-size: 14px; display: none; z-index: 20; text-align: center;
+    }
+    #joystick {
+      position: absolute; bottom: 20px; left: 20px; width: 100px; height: 100px;
+      background: rgba(80,70,50,0.3); border: 2px solid rgba(180,160,100,0.5); border-radius: 50%; z-index: 20;
+    }
+    #knob {
+      position: absolute; width: 40px; height: 40px; background: rgba(200,180,120,0.6);
+      border-radius: 50%; top: 30px; left: 30px;
+    }
+    #interact {
+      position: absolute; bottom: 30px; right: 20px; width: 70px; height: 50px;
+      background: rgba(60,50,30,0.85); border: 2px solid #a09060; color: #e0d8c8;
+      font-family: inherit; font-size: 13px; z-index: 20;
+    }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <b>RUIN CLEARING</b><br>
+    <span id="hint">Joystick to move<br>Approach objects</span>
+  </div>
+  <div id="prompt"></div>
+  <div id="joystick"><div id="knob"></div></div>
+  <button id="interact">Examine</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x4a5a52);
+    scene.fog = new THREE.FogExp2(0x5a6a62, 0.012);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 14, 12);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    document.body.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0x667766, 0.6));
+    const sun = new THREE.DirectionalLight(0xfff0d0, 0.7);
+    sun.position.set(10, 20, 8);
+    sun.castShadow = true;
+    scene.add(sun);
+
+    // Ground
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(40, 40),
+      new THREE.MeshStandardMaterial({ color: 0x4a5a40, roughness: 1 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // Zone boundary markers (simple pillars at edges)
+    function marker(x, z) {
+      const m = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.3, 0.3, 2, 6),
+        new THREE.MeshStandardMaterial({ color: 0x6a6a5a })
+      );
+      m.position.set(x, 1, z);
+      scene.add(m);
+    }
+    marker(-12, -8); marker(12, -8); marker(-12, 8); marker(12, 8);
+
+    // Ruins
+    function ruinBlock(x, z, w, h, d) {
+      const b = new THREE.Mesh(
+        new THREE.BoxGeometry(w, h, d),
+        new THREE.MeshStandardMaterial({ color: 0x7a7a6a, roughness: 0.9 })
+      );
+      b.position.set(x, h / 2, z);
+      b.castShadow = true;
+      b.receiveShadow = true;
+      scene.add(b);
+      return b;
+    }
+    ruinBlock(-3, -2, 1.2, 3.5, 1.2);
+    ruinBlock(1, -3, 1.5, 2.8, 1);
+    ruinBlock(3.5, 0, 1, 4, 1.2);
+    ruinBlock(-1, 2, 2, 1.5, 0.8); // low wall
+
+    // Arch-like
+    const arch = new THREE.Mesh(
+      new THREE.BoxGeometry(0.6, 3.2, 0.6),
+      new THREE.MeshStandardMaterial({ color: 0x8a8a78 })
+    );
+    arch.position.set(0.5, 1.6, -1);
+    scene.add(arch);
+
+    // Trees (simple)
+    function tree(x, z) {
+      const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.2, 0.25, 2.5, 6),
+        new THREE.MeshStandardMaterial({ color: 0x4a3828 })
+      );
+      trunk.position.set(x, 1.25, z);
+      scene.add(trunk);
+      const top = new THREE.Mesh(
+        new THREE.ConeGeometry(1.4, 3, 6),
+        new THREE.MeshStandardMaterial({ color: 0x2a4a32 })
+      );
+      top.position.set(x, 3.2, z);
+      scene.add(top);
+    }
+    tree(-8, 3); tree(7, -4); tree(-6, -6); tree(8, 5); tree(2, 7);
+
+    // Interactables
+    const points = [
+      { mesh: null, pos: new THREE.Vector3(-3, 0, -2), name: "Crumbling Pillar", text: "Ancient stone, covered in faint carvings. The air feels heavier here." },
+      { mesh: null, pos: new THREE.Vector3(3.5, 0, 0), name: "Tall Ruin", text: "A broken tower section. Something glints in the cracks — perhaps worth a closer look later." },
+      { mesh: null, pos: new THREE.Vector3(0, 0, 3), name: "Overgrown Altar", text: "A low stone platform, half-swallowed by moss. Old offerings long since gone." }
+    ];
+
+    // Mark interactables visually
+    points.forEach(p => {
+      const marker = new THREE.Mesh(
+        new THREE.SphereGeometry(0.25, 8, 8),
+        new THREE.MeshStandardMaterial({ color: 0xc0a060, emissive: 0x403010 })
+      );
+      marker.position.copy(p.pos);
+      marker.position.y = 0.4;
+      scene.add(marker);
+      p.mesh = marker;
+    });
+
+    // Player
+    const player = new THREE.Mesh(
+      new THREE.CapsuleGeometry(0.35, 0.8, 4, 8),
+      new THREE.MeshStandardMaterial({ color: 0x5a6a78 })
+    );
+    player.position.set(0, 0.8, 6);
+    player.castShadow = true;
+    scene.add(player);
+
+    // Movement
+    let mx = 0, mz = 0;
+    const speed = 0.08;
+    const zoneLimit = 11;
+
+    // Joystick
+    const joy = document.getElementById('joystick');
+    const knob = document.getElementById('knob');
+    let joyOn = false;
+
+    joy.addEventListener('touchstart', e => { e.preventDefault(); joyOn = true; }, { passive: false });
+    joy.addEventListener('touchmove', e => {
+      e.preventDefault();
+      if (!joyOn) return;
+      const t = e.touches[0];
+      const r = joy.getBoundingClientRect();
+      let dx = t.clientX - r.left - 50;
+      let dy = t.clientY - r.top - 50;
+      const len = Math.min(Math.hypot(dx, dy), 35);
+      const ang = Math.atan2(dy, dx);
+      dx = Math.cos(ang) * len;
+      dy = Math.sin(ang) * len;
+      knob.style.transform = `translate(${dx}px,${dy}px)`;
+      mx = dx / 35;
+      mz = -dy / 35;
+    }, { passive: false });
+    joy.addEventListener('touchend', () => {
+      joyOn = false;
+      knob.style.transform = '';
+      mx = mz = 0;
+    });
+
+    // Desktop
+    const keys = {};
+    addEventListener('keydown', e => keys[e.code] = true);
+    addEventListener('keyup', e => keys[e.code] = false);
+
+    // Interaction
+    const promptEl = document.getElementById('prompt');
+    let nearest = null;
+
+    function checkInteract() {
+      nearest = null;
+      let best = 2.2;
+      points.forEach(p => {
+        const d = player.position.distanceTo(p.pos);
+        if (d < best) { best = d; nearest = p; }
+      });
+      if (nearest) {
+        promptEl.style.display = 'block';
+        promptEl.textContent = `[Examine] ${nearest.name}`;
+      } else {
+        promptEl.style.display = 'none';
+      }
+    }
+
+    document.getElementById('interact').addEventListener('click', () => {
+      if (nearest) {
+        promptEl.textContent = nearest.text;
+        setTimeout(() => {
+          if (nearest) promptEl.textContent = `[Examine] ${nearest.name}`;
+        }, 3500);
+      }
+    });
+    document.getElementById('interact').addEventListener('touchstart', e => {
+      e.preventDefault();
+      document.getElementById('interact').click();
+    }, { passive: false });
+
+    function loop() {
+      requestAnimationFrame(loop);
+
+      // Move
+      let vx = mx, vz = mz;
+      if (keys['KeyW'] || keys['ArrowUp']) vz = -1;
+      if (keys['KeyS'] || keys['ArrowDown']) vz = 1;
+      if (keys['KeyA'] || keys['ArrowLeft']) vx = -1;
+      if (keys['KeyD'] || keys['ArrowRight']) vx = 1;
+
+      player.position.x += vx * speed;
+      player.position.z += vz * speed;
+
+      // Clamp to zone
+      player.position.x = Math.max(-zoneLimit, Math.min(zoneLimit, player.position.x));
+      player.position.z = Math.max(-zoneLimit, Math.min(zoneLimit, player.position.z));
+
+      // Camera follow (elevated)
+      camera.position.x = player.position.x;
+      camera.position.z = player.position.z + 10;
+      camera.lookAt(player.position.x, 0, player.position.z);
+
+      checkInteract();
+      renderer.render(scene, camera);
+    }
+    loop();
+
+    addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+  </script>
+</body>
+</html>
