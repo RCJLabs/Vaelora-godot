@@ -2,23 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>High-Fantasy Sandbox — Vertical Slice Prototype</title>
   <style>
-    body { margin: 0; overflow: hidden; background: #1a1a1a; color: #ddd; font-family: sans-serif; }
+    body { margin: 0; overflow: hidden; background: #1a1a1a; color: #ddd; font-family: sans-serif; touch-action: none; }
     #info {
       position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6);
-      padding: 10px 14px; border-radius: 6px; font-size: 14px; max-width: 320px;
+      padding: 10px 14px; border-radius: 6px; font-size: 14px; max-width: 280px; z-index: 10;
     }
     #info h3 { margin: 0 0 6px 0; font-size: 16px; }
+    #joystick {
+      position: absolute; bottom: 30px; left: 30px; width: 120px; height: 120px;
+      background: rgba(255,255,255,0.15); border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
+      display: none; z-index: 10;
+    }
+    #joystick-knob {
+      position: absolute; width: 50px; height: 50px; background: rgba(255,255,255,0.5);
+      border-radius: 50%; top: 35px; left: 35px;
+    }
+    #attack-btn {
+      position: absolute; bottom: 40px; right: 40px; width: 70px; height: 70px;
+      background: rgba(180,60,60,0.7); border-radius: 50%; border: 2px solid rgba(255,255,255,0.4);
+      display: none; z-index: 10; color: white; font-size: 14px; display: flex; align-items: center; justify-content: center;
+    }
   </style>
 </head>
 <body>
   <div id="info">
     <h3>High-Fantasy Sandbox Prototype</h3>
-    <div>WASD to move · Mouse to look</div>
-    <div>Click to attack (simple real-time)</div>
-    <div>Explore the ruins · Watch for danger</div>
+    <div id="controls-text">Loading...</div>
   </div>
+  <div id="joystick"><div id="joystick-knob"></div></div>
+  <div id="attack-btn">Attack</div>
 
   <script type="importmap">
     {
@@ -32,6 +47,8 @@
   <script type="module">
     import * as THREE from 'three';
     import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+
+    const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -62,7 +79,7 @@
     ground.receiveShadow = true;
     scene.add(ground);
 
-    // Simple trees (cylinders + cones)
+    // Trees
     function addTree(x, z) {
       const trunk = new THREE.Mesh(
         new THREE.CylinderGeometry(0.3, 0.4, 4, 8),
@@ -102,7 +119,7 @@
     addPillar(2, -5, 8);
     addPillar(5, -3, 4);
 
-    // Simple enemy (reddish box with telegraph)
+    // Enemy
     const enemy = new THREE.Mesh(
       new THREE.BoxGeometry(1.2, 2, 1.2),
       new THREE.MeshStandardMaterial({ color: 0x8b3a3a })
@@ -111,74 +128,156 @@
     enemy.castShadow = true;
     scene.add(enemy);
     let enemyHealth = 3;
-    let telegraph = false;
-
-    // Player representation (simple capsule-like)
-    const playerBody = new THREE.Mesh(
-      new THREE.CapsuleGeometry(0.4, 1.2, 4, 8),
-      new THREE.MeshStandardMaterial({ color: 0x555555 })
-    );
-    playerBody.position.y = 1.1;
-    playerBody.visible = false; // camera is first/third hybrid for now
-    scene.add(playerBody);
 
     // Controls
     const controls = new PointerLockControls(camera, document.body);
     scene.add(controls.getObject());
 
     const keys = {};
+    let moveX = 0, moveZ = 0;
+    let lookX = 0, lookY = 0;
+
+    // Desktop
     document.addEventListener('keydown', (e) => keys[e.code] = true);
     document.addEventListener('keyup', (e) => keys[e.code] = false);
 
     document.addEventListener('click', () => {
-      if (!controls.isLocked) {
-        controls.lock();
-      } else {
-        // Simple attack
-        const dist = camera.position.distanceTo(enemy.position);
-        if (dist < 4) {
-          enemyHealth--;
-          enemy.material.color.setHex(0xff4444);
-          setTimeout(() => enemy.material.color.setHex(0x8b3a3a), 150);
-          if (enemyHealth <= 0) {
-            enemy.visible = false;
-            document.getElementById('info').innerHTML += '<div style="color:#8f8">Enemy defeated!</div>';
-          }
-        }
+      if (!isMobile && !controls.isLocked) controls.lock();
+    });
+
+    // Mobile UI
+    const joystick = document.getElementById('joystick');
+    const knob = document.getElementById('joystick-knob');
+    const attackBtn = document.getElementById('attack-btn');
+    const controlsText = document.getElementById('controls-text');
+
+    if (isMobile) {
+      joystick.style.display = 'block';
+      attackBtn.style.display = 'flex';
+      controlsText.innerHTML = 'Drag left joystick to move<br>Drag right side to look<br>Tap Attack button';
+      controls.enabled = false; // use manual look
+    } else {
+      controlsText.innerHTML = 'WASD to move · Mouse to look<br>Click to attack';
+    }
+
+    // Touch joystick
+    let joyActive = false;
+    let joyStart = { x: 0, y: 0 };
+
+    joystick.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      joyActive = true;
+      const t = e.touches[0];
+      const rect = joystick.getBoundingClientRect();
+      joyStart.x = t.clientX - rect.left - 60;
+      joyStart.y = t.clientY - rect.top - 60;
+    });
+
+    joystick.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (!joyActive) return;
+      const t = e.touches[0];
+      const rect = joystick.getBoundingClientRect();
+      let dx = t.clientX - rect.left - 60;
+      let dy = t.clientY - rect.top - 60;
+      const dist = Math.min(Math.hypot(dx, dy), 40);
+      const angle = Math.atan2(dy, dx);
+      dx = Math.cos(angle) * dist;
+      dy = Math.sin(angle) * dist;
+      knob.style.transform = `translate(${dx}px, ${dy}px)`;
+      moveX = dx / 40;
+      moveZ = -dy / 40;
+    });
+
+    joystick.addEventListener('touchend', () => {
+      joyActive = false;
+      knob.style.transform = 'translate(0,0)';
+      moveX = 0;
+      moveZ = 0;
+    });
+
+    // Touch look (right side of screen)
+    let lookActive = false;
+    let lastLook = { x: 0, y: 0 };
+
+    document.body.addEventListener('touchstart', (e) => {
+      if (e.target === joystick || e.target === knob || e.target === attackBtn) return;
+      if (e.touches[0].clientX > window.innerWidth * 0.4) {
+        lookActive = true;
+        lastLook.x = e.touches[0].clientX;
+        lastLook.y = e.touches[0].clientY;
       }
     });
 
-    // Movement
-    const velocity = new THREE.Vector3();
-    const direction = new THREE.Vector3();
+    document.body.addEventListener('touchmove', (e) => {
+      if (!lookActive) return;
+      const t = e.touches[0];
+      const dx = t.clientX - lastLook.x;
+      const dy = t.clientY - lastLook.y;
+      lookX -= dx * 0.005;
+      lookY -= dy * 0.005;
+      lookY = Math.max(-Math.PI/2, Math.min(Math.PI/2, lookY));
+      lastLook.x = t.clientX;
+      lastLook.y = t.clientY;
+    });
+
+    document.body.addEventListener('touchend', () => { lookActive = false; });
+
+    // Attack
+    function doAttack() {
+      const dist = camera.position.distanceTo(enemy.position);
+      if (dist < 4 && enemy.visible) {
+        enemyHealth--;
+        enemy.material.color.setHex(0xff4444);
+        setTimeout(() => { if (enemy.visible) enemy.material.color.setHex(0x8b3a3a); }, 150);
+        if (enemyHealth <= 0) {
+          enemy.visible = false;
+          document.getElementById('info').innerHTML += '<div style="color:#8f8">Enemy defeated!</div>';
+        }
+      }
+    }
+
+    attackBtn.addEventListener('touchstart', (e) => { e.preventDefault(); doAttack(); });
+    document.addEventListener('click', () => { if (!isMobile && controls.isLocked) doAttack(); });
+
+    // Movement & look
     const speed = 8;
+    const euler = new THREE.Euler(0, 0, 0, 'YXZ');
 
     function animate() {
       requestAnimationFrame(animate);
 
-      if (controls.isLocked) {
+      if (isMobile) {
+        // Apply look
+        euler.set(lookY, lookX, 0);
+        camera.quaternion.setFromEuler(euler);
+
+        // Apply move
+        const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+        forward.y = 0;
+        forward.normalize();
+        const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+        right.y = 0;
+        right.normalize();
+
+        camera.position.addScaledVector(forward, moveZ * speed * 0.016);
+        camera.position.addScaledVector(right, moveX * speed * 0.016);
+        if (camera.position.y < 1.7) camera.position.y = 1.7;
+      } else if (controls.isLocked) {
+        const direction = new THREE.Vector3();
         direction.z = Number(keys['KeyW']) - Number(keys['KeyS']);
         direction.x = Number(keys['KeyD']) - Number(keys['KeyA']);
         direction.normalize();
 
-        if (keys['KeyW'] || keys['KeyS']) velocity.z = -direction.z * speed;
-        else velocity.z = 0;
-        if (keys['KeyA'] || keys['KeyD']) velocity.x = direction.x * speed;
-        else velocity.x = 0;
-
-        controls.moveRight(velocity.x * 0.016);
-        controls.moveForward(velocity.z * 0.016);
-
-        // Keep player above ground
+        if (keys['KeyW'] || keys['KeyS']) controls.moveForward(-direction.z * speed * 0.016);
+        if (keys['KeyA'] || keys['KeyD']) controls.moveRight(direction.x * speed * 0.016);
         if (camera.position.y < 1.7) camera.position.y = 1.7;
+      }
 
-        // Simple enemy telegraph (pulse when close)
+      // Enemy telegraph
+      if (enemy.visible) {
         const dist = camera.position.distanceTo(enemy.position);
-        if (dist < 6 && enemy.visible) {
-          enemy.scale.y = 1 + Math.sin(Date.now() * 0.01) * 0.08;
-        } else {
-          enemy.scale.y = 1;
-        }
+        enemy.scale.y = (dist < 6) ? 1 + Math.sin(Date.now() * 0.01) * 0.08 : 1;
       }
 
       renderer.render(scene, camera);
