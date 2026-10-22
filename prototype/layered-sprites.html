@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Layered Sprites Demo</title>
+  <style>
+    body { margin: 0; background: #0c0a08; color: #e8e0d0; font-family: monospace; overflow: hidden; touch-action: none; }
+    canvas { display: block; }
+    #ui { position: absolute; top: 8px; left: 8px; background: rgba(10,8,6,0.8); padding: 8px 12px; border: 1px solid #5a4a32; font-size: 13px; z-index: 10; }
+    #prompt { position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%); background: rgba(10,8,6,0.9); border: 1px solid #a09060; padding: 8px 14px; display: none; z-index: 10; }
+    #joy { position: absolute; bottom: 16px; left: 16px; width: 100px; height: 100px; background: rgba(40,30,20,0.4); border: 2px solid rgba(160,130,70,0.5); border-radius: 50%; z-index: 10; }
+    #knob { position: absolute; width: 40px; height: 40px; background: rgba(190,150,70,0.8); border-radius: 50%; top: 30px; left: 30px; }
+    #btn { position: absolute; bottom: 30px; right: 16px; padding: 10px 16px; background: #3a3224; color: #e8e0d0; border: 2px solid #a09060; z-index: 10; }
+  </style>
+</head>
+<body>
+  <div id="ui"><b>LAYERED SPRITES</b><br>Place pillar.png, arch.png, hero.png in this folder</div>
+  <div id="prompt"></div>
+  <div id="joy"><div id="knob"></div></div>
+  <button id="btn">Examine</button>
+  <canvas id="c"></canvas>
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let W = innerWidth, H = innerHeight;
+    canvas.width = W; canvas.height = H;
+
+    const imgs = {
+      pillar: new Image(),
+      arch: new Image(),
+      hero: new Image()
+    };
+    imgs.pillar.src = 'pillar.png';
+    imgs.arch.src = 'arch.png';
+    imgs.hero.src = 'hero.png';
+
+    let loaded = 0;
+    Object.values(imgs).forEach(img => {
+      img.onload = () => { loaded++; };
+      img.onerror = () => { console.log('missing', img.src); };
+    });
+
+    let px = W*0.5, py = H*0.6;
+    const speed = 2.8;
+
+    const objects = [
+      { img: 'pillar', x: W*0.3, y: H*0.4, scale: 0.35, name: 'Mossy Pillar', text: 'Thick moss on old carved stone.' },
+      { img: 'arch', x: W*0.65, y: H*0.35, scale: 0.4, name: 'Broken Arch', text: 'Fractured archway with clinging vines.' }
+    ];
+
+    let jx=0, jy=0;
+    const joy = document.getElementById('joy'), knob = document.getElementById('knob');
+    let on = false;
+    joy.addEventListener('touchstart', e => { e.preventDefault(); on=true; }, {passive:false});
+    joy.addEventListener('touchmove', e => {
+      e.preventDefault(); if(!on) return;
+      const t=e.touches[0], r=joy.getBoundingClientRect();
+      let dx=t.clientX-r.left-50, dy=t.clientY-r.top-50;
+      const d=Math.min(Math.hypot(dx,dy),35), a=Math.atan2(dy,dx);
+      dx=Math.cos(a)*d; dy=Math.sin(a)*d;
+      knob.style.transform=`translate(${dx}px,${dy}px)`;
+      jx=dx/35; jy=dy/35;
+    }, {passive:false});
+    joy.addEventListener('touchend', () => { on=false; knob.style.transform=''; jx=jy=0; });
+
+    const keys={};
+    addEventListener('keydown', e => keys[e.key.toLowerCase()]=true);
+    addEventListener('keyup', e => keys[e.key.toLowerCase()]=false);
+
+    const prompt = document.getElementById('prompt');
+    let near=null;
+
+    function examine() {
+      if(!near) return;
+      prompt.textContent = near.text;
+      setTimeout(()=>{ if(near) prompt.textContent='[Examine] '+near.name; }, 2500);
+    }
+    document.getElementById('btn').onclick = examine;
+    document.getElementById('btn').ontouchstart = e => { e.preventDefault(); examine(); };
+
+    function draw() {
+      ctx.fillStyle = '#1a221c';
+      ctx.fillRect(0,0,W,H);
+
+      // Ground feel
+      ctx.fillStyle = '#243028';
+      ctx.fillRect(20,20,W-40,H-40);
+
+      const list = [
+        ...objects.map(o => ({y: o.y, draw: () => {
+          const im = imgs[o.img];
+          if(im.complete && im.naturalWidth) {
+            const w = im.width * o.scale, h = im.height * o.scale;
+            ctx.drawImage(im, o.x - w/2, o.y - h, w, h);
+          }
+        }})),
+        {y: py, draw: () => {
+          const im = imgs.hero;
+          if(im.complete && im.naturalWidth) {
+            const w = im.width * 0.22, h = im.height * 0.22;
+            ctx.drawImage(im, px - w/2, py - h, w, h);
+          } else {
+            ctx.fillStyle = '#4a5a68';
+            ctx.beginPath(); ctx.arc(px, py-10, 12, 0, Math.PI*2); ctx.fill();
+          }
+        }}
+      ];
+      list.sort((a,b) => a.y - b.y);
+      list.forEach(i => i.draw());
+
+      near = null;
+      let best = 60;
+      objects.forEach(o => {
+        const d = Math.hypot(px - o.x, py - o.y);
+        if(d < best) { best=d; near=o; }
+      });
+      if(near) {
+        prompt.style.display='block';
+        if(!prompt.textContent.includes(near.name) || prompt.textContent.startsWith('[Examine]'))
+          prompt.textContent = '[Examine] ' + near.name;
+      } else prompt.style.display='none';
+    }
+
+    function loop() {
+      let vx=jx, vy=jy;
+      if(keys.w||keys.arrowup) vy=-1;
+      if(keys.s||keys.arrowdown) vy=1;
+      if(keys.a||keys.arrowleft) vx=-1;
+      if(keys.d||keys.arrowright) vx=1;
+      px += vx*speed; py += vy*speed;
+      px = Math.max(40, Math.min(W-40, px));
+      py = Math.max(40, Math.min(H-40, py));
+      draw();
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    addEventListener('resize', () => {
+      W=innerWidth; H=innerHeight;
+      canvas.width=W; canvas.height=H;
+    });
+  </script>
+</body>
+</html>
