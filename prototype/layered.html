@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Layered Ruin Zone</title>
+  <style>
+    body { margin: 0; background: #0c0a08; color: #e8e0d0; font-family: monospace; overflow: hidden; touch-action: none; }
+    canvas { display: block; background: #1a1814; }
+    #ui {
+      position: absolute; top: 8px; left: 8px; background: rgba(10,8,6,0.8);
+      padding: 8px 12px; border: 1px solid #5a4a32; font-size: 13px; max-width: 220px; z-index: 10;
+    }
+    #prompt {
+      position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
+      background: rgba(10,8,6,0.9); border: 1px solid #a09060; padding: 8px 14px;
+      font-size: 14px; display: none; text-align: center; z-index: 10;
+    }
+    #joy {
+      position: absolute; bottom: 16px; left: 16px; width: 100px; height: 100px;
+      background: rgba(40,30,20,0.4); border: 2px solid rgba(160,130,70,0.5); border-radius: 50%; z-index: 10;
+    }
+    #knob {
+      position: absolute; width: 40px; height: 40px; background: rgba(190,150,70,0.8);
+      border-radius: 50%; top: 30px; left: 30px;
+    }
+    #btn {
+      position: absolute; bottom: 30px; right: 16px; padding: 10px 16px;
+      background: #3a3224; color: #e8e0d0; border: 2px solid #a09060; font-family: inherit; z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div id="ui"><b>LAYERED ZONE</b><br>Walk behind & in front of ruins</div>
+  <div id="prompt"></div>
+  <div id="joy"><div id="knob"></div></div>
+  <button id="btn">Examine</button>
+  <canvas id="c"></canvas>
+
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let W = innerWidth, H = innerHeight;
+    canvas.width = W; canvas.height = H;
+
+    // Player (feet position used for depth)
+    let px = W * 0.5, py = H * 0.65;
+    const speed = 2.6;
+
+    // Objects with base Y for depth sorting (higher Y = closer to camera = drawn later)
+    const objects = [
+      { x: W*0.28, y: H*0.38, w: 36, h: 70, name: "Mossy Pillar", text: "Thick moss on old stone. Carvings peek through.", kind: "pillar" },
+      { x: W*0.62, y: H*0.32, w: 80, h: 90, name: "Broken Arch", text: "Fractured arch overgrown with vines.", kind: "arch" },
+      { x: W*0.45, y: H*0.72, w: 70, h: 28, name: "Low Altar", text: "Broad worn platform. Offerings long gone.", kind: "altar" },
+      { x: W*0.38, y: H*0.52, w: 30, h: 24, name: "Rubble", text: "Collapsed stones and a strange smooth pebble.", kind: "rubble" }
+    ];
+
+    let jx = 0, jy = 0;
+    const joy = document.getElementById('joy');
+    const knob = document.getElementById('knob');
+    let joyOn = false;
+
+    joy.addEventListener('touchstart', e => { e.preventDefault(); joyOn = true; }, {passive:false});
+    joy.addEventListener('touchmove', e => {
+      e.preventDefault();
+      if (!joyOn) return;
+      const t = e.touches[0];
+      const r = joy.getBoundingClientRect();
+      let dx = t.clientX - r.left - 50;
+      let dy = t.clientY - r.top - 50;
+      const d = Math.min(Math.hypot(dx, dy), 35);
+      const a = Math.atan2(dy, dx);
+      dx = Math.cos(a)*d; dy = Math.sin(a)*d;
+      knob.style.transform = `translate(${dx}px,${dy}px)`;
+      jx = dx/35; jy = dy/35;
+    }, {passive:false});
+    joy.addEventListener('touchend', () => { joyOn = false; knob.style.transform = ''; jx = jy = 0; });
+
+    const keys = {};
+    addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+    addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+    const prompt = document.getElementById('prompt');
+    let near = null;
+
+    function examine() {
+      if (!near) return;
+      prompt.textContent = near.text;
+      setTimeout(() => { if (near) prompt.textContent = "[Examine] " + near.name; }, 2500);
+    }
+    document.getElementById('btn').onclick = examine;
+    document.getElementById('btn').addEventListener('touchstart', e => { e.preventDefault(); examine(); }, {passive:false});
+
+    function drawGround() {
+      // Base
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, '#1e2820');
+      g.addColorStop(1, '#141810');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      // Path / clearing
+      ctx.fillStyle = '#2a3428';
+      ctx.beginPath();
+      ctx.ellipse(W/2, H/2 + 20, W*0.38, H*0.32, 0, 0, Math.PI*2);
+      ctx.fill();
+
+      // Stone patches
+      ctx.fillStyle = '#3a4038';
+      for (let i = 0; i < 15; i++) {
+        ctx.fillRect(40 + (i*67)%(W-80), 50 + (i*43)%(H-100), 18 + (i%4)*6, 8);
+      }
+
+      // Soft fog at edges
+      const fog = ctx.createRadialGradient(W/2, H/2, H*0.25, W/2, H/2, H*0.7);
+      fog.addColorStop(0, 'rgba(0,0,0,0)');
+      fog.addColorStop(1, 'rgba(8,10,8,0.6)');
+      ctx.fillStyle = fog;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    function drawObject(o) {
+      const {x, y, w, h, kind} = o;
+      ctx.save();
+      if (kind === "pillar") {
+        ctx.fillStyle = '#4a453c';
+        ctx.fillRect(x - w/2, y - h, w, h);
+        ctx.fillStyle = '#6a6558';
+        ctx.fillRect(x - w/2 + 3, y - h + 4, w - 6, 7);
+        ctx.fillStyle = '#2a3828';
+        ctx.fillRect(x - 8, y - h + 16, 10, 20);
+      } else if (kind === "arch") {
+        ctx.fillStyle = '#524c44';
+        ctx.fillRect(x - w/2, y - h + 10, 16, h - 10);
+        ctx.fillRect(x + w/2 - 16, y - h + 10, 16, h - 10);
+        ctx.fillRect(x - w/2 + 4, y - h, w - 8, 14);
+        ctx.fillStyle = '#3a4838';
+        ctx.fillRect(x - 6, y - h + 20, 8, 16);
+      } else if (kind === "altar") {
+        ctx.fillStyle = '#3a4a38';
+        ctx.fillRect(x - w/2, y - h, w, h);
+        ctx.fillStyle = '#5a7a50';
+        ctx.fillRect(x - w/2 + 4, y - h + 3, w - 8, 5);
+      } else {
+        ctx.fillStyle = '#5a5448';
+        ctx.beginPath();
+        ctx.arc(x, y - 6, 14, 0, Math.PI*2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawPlayer() {
+      // Shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.beginPath();
+      ctx.ellipse(px, py + 4, 12, 5, 0, 0, Math.PI*2);
+      ctx.fill();
+
+      // Cloak / body
+      ctx.fillStyle = '#2a3a32';
+      ctx.beginPath();
+      ctx.ellipse(px, py - 8, 11, 14, 0, 0, Math.PI*2);
+      ctx.fill();
+
+      // Head
+      ctx.fillStyle = '#4a3a30';
+      ctx.beginPath();
+      ctx.arc(px, py - 20, 6, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    function draw() {
+      drawGround();
+
+      // Depth sort: things with smaller base-Y drawn first (farther)
+      const drawList = [
+        ...objects.map(o => ({ type: 'obj', y: o.y, data: o })),
+        { type: 'player', y: py, data: null }
+      ];
+      drawList.sort((a, b) => a.y - b.y);
+
+      drawList.forEach(item => {
+        if (item.type === 'obj') drawObject(item.data);
+        else drawPlayer();
+      });
+
+      // Interaction highlight & nearest
+      near = null;
+      let best = 48;
+      objects.forEach(o => {
+        const d = Math.hypot(px - o.x, py - o.y);
+        if (d < best) { best = d; near = o; }
+        if (d < 55) {
+          ctx.strokeStyle = 'rgba(200,160,60,0.6)';
+          ctx.setLineDash([3, 3]);
+          ctx.strokeRect(o.x - o.w/2 - 4, o.y - o.h - 4, o.w + 8, o.h + 8);
+          ctx.setLineDash([]);
+        }
+      });
+
+      if (near) {
+        prompt.style.display = 'block';
+        if (!prompt.textContent.includes(near.name) || prompt.textContent.startsWith('[Examine]')) {
+          prompt.textContent = '[Examine] ' + near.name;
+        }
+      } else {
+        prompt.style.display = 'none';
+      }
+    }
+
+    function loop() {
+      let vx = jx, vy = jy;
+      if (keys['w'] || keys['arrowup']) vy = -1;
+      if (keys['s'] || keys['arrowdown']) vy = 1;
+      if (keys['a'] || keys['arrowleft']) vx = -1;
+      if (keys['d'] || keys['arrowright']) vx = 1;
+
+      px += vx * speed;
+      py += vy * speed;
+      px = Math.max(40, Math.min(W - 40, px));
+      py = Math.max(40, Math.min(H - 40, py));
+
+      draw();
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    addEventListener('resize', () => {
+      W = innerWidth; H = innerHeight;
+      canvas.width = W; canvas.height = H;
+      // Reposition objects roughly
+      objects[0].x = W*0.28; objects[0].y = H*0.38;
+      objects[1].x = W*0.62; objects[1].y = H*0.32;
+      objects[2].x = W*0.45; objects[2].y = H*0.72;
+      objects[3].x = W*0.38; objects[3].y = H*0.52;
+    });
+  </script>
+</body>
+</html>
