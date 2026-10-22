@@ -3,291 +3,242 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>High-Fantasy Sandbox — Vertical Slice Prototype</title>
+  <title>High-Fantasy Sandbox — Prototype</title>
   <style>
-    body { margin: 0; overflow: hidden; background: #1a1a1a; color: #ddd; font-family: sans-serif; touch-action: none; }
+    body { margin: 0; overflow: hidden; background: #111; color: #ddd; font-family: sans-serif; touch-action: none; }
     #info {
-      position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6);
-      padding: 10px 14px; border-radius: 6px; font-size: 14px; max-width: 280px; z-index: 10;
+      position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7);
+      padding: 10px 14px; border-radius: 8px; font-size: 14px; max-width: 260px; z-index: 20;
     }
-    #info h3 { margin: 0 0 6px 0; font-size: 16px; }
     #joystick {
-      position: absolute; bottom: 30px; left: 30px; width: 120px; height: 120px;
-      background: rgba(255,255,255,0.15); border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
-      display: none; z-index: 10;
+      position: absolute; bottom: 40px; left: 30px; width: 110px; height: 110px;
+      background: rgba(255,255,255,0.15); border-radius: 50%; border: 2px solid rgba(255,255,255,0.35);
+      z-index: 20;
     }
-    #joystick-knob {
-      position: absolute; width: 50px; height: 50px; background: rgba(255,255,255,0.5);
-      border-radius: 50%; top: 35px; left: 35px;
+    #knob {
+      position: absolute; width: 46px; height: 46px; background: rgba(255,255,255,0.55);
+      border-radius: 50%; top: 32px; left: 32px;
     }
-    #attack-btn {
-      position: absolute; bottom: 40px; right: 40px; width: 70px; height: 70px;
-      background: rgba(180,60,60,0.7); border-radius: 50%; border: 2px solid rgba(255,255,255,0.4);
-      display: none; z-index: 10; color: white; font-size: 14px; display: flex; align-items: center; justify-content: center;
+    #attack {
+      position: absolute; bottom: 50px; right: 30px; width: 68px; height: 68px;
+      background: rgba(180,50,50,0.85); border-radius: 50%; border: 2px solid rgba(255,255,255,0.4);
+      z-index: 20; color: white; font-size: 13px; display: flex; align-items: center; justify-content: center;
     }
   </style>
 </head>
 <body>
   <div id="info">
-    <h3>High-Fantasy Sandbox Prototype</h3>
-    <div id="controls-text">Loading...</div>
+    <b>Fantasy Prototype</b><br>
+    <span id="hint">Joystick = move<br>Drag right side = look<br>Attack button</span>
   </div>
-  <div id="joystick"><div id="joystick-knob"></div></div>
-  <div id="attack-btn">Attack</div>
+  <div id="joystick"><div id="knob"></div></div>
+  <div id="attack">Attack</div>
 
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-      }
-    }
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  <script type="module">
-    import * as THREE from 'three';
-    import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
-
+  <script>
     const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-    // Scene setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x87a0b5);
-    scene.fog = new THREE.FogExp2(0x9bb0c0, 0.015);
+    scene.background = new THREE.Color(0x6a8499);
+    scene.fog = new THREE.FogExp2(0x8aa0b0, 0.018);
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 1.7, 8);
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 200);
+    camera.position.set(0, 1.6, 6);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     document.body.appendChild(renderer.domElement);
 
-    // Lighting
-    const ambient = new THREE.AmbientLight(0x667788, 0.6);
-    scene.add(ambient);
-    const sun = new THREE.DirectionalLight(0xfff0dd, 0.9);
-    sun.position.set(20, 30, 10);
+    // Lights
+    scene.add(new THREE.AmbientLight(0x556677, 0.7));
+    const sun = new THREE.DirectionalLight(0xfff5e0, 0.85);
+    sun.position.set(15, 25, 10);
     sun.castShadow = true;
     scene.add(sun);
 
     // Ground
-    const groundGeo = new THREE.PlaneGeometry(80, 80);
-    const groundMat = new THREE.MeshStandardMaterial({ color: 0x3a5a40, roughness: 0.9 });
-    const ground = new THREE.Mesh(groundGeo, groundMat);
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(60, 60),
+      new THREE.MeshStandardMaterial({ color: 0x3d5c45, roughness: 1 })
+    );
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
 
     // Trees
-    function addTree(x, z) {
+    function tree(x, z) {
       const trunk = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.3, 0.4, 4, 8),
-        new THREE.MeshStandardMaterial({ color: 0x4a3728 })
+        new THREE.CylinderGeometry(0.25, 0.35, 3.5, 6),
+        new THREE.MeshStandardMaterial({ color: 0x5a4030 })
       );
-      trunk.position.set(x, 2, z);
+      trunk.position.set(x, 1.75, z);
       trunk.castShadow = true;
       scene.add(trunk);
-
-      const leaves = new THREE.Mesh(
-        new THREE.ConeGeometry(2.2, 5, 8),
-        new THREE.MeshStandardMaterial({ color: 0x2d5a3d })
+      const top = new THREE.Mesh(
+        new THREE.ConeGeometry(1.8, 4, 7),
+        new THREE.MeshStandardMaterial({ color: 0x2e6b42 })
       );
-      leaves.position.set(x, 5.5, z);
-      leaves.castShadow = true;
-      scene.add(leaves);
+      top.position.set(x, 4.5, z);
+      top.castShadow = true;
+      scene.add(top);
     }
-    for (let i = 0; i < 18; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 12 + Math.random() * 22;
-      addTree(Math.cos(angle) * dist, Math.sin(angle) * dist);
+    for (let i = 0; i < 14; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const d = 10 + Math.random() * 16;
+      tree(Math.cos(a) * d, Math.sin(a) * d);
     }
 
-    // Ruined pillars
-    function addPillar(x, z, h = 6) {
-      const pillar = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.6, 0.7, h, 8),
-        new THREE.MeshStandardMaterial({ color: 0x8a8a7a, roughness: 0.8 })
+    // Ruins
+    function pillar(x, z, h) {
+      const p = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.5, 0.6, h, 6),
+        new THREE.MeshStandardMaterial({ color: 0x9a9a88, roughness: 0.85 })
       );
-      pillar.position.set(x, h / 2, z);
-      pillar.castShadow = true;
-      pillar.receiveShadow = true;
-      scene.add(pillar);
+      p.position.set(x, h / 2, z);
+      p.castShadow = true;
+      scene.add(p);
     }
-    addPillar(-6, -4, 7);
-    addPillar(-3, -6, 5);
-    addPillar(2, -5, 8);
-    addPillar(5, -3, 4);
+    pillar(-5, -3, 6);
+    pillar(-2, -5, 4.5);
+    pillar(1.5, -4, 7);
+    pillar(4, -2, 3.5);
 
     // Enemy
     const enemy = new THREE.Mesh(
-      new THREE.BoxGeometry(1.2, 2, 1.2),
-      new THREE.MeshStandardMaterial({ color: 0x8b3a3a })
+      new THREE.BoxGeometry(1.1, 1.8, 1.1),
+      new THREE.MeshStandardMaterial({ color: 0x993333 })
     );
-    enemy.position.set(4, 1, -2);
+    enemy.position.set(3, 0.9, -1);
     enemy.castShadow = true;
     scene.add(enemy);
-    let enemyHealth = 3;
+    let hp = 3;
 
-    // Controls
-    const controls = new PointerLockControls(camera, document.body);
-    scene.add(controls.getObject());
+    // Movement state
+    let mx = 0, mz = 0;
+    let yaw = 0, pitch = 0;
 
-    const keys = {};
-    let moveX = 0, moveZ = 0;
-    let lookX = 0, lookY = 0;
+    // Joystick
+    const joy = document.getElementById('joystick');
+    const knob = document.getElementById('knob');
+    let joyOn = false;
 
-    // Desktop
-    document.addEventListener('keydown', (e) => keys[e.code] = true);
-    document.addEventListener('keyup', (e) => keys[e.code] = false);
-
-    document.addEventListener('click', () => {
-      if (!isMobile && !controls.isLocked) controls.lock();
-    });
-
-    // Mobile UI
-    const joystick = document.getElementById('joystick');
-    const knob = document.getElementById('joystick-knob');
-    const attackBtn = document.getElementById('attack-btn');
-    const controlsText = document.getElementById('controls-text');
-
-    if (isMobile) {
-      joystick.style.display = 'block';
-      attackBtn.style.display = 'flex';
-      controlsText.innerHTML = 'Drag left joystick to move<br>Drag right side to look<br>Tap Attack button';
-      controls.enabled = false; // use manual look
-    } else {
-      controlsText.innerHTML = 'WASD to move · Mouse to look<br>Click to attack';
-    }
-
-    // Touch joystick
-    let joyActive = false;
-    let joyStart = { x: 0, y: 0 };
-
-    joystick.addEventListener('touchstart', (e) => {
+    joy.addEventListener('touchstart', e => {
       e.preventDefault();
-      joyActive = true;
-      const t = e.touches[0];
-      const rect = joystick.getBoundingClientRect();
-      joyStart.x = t.clientX - rect.left - 60;
-      joyStart.y = t.clientY - rect.top - 60;
-    });
+      joyOn = true;
+    }, { passive: false });
 
-    joystick.addEventListener('touchmove', (e) => {
+    joy.addEventListener('touchmove', e => {
       e.preventDefault();
-      if (!joyActive) return;
+      if (!joyOn) return;
       const t = e.touches[0];
-      const rect = joystick.getBoundingClientRect();
-      let dx = t.clientX - rect.left - 60;
-      let dy = t.clientY - rect.top - 60;
-      const dist = Math.min(Math.hypot(dx, dy), 40);
-      const angle = Math.atan2(dy, dx);
-      dx = Math.cos(angle) * dist;
-      dy = Math.sin(angle) * dist;
-      knob.style.transform = `translate(${dx}px, ${dy}px)`;
-      moveX = dx / 40;
-      moveZ = -dy / 40;
-    });
+      const r = joy.getBoundingClientRect();
+      let dx = t.clientX - r.left - 55;
+      let dy = t.clientY - r.top - 55;
+      const len = Math.min(Math.hypot(dx, dy), 38);
+      const ang = Math.atan2(dy, dx);
+      dx = Math.cos(ang) * len;
+      dy = Math.sin(ang) * len;
+      knob.style.transform = `translate(${dx}px,${dy}px)`;
+      mx = dx / 38;
+      mz = -dy / 38;
+    }, { passive: false });
 
-    joystick.addEventListener('touchend', () => {
-      joyActive = false;
+    joy.addEventListener('touchend', () => {
+      joyOn = false;
       knob.style.transform = 'translate(0,0)';
-      moveX = 0;
-      moveZ = 0;
+      mx = mz = 0;
     });
 
-    // Touch look (right side of screen)
-    let lookActive = false;
-    let lastLook = { x: 0, y: 0 };
-
-    document.body.addEventListener('touchstart', (e) => {
-      if (e.target === joystick || e.target === knob || e.target === attackBtn) return;
-      if (e.touches[0].clientX > window.innerWidth * 0.4) {
-        lookActive = true;
-        lastLook.x = e.touches[0].clientX;
-        lastLook.y = e.touches[0].clientY;
+    // Look (right side)
+    let looking = false, lx = 0, ly = 0;
+    document.body.addEventListener('touchstart', e => {
+      if (e.target.closest('#joystick') || e.target.closest('#attack')) return;
+      if (e.touches[0].clientX > innerWidth * 0.45) {
+        looking = true;
+        lx = e.touches[0].clientX;
+        ly = e.touches[0].clientY;
       }
     });
-
-    document.body.addEventListener('touchmove', (e) => {
-      if (!lookActive) return;
+    document.body.addEventListener('touchmove', e => {
+      if (!looking) return;
       const t = e.touches[0];
-      const dx = t.clientX - lastLook.x;
-      const dy = t.clientY - lastLook.y;
-      lookX -= dx * 0.005;
-      lookY -= dy * 0.005;
-      lookY = Math.max(-Math.PI/2, Math.min(Math.PI/2, lookY));
-      lastLook.x = t.clientX;
-      lastLook.y = t.clientY;
+      yaw -= (t.clientX - lx) * 0.006;
+      pitch -= (t.clientY - ly) * 0.006;
+      pitch = Math.max(-1.2, Math.min(1.2, pitch));
+      lx = t.clientX;
+      ly = t.clientY;
     });
-
-    document.body.addEventListener('touchend', () => { lookActive = false; });
+    document.body.addEventListener('touchend', () => looking = false);
 
     // Attack
-    function doAttack() {
-      const dist = camera.position.distanceTo(enemy.position);
-      if (dist < 4 && enemy.visible) {
-        enemyHealth--;
-        enemy.material.color.setHex(0xff4444);
-        setTimeout(() => { if (enemy.visible) enemy.material.color.setHex(0x8b3a3a); }, 150);
-        if (enemyHealth <= 0) {
+    document.getElementById('attack').addEventListener('touchstart', e => {
+      e.preventDefault();
+      const d = camera.position.distanceTo(enemy.position);
+      if (d < 3.5 && enemy.visible) {
+        hp--;
+        enemy.material.color.setHex(0xff5555);
+        setTimeout(() => enemy.material.color.setHex(0x993333), 120);
+        if (hp <= 0) {
           enemy.visible = false;
-          document.getElementById('info').innerHTML += '<div style="color:#8f8">Enemy defeated!</div>';
+          document.getElementById('info').innerHTML += '<br><span style="color:#9f9">Defeated!</span>';
         }
       }
-    }
+    }, { passive: false });
 
-    attackBtn.addEventListener('touchstart', (e) => { e.preventDefault(); doAttack(); });
-    document.addEventListener('click', () => { if (!isMobile && controls.isLocked) doAttack(); });
+    // Desktop fallback (simple)
+    const keys = {};
+    addEventListener('keydown', e => keys[e.code] = true);
+    addEventListener('keyup', e => keys[e.code] = false);
+    addEventListener('click', () => {
+      if (!isMobile) {
+        const d = camera.position.distanceTo(enemy.position);
+        if (d < 3.5 && enemy.visible) {
+          hp--;
+          if (hp <= 0) enemy.visible = false;
+        }
+      }
+    });
 
-    // Movement & look
-    const speed = 8;
-    const euler = new THREE.Euler(0, 0, 0, 'YXZ');
+    function loop() {
+      requestAnimationFrame(loop);
 
-    function animate() {
-      requestAnimationFrame(animate);
+      // Apply rotation
+      camera.rotation.order = 'YXZ';
+      camera.rotation.y = yaw;
+      camera.rotation.x = pitch;
 
+      // Move
+      const spd = 0.12;
       if (isMobile) {
-        // Apply look
-        euler.set(lookY, lookX, 0);
-        camera.quaternion.setFromEuler(euler);
-
-        // Apply move
-        const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
-        forward.y = 0;
-        forward.normalize();
-        const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
-        right.y = 0;
-        right.normalize();
-
-        camera.position.addScaledVector(forward, moveZ * speed * 0.016);
-        camera.position.addScaledVector(right, moveX * speed * 0.016);
-        if (camera.position.y < 1.7) camera.position.y = 1.7;
-      } else if (controls.isLocked) {
-        const direction = new THREE.Vector3();
-        direction.z = Number(keys['KeyW']) - Number(keys['KeyS']);
-        direction.x = Number(keys['KeyD']) - Number(keys['KeyA']);
-        direction.normalize();
-
-        if (keys['KeyW'] || keys['KeyS']) controls.moveForward(-direction.z * speed * 0.016);
-        if (keys['KeyA'] || keys['KeyD']) controls.moveRight(direction.x * speed * 0.016);
-        if (camera.position.y < 1.7) camera.position.y = 1.7;
+        const f = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+        f.y = 0; f.normalize();
+        const r = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+        r.y = 0; r.normalize();
+        camera.position.addScaledVector(f, mz * spd);
+        camera.position.addScaledVector(r, mx * spd);
+      } else {
+        if (keys['KeyW']) camera.translateZ(-spd);
+        if (keys['KeyS']) camera.translateZ(spd);
+        if (keys['KeyA']) camera.translateX(-spd);
+        if (keys['KeyD']) camera.translateX(spd);
       }
+      camera.position.y = 1.6;
 
-      // Enemy telegraph
-      if (enemy.visible) {
-        const dist = camera.position.distanceTo(enemy.position);
-        enemy.scale.y = (dist < 6) ? 1 + Math.sin(Date.now() * 0.01) * 0.08 : 1;
-      }
+      // Telegraph
+      if (enemy.visible && camera.position.distanceTo(enemy.position) < 5) {
+        enemy.scale.y = 1 + Math.sin(Date.now() * 0.012) * 0.07;
+      } else enemy.scale.y = 1;
 
       renderer.render(scene, camera);
     }
-    animate();
+    loop();
 
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+    addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(innerWidth, innerHeight);
     });
   </script>
 </body>
