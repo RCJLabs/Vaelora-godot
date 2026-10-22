@@ -3,41 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Ruin Clearing — Zone Prototype</title>
+  <title>Ruin Clearing</title>
   <style>
-    body { margin: 0; background: #161410; color: #e8e0d0; font-family: 'Courier New', monospace; overflow: hidden; touch-action: none; }
+    body { margin: 0; background: #0e0c0a; color: #e8e0d0; font-family: 'Courier New', monospace; overflow: hidden; touch-action: none; }
     canvas { display: block; }
     #ui {
-      position: absolute; top: 8px; left: 8px; background: rgba(18,14,10,0.88);
-      padding: 8px 12px; border: 1px solid #6a5a40; font-size: 13px; max-width: 240px; line-height: 1.4;
+      position: absolute; top: 10px; left: 10px; background: rgba(12,10,8,0.82);
+      padding: 10px 14px; border: 1px solid #5a4a32; font-size: 13px; max-width: 230px; line-height: 1.45;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
-    #journal {
-      margin-top: 6px; font-size: 12px; color: #c0b090; min-height: 16px;
-    }
+    #journal { margin-top: 6px; font-size: 12px; color: #c8b898; }
     #prompt {
-      position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
-      background: rgba(18,14,10,0.94); border: 1px solid #a09060; padding: 10px 16px;
-      font-size: 14px; display: none; text-align: center; max-width: 85%; line-height: 1.35;
+      position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%);
+      background: rgba(12,10,8,0.9); border: 1px solid #8a7a50; padding: 10px 18px;
+      font-size: 14px; display: none; text-align: center; max-width: 82%; line-height: 1.4;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
     #joy {
-      position: absolute; bottom: 18px; left: 18px; width: 110px; height: 110px;
-      background: rgba(80,60,40,0.28); border: 2px solid rgba(180,150,90,0.55); border-radius: 50%;
+      position: absolute; bottom: 20px; left: 20px; width: 110px; height: 110px;
+      background: rgba(40,30,20,0.45); border: 2px solid rgba(160,130,70,0.6); border-radius: 50%;
     }
     #knob {
-      position: absolute; width: 42px; height: 42px; background: rgba(210,170,90,0.75);
-      border-radius: 50%; top: 34px; left: 34px;
+      position: absolute; width: 44px; height: 44px; background: rgba(190,150,70,0.8);
+      border-radius: 50%; top: 33px; left: 33px; box-shadow: 0 0 6px rgba(200,160,80,0.4);
     }
     #btn {
-      position: absolute; bottom: 36px; right: 18px; padding: 12px 18px;
-      background: #3a3224; color: #e8e0d0; border: 2px solid #b0a070; font-family: inherit; font-size: 15px;
+      position: absolute; bottom: 38px; right: 20px; padding: 12px 20px;
+      background: linear-gradient(#4a3c28, #2a2418); color: #f0e8d8; border: 2px solid #a09060;
+      font-family: inherit; font-size: 15px; border-radius: 4px;
     }
   </style>
 </head>
 <body>
   <div id="ui">
     <b>RUIN CLEARING</b><br>
-    Move with joystick<br>
-    Approach glowing stones
+    Mist hangs low over old stone.
     <div id="journal">Journal: —</div>
   </div>
   <div id="prompt"></div>
@@ -51,43 +51,37 @@
     let W = innerWidth, H = innerHeight;
     canvas.width = W; canvas.height = H;
 
-    let px = W/2, py = H/2 + 50;
-    const speed = 2.4;
+    let px = W/2, py = H/2 + 60;
+    const speed = 2.3;
 
     const objects = [
-      { x: -90, y: -70, w: 36, h: 52, name: "Crumbling Pillar", text: "Weathered stone covered in faint, half-erased carvings. The air feels heavier nearby.", type: "pillar" },
-      { x: 100, y: -50, w: 42, h: 64, name: "Broken Tower", text: "A shattered section of tower. Something metallic glints deep in a crack.", type: "tower" },
-      { x: 15, y: 80, w: 48, h: 28, name: "Mossy Altar", text: "A low platform swallowed by moss and roots. Whatever was offered here is long gone.", type: "altar" },
-      { x: -40, y: 20, w: 22, h: 22, name: "Scattered Stones", text: "Loose rubble. Among the stones you notice a small, smooth river pebble that doesn't belong.", type: "rubble", item: "Strange Pebble" },
-      { x: 60, y: 30, w: 18, h: 30, name: "Leaning Marker", text: "A narrow standing stone, tilted with age. Scratches on its face might once have been a path sign.", type: "marker" }
+      { x: -100, y: -80, name: "Crumbling Pillar", text: "Weathered stone, half-swallowed by moss. Faint carvings catch the dim light.", kind: "pillar" },
+      { x: 110, y: -60, name: "Broken Arch", text: "A fractured archway. Vines cling to the remaining stone. Something feels watched.", kind: "arch" },
+      { x: 20, y: 90, name: "Mossy Altar", text: "Low and broad, covered in thick moss. The surface is worn smooth by time and rain.", kind: "altar" },
+      { x: -50, y: 30, name: "Scattered Rubble", text: "Collapsed masonry. Among the stones lies a small smooth pebble that doesn't belong.", kind: "rubble", item: "Smooth Pebble" },
+      { x: 70, y: 40, name: "Leaning Stone", text: "A narrow marker, tilted. Old scratches might once have pointed the way.", kind: "marker" }
     ];
 
     let jx = 0, jy = 0;
     const joy = document.getElementById('joy');
     const knob = document.getElementById('knob');
-    let joyActive = false;
+    let active = false;
 
-    joy.addEventListener('touchstart', e => { e.preventDefault(); joyActive = true; }, {passive:false});
+    joy.addEventListener('touchstart', e => { e.preventDefault(); active = true; }, {passive:false});
     joy.addEventListener('touchmove', e => {
       e.preventDefault();
-      if (!joyActive) return;
+      if (!active) return;
       const t = e.touches[0];
       const r = joy.getBoundingClientRect();
       let dx = t.clientX - r.left - 55;
       let dy = t.clientY - r.top - 55;
-      const dist = Math.min(Math.hypot(dx, dy), 38);
-      const ang = Math.atan2(dy, dx);
-      dx = Math.cos(ang) * dist;
-      dy = Math.sin(ang) * dist;
+      const d = Math.min(Math.hypot(dx, dy), 38);
+      const a = Math.atan2(dy, dx);
+      dx = Math.cos(a)*d; dy = Math.sin(a)*d;
       knob.style.transform = `translate(${dx}px,${dy}px)`;
-      jx = dx / 38;
-      jy = dy / 38;
+      jx = dx/38; jy = dy/38;
     }, {passive:false});
-    joy.addEventListener('touchend', () => {
-      joyActive = false;
-      knob.style.transform = '';
-      jx = jy = 0;
-    });
+    joy.addEventListener('touchend', () => { active = false; knob.style.transform = ''; jx = jy = 0; });
 
     const keys = {};
     addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
@@ -96,146 +90,160 @@
     const prompt = document.getElementById('prompt');
     const journal = document.getElementById('journal');
     let near = null;
-    let lastExamined = null;
 
     function examine() {
       if (!near) return;
       prompt.textContent = near.text;
-      lastExamined = near.name;
-      journal.textContent = "Journal: Examined " + near.name;
-      if (near.item) {
-        journal.textContent += " — found " + near.item;
-      }
-      setTimeout(() => {
-        if (near && near === lastNear) prompt.textContent = "[Examine] " + near.name;
-      }, 3200);
+      journal.textContent = "Journal: " + near.name + (near.item ? " — found " + near.item : "");
+      setTimeout(() => { if (near) prompt.textContent = "[Examine] " + near.name; }, 2800);
     }
-    let lastNear = null;
+    document.getElementById('btn').onclick = examine;
+    document.getElementById('btn').addEventListener('touchstart', e => { e.preventDefault(); examine(); }, {passive:false});
 
-    document.getElementById('btn').addEventListener('click', examine);
-    document.getElementById('btn').addEventListener('touchstart', e => {
-      e.preventDefault();
-      examine();
-    }, {passive:false});
+    function drawGround() {
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, '#1e2420');
+      g.addColorStop(1, '#121610');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
 
-    function drawObject(o, ox, oy) {
-      ctx.save();
-      if (o.type === "pillar" || o.type === "tower") {
-        ctx.fillStyle = '#5a5044';
-        ctx.fillRect(ox - o.w/2, oy - o.h, o.w, o.h);
-        ctx.fillStyle = '#7a6a54';
-        ctx.fillRect(ox - o.w/2 + 3, oy - o.h + 4, o.w - 6, 6);
-        ctx.fillStyle = '#4a4036';
-        ctx.fillRect(ox - 4, oy - o.h + 12, 8, o.h - 16);
-      } else if (o.type === "altar") {
-        ctx.fillStyle = '#4a5a40';
-        ctx.fillRect(ox - o.w/2, oy - o.h/2, o.w, o.h);
-        ctx.fillStyle = '#6a7a50';
-        ctx.fillRect(ox - o.w/2 + 4, oy - o.h/2 + 3, o.w - 8, 5);
-      } else if (o.type === "rubble") {
-        ctx.fillStyle = '#6a6050';
+      // Misty ground plane
+      ctx.fillStyle = '#243028';
+      ctx.fillRect(20, 20, W-40, H-40);
+
+      // Soft patches
+      ctx.fillStyle = 'rgba(30,50,35,0.35)';
+      for (let i = 0; i < 18; i++) {
         ctx.beginPath();
-        ctx.arc(ox, oy, o.w/2, 0, Math.PI*2);
+        ctx.ellipse(40 + (i*97)%(W-80), 40 + (i*61)%(H-80), 40+ (i%5)*8, 12, 0, 0, Math.PI*2);
         ctx.fill();
-        ctx.fillStyle = '#8a7a60';
-        ctx.fillRect(ox - 6, oy - 4, 5, 4);
-        ctx.fillRect(ox + 2, oy + 1, 4, 3);
+      }
+
+      // Fog vignette
+      const vig = ctx.createRadialGradient(W/2, H/2, H*0.2, W/2, H/2, H*0.75);
+      vig.addColorStop(0, 'rgba(0,0,0,0)');
+      vig.addColorStop(1, 'rgba(10,12,10,0.55)');
+      ctx.fillStyle = vig;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    function drawRuin(o, ox, oy) {
+      ctx.save();
+      if (o.kind === "pillar") {
+        ctx.fillStyle = '#4a453c';
+        ctx.fillRect(ox-16, oy-48, 32, 50);
+        ctx.fillStyle = '#6a6358';
+        ctx.fillRect(ox-14, oy-46, 28, 8);
+        ctx.fillStyle = '#3a4030';
+        ctx.fillRect(ox-10, oy-30, 8, 18); // moss
+      } else if (o.kind === "arch") {
+        ctx.fillStyle = '#524c44';
+        ctx.fillRect(ox-28, oy-36, 14, 40);
+        ctx.fillRect(ox+14, oy-36, 14, 40);
+        ctx.fillRect(ox-22, oy-42, 44, 10);
+        ctx.fillStyle = '#2a3828';
+        ctx.fillRect(ox-8, oy-28, 6, 14);
+      } else if (o.kind === "altar") {
+        ctx.fillStyle = '#3a4a38';
+        ctx.fillRect(ox-30, oy-12, 60, 18);
+        ctx.fillStyle = '#4a6a48';
+        ctx.fillRect(ox-26, oy-10, 52, 6);
+      } else if (o.kind === "rubble") {
+        ctx.fillStyle = '#5a5448';
+        ctx.beginPath(); ctx.arc(ox, oy, 14, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#7a7468';
+        ctx.fillRect(ox-8, oy-4, 6, 4);
+        ctx.fillRect(ox+3, oy+2, 5, 3);
       } else {
-        ctx.fillStyle = '#5a5848';
-        ctx.fillRect(ox - o.w/2, oy - o.h, o.w, o.h);
-        ctx.fillStyle = '#7a7860';
-        ctx.fillRect(ox - 2, oy - o.h + 2, 4, 8);
+        ctx.fillStyle = '#4a4840';
+        ctx.fillRect(ox-8, oy-32, 16, 34);
+        ctx.fillStyle = '#6a6860';
+        ctx.fillRect(ox-6, oy-30, 12, 5);
       }
       ctx.restore();
     }
 
+    function drawPlayer() {
+      // Shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.3)';
+      ctx.beginPath();
+      ctx.ellipse(px, py+6, 14, 6, 0, 0, Math.PI*2);
+      ctx.fill();
+
+      // Body
+      ctx.fillStyle = '#3a4a42';
+      ctx.beginPath();
+      ctx.ellipse(px, py, 10, 13, 0, 0, Math.PI*2);
+      ctx.fill();
+
+      // Cloak
+      ctx.fillStyle = '#2a3a32';
+      ctx.beginPath();
+      ctx.moveTo(px-12, py-4);
+      ctx.lineTo(px+12, py-4);
+      ctx.lineTo(px+8, py+10);
+      ctx.lineTo(px-8, py+10);
+      ctx.fill();
+
+      // Head
+      ctx.fillStyle = '#4a3a30';
+      ctx.beginPath();
+      ctx.arc(px, py-14, 6, 0, Math.PI*2);
+      ctx.fill();
+    }
+
     function draw() {
-      // Sky / outer
-      ctx.fillStyle = '#1a1814';
-      ctx.fillRect(0, 0, W, H);
+      drawGround();
 
-      // Ground
-      ctx.fillStyle = '#2e3428';
-      ctx.fillRect(30, 30, W - 60, H - 60);
-
-      // Subtle ground variation
-      ctx.fillStyle = 'rgba(40,50,30,0.4)';
-      for (let i = 0; i < 12; i++) {
-        ctx.fillRect(60 + (i*47)% (W-120), 50 + (i*73)% (H-100), 30, 8);
-      }
-
-      // Border
-      ctx.strokeStyle = '#4a4438';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(36, 36, W - 72, H - 72);
-
-      // Objects
       objects.forEach(o => {
         const ox = W/2 + o.x;
         const oy = H/2 + o.y;
-        drawObject(o, ox, oy);
+        drawRuin(o, ox, oy);
 
-        const d = Math.hypot(px - ox, py - (oy - o.h/3));
-        if (d < 52) {
-          ctx.strokeStyle = '#d0b060';
-          ctx.lineWidth = 2;
-          ctx.setLineDash([4, 3]);
+        const d = Math.hypot(px - ox, py - oy);
+        if (d < 55) {
+          ctx.strokeStyle = 'rgba(200,160,60,0.7)';
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([3, 3]);
           ctx.beginPath();
-          ctx.arc(ox, oy - o.h/4, Math.max(o.w, o.h)/2 + 8, 0, Math.PI*2);
+          ctx.arc(ox, oy-8, 28, 0, Math.PI*2);
           ctx.stroke();
           ctx.setLineDash([]);
         }
       });
 
-      // Player
-      ctx.fillStyle = '#4a5a68';
-      ctx.beginPath();
-      ctx.ellipse(px, py, 11, 14, 0, 0, Math.PI*2);
-      ctx.fill();
-      ctx.fillStyle = '#3a4a38';
-      ctx.fillRect(px - 8, py - 20, 16, 8); // cloak/shoulders
-      ctx.fillStyle = '#2a3a48';
-      ctx.beginPath();
-      ctx.arc(px, py - 16, 6, 0, Math.PI*2);
-      ctx.fill();
+      drawPlayer();
 
-      // Nearest check
+      // Nearest
       near = null;
-      let best = 50;
+      let best = 52;
       objects.forEach(o => {
-        const ox = W/2 + o.x;
-        const oy = H/2 + o.y;
-        const d = Math.hypot(px - ox, py - oy);
+        const d = Math.hypot(px - (W/2+o.x), py - (H/2+o.y));
         if (d < best) { best = d; near = o; }
       });
-      lastNear = near;
 
       if (near) {
         prompt.style.display = 'block';
-        if (!prompt.textContent.includes(near.name) || prompt.textContent.startsWith("[Examine]")) {
-          prompt.textContent = "[Examine] " + near.name;
+        if (!prompt.textContent.includes(near.name) || prompt.textContent.startsWith('[Examine]')) {
+          prompt.textContent = '[Examine] ' + near.name;
         }
-      } else {
-        prompt.style.display = 'none';
-      }
+      } else prompt.style.display = 'none';
     }
 
-    function update() {
+    function loop() {
       let vx = jx, vy = jy;
-      if (keys['w'] || keys['arrowup']) vy = -1;
-      if (keys['s'] || keys['arrowdown']) vy = 1;
-      if (keys['a'] || keys['arrowleft']) vx = -1;
-      if (keys['d'] || keys['arrowright']) vx = 1;
-
+      if (keys['w']||keys['arrowup']) vy = -1;
+      if (keys['s']||keys['arrowdown']) vy = 1;
+      if (keys['a']||keys['arrowleft']) vx = -1;
+      if (keys['d']||keys['arrowright']) vx = 1;
       px += vx * speed;
       py += vy * speed;
-      px = Math.max(60, Math.min(W - 60, px));
-      py = Math.max(60, Math.min(H - 60, py));
-
+      px = Math.max(50, Math.min(W-50, px));
+      py = Math.max(50, Math.min(H-50, py));
       draw();
-      requestAnimationFrame(update);
+      requestAnimationFrame(loop);
     }
-    update();
+    loop();
 
     addEventListener('resize', () => {
       W = innerWidth; H = innerHeight;
