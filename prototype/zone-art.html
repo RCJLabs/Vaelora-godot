@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Ruin Clearing</title>
+  <style>
+    body { margin: 0; background: #0a0908; color: #e8e0d0; font-family: 'Courier New', monospace; overflow: hidden; touch-action: none; }
+    #bg {
+      position: absolute; inset: 0;
+      background: #1a1814 url('zone-bg.jpg') center/cover no-repeat;
+      filter: brightness(0.85) contrast(1.05);
+    }
+    #ui {
+      position: absolute; top: 10px; left: 10px; background: rgba(10,8,6,0.75);
+      padding: 10px 14px; border: 1px solid #6a5a40; font-size: 13px; max-width: 220px; z-index: 10;
+      backdrop-filter: blur(2px);
+    }
+    #journal { margin-top: 6px; font-size: 12px; color: #c8b898; }
+    #prompt {
+      position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%);
+      background: rgba(10,8,6,0.88); border: 1px solid #a09060; padding: 10px 16px;
+      font-size: 14px; display: none; text-align: center; max-width: 80%; z-index: 10;
+    }
+    #joy {
+      position: absolute; bottom: 20px; left: 20px; width: 110px; height: 110px;
+      background: rgba(20,16,10,0.4); border: 2px solid rgba(180,140,60,0.6); border-radius: 50%; z-index: 10;
+    }
+    #knob {
+      position: absolute; width: 44px; height: 44px; background: rgba(200,150,50,0.85);
+      border-radius: 50%; top: 33px; left: 33px;
+    }
+    #btn {
+      position: absolute; bottom: 36px; right: 20px; padding: 12px 18px;
+      background: rgba(30,24,16,0.85); color: #f0e6d0; border: 2px solid #c0a060;
+      font-family: inherit; font-size: 15px; z-index: 10;
+    }
+    #player {
+      position: absolute; width: 28px; height: 36px; border-radius: 40%;
+      background: radial-gradient(circle at 40% 30%, #6a7a70, #2a3a32);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+      z-index: 5; pointer-events: none;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    #hotspots div {
+      position: absolute; border: 2px dashed rgba(200,160,60,0.0); border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    #hotspots div.near { border-color: rgba(220,180,60,0.8); background: rgba(200,160,40,0.08); }
+  </style>
+</head>
+<body>
+  <div id="bg"></div>
+  <div id="hotspots"></div>
+  <div id="player"></div>
+  <div id="ui">
+    <b>RUIN CLEARING</b><br>
+    Mist and old stone.
+    <div id="journal">Journal: —</div>
+  </div>
+  <div id="prompt"></div>
+  <div id="joy"><div id="knob"></div></div>
+  <button id="btn">Examine</button>
+
+  <script>
+    const hotspots = [
+      { x: 22, y: 28, w: 12, h: 16, name: "Mossy Pillar", text: "Thick moss covers the weathered stone. Faint carvings are still visible beneath." },
+      { x: 68, y: 22, w: 18, h: 20, name: "Broken Arch", text: "A fractured archway overgrown with vines. The air feels still here." },
+      { x: 48, y: 62, w: 14, h: 10, name: "Low Altar", text: "A broad stone platform, worn smooth. Whatever was placed here is long gone." },
+      { x: 35, y: 48, w: 10, h: 10, name: "Rubble Pile", text: "Collapsed stones. A small smooth pebble rests among them, out of place." }
+    ];
+
+    const hsContainer = document.getElementById('hotspots');
+    hotspots.forEach((h, i) => {
+      const d = document.createElement('div');
+      d.style.left = h.x + '%';
+      d.style.top = h.y + '%';
+      d.style.width = h.w + '%';
+      d.style.height = h.h + '%';
+      d.dataset.i = i;
+      hsContainer.appendChild(d);
+    });
+
+    let px = 50, py = 55; // percent
+    const speed = 0.35;
+    let jx = 0, jy = 0;
+    const player = document.getElementById('player');
+    const prompt = document.getElementById('prompt');
+    const journal = document.getElementById('journal');
+    let near = null;
+
+    function updatePlayer() {
+      player.style.left = `calc(${px}% - 14px)`;
+      player.style.top = `calc(${py}% - 18px)`;
+    }
+
+    function checkNear() {
+      near = null;
+      document.querySelectorAll('#hotspots div').forEach(d => d.classList.remove('near'));
+      hotspots.forEach((h, i) => {
+        const hx = h.x + h.w/2, hy = h.y + h.h/2;
+        const dist = Math.hypot(px - hx, py - hy);
+        if (dist < 12) {
+          near = h;
+          document.querySelector(`#hotspots div[data-i="${i}"]`).classList.add('near');
+        }
+      });
+      if (near) {
+        prompt.style.display = 'block';
+        if (!prompt.textContent.includes(near.name) || prompt.textContent.startsWith('[Examine]')) {
+          prompt.textContent = '[Examine] ' + near.name;
+        }
+      } else {
+        prompt.style.display = 'none';
+      }
+    }
+
+    // Joystick
+    const joy = document.getElementById('joy');
+    const knob = document.getElementById('knob');
+    let joyOn = false;
+    joy.addEventListener('touchstart', e => { e.preventDefault(); joyOn = true; }, {passive:false});
+    joy.addEventListener('touchmove', e => {
+      e.preventDefault();
+      if (!joyOn) return;
+      const t = e.touches[0];
+      const r = joy.getBoundingClientRect();
+      let dx = t.clientX - r.left - 55;
+      let dy = t.clientY - r.top - 55;
+      const dist = Math.min(Math.hypot(dx, dy), 38);
+      const ang = Math.atan2(dy, dx);
+      dx = Math.cos(ang)*dist; dy = Math.sin(ang)*dist;
+      knob.style.transform = `translate(${dx}px,${dy}px)`;
+      jx = dx/38; jy = dy/38;
+    }, {passive:false});
+    joy.addEventListener('touchend', () => { joyOn = false; knob.style.transform=''; jx=jy=0; });
+
+    const keys = {};
+    addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+    addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+    function examine() {
+      if (!near) return;
+      prompt.textContent = near.text;
+      journal.textContent = 'Journal: ' + near.name;
+      setTimeout(() => { if (near) prompt.textContent = '[Examine] ' + near.name; }, 3000);
+    }
+    document.getElementById('btn').onclick = examine;
+    document.getElementById('btn').addEventListener('touchstart', e => { e.preventDefault(); examine(); }, {passive:false});
+
+    function loop() {
+      let vx = jx, vy = jy;
+      if (keys['w'] || keys['arrowup']) vy = -1;
+      if (keys['s'] || keys['arrowdown']) vy = 1;
+      if (keys['a'] || keys['arrowleft']) vx = -1;
+      if (keys['d'] || keys['arrowright']) vx = 1;
+      px += vx * speed;
+      py += vy * speed;
+      px = Math.max(8, Math.min(92, px));
+      py = Math.max(8, Math.min(88, py));
+      updatePlayer();
+      checkNear();
+      requestAnimationFrame(loop);
+    }
+    updatePlayer();
+    loop();
+  </script>
+</body>
+</html>
