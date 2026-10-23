@@ -61,7 +61,7 @@ They're listed in **Project → Project Settings → Globals → Autoload** (alr
 - **More conditions:** `requires_item` (`"wolf_pelt"` or `{"id": "wolf_pelt", "count": 3}`)
   and `requires_gold` (a number).
 - **Actions**, on a node (run when the line is shown) or a choice (run when picked):
-  `set_flag`, `give_gold`, `take_gold`, `give_item`, `take_item`. The item ones take the same
+  `set_flag` (one name or a list), `give_gold`, `take_gold`, `give_item`, `take_item`. The item ones take the same
   forms as `requires_item`. Example, Maren buying a pelt:
   `"buy_pelt": {"text": "Fifteen gold.", "take_item": "wolf_pelt", "give_gold": 15, "choices": [...]}`
 - A node with no choices that pass gets an automatic **(Leave)** button.
@@ -70,6 +70,8 @@ Put flags you want to keep even if the player presses Esc (quest accepted, secre
 the **node**, not on its Goodbye choice.
 
 Other scripts can read flags too: `if GameState.has_flag("wolf_quest_accepted"): ...`.
+The condition rules are shared with quests and live in `systems/conditions.gd`. See
+QUESTS.md for turning flags into journal entries.
 
 ## Mistakes and what you'll see
 

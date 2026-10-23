@@ -100,6 +100,13 @@ func spend_level_up(stat: String) -> void:
 	changed.emit()
 
 
+## A permanent bonus from something other than levelling (e.g. a quest reward).
+func grant_bonus(stat: String, amount: int) -> void:
+	bonus[stat] += amount
+	level_bonus_spent.emit(stat, amount)
+	changed.emit()
+
+
 # --- effects other scripts ask for -------------------------------------------
 
 func one_handed_damage_mult() -> float:

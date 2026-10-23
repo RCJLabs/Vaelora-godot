@@ -61,6 +61,7 @@ func begin() -> void:
 	Skills.reset(selected)
 	Inventory.reset()
 	Spellbook.reset(selected)
+	QuestLog.reset_baseline()
 	get_tree().change_scene_to_file(START_LEVEL)
 
 

@@ -186,8 +186,54 @@ modulate = Color(1, 1, 1, 0.6)
 text = "Click a spell to ready it. Hold right-click to cast, Q to switch."
 autowrap_mode = 3
 
+[node name="Quests" type="HBoxContainer" parent="Root/Panel/Margin/VBox/Tabs"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="QuestList" type="ItemList" parent="Root/Panel/Margin/VBox/Tabs/Quests"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(340, 0)
+layout_mode = 2
+
+[node name="QuestScroll" type="ScrollContainer" parent="Root/Panel/Margin/VBox/Tabs/Quests"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="QuestDetails" type="VBoxContainer" parent="Root/Panel/Margin/VBox/Tabs/Quests/QuestScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="QuestTitle" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Quests/QuestScroll/QuestDetails"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.45, 1)
+theme_override_font_sizes/font_size = 24
+
+[node name="QuestGiver" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Quests/QuestScroll/QuestDetails"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+
+[node name="QuestDescription" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Quests/QuestScroll/QuestDetails"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="QuestObjectives" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Quests/QuestScroll/QuestDetails"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="QuestOutcome" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Quests/QuestScroll/QuestDetails"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.85, 1, 1)
+autowrap_mode = 3
+
 [node name="Hint" type="Label" parent="Root/Panel/Margin/VBox"]
 layout_mode = 2
 modulate = Color(1, 1, 1, 0.6)
-text = "Tab or Esc to close"
+text = "Tab / J / Esc to close"
 horizontal_alignment = 2

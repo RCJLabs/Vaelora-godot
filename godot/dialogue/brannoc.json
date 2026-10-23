@@ -1,0 +1,116 @@
+{
+	"start": [
+		{ "node": "after_given", "requires_flag": "shards_given" },
+		{ "node": "after_restored", "requires_flag": "stones_restored" },
+		{ "node": "waiting_on_stones", "requires_flag": "shards_chose_stones" },
+		{ "node": "progress", "requires_flag": "stones_quest_started" },
+		{ "node": "greet_again", "requires_flag": "met_brannoc" },
+		{ "node": "greet" }
+	],
+	"nodes": {
+		"greet": {
+			"text": "Easy - you're no bandit. Brannoc, scout for the Riverwatch garrison. That circle behind me has been glowing since the new moon. The captain wants to know why. I want to know why it hums when I'm not looking at it.",
+			"set_flag": "met_brannoc",
+			"choices": [
+				{ "text": "I'll look into it.", "next": "accept" },
+				{ "text": "What is this place?", "next": "lore" },
+				{ "text": "Elves raised these stones, didn't they?", "next": "lore_elf", "requires_race": "Elf" },
+				{ "text": "Riverwatch sends scouts out alone now?", "next": "alone" },
+				{ "text": "Not my concern.", "next": "end" }
+			]
+		},
+		"greet_again": {
+			"text": "Changed your mind about the stones?",
+			"choices": [
+				{ "text": "I'll look into it.", "next": "accept" },
+				{ "text": "What is this place?", "next": "lore" },
+				{ "text": "Not yet.", "next": "end" }
+			]
+		},
+		"lore": {
+			"text": "Older than Riverwatch, older than the road. The stories say the stones keep something asleep. The stories also say a lot of things after the third ale.",
+			"choices": [
+				{ "text": "I'll look into it.", "next": "accept", "requires_not_flag": "stones_quest_started" },
+				{ "text": "Goodbye.", "next": "end" }
+			]
+		},
+		"lore_elf": {
+			"text": "So your people's songs say. Then maybe you'll understand it better than a garrison scout. Will you take a look?",
+			"choices": [
+				{ "text": "I'll look into it.", "next": "accept" },
+				{ "text": "Another time.", "next": "end" }
+			]
+		},
+		"alone": {
+			"text": "Riverwatch sends scouts out alone when it doesn't have enough scouts. Which is always.",
+			"choices": [
+				{ "text": "I'll look into the stones for you.", "next": "accept" },
+				{ "text": "Goodbye.", "next": "end" }
+			]
+		},
+		"accept": {
+			"text": "Good. Touch the crystal if you dare - and look around the circle for anything that broke off it. Folk say shards of the old stones turn up after a storm.",
+			"set_flag": "stones_quest_started",
+			"choices": [
+				{ "text": "I'll be back.", "next": "end" }
+			]
+		},
+		"progress": {
+			"text": "Well? What did you find?",
+			"choices": [
+				{ "text": "I found three rune shards.", "next": "decide", "requires_item": { "id": "rune_shard", "count": 3 } },
+				{ "text": "The crystal answered when I touched it. Fire ran up my arm.", "next": "hint_shards", "requires_flag": "touched_crystal", "requires_not_flag": "told_brannoc_crystal" },
+				{ "text": "Still looking.", "next": "end" }
+			]
+		},
+		"hint_shards": {
+			"text": "Fire. Of course it was fire. Then it's waking, whatever it is. Find what broke off it - three pieces, if the old tale is right.",
+			"set_flag": "told_brannoc_crystal",
+			"choices": [
+				{ "text": "I'll find them.", "next": "end" }
+			]
+		},
+		"decide": {
+			"text": "Three of them. Still warm. The scholars in Riverwatch would pay a fortune to study these... but I've heard the old tales too. Maybe they belong to the stones.",
+			"choices": [
+				{ "text": "Take them to Riverwatch.", "next": "given" },
+				{ "text": "They should go back to the stones.", "next": "chose_stones" },
+				{ "text": "Let me think about it.", "next": "end" }
+			]
+		},
+		"given": {
+			"text": "Sixty gold from the garrison purse, and the captain will hear your name. I hope we're not making a mistake.",
+			"take_item": { "id": "rune_shard", "count": 3 },
+			"give_gold": 60,
+			"set_flag": ["shards_decided", "shards_given", "stones_quest_done"],
+			"choices": [
+				{ "text": "Farewell, Brannoc.", "next": "end" }
+			]
+		},
+		"chose_stones": {
+			"text": "Then put them back yourself - I'm not touching that crystal. I'll tell the captain the circle is... being tended.",
+			"set_flag": ["shards_chose_stones", "shards_decided"],
+			"choices": [
+				{ "text": "I will.", "next": "end" }
+			]
+		},
+		"waiting_on_stones": {
+			"text": "Still carrying those shards? The crystal's that way. I'll be here, at a respectful distance.",
+			"choices": [
+				{ "text": "Goodbye.", "next": "end" }
+			]
+		},
+		"after_given": {
+			"text": "The scholars are beside themselves. Riverwatch owes you - I'll make sure the captain remembers it.",
+			"choices": [
+				{ "text": "Goodbye.", "next": "end" }
+			]
+		},
+		"after_restored": {
+			"text": "The circle's light is steadier now. Calmer. Whatever you did, the humming's stopped keeping me up at night.",
+			"choices": [
+				{ "text": "Goodbye.", "next": "end" }
+			]
+		}
+	}
+}

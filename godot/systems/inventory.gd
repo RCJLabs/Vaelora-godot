@@ -13,6 +13,7 @@ signal gold_added(amount: int)
 const ITEM_FILES := [
 	"res://items/wolf_pelt.tres",
 	"res://items/minor_healing_potion.tres",
+	"res://items/rune_shard.tres",
 ]
 
 var items: Dictionary = {}   # item id -> how many

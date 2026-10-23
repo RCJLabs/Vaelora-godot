@@ -1,7 +1,8 @@
 extends CanvasLayer
 
 # Tab menu: Skills tab (levels, level-up bonuses), Inventory tab (items,
-# gold, using potions) and Magic tab (known spells). Pauses the game.
+# gold, using potions), Magic tab (known spells) and Quests tab (the journal,
+# also opened directly with J). Pauses the game.
 # Autoloaded as "CharacterMenu" (process mode Always, so it runs while paused).
 
 @onready var root_control: Control = $Root
@@ -11,6 +12,11 @@ extends CanvasLayer
 @onready var item_list: ItemList = %ItemList
 @onready var use_button: Button = %UseButton
 @onready var spell_list: ItemList = %SpellList
+@onready var quest_list: ItemList = %QuestList
+@onready var tabs: TabContainer = %Tabs
+
+const QUESTS_TAB := 3
+var _quest_ids: Array = []   # quest id for each row of quest_list
 
 var _item_ids: Array = []   # item id for each row of item_list
 
@@ -31,6 +37,7 @@ func _ready() -> void:
 	use_button.pressed.connect(_use_selected)
 	Spellbook.changed.connect(_refresh_magic)
 	spell_list.item_selected.connect(func(row): Spellbook.select(Spellbook.known[row]))
+	quest_list.item_selected.connect(func(_row): _show_selected_quest())
 
 
 # _input (not _unhandled_input) so Tab works even when a button has focus.
@@ -40,6 +47,14 @@ func _input(event: InputEvent) -> void:
 			close()
 		else:
 			open()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("journal"):
+		if is_open and tabs.current_tab == QUESTS_TAB:
+			close()
+		else:
+			if not is_open:
+				open()
+			tabs.current_tab = QUESTS_TAB
 		get_viewport().set_input_as_handled()
 	elif is_open and event.is_action_pressed("ui_cancel"):
 		close()
@@ -57,6 +72,7 @@ func open() -> void:
 	_refresh()
 	_refresh_inventory()
 	_refresh_magic()
+	_refresh_quests()
 	root_control.show()
 
 
@@ -165,3 +181,41 @@ func _refresh_magic() -> void:
 			current.magicka_per_second,
 			current.power_per_second * Skills.spell_power_mult(current.skill), verb,
 			Skills.SKILLS[current.skill]["name"]]
+
+
+func _refresh_quests() -> void:
+	if not is_open:
+		return
+	quest_list.clear()
+	_quest_ids = []
+	# active quests first, then completed ones
+	for wanted in ["active", "completed"]:
+		for id in QuestLog.quests:
+			if QuestLog.status(id)["state"] == wanted:
+				_quest_ids.append(id)
+				var title: String = QuestLog.quests[id]["title"]
+				quest_list.add_item(title if wanted == "active" else "%s  (done)" % title)
+	if _quest_ids.is_empty():
+		quest_list.add_item("(no quests yet)", null, false)
+	else:
+		quest_list.select(0)
+	_show_selected_quest()
+
+
+func _show_selected_quest() -> void:
+	var rows := quest_list.get_selected_items()
+	var id: String = _quest_ids[rows[0]] if not rows.is_empty() and rows[0] < _quest_ids.size() else ""
+	if id == "":
+		for label in [%QuestTitle, %QuestGiver, %QuestDescription, %QuestObjectives, %QuestOutcome]:
+			label.text = ""
+		return
+	var quest: Dictionary = QuestLog.quests[id]
+	var status := QuestLog.status(id)
+	%QuestTitle.text = quest["title"]
+	%QuestGiver.text = "From " + quest.get("giver", "")
+	%QuestDescription.text = quest.get("description", "")
+	var lines := []
+	for o in status["objectives"]:
+		lines.append(("[x]  " if o["done"] else "[  ]  ") + o["text"])
+	%QuestObjectives.text = "\n".join(lines)
+	%QuestOutcome.text = status["outcome"]

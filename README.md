@@ -13,7 +13,7 @@ The full design plan, pillars, scope, and foundational decisions are in [DESIGN.
 
 ## Current Status
 
-Godot 4 project in [`godot/`](godot): race selection, first-person controller, Health/Stamina/Magicka, skills that improve with use and character levels, inventory/gold/loot, magic (Healing and Flames), quicksave/quickload, E-to-interact, JSON dialogue, and melee combat against a pathfinding wolf pack that completes Maren's quest. Guides: [setup & collision](docs/godot-starter/FIRST_PERSON_SETUP.md), [dialogue](docs/godot-starter/DIALOGUE.md), [races](docs/godot-starter/RACES.md), [stats & saving](docs/godot-starter/STATS_AND_SAVING.md), [combat](docs/godot-starter/COMBAT.md), [skills](docs/godot-starter/SKILLS.md), [inventory](docs/godot-starter/INVENTORY.md), [magic](docs/godot-starter/MAGIC.md), [art & assets](docs/godot-starter/ASSETS.md).
+Godot 4 project in [`godot/`](godot): race selection, first-person controller, Health/Stamina/Magicka, skills that improve with use and character levels, inventory/gold/loot, magic (Healing and Flames), quicksave/quickload, E-to-interact, JSON dialogue, and melee combat against a pathfinding wolf pack, and two quests (one with a branching ending) tracked in a journal. Guides: [setup & collision](docs/godot-starter/FIRST_PERSON_SETUP.md), [dialogue](docs/godot-starter/DIALOGUE.md), [races](docs/godot-starter/RACES.md), [stats & saving](docs/godot-starter/STATS_AND_SAVING.md), [combat](docs/godot-starter/COMBAT.md), [skills](docs/godot-starter/SKILLS.md), [inventory](docs/godot-starter/INVENTORY.md), [magic](docs/godot-starter/MAGIC.md), [quests](docs/godot-starter/QUESTS.md), [art & assets](docs/godot-starter/ASSETS.md).
 
 ## Repo
 

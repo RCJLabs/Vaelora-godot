@@ -5,7 +5,7 @@ extends Node
 # Project > Open User Data Folder (in the editor).
 #
 # What is saved: current level, race, story flags, skills and character level,
-# inventory and gold, known spells,
+# inventory and gold, known spells (quest progress comes from flags and items),
 # player position/look direction and Health/Stamina/Magicka. Things not driven by flags (e.g. a
 # door you left open) reset when you load.
 
@@ -67,6 +67,7 @@ func load_game() -> bool:
 
 	if DialogueManager.is_active:
 		DialogueManager.end()
+	QuestLog.silent = true   # restoring flags/items isn't "progress" - don't announce it
 	GameState.set_race(load(data["race"]))
 	GameState.flags = data["flags"]
 	if data.has("skills"):
@@ -81,6 +82,8 @@ func load_game() -> bool:
 		Spellbook.from_dict(data["spells"])
 	else:
 		Spellbook.reset(GameState.race_data)   # versions 1-3 had no spells
+	QuestLog.silent = false
+	QuestLog.reset_baseline()
 	_pending_player_state = data["player"]
 	get_tree().change_scene_to_file(data["level"])
 	return true

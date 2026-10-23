@@ -10,6 +10,8 @@ var race: String = "Human"        # name only, used by dialogue conditions
 var race_data: RaceData           # full stats/modifiers of the chosen race
 var flags: Dictionary = {}        # story memory, e.g. flags["met_maren"] = true
 
+signal flag_set(flag_name: String)
+
 
 func _ready() -> void:
 	# Lets levels run on their own (F6) without going through character creation.
@@ -26,4 +28,6 @@ func has_flag(flag_name: String) -> bool:
 
 
 func set_flag(flag_name: String) -> void:
-	flags[flag_name] = true
+	if not flags.get(flag_name, false):
+		flags[flag_name] = true
+		flag_set.emit(flag_name)
