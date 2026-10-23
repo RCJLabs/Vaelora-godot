@@ -37,6 +37,7 @@ func _ready() -> void:
 	Attributes.changed.connect(_refresh)
 	Inventory.changed.connect(_refresh_inventory)
 	item_list.item_selected.connect(func(_i): _show_selected_item())
+	item_list.item_activated.connect(func(_i): _use_selected())   # Enter / gamepad A
 	use_button.pressed.connect(_use_selected)
 	Spellbook.changed.connect(_refresh_magic)
 	spell_list.item_selected.connect(func(row): Spellbook.select(Spellbook.known[row]))
@@ -46,6 +47,8 @@ func _ready() -> void:
 
 # _input (not _unhandled_input) so Tab works even when a button has focus.
 func _input(event: InputEvent) -> void:
+	if not is_open and (DialogueManager.is_active or PauseMenu.is_open):
+		return   # leave the keys to the conversation / pause menu
 	if event.is_action_pressed("character_menu"):
 		if is_open:
 			close()
@@ -63,6 +66,12 @@ func _input(event: InputEvent) -> void:
 	elif is_open and event.is_action_pressed("ui_cancel"):
 		close()
 		get_viewport().set_input_as_handled()
+	elif is_open and (event.is_action_pressed("power_race") or event.is_action_pressed("power_background")):
+		# The power buttons (gamepad LB / RB, keyboard Z / X) switch tabs while it's open.
+		var step := -1 if event.is_action_pressed("power_race") else 1
+		tabs.current_tab = wrapi(tabs.current_tab + step, 0, tabs.get_tab_count())
+		_focus_tab.call_deferred()
+		get_viewport().set_input_as_handled()
 
 
 func open() -> void:
@@ -79,6 +88,18 @@ func open() -> void:
 	_refresh_quests()
 	_refresh_factions()
 	root_control.show()
+	_focus_tab.call_deferred()
+
+
+# Gives the first usable control in the open tab focus, so the D-pad works.
+func _focus_tab() -> void:
+	var page := tabs.get_current_tab_control()
+	if page == null:
+		return
+	for control in page.find_children("*", "Control", true, false):
+		if control.focus_mode == Control.FOCUS_ALL and control.is_visible_in_tree():
+			control.grab_focus()
+			return
 
 
 func close() -> void:
@@ -280,11 +301,26 @@ func _refresh_magic() -> void:
 		spell_list.select(Spellbook.current_index)
 		%SpellName.text = current.display_name
 		%SpellDescription.text = current.description
-		var verb := "damage" if current.effect == SpellData.Effect.DAMAGE_STREAM else "healing"
-		%SpellStats.text = "%d Magicka per second   -   %d %s per second   -   %s skill" % [
-			current.magicka_per_second,
-			current.power_per_second * Skills.spell_power_mult(current.skill), verb,
-			Skills.SKILLS[current.skill]["name"]]
+		%SpellStats.text = _spell_stats(current)
+
+
+func _spell_stats(spell: SpellData) -> String:
+	var skill_name: String = Skills.SKILLS[spell.skill]["name"]
+	var power := Skills.spell_power_mult(spell.skill)
+	var dual := "   -   dual-cast with both hands" if spell.can_dual_cast else ""
+	match spell.style:
+		SpellData.Style.STREAM:
+			var verb := "damage" if spell.effect == SpellData.Effect.DAMAGE_STREAM else "healing"
+			return "Hold: %d Magicka per second   -   %d %s per second   -   %s%s" % [
+				spell.magicka_per_second, spell.power_per_second * power, verb, skill_name, dual]
+		SpellData.Style.WARD:
+			return "Hold: %d Magicka per second, more per blow stopped   -   stops %d%% from the front   -   %s%s" % [
+				spell.magicka_per_second, roundi(spell.ward_strength * 100.0), skill_name, dual]
+		SpellData.Style.SELF:
+			return "Charge %.1f s, release: %d Magicka   -   %s" % [spell.charge_time, spell.magicka_cost, skill_name]
+	var what := "bolt" if spell.style == SpellData.Style.BOLT else "%.0f m burst" % spell.radius
+	return "Charge %.1f s, release: %d Magicka   -   %d damage %s   -   %s%s" % [
+		spell.charge_time, spell.magicka_cost, spell.damage * power, what, skill_name, dual]
 
 
 func _block_reduction() -> float:

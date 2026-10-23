@@ -12,6 +12,12 @@ signal learned(spell: SpellData)
 const SPELL_FILES := [
 	"res://spells/healing.tres",
 	"res://spells/flames.tres",
+	"res://spells/firebolt.tres",
+	"res://spells/frost_burst.tres",
+	"res://spells/healing_ward.tres",
+	"res://spells/mending.tres",
+	"res://spells/stoneflesh.tres",
+	"res://spells/candlelight.tres",
 ]
 
 var known: Array = []        # spell ids, in the order learned
@@ -32,7 +38,7 @@ func get_spell(id: String) -> SpellData:
 
 
 func current() -> SpellData:
-	if known.is_empty() or current_index < 0:
+	if known.is_empty() or current_index < 0 or current_index >= known.size():
 		return null
 	return _catalog[known[current_index]]
 

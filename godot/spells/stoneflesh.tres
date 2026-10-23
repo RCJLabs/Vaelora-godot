@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "stoneflesh"
+display_name = "Stoneflesh"
+description = "Charge, then release: your skin hardens like stone, and you take 20% less damage for a minute."
+style = 4
+skill = "alteration"
+color = Color(0.75, 0.7, 0.6, 1)
+can_dual_cast = false
+charge_time = 0.7
+magicka_cost = 45.0
+self_effect = "stoneflesh"

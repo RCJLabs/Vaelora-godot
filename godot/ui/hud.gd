@@ -143,9 +143,19 @@ func set_left_hand(text: String) -> void:
 
 
 ## What the left hand is doing (a spell, or Block), above the Magicka bar.
-func set_spell(spell: SpellData, known_count: int) -> void:
-	var hand := spell.display_name if spell else "Block"
-	spell_label.text = hand + ("   [Q] switch" if known_count > 0 else "")
+## `both_hands`: the right hand is free, so both buttons cast (dual-cast).
+func set_spell(spell: SpellData, known_count: int, both_hands: bool = false) -> void:
+	var hand := "Block"
+	if spell:
+		hand = "%s (%s%s)" % [spell.display_name, spell.cast_hint(), ", both hands to dual-cast" if both_hands and spell.can_dual_cast else ""]
+	spell_label.text = hand + ("   [%s] switch" % InputHints.label("switch_spell") if known_count > 0 else "")
+
+
+## The Magicka bar blinks when a spell can't be afforded.
+func flash_magicka() -> void:
+	var tween := create_tween()
+	tween.tween_property(magicka_bar, "modulate", Color(1, 0.3, 0.3), 0.05)
+	tween.tween_property(magicka_bar, "modulate", Color.WHITE, 0.3)
 
 
 ## Shows the player's status effects (name, stacks, seconds left) above the bars.
@@ -181,7 +191,7 @@ func _refresh_effects() -> void:
 # "Z Battle Fury   X Second Wind 42s"
 func _update_powers() -> void:
 	var parts := []
-	var keys := ["Z", "X"]
+	var keys := [InputHints.label("power_race"), InputHints.label("power_background")]
 	var ids: Array = Character.powers()
 	for i in ids.size():
 		var id: String = ids[i]

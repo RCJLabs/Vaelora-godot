@@ -117,14 +117,17 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       85% and bashes, bow draws and drops. Skills: One-Handed, Two-Handed, Block, Archery.)
 - [x] **A humanoid enemy that fights back:** bandits telegraph, guard (heavies break it),
       parry (the leader), and take turns attacking. Bandit camp + bounty quest.
-- [ ] **Spells:** cast styles (stream, bolt, area, ward), dual-casting, 6–8 spells across 3 schools.
+- [x] **Spells:** cast styles (stream, bolt, area, ward), dual-casting, 6–8 spells across 3 schools.
+      (Stream, bolt, area, ward and self; dual-cast with an empty right hand; 8 spells across
+      Destruction, Restoration and Alteration; spell tomes. See MAGIC.md.)
 - [x] **First-person animation pipeline:** bought first-person arm/weapon animation packs, or
       procedural animation as a placeholder. Decide early; it shapes everything above.
       (Decided: procedural placeholder now, behind an interface a bought pack can replace;
       timing lives in AttackData. Trying a real pack needs the PC.)
 - [x] **Enemy telegraphs and hit reactions**, readable at a glance. (Wolves: crouch, eye
       flare and growl before a bite; flinch, stagger. Placeholder synthesised sounds.)
-- [ ] **Gamepad support.**
+- [x] **Gamepad support.** (Every action, stick look, menus and dialogue, prompts that follow
+      the device. Tested with simulated input only; see CONTROLS.md.)
 
 **Done when:** a Human soldier and an Elf scholar feel like different games for 20 minutes.
 

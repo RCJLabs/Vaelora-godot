@@ -23,7 +23,7 @@ extends Node
 # constants below and each weapon's .tres are the places to tune the feel.
 
 signal attack_landed(target: Node, damage: float)
-signal defended(result: String)   # "blocked", "parried", "dodged", "guard_broken"
+signal defended(result: String)   # "blocked", "parried", "dodged", "guard_broken", "warded"
 
 enum State { READY, WINDUP, ACTIVE, RECOVERY, CHARGING, BLOCKING, DODGING, STAGGERED, DRAWING }
 enum Hand { BLOCK, SPELL, SHIELD, TWO_HANDED, BOW }
@@ -169,6 +169,8 @@ func is_bow() -> bool:
 # --- input (called by the player) ---------------------------------------------------
 
 func attack_pressed() -> void:
+	if player.magic.right_hand_free():
+		return   # an empty right hand casts the ready spell instead (PlayerMagic)
 	match state:
 		State.READY:
 			if is_bow():
@@ -547,6 +549,13 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 	if _iframes_left > 0.0:
 		defended.emit("dodged")
 		return "dodged"
+	var ward: float = player.magic.ward_share(attacker)
+	if ward > 0.0 and player.magic.ward_absorb(damage * ward):
+		stats.take_damage(damage * (1.0 - ward))
+		player.hud.flash_block(false)
+		Sfx.play("ward_hit", -3.0)
+		defended.emit("warded")
+		return "blocked"
 	if state == State.BLOCKING and _facing(attacker):
 		if _state_time <= PARRY_WINDOW * stats.modifier("parry_window"):
 			_parried()

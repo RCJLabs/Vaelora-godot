@@ -17,6 +17,7 @@ signal finished
 var is_active := false
 var _nodes: Dictionary = {}
 var _choices: Array = []   # the choices currently on screen (after conditions)
+var _selected := 0         # highlighted choice, for the D-pad / arrow keys
 
 
 func _ready() -> void:
@@ -60,6 +61,23 @@ func _unhandled_input(event: InputEvent) -> void:
 			and event.keycode >= KEY_1 and event.keycode <= KEY_9:
 		choose(event.keycode - KEY_1)
 		get_viewport().set_input_as_handled()
+	# Gamepad (and arrow keys): D-pad moves the highlight, A / Enter picks it.
+	# Space is left out: it's jump, and shouldn't pick a choice by accident.
+	elif event.is_action_pressed("ui_down") or event.is_action_pressed("ui_up"):
+		var step := 1 if event.is_action_pressed("ui_down") else -1
+		_select(wrapi(_selected + step, 0, _choices.size()))
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("ui_accept") and not (event is InputEventKey and event.physical_keycode == KEY_SPACE):
+		choose(_selected)
+		get_viewport().set_input_as_handled()
+
+
+# Highlights choice `index` (the one A / Enter picks).
+func _select(index: int) -> void:
+	_selected = index
+	for i in choices_box.get_child_count():
+		var button: Button = choices_box.get_child(i)
+		button.modulate = Color(1, 0.85, 0.4) if i == _selected else Color.WHITE
 
 
 func _show_node(node_id: String) -> void:
@@ -90,6 +108,7 @@ func _show_node(node_id: String) -> void:
 		button.focus_mode = Control.FOCUS_NONE   # so Space (jump) can't click it
 		button.pressed.connect(choose.bind(i))
 		choices_box.add_child(button)
+	_select(0)
 
 
 # Things a node (when shown) or a choice (when picked) can do:

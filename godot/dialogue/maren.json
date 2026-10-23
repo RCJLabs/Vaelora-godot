@@ -82,23 +82,8 @@
 					"requires_item": "wolf_pelt"
 				},
 				{
-					"text": "I need arrows. (10 for 10 gold)",
-					"next": "arrows",
-					"requires_gold": 10,
-					"take_gold": 10,
-					"give_item": {
-						"id": "arrow",
-						"count": 10
-					}
-				},
-				{
-					"text": "Is that bow on the wall for sale? (60 gold)",
-					"next": "bow",
-					"requires_gold": 60,
-					"requires_not_flag": "bought_maren_bow",
-					"set_flag": "bought_maren_bow",
-					"take_gold": 60,
-					"give_item": "hunting_bow"
+					"text": "Let's trade.",
+					"next": "shop"
 				},
 				{
 					"text": "Goodbye.",
@@ -234,14 +219,50 @@
 			"text": "Fletched them myself over the winter. Straight enough, mostly.",
 			"choices": [
 				{
-					"text": "Ten more. (10 gold)",
-					"next": "arrows",
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
 					"requires_gold": 10,
 					"take_gold": 10,
 					"give_item": {
 						"id": "arrow",
 						"count": 10
 					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
 				},
 				{
 					"text": "That's all.",
@@ -253,8 +274,8 @@
 			"text": "Good yew, and the string's new. My eyes aren't what they were for hunting. Look after it.",
 			"choices": [
 				{
-					"text": "I'll need arrows for it. (10 for 10 gold)",
-					"next": "arrows",
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
 					"requires_gold": 10,
 					"take_gold": 10,
 					"give_item": {
@@ -263,7 +284,208 @@
 					}
 				},
 				{
-					"text": "Thank you.",
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"shop": {
+			"text": "Arrows I fletch myself, and a bow I've no use for. And a few books a travelling mage left for her board - spells, she said, if you've the head for them.",
+			"choices": [
+				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"shop_arrows": {
+			"text": "Straight enough, mostly.",
+			"choices": [
+				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"bought_tome": {
+			"text": "Read it somewhere quiet. And not near the thatch, if it's that fire one.",
+			"choices": [
+				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
 					"next": "end"
 				}
 			]

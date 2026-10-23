@@ -289,7 +289,8 @@ script = ExtResource("2_container")
 container_name = "old chest"
 contents = {
 "iron_helmet": 1,
-"minor_healing_potion": 1
+"minor_healing_potion": 1,
+"tome_mending": 1
 }
 gold = 15
 

@@ -28,10 +28,10 @@ same formulas as the player. They're tested to match.
 | Background | Attributes | Skills | Gear and items | Gold | Riverwatch | Power (X) |
 |---|---|---|---|---|---|---|
 | Soldier | STR +1, END +1 | One-Handed +5, Athletics +5 | Iron Sword, Leather Cuirass, Leather Boots, Iron Helmet, a Wooden Shield (not equipped), 1 potion | 20 | +10 | Second Wind |
-| Scholar | INT +2 | Destruction +5, Restoration +5, knows **Flames** | Hunting Dagger, Boots, 2 potions | 40 | | Clarity |
+| Scholar | INT +2 | Destruction +5, Restoration +5, knows **Flames, Firebolt, Candlelight** | Hunting Dagger, Boots, 2 potions | 40 | | Clarity |
 | Outlaw | AGI +1, PRE +1 | One-Handed +5, Athletics +5 | Dagger, Cuirass, Boots | 60 | **−15** | Shadowstep |
 | Hunter | AGI +1, END +1 | Athletics +10 | Hunting Bow (equipped) and 24 arrows, Dagger, Cuirass, Boots, a wolf pelt | 25 | | Hunter's Focus |
-| Acolyte | WIL +1, PRE +1 | Restoration +10 | Iron Sword, Boots, 3 potions | 15 | | Blessing |
+| Acolyte | WIL +1, PRE +1 | Restoration +10, knows **Healing Ward, Mending** | Iron Sword, Boots, 3 potions | 15 | | Blessing |
 | Merchant | PRE +2 | | Iron Sword, Cuirass, Boots | 150 | +5 | Steady Nerves |
 
 Gear is equipped automatically. A background's fields are all optional: `attributes`,
@@ -82,9 +82,10 @@ say why ("needs One-Handed 35", "needs Armsman").
 | One-Handed | Armsman +20% damage (15) · Fighting Rhythm, swings −25% Stamina (25) · Armsman II +20% (35, needs Armsman) |
 | Athletics | Wind Runner, sprint −25% Stamina (20) · Sure-Footed, half fall damage (25) · Marathon +20 max Stamina (30, needs Wind Runner) |
 | Destruction | Augmented Flames +25% (20) · Efficient Destruction −20% cost (25) · Searing +25% (35, needs Augmented Flames) |
-| Restoration | Recovery, Magicka +25% faster (20) · Potent Healing +30% (25) · Efficient Restoration −20% cost (30, needs Potent Healing) |
+| Restoration | Recovery, Magicka +25% faster (20) · Potent Healing +30% (25) · Efficient Restoration −20% cost (30, needs Potent Healing) · Ward Mastery, wards +20% (30, needs Recovery) |
 | Block | Steady Guard, blocking −25% Stamina (20) · Deflection, parry window +50% (25) · Riposte, +50% damage for 2 s after a parry (35, needs Deflection) |
 | Two-Handed | Barbarian +20% (15) · Reaver, heavy attacks −25% Stamina (25) · Barbarian II +20% (35, needs Barbarian) |
+| Alteration | Efficient Alteration −25% cost (20) · Arcane Reserve +25 max Magicka (25) · Focused Mind, Magicka +25% faster (35, needs Arcane Reserve) |
 | Archery | Overdraw +20% (15) · Quick Draw, bows draw 30% faster (25) · Overdraw II +20% (35, needs Overdraw) |
 
 ## Modes

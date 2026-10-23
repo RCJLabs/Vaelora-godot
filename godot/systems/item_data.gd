@@ -24,6 +24,8 @@ enum WeaponKind { MELEE, BOW }
 @export var restore_health: float = 0.0
 @export var restore_stamina: float = 0.0
 @export var restore_magicka: float = 0.0
+## Spell tomes: the spell id it teaches (the tome is used up).
+@export var teaches_spell: String = ""
 
 @export_group("Weapon")
 @export var weapon_kind: WeaponKind = WeaponKind.MELEE

@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=25 format=3]
 
 [ext_resource type="Script" path="res://player/player_first_person.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="2_hud"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://player/weapon_animator.gd" id="5_anim"]
 [ext_resource type="Script" path="res://player/player_combat.gd" id="6_combat"]
 [ext_resource type="Script" path="res://player/shield_animator.gd" id="7_shield"]
+[ext_resource type="Script" path="res://player/player_magic.gd" id="8_magic"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -170,6 +171,9 @@ script = ExtResource("3_stats")
 
 [node name="Combat" type="Node" parent="."]
 script = ExtResource("6_combat")
+
+[node name="Magic" type="Node" parent="."]
+script = ExtResource("8_magic")
 
 [node name="StatusEffects" type="Node" parent="."]
 script = ExtResource("4_fx")

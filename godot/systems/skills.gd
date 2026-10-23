@@ -42,6 +42,10 @@ const SKILLS := {
 		"name": "Destruction",
 		"description": "+1% damage from Destruction spells per level. Improves with spell damage dealt.",
 	},
+	"alteration": {
+		"name": "Alteration",
+		"description": "+1% to Alteration spells per level (and cheaper with perks). Improves as you cast them.",
+	},
 	"restoration": {
 		"name": "Restoration",
 		"description": "+1% healing from Restoration spells per level. Improves with health restored.",

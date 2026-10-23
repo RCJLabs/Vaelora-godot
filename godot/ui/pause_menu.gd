@@ -23,7 +23,10 @@ func _ready() -> void:
 # _input so Esc is seen before the game. Dialogue and the Tab menu handle
 # their own Esc, so leave it to them while they're open.
 func _input(event: InputEvent) -> void:
-	if not event.is_action_pressed("ui_cancel"):
+	# "pause" is Esc / the gamepad's Menu button. In the menu, "ui_cancel"
+	# (Esc / gamepad B) goes back too. B alone doesn't open it: in the game B dodges.
+	var pause := event.is_action_pressed("pause")
+	if not pause and not (is_open and event.is_action_pressed("ui_cancel")):
 		return
 	if DialogueManager.is_active or CharacterMenu.is_open:
 		return
@@ -69,6 +72,15 @@ func _show(page: String) -> void:
 		"save": _build_save()
 		"load": _build_load()
 		"settings": _build_settings()
+	_focus_first.call_deferred()
+
+
+# So a gamepad (D-pad + A) can use the menu straight away.
+func _focus_first() -> void:
+	for control in content.find_children("*", "Control", true, false):
+		if control.focus_mode == Control.FOCUS_ALL and control.is_visible_in_tree() and not control.is_queued_for_deletion():
+			control.grab_focus()
+			return
 
 
 # --- pages ---------------------------------------------------------------------

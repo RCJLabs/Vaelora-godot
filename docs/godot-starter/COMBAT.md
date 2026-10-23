@@ -10,7 +10,7 @@
 | Left-click while blocking with a shield | **Shield bash**: breaks guards, big poise damage |
 | Bow: hold / release left-click | **Draw** (the crosshair grows), release to loose an arrow. Short draws are weaker; under 15% drawn cancels. Uses one Arrow |
 | Right-click just before a hit | **Parry**: no damage, the attacker staggers, you get 10 Stamina back, and a gold "Parry!" appears |
-| **Alt** | **Dodge** in the direction you're moving (backwards if standing still). Nothing can hit you for the first 0.22 s |
+| **Alt** (gamepad **B**) | **Dodge** in the direction you're moving (backwards if standing still). Nothing can hit you for the first 0.22 s |
 
 (If the mouse isn't captured, the first click only grabs it.)
 
@@ -232,4 +232,4 @@ Named in **Project Settings → Layer Names → 3D Physics** so the Inspector sh
   interiors yet.
 - Arrows can't be picked back up after they land.
 - The wolves and sword are placeholder boxes until real models arrive (see ASSETS.md).
-- Mouse and keyboard only (gamepad is later in 1c).
+- Gamepad: see CONTROLS.md (RT attacks, LT is the left hand, B dodges).

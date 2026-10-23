@@ -29,6 +29,12 @@ const ITEM_FILES := [
 	"res://items/wooden_shield.tres",
 	"res://items/hunting_bow.tres",
 	"res://items/arrow.tres",
+	"res://items/tome_firebolt.tres",
+	"res://items/tome_frost_burst.tres",
+	"res://items/tome_healing_ward.tres",
+	"res://items/tome_mending.tres",
+	"res://items/tome_stoneflesh.tres",
+	"res://items/tome_candlelight.tres",
 ]
 
 ## What every new character starts with (equipped). Backgrounds will change this.
@@ -93,6 +99,13 @@ func use(id: String) -> bool:
 	var player := get_tree().get_first_node_in_group("player")
 	if item == null or item.type != ItemData.Type.CONSUMABLE or player == null or count(id) == 0:
 		return false
+	if item.teaches_spell != "":
+		if Spellbook.knows(item.teaches_spell):
+			player.hud.notify("You already know %s" % Spellbook.get_spell(item.teaches_spell).display_name)
+			return false
+		Spellbook.learn(item.teaches_spell)
+		remove(id)
+		return true
 	var stats: Stats = player.stats
 	stats.heal(item.restore_health)
 	stats.stamina = minf(stats.stamina + item.restore_stamina, stats.max_stamina)

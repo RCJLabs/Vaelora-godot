@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://combat/spell_bolt.gd" id="1_bolt"]
+
+[sub_resource type="SphereMesh" id="Mesh_core"]
+radius = 0.09
+height = 0.18
+
+[node name="SpellBolt" type="Node3D"]
+script = ExtResource("1_bolt")
+
+[node name="Core" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("Mesh_core")
+
+[node name="Light" type="OmniLight3D" parent="."]
+light_energy = 2.0
+omni_range = 4.0

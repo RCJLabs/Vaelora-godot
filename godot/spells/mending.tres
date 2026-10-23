@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "mending"
+display_name = "Mending"
+description = "Charge, then release: you recover 5 Health a second for 10 seconds, even while fighting."
+style = 4
+skill = "restoration"
+color = Color(0.95, 0.95, 0.6, 1)
+can_dual_cast = false
+charge_time = 0.5
+magicka_cost = 30.0
+self_effect = "mending"

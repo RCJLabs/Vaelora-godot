@@ -15,6 +15,7 @@ extends CharacterBody3D
 #   │       └── Weapon (WeaponAnimator)  holds the equipped weapon's held_scene and poses it
 #   ├── Stats (systems/stats.gd)    Health / Stamina / Magicka / Poise
 #   ├── Combat (player_combat.gd)   attacks, combos, block, parry, dodge, stagger
+#   ├── Magic (player_magic.gd)     spellcasting: streams, bolts, areas, wards, self, dual-casting
 #   ├── StatusEffects               bleeding, burning... (systems/status_effects.gd)
 #   └── HUD (instance of ui/hud.tscn)
 #
@@ -30,6 +31,9 @@ extends CharacterBody3D
 @export var jump_velocity: float = 4.5
 ## Base mouse speed; the player's own multiplier is in Settings (Esc > Settings).
 @export var mouse_sensitivity: float = 0.002
+## Gamepad right stick: turn speed at full tilt (radians per second), times the
+## same Settings multiplier. The stick is curved, so small tilts aim finely.
+@export var stick_look_speed: float = 3.2
 @export var ground_accel: float = 40.0   # how fast you reach full speed on the ground
 @export var air_accel: float = 8.0       # how much you can steer mid-air
 ## If the player falls below this height they get put back at the spawn point
@@ -61,6 +65,7 @@ extends CharacterBody3D
 @onready var weapon: WeaponAnimator = $Head/Camera3D/Weapon
 @onready var off_hand: WeaponAnimator = $Head/Camera3D/OffHand
 @onready var combat: PlayerCombat = $Combat
+@onready var magic: PlayerMagic = $Magic
 @onready var spell_cast: ShapeCast3D = $Head/Camera3D/SpellCast
 @onready var spell_orb: MeshInstance3D = $Head/Camera3D/SpellHand/Orb
 @onready var spell_light: OmniLight3D = $Head/Camera3D/SpellHand/Light
@@ -102,6 +107,7 @@ func _ready() -> void:
 	Inventory.changed.connect(func(): if combat.is_bow(): _on_spell_changed())   # arrow count
 	_apply_equipment()
 	Spellbook.changed.connect(_on_spell_changed)
+	InputHints.device_changed.connect(_on_spell_changed)   # button names in the HUD
 	Spellbook.learned.connect(_on_spell_learned)
 	QuestLog.notice.connect(hud.notify)
 	Reputation.notice.connect(hud.notify)
@@ -134,7 +140,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED   # this click only grabs the mouse
 	elif event.is_action_pressed("attack"):
-		if not is_casting:
+		if not is_casting and not magic.right_hand_free():   # an empty right hand casts instead
 			combat.attack_pressed()
 	elif event.is_action_released("attack"):
 		combat.attack_released()
@@ -153,12 +159,15 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= gravity * delta
 
 	var talking: bool = DialogueManager.is_active or is_dead
+	if not talking:
+		_stick_look(delta)
 
 	if Input.is_action_just_pressed("jump") and is_on_floor() and not talking:
 		velocity.y = jump_velocity
 
 	var input_dir := Vector2.ZERO if talking else Input.get_vector("move_left", "move_right", "move_forward", "move_back")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	# Not normalized: a half-tilted stick walks at half speed (keys are always full).
+	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).limit_length(1.0)
 
 	# Only drains stamina while actually moving (not when pushing against a wall).
 	# From a standstill you walk for a split second, then the sprint kicks in.
@@ -188,8 +197,6 @@ func _physics_process(delta: float) -> void:
 	velocity.z = horizontal.z
 	weapon.set_movement(horizontal.length() / walk_speed if is_on_floor() else 0.0)
 
-	_update_casting(delta, talking)
-
 	var was_in_air := not is_on_floor()
 	var fall_speed := -velocity.y
 	move_and_slide()
@@ -207,68 +214,24 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 
 
-# Spells are hold-to-cast: while right-click is held and there's Magicka,
-# the ready spell runs every physics frame.
-func _update_casting(delta: float, blocked: bool) -> void:
-	var spell := Spellbook.current()
-	var wants := Input.is_action_pressed("cast") and not blocked and spell != null and combat.can_cast()
-	var cost := 0.0
-	if spell:
-		cost = spell.magicka_per_second * delta * stats.modifier("spell_cost") * stats.modifier("spell_cost_" + spell.skill)
-	is_casting = wants and stats.try_use_magicka(cost)
-	if is_casting:
-		var power := spell.power_per_second * delta * Skills.spell_power_mult(spell.skill) \
-				* Attributes.spell_mult() * stats.modifier("spell_power") * stats.modifier("spell_power_" + spell.skill)
-		if spell.effect == SpellData.Effect.DAMAGE_STREAM:
-			power *= stats.modifier("damage_dealt")
-		match spell.effect:
-			SpellData.Effect.DAMAGE_STREAM:
-				_cast_damage_stream(spell, power)
-			SpellData.Effect.HEAL_SELF:
-				var healed := minf(power, stats.max_health - stats.health)
-				stats.heal(healed)
-				Skills.add_xp(spell.skill, healed / 5.0)   # 1 XP per 5 health actually restored
-
-	fire_particles.emitting = is_casting and spell.effect == SpellData.Effect.DAMAGE_STREAM
-	heal_particles.emitting = is_casting and spell.effect == SpellData.Effect.HEAL_SELF
-	var glow := 2.5 + randf() * 0.8 if is_casting else 0.4   # flicker while casting
-	spell_light.light_energy = lerpf(spell_light.light_energy, glow, minf(delta * 15.0, 1.0))
-	spell_orb.scale = Vector3.ONE * (1.4 if is_casting else 1.0)
-
-
-func _cast_damage_stream(spell: SpellData, damage: float) -> void:
-	spell_cast.target_position = Vector3(0, 0, -spell.range)
-	spell_cast.force_shapecast_update()
-	for i in spell_cast.get_collision_count():
-		var target := spell_cast.get_collider(i)
-		if target and target.has_method("take_hit"):
-			target.take_hit(damage, global_position, 0.0)
-			if spell.applies_effect != "" and target.has_method("add_effect"):
-				target.add_effect(spell.applies_effect)
-			Skills.add_xp(spell.skill, damage / 5.0)   # 1 XP per 5 damage dealt
-			var target_stats = target.get("stats")
-			if target_stats is Stats:
-				hud.show_enemy_health(target_stats)
-
-
 func _on_spell_changed() -> void:
 	var spell := Spellbook.current()
-	var hand_free := combat.left_hand() == PlayerCombat.Hand.SPELL
-	spell_orb.visible = hand_free
-	spell_light.visible = hand_free
 	if spell and _orb_material:
 		_orb_material.albedo_color = spell.color
 		spell_light.light_color = spell.color
+		if magic.right_hand:   # the right hand's copy (dual-casting) matches
+			magic.right_hand.get_node("Orb").material_override = _orb_material
+			magic.right_hand.get_node("Light").light_color = spell.color
 	match combat.left_hand():
 		PlayerCombat.Hand.SHIELD:
-			hud.set_left_hand("Shield   (left-click while blocking to bash)")
+			hud.set_left_hand("Shield   (%s while blocking: bash)" % InputHints.label("attack"))
 		PlayerCombat.Hand.TWO_HANDED:
-			hud.set_left_hand("Two-handed   (right-click blocks)")
+			hud.set_left_hand("Two-handed   (%s blocks)" % InputHints.label("cast"))
 		PlayerCombat.Hand.BOW:
 			var ammo := Inventory.equipped_item("main_hand").ammo
-			hud.set_left_hand("%d %ss   (right-click to aim)" % [Inventory.count(ammo), Inventory.get_item(ammo).display_name.to_lower()])
+			hud.set_left_hand("%d %ss   (%s to aim)" % [Inventory.count(ammo), Inventory.get_item(ammo).display_name.to_lower(), InputHints.label("cast")])
 		_:
-			hud.set_spell(spell, Spellbook.known.size())
+			hud.set_spell(spell, Spellbook.known.size(), magic.right_hand_free())
 
 
 func _on_spell_learned(spell: SpellData) -> void:
@@ -293,6 +256,19 @@ func _apply_equipment() -> void:
 	combat.set_shield(shield)
 	stats.armor_rating = Inventory.armor_total()
 	_on_spell_changed()   # what the left hand shows depends on the gear
+
+
+# Gamepad right stick. Mouse look is in _unhandled_input.
+func _stick_look(delta: float) -> void:
+	var stick := Input.get_vector("look_left", "look_right", "look_up", "look_down")
+	if stick == Vector2.ZERO:
+		return
+	stick *= stick.length()   # curve: fine control near the centre, fast at full tilt
+	var speed := stick_look_speed * Settings.mouse_sensitivity * delta
+	var vertical := -1.0 if Settings.invert_y else 1.0
+	rotate_y(-stick.x * speed)
+	head.rotate_x(-stick.y * speed * vertical)
+	head.rotation.x = clamp(head.rotation.x, deg_to_rad(-85), deg_to_rad(85))
 
 
 ## Enemies call this when their attack reaches you. See PlayerCombat.receive_attack.
@@ -333,7 +309,7 @@ func _on_skill_increased(skill_id: String, new_level: int) -> void:
 
 
 func _on_leveled_up(new_level: int) -> void:
-	hud.notify("Level %d!  Press Tab to choose a bonus." % new_level)
+	hud.notify("Level %d!  Press %s to choose a bonus." % [new_level, InputHints.label("character_menu")])
 
 
 
@@ -435,7 +411,7 @@ func _update_interaction() -> void:
 		return
 
 	var prompt = target.get("prompt")
-	hud.set_prompt("[E] %s" % (prompt if prompt else "Use"))
+	hud.set_prompt("[%s] %s" % [InputHints.label("interact"), prompt if prompt else "Use"])
 	if Input.is_action_just_pressed("interact"):
 		target.interact(self)
 

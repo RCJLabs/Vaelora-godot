@@ -15,6 +15,11 @@ const EFFECT_FILES := [
 	"res://effects/hunters_focus.tres",
 	"res://effects/blessing.tres",
 	"res://effects/steady_nerves.tres",
+	# spells
+	"res://effects/chilled.tres",
+	"res://effects/mending.tres",
+	"res://effects/stoneflesh.tres",
+	"res://effects/candlelight.tres",
 ]
 
 var _catalog: Dictionary = {}

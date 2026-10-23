@@ -85,6 +85,17 @@ func _show_step() -> void:
 		3: _build_attributes_step()
 		4: _build_final_step()
 	_refresh_details()
+	if step != 4:   # the name step focuses its text box itself
+		_focus_first_choice.call_deferred()
+
+
+# So a gamepad can pick with the D-pad and A straight away.
+func _focus_first_choice() -> void:
+	for control in choices.find_children("*", "BaseButton", true, false):
+		if control.is_visible_in_tree() and not control.is_queued_for_deletion() and not control.disabled:
+			control.grab_focus()
+			return
+	next_button.grab_focus()
 
 
 func _refresh_details() -> void:

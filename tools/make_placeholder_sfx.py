@@ -137,6 +137,22 @@ def main():
     knock = np.sin(2 * np.pi * (520 * t - 900 * t ** 2)) * envelope(t, 0.0005, 0.025)
     save("arrow_thud", knock + 0.4 * lowpass(rng.standard_normal(len(t)), 3000.0) * envelope(t, 0.0005, 0.01), 0.7)
 
+    # Spell cast: a rising shimmer (a quick upward sweep of filtered noise plus a soft tone).
+    t = seconds(0.35)
+    shimmer = highpass(lowpass(rng.standard_normal(len(t)), 900 + 5000 * t / 0.35), 400.0) * envelope(t, 0.03, 0.12)
+    tone = np.sin(2 * np.pi * (440 + 500 * t) * t) * envelope(t, 0.01, 0.1) * 0.6
+    save("spell_cast", shimmer + tone, 0.6)
+
+    # Spell impact: a soft boom with a crackle on top.
+    t = seconds(0.6)
+    boom = np.sin(2 * np.pi * (160 * t - 110 * t ** 2)) * envelope(t, 0.003, 0.14)
+    crackle = highpass(rng.standard_normal(len(t)), 2000.0) * envelope(t, 0.002, 0.08) * (rng.random(len(t)) > 0.7)
+    save("spell_impact", boom + 0.8 * lowpass(rng.standard_normal(len(t)), 1200.0) * envelope(t, 0.002, 0.1) + 0.5 * crackle, 0.85)
+
+    # Ward hit: a glassy chime, softer than steel.
+    t = seconds(0.6)
+    save("ward_hit", ring(t, [(660, 1.0), (1320, 0.4), (1980, 0.25), (2970, 0.15)], 0.5) * envelope(t, 0.002, 0.2), 0.7)
+
     # Out of stamina / guard broken: a dull low thud.
     t = seconds(0.3)
     save("guard_break", np.sin(2 * np.pi * (120 * t - 60 * t ** 2)) * envelope(t, 0.002, 0.09)

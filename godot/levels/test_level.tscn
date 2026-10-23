@@ -501,7 +501,8 @@ parry_chance = 0.3
 max_health = 90.0
 gold = 30
 loot = {
-"iron_mace": 1
+"iron_mace": 1,
+"tome_frost_burst": 1
 }
 weapon_scene = ExtResource("17_mace")
 
@@ -553,7 +554,8 @@ container_name = "bandit chest"
 contents = {
 "arrow": 12,
 "minor_healing_potion": 2,
-"steel_greatsword": 1
+"steel_greatsword": 1,
+"tome_firebolt": 1
 }
 gold = 40
 

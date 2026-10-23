@@ -22,5 +22,9 @@
 
 	"recovery": { "name": "Recovery", "skill": "restoration", "level": 20, "description": "Magicka recovers 25% faster.", "modifiers": { "magicka_regen": 1.25 } },
 	"potent_healing": { "name": "Potent Healing", "skill": "restoration", "level": 25, "description": "+30% healing from Restoration spells.", "modifiers": { "spell_power_restoration": 1.3 } },
-	"efficient_restoration": { "name": "Efficient Restoration", "skill": "restoration", "level": 30, "requires": "potent_healing", "description": "Restoration spells cost 20% less.", "modifiers": { "spell_cost_restoration": 0.8 } }
+	"efficient_restoration": { "name": "Efficient Restoration", "skill": "restoration", "level": 30, "requires": "potent_healing", "description": "Restoration spells cost 20% less.", "modifiers": { "spell_cost_restoration": 0.8 } },
+	"efficient_alteration": { "name": "Efficient Alteration", "skill": "alteration", "level": 20, "description": "Alteration spells cost 25% less.", "modifiers": { "spell_cost_alteration": 0.75 } },
+	"arcane_reserve": { "name": "Arcane Reserve", "skill": "alteration", "level": 25, "description": "+25 max Magicka.", "stat_bonus": { "magicka": 25 } },
+	"focused_mind": { "name": "Focused Mind", "skill": "alteration", "level": 35, "requires": "arcane_reserve", "description": "Magicka recovers 25% faster.", "modifiers": { "magicka_regen": 1.25 } },
+	"ward_mastery": { "name": "Ward Mastery", "skill": "restoration", "level": 30, "requires": "recovery", "description": "Wards stop 20% more of a hit and cost less to hold.", "modifiers": { "ward_strength": 1.2, "spell_cost_restoration": 0.9 } }
 }
