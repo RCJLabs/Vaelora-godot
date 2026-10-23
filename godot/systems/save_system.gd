@@ -3,6 +3,8 @@ extends Node
 # Saving and loading, with slots. Autoloaded as "SaveSystem".
 #   F5 = quicksave (its own slot), F9 = load the most recent save.
 #   The pause menu (Esc) saves to / loads from manual slots 1-5.
+#   Resting (beds, campfires) autosaves to its own slot.
+#   Hardcore characters can only save by resting (save_game refuses otherwise).
 # Saves live in user://saves/<slot>.json. Find that folder with
 # Project > Open User Data Folder (in the editor).
 #
@@ -14,9 +16,11 @@ extends Node
 
 const SAVE_DIR := "user://saves/"
 const OLD_SAVE_PATH := "user://savegame.json"   # before slots existed
-const SAVE_VERSION := 8   # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time,
-                          # 7: attributes, equipment, status effects, 8: character (background, traits, perks, modes)
+const SAVE_VERSION := 9   # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time,
+                          # 7: attributes, equipment, status effects, 8: character (background, traits, perks, modes),
+                          # 9: world clock and survival needs
 const QUICKSAVE := "quicksave"
+const AUTOSAVE := "autosave"
 const MANUAL_SLOTS := ["slot_1", "slot_2", "slot_3", "slot_4", "slot_5"]
 
 var _pending_player_state: Dictionary = {}
@@ -39,6 +43,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func slot_title(slot: String) -> String:
 	if slot == QUICKSAVE:
 		return "Quicksave"
+	if slot == AUTOSAVE:
+		return "Autosave"
 	return "Slot %s" % slot.trim_prefix("slot_")
 
 
@@ -52,7 +58,7 @@ func has_save(slot: String = "") -> bool:
 ## Every save, newest first: [{"slot": "slot_1", "meta": {...}}, ...]
 func list_saves() -> Array:
 	var saves := []
-	for slot in [QUICKSAVE] + MANUAL_SLOTS:
+	for slot in [AUTOSAVE, QUICKSAVE] + MANUAL_SLOTS:
 		if has_save(slot):
 			var data = JSON.parse_string(FileAccess.get_file_as_string(_path(slot)))
 			if data is Dictionary:
@@ -79,12 +85,16 @@ func describe(meta: Dictionary) -> String:
 		minutes / 60, minutes % 60, meta.get("saved_at_text", "")]
 
 
-func save_game(slot: String = QUICKSAVE) -> bool:
+## `resting`: the save comes from sleeping (always allowed, even in Hardcore).
+func save_game(slot: String = QUICKSAVE, resting: bool = false) -> bool:
 	var player := get_tree().get_first_node_in_group("player")
 	if player == null:
 		return false   # e.g. on the title screen
 	if DialogueManager.is_active or player.is_dead:
 		player.show_message("You can't save right now.")
+		return false
+	if hardcore_saves_locked() and not resting:
+		player.show_message("Hardcore: you can only save by resting at a bed or a campfire.")
 		return false
 
 	var level := get_tree().current_scene
@@ -112,6 +122,8 @@ func save_game(slot: String = QUICKSAVE) -> bool:
 		"spells": Spellbook.to_dict(),
 		"reputation": Reputation.to_dict(),
 		"world": WorldState.to_dict(),
+		"clock": WorldClock.to_dict(),
+		"survival": Survival.to_dict(),
 		"player": player.get_save_data(),
 	}
 	var file := FileAccess.open(_path(slot), FileAccess.WRITE)
@@ -121,6 +133,11 @@ func save_game(slot: String = QUICKSAVE) -> bool:
 	file.store_string(JSON.stringify(data, "\t"))
 	player.show_message("Game saved (%s)." % slot_title(slot))
 	return true
+
+
+## Hardcore characters save only when they rest.
+func hardcore_saves_locked() -> bool:
+	return bool(Character.modes.get("hardcore", false))
 
 
 ## Loads `slot`, or the most recent save if no slot is given.
@@ -170,6 +187,8 @@ func load_game(slot: String = "") -> bool:
 	else:
 		Reputation.reset()                     # versions 1-4 had no reputation
 	WorldState.from_dict(data.get("world", {}))   # versions 1-6: nothing remembered yet
+	WorldClock.from_dict(data.get("clock", {}))   # versions 1-8: morning of day 1
+	Survival.from_dict(data.get("survival", {}))  # versions 1-8: no needs yet
 	QuestLog.silent = false
 	QuestLog.reset_baseline()
 	_pending_player_state = data["player"]
@@ -217,7 +236,7 @@ func take_pending_player_state() -> Dictionary:
 
 ## Deletes one slot, or every save if no slot is given.
 func delete_save(slot: String = "") -> void:
-	for s in ([slot] if slot != "" else [QUICKSAVE] + MANUAL_SLOTS):
+	for s in ([slot] if slot != "" else [AUTOSAVE, QUICKSAVE] + MANUAL_SLOTS):
 		if has_save(s):
 			DirAccess.remove_absolute(_path(s))
 	if slot == "" and FileAccess.file_exists(OLD_SAVE_PATH):

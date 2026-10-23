@@ -20,14 +20,18 @@ Spellbook="*res://systems/spellbook.gd"
 Reputation="*res://systems/reputation.gd"
 WorldState="*res://systems/world_state.gd"
 Settings="*res://systems/settings.gd"
+WorldClock="*res://systems/world_clock.gd"
+Survival="*res://systems/survival.gd"
 Sfx="*res://systems/sfx.gd"
 InputHints="*res://systems/input_hints.gd"
+Hints="*res://systems/hints.gd"
 QuestLog="*res://systems/quest_log.gd"
 Character="*res://systems/character.gd"
 DialogueManager="*res://ui/dialogue_box.tscn"
 SaveSystem="*res://systems/save_system.gd"
 CharacterMenu="*res://ui/character_menu.tscn"
 PauseMenu="*res://ui/pause_menu.tscn"
+RestMenu="*res://ui/rest_menu.gd"
 
 [editor_plugins]
 

@@ -14,8 +14,9 @@ var fov := 75.0
 var master_volume := 1.0       # 0..1
 var fullscreen := false
 var vsync := true
+var show_hints := true          # one-time tutorial tips (systems/hints.gd)
 
-const KEYS := ["mouse_sensitivity", "invert_y", "fov", "master_volume", "fullscreen", "vsync"]
+const KEYS := ["mouse_sensitivity", "invert_y", "fov", "master_volume", "fullscreen", "vsync", "show_hints"]
 
 
 func _ready() -> void:

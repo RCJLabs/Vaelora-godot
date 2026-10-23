@@ -80,6 +80,8 @@ func create(race: RaceData, new_name: String, background_id: String, trait_ids: 
 	Spellbook.reset(race)
 	Reputation.reset()
 	WorldState.reset()
+	WorldClock.reset()
+	Survival.reset()
 
 	player_name = new_name.strip_edges() if new_name.strip_edges() != "" else "Traveller"
 	background = background_id
@@ -100,6 +102,9 @@ func create(race: RaceData, new_name: String, background_id: String, trait_ids: 
 	for id in bg.get("items", {}):
 		Inventory.items[id] = Inventory.count(id) + int(bg["items"][id])
 	Inventory.gold = int(bg.get("gold", 0))
+	# Everyone packs a little food (it heals a bit; in Survival it's essential).
+	Inventory.items["bread"] = Inventory.count("bread") + 2
+	Inventory.items["water_flask"] = Inventory.count("water_flask") + 2
 	for spell in bg.get("spells", []):
 		Spellbook.learn(spell)
 	_add_reputation(bg.get("reputation", {}))

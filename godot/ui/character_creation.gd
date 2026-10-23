@@ -301,8 +301,8 @@ func _build_final_step() -> void:
 
 	_label("Mode", 22, GOLD, choices)
 	var mode_texts := {
-		"survival": "Survival  -  hunger, thirst, sleep and cold. Not in the game yet: ticking it now turns them on when they arrive.",
-		"hardcore": "Hardcore  -  you take 50% more damage, deal 20% more, and Health regenerates at a quarter of the speed.",
+		"survival": "Survival  -  you need to eat, drink and sleep, and nights are cold. Campfires and beds let you rest.",
+		"hardcore": "Hardcore  -  you take 50% more damage, deal 20% more, Health regenerates at a quarter of the speed, and you can only save by resting.",
 	}
 	for mode in mode_texts:
 		var box := _check_box(mode_texts[mode])

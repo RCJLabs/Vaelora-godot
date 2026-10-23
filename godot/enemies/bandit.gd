@@ -93,6 +93,7 @@ const ARM_POSES := {
 
 func _ready() -> void:
 	add_to_group("persistent")
+	add_to_group("enemy")
 	home = global_position
 	stats.max_health = max_health
 	stats.refill()
@@ -229,6 +230,7 @@ func _attackers() -> int:
 
 func _start_fight() -> void:
 	state = State.CHASE
+	Hints.show_once("bandits", "Bandits raise their guard against quick swings. Hold %s for a heavy attack (or bash with a shield) to break it. Watch for the glint before they swing." % Hints.key("attack"))
 	if get_parent().has_method("alert"):
 		get_parent().alert(self)
 

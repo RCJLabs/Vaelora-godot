@@ -76,6 +76,39 @@ func flash_hit() -> void:
 	tween.tween_property(crosshair, "modulate", Color.WHITE, 0.25)
 
 
+var _hint_label: Label
+var _hint_tween: Tween
+var _hint_queue: Array = []
+
+
+## A tutorial tip in the lower middle of the screen for a few seconds (Hints).
+func show_hint(text: String, seconds: float = 7.0) -> void:
+	if _hint_label == null:
+		_hint_label = Label.new()
+		_hint_label.label_settings = prompt_label.label_settings
+		_hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_hint_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_hint_label.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+		_hint_label.offset_left = -380.0
+		_hint_label.offset_right = 380.0
+		_hint_label.offset_top = -200.0
+		_hint_label.offset_bottom = -140.0
+		_hint_label.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		_hint_label.modulate = Color(1, 0.9, 0.6)
+		add_child(_hint_label)
+	if _hint_tween and _hint_tween.is_running():
+		_hint_queue.append(text)   # one at a time: this one shows next
+		return
+	_hint_label.text = text
+	_hint_label.modulate.a = 1.0
+	_hint_tween = create_tween()
+	_hint_tween.tween_interval(seconds)
+	_hint_tween.tween_property(_hint_label, "modulate:a", 0.0, 1.0)
+	_hint_tween.tween_callback(func():
+		if not _hint_queue.is_empty():
+			show_hint(_hint_queue.pop_front(), seconds))
+
+
 ## The crosshair grows while a heavy attack charges, and turns gold when it's full.
 func set_charge(amount: float) -> void:
 	crosshair.pivot_offset = crosshair.size / 2.0

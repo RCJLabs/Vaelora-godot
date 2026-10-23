@@ -24,6 +24,14 @@ enum WeaponKind { MELEE, BOW }
 @export var restore_health: float = 0.0
 @export var restore_stamina: float = 0.0
 @export var restore_magicka: float = 0.0
+## Survival mode: how much eating / drinking this lowers each need (0-100 scale).
+@export var ease_hunger: float = 0.0
+@export var ease_thirst: float = 0.0
+@export var ease_fatigue: float = 0.0
+@export var ease_cold: float = 0.0
+## A status effect it might give you (raw meat: "poisoned"), and the chance (0-1).
+@export var side_effect: String = ""
+@export var side_effect_chance: float = 0.0
 ## Spell tomes: the spell id it teaches (the tome is used up).
 @export var teaches_spell: String = ""
 

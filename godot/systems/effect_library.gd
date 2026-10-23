@@ -20,6 +20,20 @@ const EFFECT_FILES := [
 	"res://effects/mending.tres",
 	"res://effects/stoneflesh.tres",
 	"res://effects/candlelight.tres",
+	# survival (systems/survival.gd) and resting
+	"res://effects/survival_peckish.tres",
+	"res://effects/survival_hungry.tres",
+	"res://effects/survival_starving.tres",
+	"res://effects/survival_thirsty.tres",
+	"res://effects/survival_parched.tres",
+	"res://effects/survival_dehydrated.tres",
+	"res://effects/survival_tired.tres",
+	"res://effects/survival_weary.tres",
+	"res://effects/survival_exhausted.tres",
+	"res://effects/survival_chilly.tres",
+	"res://effects/survival_cold.tres",
+	"res://effects/survival_freezing.tres",
+	"res://effects/well_rested.tres",
 ]
 
 var _catalog: Dictionary = {}

@@ -47,7 +47,7 @@ func _ready() -> void:
 
 # _input (not _unhandled_input) so Tab works even when a button has focus.
 func _input(event: InputEvent) -> void:
-	if not is_open and (DialogueManager.is_active or PauseMenu.is_open):
+	if not is_open and (DialogueManager.is_active or PauseMenu.is_open or RestMenu.is_open):
 		return   # leave the keys to the conversation / pause menu
 	if event.is_action_pressed("character_menu"):
 		if is_open:
@@ -117,7 +117,7 @@ func _refresh() -> void:
 		return
 	level_label.text = "Level %d   -   %d / %d skill increases to the next level" % [
 		Skills.character_level, Skills.skill_ups_toward_level, Skills.SKILL_UPS_PER_LEVEL]
-	%IdentityLabel.text = _identity_text()
+	%IdentityLabel.text = _identity_text() + "\n" + WorldClock.text() + ("     " + Survival.text() if Survival.active() else "")
 	var attribute_row: HBoxContainer = %AttributeRow
 	for child in attribute_row.get_children():
 		attribute_row.remove_child(child)

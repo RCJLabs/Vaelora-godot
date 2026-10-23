@@ -57,6 +57,7 @@ var _pose_tween: Tween      # crouch, stagger or flinch: stopped when it dies
 
 func _ready() -> void:
 	add_to_group("persistent")
+	add_to_group("enemy")
 	home = global_position
 	_wander_target = home
 	stats.died.connect(_on_died)
@@ -154,6 +155,7 @@ func _think(player: Node3D, delta: float) -> void:
 # others join in instead of wandering while their packmates fight.
 func _start_hunt() -> void:
 	state = State.CHASE
+	Hints.show_once("wolves", "Wolves crouch and their eyes flare before they bite. Block with %s just before it lands to parry, or dodge with %s." % [Hints.key("cast"), Hints.key("dodge")])
 	if get_parent().has_method("alert"):
 		get_parent().alert(self)
 
@@ -359,6 +361,7 @@ func interact(_player: Node) -> void:
 	prompt = ""
 	collision_layer = 0   # nothing left to interact with
 	Inventory.add("wolf_pelt")
+	Inventory.add("raw_wolf_meat")
 
 
 func _on_died() -> void:

@@ -9,7 +9,7 @@ layout; PlayStation and Switch pads map to the same positions.
 | Move | W A S D | Left stick (partial tilt = slower) |
 | Look | Mouse | Right stick |
 | Sprint | Shift | L3 (click the left stick) |
-| Jump | Space | A |
+| Jump / climb a ledge / vault | Space | A |
 | Interact / talk / loot | E | X |
 | Attack (tap) / heavy attack or draw a bow (hold) | Left-click | RT |
 | Left hand: cast, block, shield, aim a bow (hold) | Right-click | LT |
@@ -28,6 +28,30 @@ layout; PlayStation and Switch pads map to the same positions.
 Look speed for both the mouse and the right stick is **Settings → Mouse sensitivity**, and
 **Invert Y** applies to both. The stick is curved: small tilts aim finely, full tilt turns
 about 180° a second.
+
+## Climbing (mantle and vault)
+- **Jump facing a ledge** 0.45–2.1 m high (from your feet) to climb onto it. Higher than that,
+  you just jump.
+- **Hold jump in the air** near a ledge to grab it and pull yourself up (up to 1.4 m above
+  your feet mid-jump, so about 2.4 m from the ground).
+- **Low, thin obstacles** (up to 1.25 m high, 0.9 m thick, like fences) are **vaulted**: you
+  go over and land on the far side. Sprinting into a low block vaults it too, instead of
+  climbing on top.
+- Climbing costs 10 Stamina and gives Athletics XP. It needs room for your head and for you
+  to stand at the top.
+- Try it on the **fence** north-east of spawn (by the wolf path) and the **boulder** west of
+  the waystation (1.8 m).
+- Tuning: the constants at the top of `player/player_traversal.gd`.
+
+## Tutorial hints
+The first time something comes up, a short tip appears in the lower middle of the screen:
+- wolves and bandits hunting you
+- a charged spell or a tome
+- a level-up
+- a ledge in front of you
+- your first survival need, and the cold
+
+Each shows once per character. Turn them off in **Settings → Tutorial hints**.
 
 ## Changing bindings
 **Project → Project Settings → Input Map.** Each action lists its key, mouse and gamepad

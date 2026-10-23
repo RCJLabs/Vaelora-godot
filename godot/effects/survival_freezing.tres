@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "survival_freezing"
+display_name = "Freezing"
+description = "Moving 15% slower, and the cold is costing you Health. Find a fire or shelter."
+is_harmful = true
+duration = 0.0
+modifiers = {
+"move_speed": 0.85,
+"stamina_regen": 0.6
+}
+health_per_second = -0.1

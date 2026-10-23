@@ -91,9 +91,9 @@ say why ("needs One-Handed 35", "needs Armsman").
 ## Modes
 
 - **Hardcore:** you take 50% more damage, deal 20% more, and Health regenerates at a quarter
-  of the speed. Still open: permadeath, or ordinary reloads?
-- **Survival:** the checkbox is saved, but does nothing yet. Hunger, thirst, sleep and cold
-  are Phase 2–3, and characters that ticked it will get them.
+  of the speed. You can only save by resting at a bed or campfire. Still open: permadeath,
+  or ordinary reloads?
+- **Survival:** hunger, thirst, fatigue and cold (see SURVIVAL.md).
 
 Modes can't be changed after creation (no in-game toggle yet).
 

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "survival_dehydrated"
+display_name = "Dehydrated"
+description = "Magicka recovers at half speed, and you're slowly losing Health."
+is_harmful = true
+duration = 0.0
+modifiers = {
+"magicka_regen": 0.5,
+"stamina_regen": 0.8
+}
+health_per_second = -0.05

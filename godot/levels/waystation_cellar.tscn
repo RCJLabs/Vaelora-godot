@@ -1,10 +1,11 @@
-[gd_scene load_steps=29 format=3]
+[gd_scene load_steps=33 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/loot_container.gd" id="2_container"]
 [ext_resource type="Script" path="res://interactables/location_door.gd" id="3_door"]
 [ext_resource type="Script" path="res://props/flicker_light.gd" id="4_flicker"]
 [ext_resource type="Script" path="res://levels/nav_region.gd" id="5_nav"]
+[ext_resource type="Script" path="res://interactables/bed.gd" id="9_bed"]
 
 [sub_resource type="Environment" id="Env"]
 background_mode = 1
@@ -115,6 +116,17 @@ cell_height = 0.25
 agent_height = 1.0
 agent_radius = 0.5
 agent_max_climb = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_straw"]
+albedo_color = Color(0.62, 0.52, 0.32, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="Mesh_bed"]
+material = SubResource("Mat_straw")
+size = Vector3(0.9, 0.35, 2.0)
+
+[sub_resource type="BoxShape3D" id="Shape_bed"]
+size = Vector3(0.9, 0.35, 2.0)
 
 [node name="WaystationCellar" type="Node3D" groups=["navmesh_source"]]
 
@@ -332,3 +344,13 @@ script = ExtResource("5_nav")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 0.05, 2.5)
+
+[node name="Bed" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3, 0.18, 2.6)
+script = ExtResource("9_bed")
+
+[node name="Mesh" type="MeshInstance3D" parent="Bed"]
+mesh = SubResource("Mesh_bed")
+
+[node name="Shape" type="CollisionShape3D" parent="Bed"]
+shape = SubResource("Shape_bed")

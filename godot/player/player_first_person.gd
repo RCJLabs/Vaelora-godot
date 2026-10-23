@@ -16,6 +16,7 @@ extends CharacterBody3D
 #   ├── Stats (systems/stats.gd)    Health / Stamina / Magicka / Poise
 #   ├── Combat (player_combat.gd)   attacks, combos, block, parry, dodge, stagger
 #   ├── Magic (player_magic.gd)     spellcasting: streams, bolts, areas, wards, self, dual-casting
+#   ├── Traversal (player_traversal.gd)  mantling onto ledges, vaulting low obstacles
 #   ├── StatusEffects               bleeding, burning... (systems/status_effects.gd)
 #   └── HUD (instance of ui/hud.tscn)
 #
@@ -66,6 +67,7 @@ extends CharacterBody3D
 @onready var off_hand: WeaponAnimator = $Head/Camera3D/OffHand
 @onready var combat: PlayerCombat = $Combat
 @onready var magic: PlayerMagic = $Magic
+@onready var traversal: PlayerTraversal = $Traversal
 @onready var spell_cast: ShapeCast3D = $Head/Camera3D/SpellCast
 @onready var spell_orb: MeshInstance3D = $Head/Camera3D/SpellHand/Orb
 @onready var spell_light: OmniLight3D = $Head/Camera3D/SpellHand/Light
@@ -155,6 +157,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if traversal.busy:   # mantling or vaulting moves the player by itself
+		traversal.update(delta)
+		_stick_look(delta)
+		return
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
@@ -162,8 +168,16 @@ func _physics_process(delta: float) -> void:
 	if not talking:
 		_stick_look(delta)
 
+	# Jump: climbs a ledge or vaults if there's one in front, otherwise jumps.
+	# Holding jump in the air grabs a ledge within reach.
+	var can_climb := not talking and combat.state in [PlayerCombat.State.READY, PlayerCombat.State.RECOVERY]
 	if Input.is_action_just_pressed("jump") and is_on_floor() and not talking:
-		velocity.y = jump_velocity
+		var running := Input.is_action_pressed("sprint") and Vector2(velocity.x, velocity.z).length() > walk_speed * 1.1
+		if not (can_climb and traversal.try_start(false, running)):
+			velocity.y = jump_velocity
+	elif Input.is_action_pressed("jump") and not is_on_floor() and velocity.y < 2.0 and can_climb:
+		if traversal.try_start(true, false):
+			return
 
 	var input_dir := Vector2.ZERO if talking else Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	# Not normalized: a half-tilted stick walks at half speed (keys are always full).
@@ -236,6 +250,8 @@ func _on_spell_changed() -> void:
 
 func _on_spell_learned(spell: SpellData) -> void:
 	hud.notify("Spell learned: %s" % spell.display_name)
+	if spell.is_charged():
+		Hints.show_once("charged_spells", "%s is a charged spell: hold %s until your hand glows bright, then release. With nothing in your right hand, hold both buttons to dual-cast." % [spell.display_name, Hints.key("cast")])
 
 
 # Weapon stats, model and armour from what's equipped (Inventory).
@@ -310,10 +326,13 @@ func _on_skill_increased(skill_id: String, new_level: int) -> void:
 
 func _on_leveled_up(new_level: int) -> void:
 	hud.notify("Level %d!  Press %s to choose a bonus." % [new_level, InputHints.label("character_menu")])
+	Hints.show_once("level_up", "Level up: open %s → Skills to raise Health, Stamina or Magicka, spend an attribute point, and take a perk." % Hints.key("character_menu"))
 
 
 
 func _on_item_added(item: ItemData, amount: int) -> void:
+	if item.teaches_spell != "":
+		Hints.show_once("tomes", "Spell tome: open %s → Inventory and use it to learn the spell." % Hints.key("character_menu"))
 	hud.notify("%s added" % item.display_name if amount == 1 else "%s (%d) added" % [item.display_name, amount])
 
 

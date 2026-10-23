@@ -35,6 +35,11 @@ const ITEM_FILES := [
 	"res://items/tome_mending.tres",
 	"res://items/tome_stoneflesh.tres",
 	"res://items/tome_candlelight.tres",
+	"res://items/bread.tres",
+	"res://items/apple.tres",
+	"res://items/water_flask.tres",
+	"res://items/raw_wolf_meat.tres",
+	"res://items/cooked_wolf_meat.tres",
 ]
 
 ## What every new character starts with (equipped). Backgrounds will change this.
@@ -107,6 +112,9 @@ func use(id: String) -> bool:
 		remove(id)
 		return true
 	var stats: Stats = player.stats
+	Survival.ease(item)
+	if item.side_effect != "" and randf() < item.side_effect_chance:
+		player.effects.apply(item.side_effect)
 	stats.heal(item.restore_health)
 	stats.stamina = minf(stats.stamina + item.restore_stamina, stats.max_stamina)
 	stats.magicka = minf(stats.magicka + item.restore_magicka, stats.max_magicka)

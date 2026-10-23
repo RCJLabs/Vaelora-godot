@@ -38,6 +38,7 @@ the safest plan is to **sculpt around this area, not under it**:
 | Stone circle (radius ~5) and rune shards (~8 m around it) | -11, -9 |
 | Wolf den (they wander ~4 m) | 8, -30 |
 | Bandit camp (tents, fire, chest; the bandits fight within ~28 m) | -34, -34 |
+| Waystation campfire / climbing fence / boulder | 6.5, 2.5 / 12, -12 / -16, 3 |
 
 Roughly **x −40 to 20, z −40 to 10** is the "village" (the bandit camp is the south-west corner). Keep it flat, or gently rolling and
 then nudge props up or down to sit on the ground.

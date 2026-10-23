@@ -28,7 +28,7 @@ func _input(event: InputEvent) -> void:
 	var pause := event.is_action_pressed("pause")
 	if not pause and not (is_open and event.is_action_pressed("ui_cancel")):
 		return
-	if DialogueManager.is_active or CharacterMenu.is_open:
+	if DialogueManager.is_active or CharacterMenu.is_open or RestMenu.is_open:
 		return
 	if is_open:
 		if _page == "main" or _from_title:
@@ -97,6 +97,13 @@ func _build_main() -> void:
 
 func _build_save() -> void:
 	title_label.text = "Save Game"
+	if SaveSystem.hardcore_saves_locked():
+		var note := Label.new()
+		note.text = "Hardcore: you can only save by resting at a bed or a campfire."
+		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		content.add_child(note)
+		_back_button()
+		return
 	var metas := {}
 	for save in SaveSystem.list_saves():
 		metas[save["slot"]] = save["meta"]
@@ -166,6 +173,7 @@ func _build_settings() -> void:
 	_slider("Volume", "master_volume", 0.0, 1.0, 0.05, "%.0f%%", 100.0)
 	_checkbox("Fullscreen", "fullscreen")
 	_checkbox("VSync", "vsync")
+	_checkbox("Tutorial hints", "show_hints")
 	var controls := Label.new()
 	controls.text = "Controls:  WASD move  -  Shift sprint  -  Space jump  -  E use / talk  -  Left-click attack\n" \
 		+ "Hold right-click cast  -  Q switch spell  -  Tab character menu  -  J journal\n" \
