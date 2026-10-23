@@ -3,8 +3,10 @@
 **Project codename:** *Aetherbound* (placeholder)  
 **Developer:** Solo (beginner-friendly)  
 **Engine:** Godot 4.x (GDScript)  
-**Target:** Browser + desktop first, mobile later  
-**Art direction:** Stylized but grounded (painterly / soft 3D or high-quality 2D sprites with depth)
+**Target:** ~~Browser + desktop first, mobile later~~ **PC only** (decided October 2026, see ROADMAP.md)  
+**Art direction:** ~~Stylized but grounded~~ **Near-realistic, obviously mystical** (see ROADMAP.md)
+
+> This was the original plan from before the 3D prototype. The current plan is [ROADMAP.md](../ROADMAP.md).
 
 ## 1. Why Godot for This Game
 

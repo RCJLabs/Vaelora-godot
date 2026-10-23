@@ -1,9 +1,9 @@
 # High-Fantasy Sandbox RPG — Design Plan
 
-**Status:** Early concept / vertical-slice planning  
+**Status:** Systems prototype done; planning the first demo. **Order, scope and phases: see [ROADMAP.md](ROADMAP.md).**  
 **Developer:** Solo (RCJLabs) using AI tools + basic coding  
 **Target style:** Elder Scrolls-like free-form open-world high fantasy  
-**Visual north star:** Stylized but grounded
+**Visual north star:** Near-realistic but obviously mystical (Avowed / Skyrim), updated October 2026
 
 ## 1. Vision
 
@@ -28,14 +28,22 @@ The project starts extremely small: one tightly scoped vertical slice / concept 
 | 2 | Tone | Wondrous and hopeful with real danger |
 | 3 | Scope | Start very small (mockups + demo concepts). Expand only after vertical slice works |
 | 4 | Character creation | Fully custom within limits. Start with **3 races**: Human, Elf, and Orc. Strong mechanical and cultural differences. Room to add more later. See `docs/races.md`. |
-| 5 | Combat | **Simple real-time** (jumping-off point). Free movement, click/tap to attack, large hitboxes, clear enemy telegraphs. Rely on AI-generated or simple triggered animations/VFX. |
+| 5 | Combat | **Avowed-style first-person action** (updated October 2026; the earlier jumping-off point was simple real-time). Light/heavy attacks, combos, block/parry, dodge, stagger, varied spells, clear enemy telegraphs. |
 | 6 | Narrative structure | Mostly sandbox. Story and outcomes change with choices |
 | 7 | Progression | Hybrid: skills improve through use + discrete level-ups that grant traits/perks |
 | 8 | Exploration rewards | Unique stories, loot, environmental secrets. Open world is fairly dangerous |
 | 9 | Factions | Classic guilds + political factions that can be at war + reputation system |
-| 10 | Visual style | Stylized but grounded. Whatever is realistically achievable with AI tools |
+| 10 | Visual style | Near-realistic, obviously mystical (Avowed / Skyrim): photo-scanned base materials + magical lighting and VFX. Updated October 2026 |
+| 11 | Platform | PC only (Windows/Linux/Mac), Forward+ renderer. Mobile/web dropped |
+| 12 | Camera | First-person now, third-person later |
+| 13 | World structure | Open regions + separate interiors behind doors (Skyrim-style) |
+| 14 | Survival & hardcore | Optional modes chosen per character |
+| 15 | First release | Free demo on itch.io |
+| 16 | Setting | The developer's own lore (lore bible to be written) |
 
-## 4. Phase 1 Scope — Vertical Slice / Concept Demo
+## 4. Original Phase 1 Scope — Vertical Slice / Concept Demo
+
+*Superseded by [ROADMAP.md](ROADMAP.md). Most of the systems below now exist as a prototype (see `docs/godot-starter/`); art, interiors and the real demo zone are Phase 2 in the roadmap.*
 
 **Goal:** A small, playable (or at least fully visual + interactive) slice that demonstrates the look, atmosphere, and core fantasy.
 
@@ -133,4 +141,4 @@ The project starts extremely small: one tightly scoped vertical slice / concept 
 
 ---
 
-**Combat jumping-off point locked:** Simple real-time with free movement, click-to-attack, large hitboxes, and clear telegraphs.
+**Combat (updated October 2026):** Avowed-style first-person action. See ROADMAP.md Phase 1c.
