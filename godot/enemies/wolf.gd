@@ -2,6 +2,8 @@ extends CharacterBody3D
 
 # A Greyfang wolf. Wanders near where it was placed, chases the player who
 # comes close, bites, and gives up if dragged too far from home.
+# Finds its way around obstacles with its NavigationAgent3D, using the level's
+# NavigationRegion3D. Without one it simply runs straight at its target.
 # Any node with take_hit(damage, from_position) can be hit by the player.
 
 signal died
@@ -22,6 +24,7 @@ enum State { IDLE, CHASE, ATTACK, RETURN, DEAD }
 
 @onready var stats: Stats = $Stats
 @onready var model: Node3D = $Model
+@onready var agent: NavigationAgent3D = get_node_or_null("NavigationAgent3D")
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var state := State.IDLE
@@ -32,6 +35,9 @@ var _wander_target: Vector3
 var _wander_wait := 0.0
 var _knockback := Vector3.ZERO
 var _fur: StandardMaterial3D
+var _flank_angle := 0.0     # where around the player this wolf is heading
+var _close_in := false      # within 4 m and circling in on its flank spot
+var _blocked_time := 0.0    # how long a packmate has been in the way
 
 
 func _ready() -> void:
@@ -84,7 +90,10 @@ func _think(player: Node3D, delta: float) -> void:
 				state = State.RETURN
 			elif dist <= bite_range:
 				state = State.ATTACK
+			elif dist < 4.0:
+				_close_in_on(player, delta)
 			else:
+				_close_in = false
 				_move_toward(player.global_position, run_speed, delta)
 		State.ATTACK:
 			if dist > bite_range * 1.3:
@@ -102,6 +111,37 @@ func _think(player: Node3D, delta: float) -> void:
 				state = State.CHASE   # you followed it back: fight on
 			else:
 				_move_toward(home, run_speed * 0.7, delta)
+
+
+# Up close, head for a spot beside the player rather than the player's exact
+# position, so a pack spreads around you instead of queueing up. Each wolf
+# starts from the side it's already on, and circles further round if a
+# packmate is in its way.
+func _close_in_on(player: Node3D, delta: float) -> void:
+	var from_player := global_position - player.global_position
+	if not _close_in:
+		_close_in = true
+		_flank_angle = atan2(from_player.z, from_player.x) + randf_range(-0.5, 0.5)
+		_blocked_time = 0.0
+	if _blocked_by_packmate():
+		_blocked_time += delta
+		if _blocked_time > 0.5:
+			_blocked_time = 0.0
+			_flank_angle += deg_to_rad(70.0)
+	else:
+		_blocked_time = 0.0
+	var side := Vector3(cos(_flank_angle), 0.0, sin(_flank_angle))
+	_move_toward(player.global_position + side, run_speed, delta)
+
+
+func _blocked_by_packmate() -> bool:
+	if Vector2(get_real_velocity().x, get_real_velocity().z).length() > 1.0:
+		return false   # still making progress
+	for i in get_slide_collision_count():
+		var other := get_slide_collision(i).get_collider()
+		if other != self and other is CharacterBody3D and other.has_signal("died"):
+			return true
+	return false
 
 
 func _bite(player: Node) -> void:
@@ -133,10 +173,26 @@ func _move_toward(target: Vector3, speed: float, delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, 30.0 * delta)
 		velocity.z = move_toward(velocity.z, 0.0, 30.0 * delta)
 		return
-	dir = dir.normalized()
-	velocity.x = dir.x * speed
-	velocity.z = dir.z * speed
-	_face(target, delta)
+	var step := _next_path_point(target) - global_position
+	step.y = 0.0
+	if step.length() < 0.05:
+		step = dir
+	step = step.normalized()
+	velocity.x = step.x * speed
+	velocity.z = step.z * speed
+	_face(global_position + step, delta)
+
+
+# Next corner on the way to `target`, or the target itself when there's no
+# navigation (no NavigationRegion3D in the level, or the map isn't ready yet).
+func _next_path_point(target: Vector3) -> Vector3:
+	if agent == null or NavigationServer3D.map_get_iteration_id(agent.get_navigation_map()) == 0:
+		return target
+	if agent.target_position.distance_to(target) > 0.5:   # don't re-plan every frame
+		agent.target_position = target
+	if agent.is_navigation_finished():
+		return target
+	return agent.get_next_path_position()
 
 
 func _face(target: Vector3, delta: float) -> void:

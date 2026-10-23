@@ -35,6 +35,32 @@ Dead wolves can be skinned with **E** for a Wolf Pelt. When the last wolf dies, 
 (`wolf_quest_done`). It's saved like any flag, so the pack stays dead after loading.
 **Partly killed packs are not saved:** reload and all three are back.
 
+## Pathfinding
+
+Wolves find their way **around** walls, rocks and buildings instead of running straight at
+you.
+
+- **`NavigationRegion3D`** in the level holds the *navigation mesh*: a map of where a
+  wolf-sized creature can walk. It's built from every StaticBody3D on layer 1 "world" (the
+  level root is in the group `navmesh_source`, so the whole level counts).
+- **It builds itself when the level loads** (a few milliseconds here), so it always matches
+  your level after you move things. For big levels later: select **NavigationRegion3D** and
+  click **Bake NavigationMesh** in the toolbar, then save. The script sees a baked mesh and
+  leaves it alone. Remember to re-bake after editing the level.
+- **See it:** **Debug → Visible Navigation**, then play. The walkable area shows as a
+  coloured overlay.
+- **Each wolf has a `NavigationAgent3D`** that plans the path. With no NavigationRegion3D in
+  a level, wolves fall back to running straight at you.
+- **Pack behaviour up close:** within 4 m, each wolf heads for a spot on its own side of you,
+  and circles further round if a packmate blocks it. Usually two bite at once, and a third
+  waits right behind and steps in when there's room.
+- **The door counts as solid** (the mesh is baked with it closed), so wolves path around the
+  wall rather than through the doorway.
+
+Tested with a U-shaped wall between the pack and the player: without pathfinding, the lead
+wolf stayed stuck against the back of the U, 6 m away. With it, the wolves went around and
+were biting within ~6 s.
+
 ## Physics layers
 
 Named in **Project Settings → Layer Names → 3D Physics** so the Inspector shows names:
@@ -48,7 +74,7 @@ Named in **Project Settings → Layer Names → 3D Physics** so the Inspector sh
 
 ## Known limits
 
-- The wolves run straight at you. They can get stuck on walls because there's no pathfinding
-  yet (NavigationRegion3D is the next step when levels get obstacles).
+- Wolves don't jump or climb. Anything over 0.5 m tall (like the stone block) is a wall to
+  them, so standing on top of it keeps you out of reach.
 - No blocking, power attacks, or attack animations beyond the sword swing tween.
 - The wolves and sword are placeholder boxes until real models arrive (see ASSETS.md).

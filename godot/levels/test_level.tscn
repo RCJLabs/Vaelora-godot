@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3]
+[gd_scene load_steps=40 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://enemies/wolf_pack.gd" id="7_pack"]
 [ext_resource type="PackedScene" path="res://enemies/wolf.tscn" id="8_wolf"]
 [ext_resource type="Script" path="res://interactables/pickup.gd" id="9_pickup"]
+[ext_resource type="Script" path="res://levels/nav_region.gd" id="10_nav"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -145,7 +146,18 @@ rings = 6
 [sub_resource type="BoxShape3D" id="Shape_pickup"]
 size = Vector3(0.35, 0.35, 0.35)
 
-[node name="TestLevel" type="Node3D"]
+[sub_resource type="NavigationMesh" id="NavMesh"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 1
+geometry_source_geometry_mode = 1
+geometry_source_group_name = &"navmesh_source"
+cell_size = 0.25
+cell_height = 0.25
+agent_height = 1.0
+agent_radius = 0.5
+agent_max_climb = 0.5
+
+[node name="TestLevel" type="Node3D" groups=["navmesh_source"]]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("5_env")
@@ -273,6 +285,10 @@ mesh = SubResource("Mesh_purse")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CoinPurse"]
 shape = SubResource("Shape_pickup")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavMesh")
+script = ExtResource("10_nav")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)

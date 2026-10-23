@@ -80,6 +80,13 @@ max_stamina = 50.0
 max_magicka = 0.0
 health_regen = 0.0
 
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.6
+target_desired_distance = 0.8
+path_max_distance = 3.0
+radius = 0.45
+height = 0.9
+
 [node name="Model" type="Node3D" parent="."]
 
 [node name="Body" type="MeshInstance3D" parent="Model"]
