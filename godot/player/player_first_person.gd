@@ -63,6 +63,9 @@ func _ready() -> void:
 	hud.track_stats(stats)
 	stats.died.connect(_on_died)
 	stats.damaged.connect(func(_amount): hud.flash_damage())
+	Skills.skill_increased.connect(_on_skill_increased)
+	Skills.leveled_up.connect(_on_leveled_up)
+	Skills.level_bonus_spent.connect(_on_level_bonus_spent)
 	_ensure_input_actions()
 	_check_collision_setup()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -112,7 +115,8 @@ func _physics_process(delta: float) -> void:
 	var sprinting := Input.is_action_pressed("sprint") and direction != Vector3.ZERO \
 			and is_on_floor() and moving and not _exhausted
 	if sprinting:
-		stats.use_stamina(sprint_stamina_per_second * delta)
+		stats.use_stamina(sprint_stamina_per_second * Skills.athletics_stamina_mult() * delta)
+		Skills.add_xp("athletics", Vector2(velocity.x, velocity.z).length() * delta / 5.0)   # 1 XP per 5 m
 	var target_speed := sprint_speed if sprinting else walk_speed
 	var accel := ground_accel if is_on_floor() else air_accel
 
@@ -147,8 +151,10 @@ func _try_attack() -> void:
 	for i in attack_cast.get_collision_count():
 		var target := attack_cast.get_collider(i)
 		if target and target.has_method("take_hit"):
-			target.take_hit(attack_damage * GameState.race_data.melee_damage_mult, global_position)
+			target.take_hit(attack_damage * GameState.race_data.melee_damage_mult
+					* Skills.one_handed_damage_mult(), global_position)
 			hud.flash_hit()
+			Skills.add_xp("one_handed", 3.0)
 			var target_stats = target.get("stats")
 			if target_stats is Stats:
 				hud.show_enemy_health(target_stats)
@@ -160,6 +166,20 @@ func _swing_weapon() -> void:
 	var tween := create_tween()
 	tween.tween_property(weapon, "rotation", weapon_rest_rotation + Vector3(deg_to_rad(-80), deg_to_rad(30), 0), 0.08)
 	tween.tween_property(weapon, "rotation", weapon_rest_rotation, 0.25)
+
+
+func _on_skill_increased(skill_id: String, new_level: int) -> void:
+	hud.notify("%s increased to %d" % [Skills.SKILLS[skill_id]["name"], new_level])
+
+
+func _on_leveled_up(new_level: int) -> void:
+	hud.notify("Level %d!  Press Tab to choose a bonus." % new_level)
+
+
+func _on_level_bonus_spent(stat: String, amount: int) -> void:
+	stats.set("max_" + stat, stats.get("max_" + stat) + amount)
+	stats.set(stat, stats.get(stat) + amount)   # the new points arrive full
+	stats.changed.emit()
 
 
 func _on_died() -> void:
@@ -204,7 +224,9 @@ func _apply_race(race: RaceData) -> void:
 	sprint_speed *= race.move_speed_mult
 	# Jump height grows with the square of jump speed, so take the square root.
 	jump_velocity *= sqrt(race.jump_height_mult)
-	stats.setup(race.health, race.stamina, race.magicka)
+	stats.setup(race.health + Skills.bonus["health"],
+			race.stamina + Skills.bonus["stamina"],
+			race.magicka + Skills.bonus["magicka"])
 
 
 # Whatever the crosshair points at within reach: if it has an `interact(player)`

@@ -11,6 +11,7 @@ extends CanvasLayer
 @onready var crosshair: Label = $Crosshair
 @onready var damage_flash: ColorRect = $DamageFlash
 @onready var enemy_bar: ProgressBar = $EnemyBar
+@onready var notices: VBoxContainer = $Notices
 
 var _message_time_left := 0.0
 var _stats: Stats
@@ -77,3 +78,19 @@ func show_enemy_health(stats: Stats) -> void:
 	enemy_bar.max_value = stats.max_health
 	enemy_bar.value = stats.health
 	enemy_bar.visible = true
+
+
+## Short top-left notice that fades out by itself, e.g. a skill increase.
+func notify(text: String) -> void:
+	while notices.get_child_count() >= 5:   # keep the newest few
+		var oldest := notices.get_child(0)
+		notices.remove_child(oldest)
+		oldest.queue_free()
+	var label := Label.new()
+	label.text = text
+	label.label_settings = prompt_label.label_settings
+	notices.add_child(label)
+	var tween := label.create_tween()
+	tween.tween_interval(3.0)
+	tween.tween_property(label, "modulate:a", 0.0, 1.0)
+	tween.tween_callback(label.queue_free)

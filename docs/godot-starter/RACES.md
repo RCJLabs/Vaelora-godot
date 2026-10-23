@@ -8,13 +8,13 @@ stats, then **Begin journey**. **F6** on a level skips the screen and plays as H
 | | Health | Stamina | Magicka | Speed | Jump height | Other |
 |---|---|---|---|---|---|---|
 | Human | 100 | 100 | 100 | normal | normal | Skill XP ×1.15 |
-| Elf | 85 | 100 | 130 | +8% | +15% | Melee ×0.9 |
-| Orc | 130 | 115 | 70 | −5% | −5% | Melee ×1.2 |
+| Elf | 85 | 100 | 130 | +8% | +15% | Melee ×0.9, Athletics starts at 25 |
+| Orc | 130 | 115 | 70 | −5% | −5% | Melee ×1.2, One-Handed starts at 25 |
 
 - **You can feel these now:** speed, jump height, and race-only dialogue choices (talk to
   Maren as an Elf or an Orc).
-- **Stored for later:** Health, Stamina, Magicka, skill XP and melee damage. No system uses
-  them until health/combat/skills exist.
+- **Also in use now:** Health/Stamina/Magicka maximums, melee damage, skill XP rate and
+  starting skill bonuses.
 - **Shown as text only:** the signature abilities (Adaptable, Innate Focus, Battle Fury).
 
 All numbers are placeholders from `docs/races.md`. Tune them once there's combat to test

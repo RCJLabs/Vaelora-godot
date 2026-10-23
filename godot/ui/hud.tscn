@@ -59,6 +59,13 @@ theme_override_styles/fill = SubResource("Fill_enemy")
 value = 100.0
 show_percentage = false
 
+[node name="Notices" type="VBoxContainer" parent="."]
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 530.0
+offset_bottom = 230.0
+mouse_filter = 2
+
 [node name="Crosshair" type="Label" parent="."]
 anchors_preset = 8
 anchor_left = 0.5

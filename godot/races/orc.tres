@@ -12,8 +12,11 @@ magicka = 70
 move_speed_mult = 0.95
 jump_height_mult = 0.95
 skill_xp_mult = 1.0
+skill_bonuses = {
+"one_handed": 10
+}
 melee_damage_mult = 1.2
-traits = "More Health and Stamina, 20% stronger melee.
+traits = "More Health and Stamina, 20% stronger melee. One-Handed starts at 25.
 Less Magicka and a little slower."
 signature_ability = "Battle Fury"
 signature_description = "Short burst of extra melee damage and damage resistance."

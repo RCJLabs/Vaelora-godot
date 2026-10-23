@@ -4,12 +4,12 @@ extends Node
 # Saves to user://savegame.json. Find that folder with
 # Project > Open User Data Folder (in the editor).
 #
-# What is saved: current level, race, story flags, player position/look
-# direction and Health/Stamina/Magicka. Things not driven by flags (e.g. a
+# What is saved: current level, race, story flags, skills and character level,
+# player position/look direction and Health/Stamina/Magicka. Things not driven by flags (e.g. a
 # door you left open) reset when you load.
 
 const SAVE_PATH := "user://savegame.json"
-const SAVE_VERSION := 1
+const SAVE_VERSION := 2   # 2: added skills
 
 var _pending_player_state: Dictionary = {}
 
@@ -38,6 +38,7 @@ func save_game() -> bool:
 		"level": get_tree().current_scene.scene_file_path,
 		"race": GameState.race_data.resource_path,
 		"flags": GameState.flags,
+		"skills": Skills.to_dict(),
 		"player": player.get_save_data(),
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -57,14 +58,18 @@ func load_game() -> bool:
 		return false
 
 	var data = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
-	if not data is Dictionary or int(data.get("version", 0)) != SAVE_VERSION:
-		push_error("SaveSystem: %s is missing, damaged or from an older version." % SAVE_PATH)
+	if not data is Dictionary or not int(data.get("version", 0)) in range(1, SAVE_VERSION + 1):
+		push_error("SaveSystem: %s is damaged or from a newer version of the game." % SAVE_PATH)
 		return false
 
 	if DialogueManager.is_active:
 		DialogueManager.end()
 	GameState.set_race(load(data["race"]))
 	GameState.flags = data["flags"]
+	if data.has("skills"):
+		Skills.from_dict(data["skills"])
+	else:
+		Skills.reset(GameState.race_data)   # version 1 saves had no skills
 	_pending_player_state = data["player"]
 	get_tree().change_scene_to_file(data["level"])
 	return true

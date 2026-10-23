@@ -18,10 +18,12 @@ extends Resource
 @export var move_speed_mult: float = 1.0
 ## Multiplies how high you jump.
 @export var jump_height_mult: float = 1.0
-## Multiplies skill XP gained from use (used once skills exist).
+## Multiplies skill XP gained from use.
 @export var skill_xp_mult: float = 1.0
-## Multiplies melee damage (used once combat exists).
+## Multiplies melee damage.
 @export var melee_damage_mult: float = 1.0
+## Extra starting levels per skill id, e.g. {"one_handed": 10}. See systems/skills.gd.
+@export var skill_bonuses: Dictionary = {}
 
 @export_group("Flavour")
 @export_multiline var traits: String = ""
