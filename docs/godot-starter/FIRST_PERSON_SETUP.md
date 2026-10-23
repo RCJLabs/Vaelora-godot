@@ -117,6 +117,11 @@ Map**, add `move_forward` W, `move_back` S, `move_left` A, `move_right` D, `jump
 
 ## 3. Controller behaviour (`godot/player/player_first_person.gd`)
 
+`godot/` is the up-to-date version. `docs/godot-starter/player_first_person.gd` is the
+movement-only script from step 2, kept for copying into other projects (it has no HUD or
+interaction code).
+
+
 - Mouse look: body yaws, `Head` pitches, clamped to ±85°.
 - **Esc** frees the mouse; **left-click** recaptures it.
 - WASD with acceleration (`ground_accel`), weaker steering in the air (`air_accel`).
@@ -130,16 +135,28 @@ All tuning values are `@export`, so you can change them in the Inspector on the 
 
 ## 4. Next systems, in order
 
-### 4.1 Interaction raycast (E to use/talk)
-- Add `Head/Camera3D/InteractRay (RayCast3D)`: Target Position `(0, 0, -2.5)`, Collision Mask
-  **1** (and later a dedicated "interactable" layer), Exclude Parent **On**.
-- Make an `interactable.gd` (`extends Node`, or put it on the object's StaticBody3D) with
-  `@export var prompt := "Examine"` and `func interact(player): ...`. Add it to the group
-  `"interactable"`.
-- In the player's `_physics_process`: if the ray `is_colliding()` and the collider is in the
-  group, show `prompt` on a centred `Label`; on `Input.is_action_just_pressed("interact")` call
-  `collider.interact(self)`.
-- Test object: a sign that prints its text, a door that rotates open.
+### 4.1 Interaction raycast (E to use/talk) — done
+Built in `godot/`. Look at something within 2.5 m: a `[E] ...` prompt appears under the
+crosshair, and pressing E uses it.
+
+- `Player/Head/Camera3D/InteractRay` (RayCast3D): Target Position `(0, 0, -2.5)`, Mask **1**.
+  The player is on layer 2, so the ray never hits the player's own capsule. Walls are on
+  layer 1, so you can't use things through a wall.
+- `Player/HUD` (`ui/hud.tscn`): crosshair, prompt label, and a message label that fades after a
+  few seconds (`player.show_message(text)`).
+- **The contract:** any physics body with an `interact(player)` method is usable. An optional
+  `prompt` property sets the on-screen text. No base class or group is required.
+- Examples in the test level:
+  - `interactables/sign.gd` (StaticBody3D): set **Text** in the Inspector.
+  - `interactables/door.gd` (AnimatableBody3D): swings 100° on E.
+
+Making a new interactable: add a StaticBody3D with a MeshInstance3D and CollisionShape3D (both
+**direct children**, the same cause B rule), attach a script with `var prompt := "..."` and
+`func interact(player): ...`.
+
+**Door gotcha (tested in 4.3):** rotate the **AnimatableBody3D itself**, with the mesh/shape
+offset inside it so the body's origin is the hinge. If you rotate a parent Node3D instead,
+the door *looks* open but its collision stays where it was.
 
 ### 4.2 Simple dialogue
 - Data first: one `.json` (or a `Resource`) per NPC: nodes with `text` and `choices`

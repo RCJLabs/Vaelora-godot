@@ -6,10 +6,12 @@ extends CharacterBody3D
 # Scene structure (origin of Player = the player's FEET):
 #   Player (CharacterBody3D)        <- this script
 #   ├── CollisionShape3D            CapsuleShape3D r=0.4 h=1.8, position y=0.9
-#   └── Head (Node3D)               position y=1.6, rotates up/down
-#       └── Camera3D                Current = ON
+#   ├── Head (Node3D)               position y=1.6, rotates up/down
+#   │   └── Camera3D                Current = ON
+#   │       └── InteractRay (RayCast3D)  Target Position (0, 0, -2.5)
+#   └── HUD (instance of ui/hud.tscn)
 #
-# Controls: WASD move, Shift sprint, Space jump, mouse look,
+# Controls: WASD move, Shift sprint, Space jump, mouse look, E interact,
 # Esc releases the mouse, left-click recaptures it.
 
 @export var walk_speed: float = 5.0
@@ -24,6 +26,8 @@ extends CharacterBody3D
 
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera3D
+@onready var interact_ray: RayCast3D = $Head/Camera3D/InteractRay
+@onready var hud: CanvasLayer = $HUD
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var spawn_position: Vector3
@@ -66,11 +70,30 @@ func _physics_process(delta: float) -> void:
 	velocity.z = horizontal.z
 
 	move_and_slide()
+	_update_interaction()
 
 	if global_position.y < kill_y:
 		push_warning("Player fell below kill_y. Collision is not working - turn on Debug > Visible Collision Shapes.")
 		global_position = spawn_position
 		velocity = Vector3.ZERO
+
+
+# Whatever the crosshair points at within reach: if it has an `interact(player)`
+# method it's usable. Its optional `prompt` property is shown on screen.
+func _update_interaction() -> void:
+	var target: Object = interact_ray.get_collider() if interact_ray.is_colliding() else null
+	if target == null or not target.has_method("interact"):
+		hud.set_prompt("")
+		return
+
+	var prompt = target.get("prompt")
+	hud.set_prompt("[E] %s" % (prompt if prompt else "Use"))
+	if Input.is_action_just_pressed("interact"):
+		target.interact(self)
+
+
+func show_message(text: String) -> void:
+	hud.show_message(text)
 
 
 # Prints a clear error for the most common "falls through the floor" mistakes.
