@@ -1,0 +1,54 @@
+{
+	"start": [
+		{ "node": "greet_again", "requires_flag": "met_maren" },
+		{ "node": "greet" }
+	],
+	"nodes": {
+		"greet": {
+			"text": "A traveller! Not many come up the north road these days. I'm Maren - I keep this waystation.",
+			"set_flag": "met_maren",
+			"choices": [
+				{ "text": "Why don't people come this way?", "next": "wolves" },
+				{ "text": "You're not afraid of an orc on your doorstep?", "next": "orc_line", "requires_race": "Orc" },
+				{ "text": "My people still sing of these hills.", "next": "elf_line", "requires_race": "Elf" },
+				{ "text": "Goodbye.", "next": "end" }
+			]
+		},
+		"greet_again": {
+			"text": "Back again? The kettle's still warm.",
+			"choices": [
+				{ "text": "Tell me about the wolves again.", "next": "wolves" },
+				{ "text": "I'll deal with the Greyfang pack.", "next": "accept", "requires_flag": "heard_about_wolves", "requires_not_flag": "wolf_quest_accepted" },
+				{ "text": "Goodbye.", "next": "end" }
+			]
+		},
+		"wolves": {
+			"text": "The Greyfang pack. They took two carts last month. Riverwatch won't send guards past the old bridge.",
+			"set_flag": "heard_about_wolves",
+			"choices": [
+				{ "text": "I'll deal with them.", "next": "accept", "requires_not_flag": "wolf_quest_accepted" },
+				{ "text": "Sounds like someone else's problem.", "next": "end", "set_flag": "refused_maren" }
+			]
+		},
+		"accept": {
+			"text": "Truly? Then may the road be kind to you. Their den is past the stone wall, north.",
+			"set_flag": "wolf_quest_accepted",
+			"choices": [
+				{ "text": "Goodbye.", "next": "end" }
+			]
+		},
+		"orc_line": {
+			"text": "Orcs pay in coin like anyone else. And you'd be handy against what's out there.",
+			"choices": [
+				{ "text": "Why don't people come this way?", "next": "wolves" },
+				{ "text": "Goodbye.", "next": "end" }
+			]
+		},
+		"elf_line": {
+			"text": "Then you'll know the old songs warn of wolves. They weren't wrong.",
+			"choices": [
+				{ "text": "Tell me more.", "next": "wolves" }
+			]
+		}
+	}
+}

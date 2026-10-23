@@ -9,6 +9,11 @@ config/name="High Fantasy Sandbox RPG"
 run/main_scene="res://levels/test_level.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 
+[autoload]
+
+GameState="*res://systems/game_state.gd"
+DialogueManager="*res://ui/dialogue_box.tscn"
+
 [input]
 
 move_forward={

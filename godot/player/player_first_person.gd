@@ -41,6 +41,9 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if DialogueManager.is_active:
+		return   # the dialogue box owns the mouse and keys while talking
+
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * mouse_sensitivity)          # body turns left/right
 		head.rotate_x(-event.relative.y * mouse_sensitivity)     # head tilts up/down
@@ -56,10 +59,12 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	var talking: bool = DialogueManager.is_active
+
+	if Input.is_action_just_pressed("jump") and is_on_floor() and not talking:
 		velocity.y = jump_velocity
 
-	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	var input_dir := Vector2.ZERO if talking else Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var target_speed := sprint_speed if Input.is_action_pressed("sprint") else walk_speed
 	var accel := ground_accel if is_on_floor() else air_accel
@@ -70,7 +75,10 @@ func _physics_process(delta: float) -> void:
 	velocity.z = horizontal.z
 
 	move_and_slide()
-	_update_interaction()
+	if talking:
+		hud.set_prompt("")
+	else:
+		_update_interaction()
 
 	if global_position.y < kill_y:
 		push_warning("Player fell below kill_y. Collision is not working - turn on Debug > Visible Collision Shapes.")

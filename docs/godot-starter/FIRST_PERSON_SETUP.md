@@ -158,18 +158,13 @@ Making a new interactable: add a StaticBody3D with a MeshInstance3D and Collisio
 offset inside it so the body's origin is the hinge. If you rotate a parent Node3D instead,
 the door *looks* open but its collision stays where it was.
 
-### 4.2 Simple dialogue
-- Data first: one `.json` (or a `Resource`) per NPC: nodes with `text` and `choices`
-  (`{ "text": "...", "next": "node_id", "requires": {...} }`). Keep it data-driven so faction/race
-  conditions can be added later without new code.
-- UI: a `CanvasLayer` → `PanelContainer` → `VBoxContainer` with a `Label` (speaker), a
-  `RichTextLabel` (line) and a `VBoxContainer` of choice `Button`s built at runtime.
-- An `npc.gd` that is interactable (reuses 4.1) and opens the dialogue UI. While talking:
-  release the mouse and set `player.set_physics_process(false)`; restore on close.
+### 4.2 Simple dialogue — done
+See [DIALOGUE.md](DIALOGUE.md). The `GameState` autoload it added (`race`, `flags`) is what
+race selection builds on.
 
 ### 4.3 Race selection
-- An autoload `GameState.gd` (**Project Settings → Globals → Autoload**) holding
-  `race`, `skills: Dictionary`, `reputation: Dictionary`.
+- Extend the existing `GameState` autoload (`systems/game_state.gd`) with
+  `skills: Dictionary` and `reputation: Dictionary`.
 - A `RaceData` Resource (`class_name RaceData extends Resource`) with `name`, `description`,
   and stat modifiers; create `human.tres`, `elf.tres`, `orc.tres` from `docs/races.md`.
 - A `character_creation.tscn` (Control scene) with three buttons → sets `GameState.race` →
