@@ -1,12 +1,17 @@
 extends CanvasLayer
 
-# Tab menu: character level, skills, and level-up bonuses. Pauses the game.
+# Tab menu: Skills tab (levels, level-up bonuses) and Inventory tab (items,
+# gold, using potions). Pauses the game.
 # Autoloaded as "CharacterMenu" (process mode Always, so it runs while paused).
 
 @onready var root_control: Control = $Root
 @onready var level_label: Label = %LevelLabel
 @onready var level_up_box: Control = %LevelUpBox
 @onready var skill_list: GridContainer = %SkillList
+@onready var item_list: ItemList = %ItemList
+@onready var use_button: Button = %UseButton
+
+var _item_ids: Array = []   # item id for each row of item_list
 
 const XP_BG := preload("res://ui/xp_bar_bg.tres")
 const XP_FILL := preload("res://ui/xp_bar_fill.tres")
@@ -20,6 +25,9 @@ func _ready() -> void:
 	%StaminaButton.pressed.connect(Skills.spend_level_up.bind("stamina"))
 	%MagickaButton.pressed.connect(Skills.spend_level_up.bind("magicka"))
 	Skills.changed.connect(_refresh)
+	Inventory.changed.connect(_refresh_inventory)
+	item_list.item_selected.connect(func(_i): _show_selected_item())
+	use_button.pressed.connect(_use_selected)
 
 
 # _input (not _unhandled_input) so Tab works even when a button has focus.
@@ -44,6 +52,7 @@ func open() -> void:
 	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_refresh()
+	_refresh_inventory()
 	root_control.show()
 
 
@@ -91,3 +100,45 @@ func _refresh() -> void:
 		desc.modulate = Color(1, 1, 1, 0.6)
 		for c in [name_label, level, bar, desc]:
 			skill_list.add_child(c)
+
+
+func _refresh_inventory() -> void:
+	if not is_open:
+		return
+	var selected_id: String = _selected_id()
+	%GoldLabel.text = "Gold: %d" % Inventory.gold
+	item_list.clear()
+	_item_ids = Inventory.items.keys()
+	_item_ids.sort()
+	for id in _item_ids:
+		var count: int = Inventory.items[id]
+		var item := Inventory.get_item(id)
+		item_list.add_item(item.display_name if count == 1 else "%s  (%d)" % [item.display_name, count])
+	if _item_ids.is_empty():
+		item_list.add_item("(empty)", null, false)
+	else:   # keep the same item selected after using one, if any are left
+		item_list.select(maxi(_item_ids.find(selected_id), 0))
+	_show_selected_item()
+
+
+func _selected_id() -> String:
+	var rows := item_list.get_selected_items()
+	if rows.is_empty() or rows[0] >= _item_ids.size():
+		return ""
+	return _item_ids[rows[0]]
+
+
+func _show_selected_item() -> void:
+	var id := _selected_id()
+	var item := Inventory.get_item(id) if id != "" else null
+	%ItemName.text = item.display_name if item else ""
+	%ItemDescription.text = item.description if item else ""
+	%ItemValue.text = ("Value: %d gold" % item.value) if item else ""
+	use_button.visible = item != null and item.type == ItemData.Type.CONSUMABLE
+	use_button.text = "Drink" if use_button.visible else "Use"
+
+
+func _use_selected() -> void:
+	var id := _selected_id()
+	if id != "":
+		Inventory.use(id)

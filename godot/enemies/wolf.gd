@@ -6,6 +6,10 @@ extends CharacterBody3D
 
 signal died
 
+## Shown on the corpse. Empty while alive (the interaction ray can't see live wolves anyway).
+var prompt: String = ""
+var _skinned := false
+
 enum State { IDLE, CHASE, ATTACK, RETURN, DEAD }
 
 @export var run_speed: float = 6.0          # player walks 5, sprints 8: you can outrun it
@@ -161,10 +165,21 @@ func _on_damaged(_amount: float) -> void:
 	tween.tween_property(_fur, "albedo_color", Color(0.3, 0.3, 0.32), 0.25)
 
 
+## Dead wolves can be skinned with E for a pelt.
+func interact(_player: Node) -> void:
+	if state != State.DEAD or _skinned:
+		return
+	_skinned = true
+	prompt = ""
+	collision_layer = 0   # nothing left to interact with
+	Inventory.add("wolf_pelt")
+
+
 func _on_died() -> void:
 	state = State.DEAD
-	collision_layer = 0
+	collision_layer = 8   # layer 4 "loot": the E ray finds it, the player walks through it
 	collision_mask = 0
+	prompt = "Skin wolf"
 	velocity = Vector3.ZERO
 	$Model/Eyes.visible = false
 	var tween := create_tween().set_parallel()

@@ -31,7 +31,7 @@ Three **Greyfang** wolves den about 30 m north-east of spawn (`GreyfangPack` in 
 - They freeze while you're in a conversation.
 - 35 Health each: Orcs need 2 hits per wolf, Humans and Elves 3.
 
-When the last wolf dies, `wolves_cleared` is set. Tell Maren and she completes the quest
+Dead wolves can be skinned with **E** for a Wolf Pelt. When the last wolf dies, `wolves_cleared` is set. Tell Maren and she completes the quest
 (`wolf_quest_done`). It's saved like any flag, so the pack stays dead after loading.
 **Partly killed packs are not saved:** reload and all three are back.
 
@@ -44,6 +44,7 @@ Named in **Project Settings → Layer Names → 3D Physics** so the Inspector sh
 | 1 | world | ground, walls, props, NPCs | player, wolves, interaction ray |
 | 2 | player | player | wolves |
 | 3 | enemies | wolves | player, other wolves, sword |
+| 4 | loot | pickups, dead wolves | interaction ray only (the player walks through) |
 
 ## Known limits
 

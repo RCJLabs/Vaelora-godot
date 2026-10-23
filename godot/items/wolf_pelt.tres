@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "wolf_pelt"
+display_name = "Wolf Pelt"
+description = "Thick grey fur from a Greyfang wolf. Traders pay well for it."
+value = 15

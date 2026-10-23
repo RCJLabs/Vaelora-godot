@@ -46,8 +46,7 @@ func choose(index: int) -> void:
 	if not is_active or index < 0 or index >= _choices.size():
 		return
 	var choice: Dictionary = _choices[index]
-	if choice.has("set_flag"):
-		GameState.set_flag(choice["set_flag"])
+	_run_actions(choice)
 	_show_node(choice.get("next", "end"))
 
 
@@ -73,8 +72,7 @@ func _show_node(node_id: String) -> void:
 		return
 
 	var node: Dictionary = _nodes[node_id]
-	if node.has("set_flag"):
-		GameState.set_flag(node["set_flag"])
+	_run_actions(node)
 	line_label.text = node.get("text", "")
 
 	for old_button in choices_box.get_children():
@@ -92,6 +90,31 @@ func _show_node(node_id: String) -> void:
 		button.focus_mode = Control.FOCUS_NONE   # so Space (jump) can't click it
 		button.pressed.connect(choose.bind(i))
 		choices_box.add_child(button)
+
+
+# Things a node (when shown) or a choice (when picked) can do:
+#   "set_flag": "name"                 "give_gold": 50     "take_gold": 10
+#   "give_item": "id" or {"id": "id", "count": 2}          "take_item": same
+func _run_actions(entry: Dictionary) -> void:
+	if entry.has("set_flag"):
+		GameState.set_flag(entry["set_flag"])
+	if entry.has("give_gold"):
+		Inventory.add_gold(int(entry["give_gold"]))
+	if entry.has("take_gold"):
+		Inventory.add_gold(-mini(int(entry["take_gold"]), Inventory.gold))
+	if entry.has("give_item"):
+		var give := _item_and_count(entry["give_item"])
+		Inventory.add(give[0], give[1])
+	if entry.has("take_item"):
+		var take := _item_and_count(entry["take_item"])
+		Inventory.remove(take[0], take[1])
+
+
+# "id" -> ["id", 1];  {"id": "id", "count": 3} -> ["id", 3]
+func _item_and_count(value) -> Array:
+	if value is Dictionary:
+		return [value["id"], int(value.get("count", 1))]
+	return [value, 1]
 
 
 # "start" is either a node id, or a list of {"node": id, <conditions>}
@@ -115,6 +138,12 @@ func _conditions_met(entry: Dictionary) -> bool:
 		if GameState.has_flag(flag):
 			return false
 	if entry.has("requires_race") and entry["requires_race"] != GameState.race:
+		return false
+	if entry.has("requires_item"):
+		var need := _item_and_count(entry["requires_item"])
+		if Inventory.count(need[0]) < need[1]:
+			return false
+	if entry.has("requires_gold") and Inventory.gold < int(entry["requires_gold"]):
 		return false
 	return true
 

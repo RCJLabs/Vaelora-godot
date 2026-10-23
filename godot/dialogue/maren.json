@@ -67,6 +67,11 @@
 					]
 				},
 				{
+					"text": "I have a wolf pelt to sell.",
+					"next": "buy_pelt",
+					"requires_item": "wolf_pelt"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -124,20 +129,43 @@
 			]
 		},
 		"reward": {
-			"text": "All of them? Then the north road is open again. I've little coin, but my door is always open to you - and I'll tell Riverwatch who to thank.",
+			"text": "All of them? Then the north road is open again. Here - it isn't much, but it's honest coin. And take this, in case the next pack is bigger.",
 			"set_flag": "wolf_quest_done",
 			"choices": [
 				{
 					"text": "Glad to help.",
 					"next": "end"
 				}
-			]
+			],
+			"give_gold": 50,
+			"give_item": "minor_healing_potion"
 		},
 		"greet_hero": {
 			"text": "The one who cleared the north road! Sit, rest your feet.",
 			"choices": [
 				{
+					"text": "I have a wolf pelt to sell.",
+					"next": "buy_pelt",
+					"requires_item": "wolf_pelt"
+				},
+				{
 					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"buy_pelt": {
+			"text": "Greyfang fur, and a clean cut too. Fifteen gold.",
+			"take_item": "wolf_pelt",
+			"give_gold": 15,
+			"choices": [
+				{
+					"text": "I have another.",
+					"next": "buy_pelt",
+					"requires_item": "wolf_pelt"
+				},
+				{
+					"text": "That's all.",
 					"next": "end"
 				}
 			]

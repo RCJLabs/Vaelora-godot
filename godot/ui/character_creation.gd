@@ -59,6 +59,7 @@ func begin() -> void:
 	GameState.set_race(selected)
 	GameState.flags = {}   # new game: forget the previous character's story
 	Skills.reset(selected)
+	Inventory.reset()
 	get_tree().change_scene_to_file(START_LEVEL)
 
 

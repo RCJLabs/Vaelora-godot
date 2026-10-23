@@ -8,7 +8,7 @@ extends CharacterBody3D
 #   ├── CollisionShape3D            CapsuleShape3D r=0.4 h=1.8, position y=0.9
 #   ├── Head (Node3D)               position y=1.6, rotates up/down
 #   │   └── Camera3D                Current = ON
-#   │       ├── InteractRay (RayCast3D)  Target Position (0, 0, -2.5), Mask: layer 1 "world"
+#   │       ├── InteractRay (RayCast3D)  Target Position (0, 0, -2.5), Mask: layers 1 "world" + 4 "loot"
 #   │       ├── AttackCast (ShapeCast3D) sphere r=0.45, Target (0, 0, -1.8), Mask: layer 3 "enemies"
 #   │       └── Weapon (Node3D)          placeholder sword, swung by _swing_weapon()
 #   ├── Stats (systems/stats.gd)    Health / Stamina / Magicka
@@ -66,6 +66,8 @@ func _ready() -> void:
 	Skills.skill_increased.connect(_on_skill_increased)
 	Skills.leveled_up.connect(_on_leveled_up)
 	Skills.level_bonus_spent.connect(_on_level_bonus_spent)
+	Inventory.item_added.connect(_on_item_added)
+	Inventory.gold_added.connect(_on_gold_added)
 	_ensure_input_actions()
 	_check_collision_setup()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -180,6 +182,14 @@ func _on_level_bonus_spent(stat: String, amount: int) -> void:
 	stats.set("max_" + stat, stats.get("max_" + stat) + amount)
 	stats.set(stat, stats.get(stat) + amount)   # the new points arrive full
 	stats.changed.emit()
+
+
+func _on_item_added(item: ItemData, amount: int) -> void:
+	hud.notify("%s added" % item.display_name if amount == 1 else "%s (%d) added" % [item.display_name, amount])
+
+
+func _on_gold_added(amount: int) -> void:
+	hud.notify("%d gold %s" % [absi(amount), "added" if amount > 0 else "removed"])
 
 
 func _on_died() -> void:

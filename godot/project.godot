@@ -13,6 +13,7 @@ config/features=PackedStringArray("4.3", "Forward Plus")
 
 GameState="*res://systems/game_state.gd"
 Skills="*res://systems/skills.gd"
+Inventory="*res://systems/inventory.gd"
 DialogueManager="*res://ui/dialogue_box.tscn"
 SaveSystem="*res://systems/save_system.gd"
 CharacterMenu="*res://ui/character_menu.tscn"
@@ -79,6 +80,7 @@ attack={
 3d_physics/layer_1="world"
 3d_physics/layer_2="player"
 3d_physics/layer_3="enemies"
+3d_physics/layer_4="loot"
 
 [physics]
 
