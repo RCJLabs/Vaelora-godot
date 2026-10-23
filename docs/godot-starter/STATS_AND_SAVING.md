@@ -9,7 +9,7 @@ The bars at the bottom of the screen: **Magicka** (blue, left), **Health** (red,
 |---|---|---|
 | Health | Fall damage. Landing faster than 9 m/s (about a 4 m drop) hurts; ~25 m kills | 0.5/s |
 | Stamina | Sprinting drains 12/s. At 0 you're **exhausted** and can't sprint until it's back to 20 | 15/s, after a 1 s pause |
-| Magicka | Nothing yet (spells later) | 3/s |
+| Magicka | Spells (see MAGIC.md) | 5/s, after a 1 s pause |
 
 All numbers are `@export`s. Click **Player → Stats** in `player.tscn` for regen, or **Player**
 itself for sprint cost and fall damage.

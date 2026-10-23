@@ -60,6 +60,7 @@ func begin() -> void:
 	GameState.flags = {}   # new game: forget the previous character's story
 	Skills.reset(selected)
 	Inventory.reset()
+	Spellbook.reset(selected)
 	get_tree().change_scene_to_file(START_LEVEL)
 
 

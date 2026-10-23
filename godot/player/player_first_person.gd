@@ -10,12 +10,14 @@ extends CharacterBody3D
 #   │   └── Camera3D                Current = ON
 #   │       ├── InteractRay (RayCast3D)  Target Position (0, 0, -2.5), Mask: layers 1 "world" + 4 "loot"
 #   │       ├── AttackCast (ShapeCast3D) sphere r=0.45, Target (0, 0, -1.8), Mask: layer 3 "enemies"
+#   │       ├── SpellCast (ShapeCast3D)  sphere r=0.5, reach set from the spell, Mask: layer 3
+#   │       ├── SpellHand (Node3D)       left-hand glow orb, light, Fire + HealSparks particles
 #   │       └── Weapon (Node3D)          placeholder sword, swung by _swing_weapon()
 #   ├── Stats (systems/stats.gd)    Health / Stamina / Magicka
 #   └── HUD (instance of ui/hud.tscn)
 #
 # Controls: WASD move, Shift sprint, Space jump, mouse look, E interact,
-# left-click attack, F5 quicksave, F9 quickload, Esc releases the mouse, left-click recaptures it.
+# left-click attack, hold right-click cast spell, Q switch spell, F5 quicksave, F9 quickload, Esc releases the mouse, left-click recaptures it.
 
 @export var walk_speed: float = 5.0
 @export var sprint_speed: float = 8.0
@@ -48,12 +50,19 @@ extends CharacterBody3D
 @onready var attack_cast: ShapeCast3D = $Head/Camera3D/AttackCast
 @onready var weapon: Node3D = $Head/Camera3D/Weapon
 @onready var weapon_rest_rotation: Vector3 = weapon.rotation
+@onready var spell_cast: ShapeCast3D = $Head/Camera3D/SpellCast
+@onready var spell_orb: MeshInstance3D = $Head/Camera3D/SpellHand/Orb
+@onready var spell_light: OmniLight3D = $Head/Camera3D/SpellHand/Light
+@onready var fire_particles: GPUParticles3D = $Head/Camera3D/SpellHand/Fire
+@onready var heal_particles: GPUParticles3D = $Head/Camera3D/SpellHand/HealSparks
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var spawn_position: Vector3
 var is_dead := false
 var _exhausted := false   # ran out of stamina; no sprinting until it recovers
 var _attack_cooldown_left := 0.0
+var is_casting := false
+var _orb_material: StandardMaterial3D
 
 
 func _ready() -> void:
@@ -68,6 +77,11 @@ func _ready() -> void:
 	Skills.level_bonus_spent.connect(_on_level_bonus_spent)
 	Inventory.item_added.connect(_on_item_added)
 	Inventory.gold_added.connect(_on_gold_added)
+	Spellbook.changed.connect(_on_spell_changed)
+	Spellbook.learned.connect(_on_spell_learned)
+	_orb_material = spell_orb.mesh.surface_get_material(0).duplicate()
+	spell_orb.material_override = _orb_material
+	_on_spell_changed()
 	_ensure_input_actions()
 	_check_collision_setup()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -92,6 +106,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED   # this click only grabs the mouse
 	elif event.is_action_pressed("attack"):
 		_try_attack()
+	elif event.is_action_pressed("switch_spell"):
+		Spellbook.cycle()
 
 
 func _physics_process(delta: float) -> void:
@@ -127,6 +143,8 @@ func _physics_process(delta: float) -> void:
 	velocity.x = horizontal.x
 	velocity.z = horizontal.z
 
+	_update_casting(delta, talking)
+
 	var was_in_air := not is_on_floor()
 	var fall_speed := -velocity.y
 	move_and_slide()
@@ -161,6 +179,56 @@ func _try_attack() -> void:
 			if target_stats is Stats:
 				hud.show_enemy_health(target_stats)
 			return   # one target per swing
+
+
+# Spells are hold-to-cast: while right-click is held and there's Magicka,
+# the ready spell runs every physics frame.
+func _update_casting(delta: float, blocked: bool) -> void:
+	var spell := Spellbook.current()
+	var wants := Input.is_action_pressed("cast") and not blocked and spell != null
+	is_casting = wants and stats.try_use_magicka(spell.magicka_per_second * delta)
+	if is_casting:
+		var power := spell.power_per_second * delta * Skills.spell_power_mult(spell.skill)
+		match spell.effect:
+			SpellData.Effect.DAMAGE_STREAM:
+				_cast_damage_stream(spell, power)
+			SpellData.Effect.HEAL_SELF:
+				var healed := minf(power, stats.max_health - stats.health)
+				stats.heal(healed)
+				Skills.add_xp(spell.skill, healed / 5.0)   # 1 XP per 5 health actually restored
+
+	fire_particles.emitting = is_casting and spell.effect == SpellData.Effect.DAMAGE_STREAM
+	heal_particles.emitting = is_casting and spell.effect == SpellData.Effect.HEAL_SELF
+	var glow := 2.5 + randf() * 0.8 if is_casting else 0.4   # flicker while casting
+	spell_light.light_energy = lerpf(spell_light.light_energy, glow, minf(delta * 15.0, 1.0))
+	spell_orb.scale = Vector3.ONE * (1.4 if is_casting else 1.0)
+
+
+func _cast_damage_stream(spell: SpellData, damage: float) -> void:
+	spell_cast.target_position = Vector3(0, 0, -spell.range)
+	spell_cast.force_shapecast_update()
+	for i in spell_cast.get_collision_count():
+		var target := spell_cast.get_collider(i)
+		if target and target.has_method("take_hit"):
+			target.take_hit(damage, global_position, 0.0)
+			Skills.add_xp(spell.skill, damage / 5.0)   # 1 XP per 5 damage dealt
+			var target_stats = target.get("stats")
+			if target_stats is Stats:
+				hud.show_enemy_health(target_stats)
+
+
+func _on_spell_changed() -> void:
+	var spell := Spellbook.current()
+	spell_orb.visible = spell != null
+	spell_light.visible = spell != null
+	if spell:
+		_orb_material.albedo_color = spell.color
+		spell_light.light_color = spell.color
+	hud.set_spell(spell, Spellbook.known.size())
+
+
+func _on_spell_learned(spell: SpellData) -> void:
+	hud.notify("Spell learned: %s" % spell.display_name)
 
 
 func _swing_weapon() -> void:

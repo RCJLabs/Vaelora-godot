@@ -1,7 +1,7 @@
 extends CanvasLayer
 
-# Tab menu: Skills tab (levels, level-up bonuses) and Inventory tab (items,
-# gold, using potions). Pauses the game.
+# Tab menu: Skills tab (levels, level-up bonuses), Inventory tab (items,
+# gold, using potions) and Magic tab (known spells). Pauses the game.
 # Autoloaded as "CharacterMenu" (process mode Always, so it runs while paused).
 
 @onready var root_control: Control = $Root
@@ -10,6 +10,7 @@ extends CanvasLayer
 @onready var skill_list: GridContainer = %SkillList
 @onready var item_list: ItemList = %ItemList
 @onready var use_button: Button = %UseButton
+@onready var spell_list: ItemList = %SpellList
 
 var _item_ids: Array = []   # item id for each row of item_list
 
@@ -28,6 +29,8 @@ func _ready() -> void:
 	Inventory.changed.connect(_refresh_inventory)
 	item_list.item_selected.connect(func(_i): _show_selected_item())
 	use_button.pressed.connect(_use_selected)
+	Spellbook.changed.connect(_refresh_magic)
+	spell_list.item_selected.connect(func(row): Spellbook.select(Spellbook.known[row]))
 
 
 # _input (not _unhandled_input) so Tab works even when a button has focus.
@@ -53,6 +56,7 @@ func open() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_refresh()
 	_refresh_inventory()
+	_refresh_magic()
 	root_control.show()
 
 
@@ -142,3 +146,22 @@ func _use_selected() -> void:
 	var id := _selected_id()
 	if id != "":
 		Inventory.use(id)
+
+
+func _refresh_magic() -> void:
+	if not is_open:
+		return
+	spell_list.clear()
+	for id in Spellbook.known:
+		var spell := Spellbook.get_spell(id)
+		spell_list.add_item(spell.display_name)
+	var current := Spellbook.current()
+	if current:
+		spell_list.select(Spellbook.current_index)
+		%SpellName.text = current.display_name
+		%SpellDescription.text = current.description
+		var verb := "damage" if current.effect == SpellData.Effect.DAMAGE_STREAM else "healing"
+		%SpellStats.text = "%d Magicka per second   -   %d %s per second   -   %s skill" % [
+			current.magicka_per_second,
+			current.power_per_second * Skills.spell_power_mult(current.skill), verb,
+			Skills.SKILLS[current.skill]["name"]]

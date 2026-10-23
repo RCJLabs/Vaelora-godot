@@ -147,20 +147,27 @@ func _face(target: Vector3, delta: float) -> void:
 	rotation.y = lerp_angle(rotation.y, target_yaw, minf(10.0 * delta, 1.0))
 
 
-## Called by the player's sword.
-func take_hit(damage: float, from_position: Vector3) -> void:
+## Called by the player's sword (knockback 5) and spells (knockback 0).
+func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0) -> void:
 	if state == State.DEAD:
 		return
-	var push := global_position - from_position
-	push.y = 0.0
-	_knockback = push.normalized() * 5.0
+	if knockback > 0.0:
+		var push := global_position - from_position
+		push.y = 0.0
+		_knockback = push.normalized() * knockback
 	if state == State.IDLE or state == State.RETURN:
 		state = State.CHASE   # hit from outside aggro range: it still comes for you
 	stats.take_damage(damage)
 
 
+var _flash_tween: Tween
+
+
 func _on_damaged(_amount: float) -> void:
+	if _flash_tween:
+		_flash_tween.kill()   # spells hit every frame: restart instead of stacking
 	var tween := create_tween()
+	_flash_tween = tween
 	tween.tween_property(_fur, "albedo_color", Color(0.8, 0.15, 0.1), 0.05)
 	tween.tween_property(_fur, "albedo_color", Color(0.3, 0.3, 0.32), 0.25)
 

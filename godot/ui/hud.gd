@@ -12,6 +12,7 @@ extends CanvasLayer
 @onready var damage_flash: ColorRect = $DamageFlash
 @onready var enemy_bar: ProgressBar = $EnemyBar
 @onready var notices: VBoxContainer = $Notices
+@onready var spell_label: Label = $Bars/SpellLabel
 
 var _message_time_left := 0.0
 var _stats: Stats
@@ -94,3 +95,11 @@ func notify(text: String) -> void:
 	tween.tween_interval(3.0)
 	tween.tween_property(label, "modulate:a", 0.0, 1.0)
 	tween.tween_callback(label.queue_free)
+
+
+## Name of the spell in the left hand, above the Magicka bar.
+func set_spell(spell: SpellData, known_count: int) -> void:
+	if spell == null:
+		spell_label.text = ""
+	else:
+		spell_label.text = spell.display_name + ("   [Q] switch" if known_count > 1 else "")

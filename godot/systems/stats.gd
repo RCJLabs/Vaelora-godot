@@ -16,9 +16,11 @@ signal died
 @export_group("Regeneration (per second)")
 @export var health_regen: float = 0.5
 @export var stamina_regen: float = 15.0
-@export var magicka_regen: float = 3.0
+@export var magicka_regen: float = 5.0
 ## Seconds after spending stamina before it starts refilling.
 @export var stamina_regen_delay: float = 1.0
+## Seconds after casting before magicka starts refilling.
+@export var magicka_regen_delay: float = 1.0
 
 var health: float
 var stamina: float
@@ -26,6 +28,7 @@ var magicka: float
 var is_dead := false
 
 var _stamina_delay_left := 0.0
+var _magicka_delay_left := 0.0
 
 
 func _ready() -> void:
@@ -52,7 +55,10 @@ func _process(delta: float) -> void:
 		return
 	var before := Vector3(health, stamina, magicka)
 	health = minf(health + health_regen * delta, max_health)
-	magicka = minf(magicka + magicka_regen * delta, max_magicka)
+	if _magicka_delay_left > 0.0:
+		_magicka_delay_left -= delta
+	else:
+		magicka = minf(magicka + magicka_regen * delta, max_magicka)
 	if _stamina_delay_left > 0.0:
 		_stamina_delay_left -= delta
 	else:
@@ -98,5 +104,6 @@ func try_use_magicka(amount: float) -> bool:
 	if magicka < amount:
 		return false
 	magicka -= amount
+	_magicka_delay_left = magicka_regen_delay
 	changed.emit()
 	return true

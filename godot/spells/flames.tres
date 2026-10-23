@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_spell"]
+
+[resource]
+script = ExtResource("1_spell")
+id = "flames"
+display_name = "Flames"
+description = "A stream of fire that burns everything in front of you, up to 6 m away. Hold to cast."
+effect = 0
+skill = "destruction"
+magicka_per_second = 14.0
+power_per_second = 16.0
+range = 6.0
+color = Color(1, 0.45, 0.12, 1)

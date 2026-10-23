@@ -5,12 +5,12 @@ extends Node
 # Project > Open User Data Folder (in the editor).
 #
 # What is saved: current level, race, story flags, skills and character level,
-# inventory and gold,
+# inventory and gold, known spells,
 # player position/look direction and Health/Stamina/Magicka. Things not driven by flags (e.g. a
 # door you left open) reset when you load.
 
 const SAVE_PATH := "user://savegame.json"
-const SAVE_VERSION := 3   # 2: added skills, 3: added inventory
+const SAVE_VERSION := 4   # 2: skills, 3: inventory, 4: spells
 
 var _pending_player_state: Dictionary = {}
 
@@ -41,6 +41,7 @@ func save_game() -> bool:
 		"flags": GameState.flags,
 		"skills": Skills.to_dict(),
 		"inventory": Inventory.to_dict(),
+		"spells": Spellbook.to_dict(),
 		"player": player.get_save_data(),
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -76,6 +77,10 @@ func load_game() -> bool:
 		Inventory.from_dict(data["inventory"])
 	else:
 		Inventory.reset()                   # versions 1-2 had no inventory
+	if data.has("spells"):
+		Spellbook.from_dict(data["spells"])
+	else:
+		Spellbook.reset(GameState.race_data)   # versions 1-3 had no spells
 	_pending_player_state = data["player"]
 	get_tree().change_scene_to_file(data["level"])
 	return true

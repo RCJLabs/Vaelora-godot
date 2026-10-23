@@ -127,6 +127,21 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="SpellLabel" type="Label" parent="Bars"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -470.0
+offset_top = -64.0
+offset_right = -170.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+label_settings = SubResource("Label_shadow")
+
 [node name="Magicka" type="ProgressBar" parent="Bars"]
 anchors_preset = 7
 anchor_left = 0.5

@@ -9,6 +9,8 @@ pauses).
 |---|---|---|---|
 | One-Handed | Sword hits that land (3 XP each) | +1% sword damage per level | 15 (Orc 25) |
 | Athletics | Sprinting (1 XP per 5 m) | −0.5% sprint stamina cost per level (max −50%) | 15 (Elf 25) |
+| Destruction | Spell damage dealt (1 XP per 5) | +1% Destruction spell damage per level | 15 (Elf 25) |
+| Restoration | Health restored by spells (1 XP per 5) | +1% Restoration healing per level | 15 |
 
 - XP to the next level is `5 + level × 0.5`: 12.5 XP at level 15, 55 XP at level 100.
 - Humans gain all skill XP 15% faster (`skill_xp_mult` in `races/human.tres`).

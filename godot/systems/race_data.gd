@@ -24,6 +24,8 @@ extends Resource
 @export var melee_damage_mult: float = 1.0
 ## Extra starting levels per skill id, e.g. {"one_handed": 10}. See systems/skills.gd.
 @export var skill_bonuses: Dictionary = {}
+## Spell ids known from the start. See systems/spellbook.gd.
+@export var starting_spells: Array[String] = ["healing"]
 
 @export_group("Flavour")
 @export_multiline var traits: String = ""

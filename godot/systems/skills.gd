@@ -26,6 +26,14 @@ const SKILLS := {
 		"name": "Athletics",
 		"description": "-0.5% sprint stamina cost per level. Improves as you sprint.",
 	},
+	"destruction": {
+		"name": "Destruction",
+		"description": "+1% damage from Destruction spells per level. Improves with spell damage dealt.",
+	},
+	"restoration": {
+		"name": "Restoration",
+		"description": "+1% healing from Restoration spells per level. Improves with health restored.",
+	},
 }
 const START_LEVEL := 15
 const MAX_LEVEL := 100
@@ -96,6 +104,11 @@ func spend_level_up(stat: String) -> void:
 
 func one_handed_damage_mult() -> float:
 	return 1.0 + (levels["one_handed"] - START_LEVEL) * 0.01
+
+
+## +1% per level above the start for whichever skill powers a spell.
+func spell_power_mult(skill_id: String) -> float:
+	return 1.0 + (levels[skill_id] - START_LEVEL) * 0.01
 
 
 func athletics_stamina_mult() -> float:
