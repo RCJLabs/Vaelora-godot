@@ -80,6 +80,7 @@ max_health = 35.0
 max_stamina = 50.0
 max_magicka = 0.0
 health_regen = 0.0
+max_poise = 25.0
 
 [node name="StatusEffects" type="Node" parent="."]
 script = ExtResource("3_fx")

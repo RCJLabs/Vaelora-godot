@@ -1,6 +1,7 @@
 extends Node
 
-# Spells the player knows and which one is ready in the left hand.
+# Spells the player knows and what the left hand is doing: one of them, or
+# blocking (current_index -1, current() returns null). Q cycles through them.
 # Autoloaded as "Spellbook".
 #   Spellbook.learn("flames")    Spellbook.knows("flames")    Spellbook.current()
 
@@ -14,7 +15,7 @@ const SPELL_FILES := [
 ]
 
 var known: Array = []        # spell ids, in the order learned
-var current_index := 0
+var current_index := 0      # -1 = left hand free to block
 
 var _catalog: Dictionary = {}   # spell id -> SpellData
 
@@ -31,7 +32,7 @@ func get_spell(id: String) -> SpellData:
 
 
 func current() -> SpellData:
-	if known.is_empty():
+	if known.is_empty() or current_index < 0:
 		return null
 	return _catalog[known[current_index]]
 
@@ -54,10 +55,19 @@ func select(id: String) -> void:
 		changed.emit()
 
 
+## Block -> first spell -> ... -> last spell -> Block.
 func cycle() -> void:
-	if known.size() > 1:
-		current_index = (current_index + 1) % known.size()
-		changed.emit()
+	if known.is_empty():
+		return
+	current_index += 1
+	if current_index >= known.size():
+		current_index = -1
+	changed.emit()
+
+
+func ready_block() -> void:
+	current_index = -1
+	changed.emit()
 
 
 func reset(race: RaceData) -> void:
@@ -67,10 +77,10 @@ func reset(race: RaceData) -> void:
 
 
 func to_dict() -> Dictionary:
-	return {"known": known, "current": known[current_index] if not known.is_empty() else ""}
+	return {"known": known, "current": current().id if current() else ""}
 
 
 func from_dict(data: Dictionary) -> void:
 	known = data["known"].filter(func(id): return _catalog.has(id))
-	current_index = maxi(known.find(data.get("current", "")), 0)
+	current_index = known.find(data.get("current", ""))   # "" or unknown: block
 	changed.emit()

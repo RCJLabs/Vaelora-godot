@@ -1,15 +1,18 @@
 class_name Stats
 extends Node
 
-# Health / Stamina / Magicka for anything that can be hurt (player, wolves, NPCs).
+# Health / Stamina / Magicka / Poise for anything that can be hurt (player, wolves, NPCs).
 # Add as a child node named "Stats" and set the maximums in the Inspector,
 # or call setup() from code (the player does this from its race).
 # If there's a sibling "StatusEffects" node, its modifiers change damage taken
 # and regeneration. Armour (armor_rating) reduces hits but not damage over time.
+# Poise is hidden: hits wear it down, and when it breaks the owner is staggered
+# (poise_broken). It refills after a short pause without being hit.
 
 signal changed            # any value changed - HUD bars listen to this
 signal damaged(amount: float)
 signal died
+signal poise_broken
 
 @export var max_health: float = 100.0
 @export var max_stamina: float = 100.0
@@ -24,6 +27,13 @@ signal died
 ## Seconds after casting before magicka starts refilling.
 @export var magicka_regen_delay: float = 1.0
 
+@export_group("Poise")
+## How much poise damage it takes to stagger (attacks list their poise damage).
+@export var max_poise: float = 30.0
+@export var poise_regen: float = 20.0
+## Seconds without poise damage before poise starts refilling.
+@export var poise_regen_delay: float = 1.5
+
 ## Total armour from equipment. Damage from hits is cut by armor / (armor + 100):
 ## 25 armour = -20%, 100 armour = -50%.
 var armor_rating: float = 0.0
@@ -31,8 +41,10 @@ var armor_rating: float = 0.0
 var health: float
 var stamina: float
 var magicka: float
+var poise: float
 var is_dead := false
 
+var _poise_delay_left := 0.0
 var _stamina_delay_left := 0.0
 var _magicka_delay_left := 0.0
 var _effects: Node   # sibling StatusEffects, if any
@@ -65,6 +77,7 @@ func refill() -> void:
 	health = max_health
 	stamina = max_stamina
 	magicka = max_magicka
+	poise = max_poise
 	is_dead = false
 	changed.emit()
 
@@ -72,6 +85,10 @@ func refill() -> void:
 func _process(delta: float) -> void:
 	if is_dead:
 		return
+	if _poise_delay_left > 0.0:
+		_poise_delay_left -= delta
+	else:
+		poise = minf(poise + poise_regen * delta, max_poise)
 	var before := Vector3(health, stamina, magicka)
 	health = minf(health + health_regen * modifier("health_regen") * delta, max_health)
 	if _magicka_delay_left > 0.0:
@@ -99,6 +116,19 @@ func take_damage(amount: float, over_time: bool = false) -> void:
 	if health <= 0.0:
 		is_dead = true
 		died.emit()
+
+
+## Wears down poise. Returns true (and refills it) when this breaks it.
+func take_poise_damage(amount: float) -> bool:
+	if is_dead or amount <= 0.0:
+		return false
+	poise -= amount * modifier("poise_damage_taken")
+	_poise_delay_left = poise_regen_delay
+	if poise > 0.0:
+		return false
+	poise = max_poise
+	poise_broken.emit()
+	return true
 
 
 func heal(amount: float) -> void:

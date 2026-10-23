@@ -1,9 +1,11 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://player/player_first_person.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="2_hud"]
 [ext_resource type="Script" path="res://systems/stats.gd" id="3_stats"]
 [ext_resource type="Script" path="res://systems/status_effects.gd" id="4_fx"]
+[ext_resource type="Script" path="res://player/weapon_animator.gd" id="5_anim"]
+[ext_resource type="Script" path="res://player/player_combat.gd" id="6_combat"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -154,10 +156,14 @@ process_material = SubResource("Process_heal")
 draw_pass_1 = SubResource("Mesh_spark")
 
 [node name="Weapon" type="Node3D" parent="Head/Camera3D"]
-transform = Transform3D(0.98604, 0.09932, -0.13364, -0.16637, 0.62089, -0.76604, 0.00689, 0.77758, 0.62874, 0.3, -0.38, -0.55)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.3, -0.5)
+script = ExtResource("5_anim")
 
 [node name="Stats" type="Node" parent="."]
 script = ExtResource("3_stats")
+
+[node name="Combat" type="Node" parent="."]
+script = ExtResource("6_combat")
 
 [node name="StatusEffects" type="Node" parent="."]
 script = ExtResource("4_fx")

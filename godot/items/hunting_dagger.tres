@@ -1,7 +1,53 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="ItemData" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
 [ext_resource type="PackedScene" path="res://items/models/hunting_dagger_fp.tscn" id="2_model"]
+[ext_resource type="Script" path="res://combat/attack_data.gd" id="3_attack"]
+
+[sub_resource type="Resource" id="Attack_1"]
+script = ExtResource("3_attack")
+windup_pose = "thrust_back"
+strike_pose = "thrust_forward"
+windup = 0.08
+active = 0.1
+recovery = 0.17
+poise_damage = 4.0
+knockback = 2.5
+
+[sub_resource type="Resource" id="Attack_2"]
+script = ExtResource("3_attack")
+windup_pose = "high_right"
+strike_pose = "low_left"
+windup = 0.08
+active = 0.1
+recovery = 0.17
+poise_damage = 4.0
+knockback = 2.5
+
+[sub_resource type="Resource" id="Attack_3"]
+script = ExtResource("3_attack")
+windup_pose = "high_left"
+strike_pose = "low_right"
+windup = 0.1
+active = 0.1
+recovery = 0.26
+damage_mult = 1.25
+poise_damage = 7.0
+knockback = 3.5
+
+[sub_resource type="Resource" id="Attack_heavy"]
+script = ExtResource("3_attack")
+windup_pose = "thrust_back"
+strike_pose = "thrust_forward"
+windup = 0.06
+active = 0.12
+recovery = 0.4
+charge_time = 0.45
+damage_mult = 2.5
+stamina_mult = 1.8
+poise_damage = 12.0
+knockback = 3.0
+lunge = 5.0
 
 [resource]
 script = ExtResource("1_item")
@@ -16,3 +62,6 @@ attack_cooldown = 0.35
 reach = 1.35
 stamina_cost = 6.0
 held_scene = ExtResource("2_model")
+light_attacks = Array[ExtResource("3_attack")]([SubResource("Attack_1"), SubResource("Attack_2"), SubResource("Attack_3")])
+heavy_attack = SubResource("Attack_heavy")
+block_reduction = 0.4

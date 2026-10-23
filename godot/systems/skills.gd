@@ -22,6 +22,10 @@ const SKILLS := {
 		"name": "One-Handed",
 		"description": "+1% sword damage per level. Improves when your swings land.",
 	},
+	"block": {
+		"name": "Block",
+		"description": "+0.5% of a hit blocked per level (up to 95%). Improves when you block or parry.",
+	},
 	"athletics": {
 		"name": "Athletics",
 		"description": "-0.5% sprint stamina cost per level. Improves as you sprint.",
@@ -112,7 +116,17 @@ func grant_bonus(stat: String, amount: int) -> void:
 # --- effects other scripts ask for -------------------------------------------
 
 func one_handed_damage_mult() -> float:
-	return 1.0 + (levels["one_handed"] - START_LEVEL) * 0.01
+	return weapon_damage_mult("one_handed")
+
+
+## +1% damage per level above the start for the skill a weapon uses.
+func weapon_damage_mult(skill_id: String) -> float:
+	return 1.0 + (levels.get(skill_id, START_LEVEL) - START_LEVEL) * 0.01
+
+
+## Share of a hit stopped by a block: the weapon's own share, plus the Block skill.
+func block_share(weapon_share: float) -> float:
+	return minf(weapon_share + (levels["block"] - START_LEVEL) * 0.005, 0.95)
 
 
 ## +1% per level above the start for whichever skill powers a spell.

@@ -9,16 +9,18 @@ extends CharacterBody3D
 #   ├── Head (Node3D)               position y=1.6, rotates up/down
 #   │   └── Camera3D                Current = ON
 #   │       ├── InteractRay (RayCast3D)  Target Position (0, 0, -2.5), Mask: layers 1 "world" + 4 "loot"
-#   │       ├── AttackCast (ShapeCast3D) sphere r=0.45, Target (0, 0, -1.8), Mask: layer 3 "enemies"
+#   │       ├── AttackCast (ShapeCast3D) sphere r=0.45, reach set from the weapon, Mask: layer 3 "enemies"
 #   │       ├── SpellCast (ShapeCast3D)  sphere r=0.5, reach set from the spell, Mask: layer 3
 #   │       ├── SpellHand (Node3D)       left-hand glow orb, light, Fire + HealSparks particles
-#   │       └── Weapon (Node3D)          holds the equipped weapon's held_scene; swung by _swing_weapon()
-#   ├── Stats (systems/stats.gd)    Health / Stamina / Magicka
+#   │       └── Weapon (WeaponAnimator)  holds the equipped weapon's held_scene and poses it
+#   ├── Stats (systems/stats.gd)    Health / Stamina / Magicka / Poise
+#   ├── Combat (player_combat.gd)   attacks, combos, block, parry, dodge, stagger
 #   ├── StatusEffects               bleeding, burning... (systems/status_effects.gd)
 #   └── HUD (instance of ui/hud.tscn)
 #
 # Controls: WASD move, Shift sprint, Space jump, mouse look, E interact,
-# left-click attack, hold right-click cast spell, Q switch spell, Z race power,
+# left-click attack (hold for a heavy attack), hold right-click to cast the
+# ready spell or block, Q switch spell / Block, Alt dodge, Z race power,
 # X background power, F5 quicksave,
 # F9 load the latest save, Esc pause menu.
 
@@ -34,10 +36,10 @@ extends CharacterBody3D
 @export var kill_y: float = -50.0
 
 @export_group("Melee (unarmed)")
-## Fists, used when no weapon is equipped. Weapons bring their own values (items/*.tres).
+## Fists, used when no weapon is equipped. Weapons bring their own values (items/*.tres);
+## swing timing is in player_combat.gd.
 @export var unarmed_damage: float = 4.0
 @export var unarmed_stamina_cost: float = 5.0
-@export var unarmed_cooldown: float = 0.45
 @export var unarmed_reach: float = 1.3
 
 @export_group("Stamina & falling")
@@ -55,8 +57,8 @@ extends CharacterBody3D
 @onready var stats: Stats = $Stats
 @onready var effects: StatusEffects = $StatusEffects
 @onready var attack_cast: ShapeCast3D = $Head/Camera3D/AttackCast
-@onready var weapon: Node3D = $Head/Camera3D/Weapon
-@onready var weapon_rest_rotation: Vector3 = weapon.rotation
+@onready var weapon: WeaponAnimator = $Head/Camera3D/Weapon
+@onready var combat: PlayerCombat = $Combat
 @onready var spell_cast: ShapeCast3D = $Head/Camera3D/SpellCast
 @onready var spell_orb: MeshInstance3D = $Head/Camera3D/SpellHand/Orb
 @onready var spell_light: OmniLight3D = $Head/Camera3D/SpellHand/Light
@@ -67,13 +69,10 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var spawn_position: Vector3
 var is_dead := false
 var _exhausted := false   # ran out of stamina; no sprinting until it recovers
-var _attack_cooldown_left := 0.0
-# Current weapon numbers (from the equipped weapon, or unarmed).
-var attack_damage := 4.0
-var attack_stamina_cost := 5.0
-var attack_cooldown := 0.45
-var attack_skill := "one_handed"
 var is_casting := false
+var _camera_kick := Vector3.ZERO   # degrees, springs back to zero
+var _lunge_velocity := Vector3.ZERO
+var _lunge_left := 0.0
 var _base: Dictionary = {}   # speeds and regen before race/attribute bonuses
 var _orb_material: StandardMaterial3D
 
@@ -132,7 +131,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED   # this click only grabs the mouse
 	elif event.is_action_pressed("attack"):
-		_try_attack()
+		if not is_casting:
+			combat.attack_pressed()
+	elif event.is_action_released("attack"):
+		combat.attack_released()
+	elif event.is_action_pressed("dodge"):
+		combat.dodge_pressed(Input.get_vector("move_left", "move_right", "move_forward", "move_back"))
 	elif event.is_action_pressed("switch_spell"):
 		Spellbook.cycle()
 	elif event.is_action_pressed("power_race"):
@@ -142,7 +146,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	_attack_cooldown_left -= delta
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
@@ -162,18 +165,25 @@ func _physics_process(delta: float) -> void:
 	elif stats.stamina >= stamina_to_sprint_again:
 		_exhausted = false
 	var sprinting := Input.is_action_pressed("sprint") and direction != Vector3.ZERO \
-			and is_on_floor() and moving and not _exhausted
+			and is_on_floor() and moving and not _exhausted and combat.allows_sprint()
 	if sprinting:
 		stats.use_stamina(sprint_stamina_per_second * Skills.athletics_stamina_mult()
 				* stats.modifier("sprint_stamina") * delta)
 		Skills.add_xp("athletics", Vector2(velocity.x, velocity.z).length() * delta / 5.0)   # 1 XP per 5 m
-	var target_speed := (sprint_speed if sprinting else walk_speed) * stats.modifier("move_speed")
+	var target_speed := (sprint_speed if sprinting else walk_speed) * stats.modifier("move_speed") * combat.move_mult()
 	var accel := ground_accel if is_on_floor() else air_accel
 
 	var horizontal := Vector3(velocity.x, 0, velocity.z)
 	horizontal = horizontal.move_toward(direction * target_speed, accel * delta)
+	var dodge := combat.dodge_velocity()
+	if dodge != Vector3.ZERO:
+		horizontal = dodge   # the dodge decides where you go
+	elif _lunge_left > 0.0:
+		_lunge_left -= delta
+		horizontal = horizontal.lerp(_lunge_velocity, 0.6)
 	velocity.x = horizontal.x
 	velocity.z = horizontal.z
+	weapon.set_movement(horizontal.length() / walk_speed if is_on_floor() else 0.0)
 
 	_update_casting(delta, talking)
 
@@ -194,31 +204,11 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 
 
-func _try_attack() -> void:
-	if _attack_cooldown_left > 0.0 or not stats.try_use_stamina(attack_stamina_cost * stats.modifier("attack_stamina")):
-		return
-	_attack_cooldown_left = attack_cooldown
-	_swing_weapon()
-	attack_cast.force_shapecast_update()
-	for i in attack_cast.get_collision_count():
-		var target := attack_cast.get_collider(i)
-		if target and target.has_method("take_hit"):
-			target.take_hit(attack_damage * GameState.race_data.melee_damage_mult * Attributes.melee_mult()
-					* Skills.one_handed_damage_mult() * stats.modifier("damage_dealt")
-					* stats.modifier("weapon_damage_" + attack_skill), global_position)
-			hud.flash_hit()
-			Skills.add_xp(attack_skill, 3.0)
-			var target_stats = target.get("stats")
-			if target_stats is Stats:
-				hud.show_enemy_health(target_stats)
-			return   # one target per swing
-
-
 # Spells are hold-to-cast: while right-click is held and there's Magicka,
 # the ready spell runs every physics frame.
 func _update_casting(delta: float, blocked: bool) -> void:
 	var spell := Spellbook.current()
-	var wants := Input.is_action_pressed("cast") and not blocked and spell != null
+	var wants := Input.is_action_pressed("cast") and not blocked and spell != null and not combat.is_busy()
 	var cost := 0.0
 	if spell:
 		cost = spell.magicka_per_second * delta * stats.modifier("spell_cost") * stats.modifier("spell_cost_" + spell.skill)
@@ -278,28 +268,36 @@ func _apply_equipment() -> void:
 	for child in weapon.get_children():
 		weapon.remove_child(child)
 		child.queue_free()
-	if weapon_item:
-		attack_damage = weapon_item.damage
-		attack_stamina_cost = weapon_item.stamina_cost
-		attack_cooldown = weapon_item.attack_cooldown
-		attack_skill = weapon_item.weapon_skill
-		attack_cast.target_position = Vector3(0, 0, -weapon_item.reach)
-		if weapon_item.held_scene:
-			weapon.add_child(weapon_item.held_scene.instantiate())
-	else:
-		attack_damage = unarmed_damage
-		attack_stamina_cost = unarmed_stamina_cost
-		attack_cooldown = unarmed_cooldown
-		attack_skill = "one_handed"   # until there's a Hand-to-Hand skill
-		attack_cast.target_position = Vector3(0, 0, -unarmed_reach)
+	if weapon_item and weapon_item.held_scene:
+		weapon.add_child(weapon_item.held_scene.instantiate())
+	combat.set_weapon(weapon_item)
 	stats.armor_rating = Inventory.armor_total()
 
 
-func _swing_weapon() -> void:
-	# Chop: from raised (rest pose) down and across, then back.
-	var tween := create_tween()
-	tween.tween_property(weapon, "rotation", weapon_rest_rotation + Vector3(deg_to_rad(-80), deg_to_rad(30), 0), 0.08)
-	tween.tween_property(weapon, "rotation", weapon_rest_rotation, 0.25)
+## Enemies call this when their attack reaches you. See PlayerCombat.receive_attack.
+func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) -> String:
+	return combat.receive_attack(damage, attacker, poise_damage)
+
+
+## False while talking or dead: no attacking, blocking or dodging.
+func can_fight() -> bool:
+	return not (DialogueManager.is_active or is_dead)
+
+
+## Nudges the view (degrees: pitch, yaw, roll); it springs back by itself.
+func camera_kick(degrees: Vector3) -> void:
+	_camera_kick += degrees
+
+
+## Steps forward for `seconds` (heavy attacks).
+func lunge(speed: float, seconds: float) -> void:
+	_lunge_velocity = -global_transform.basis.z * speed
+	_lunge_left = seconds
+
+
+func _process(delta: float) -> void:
+	_camera_kick = _camera_kick.lerp(Vector3.ZERO, minf(delta * 12.0, 1.0))
+	camera.rotation = Vector3(deg_to_rad(_camera_kick.x), deg_to_rad(_camera_kick.y), deg_to_rad(_camera_kick.z))
 
 
 func _apply_settings() -> void:
@@ -325,6 +323,7 @@ func _on_gold_added(amount: int) -> void:
 
 func _on_died() -> void:
 	is_dead = true
+	Engine.time_scale = 1.0   # in case a hit stop was running
 	hud.set_prompt("")
 	show_message("You have died.")
 	await get_tree().create_timer(2.5).timeout
@@ -446,7 +445,7 @@ func _ensure_input_actions() -> void:
 		"move_left": KEY_A, "move_right": KEY_D,
 		"jump": KEY_SPACE, "sprint": KEY_SHIFT, "interact": KEY_E,
 		"quicksave": KEY_F5, "quickload": KEY_F9,
-		"power_race": KEY_Z, "power_background": KEY_X,
+		"power_race": KEY_Z, "power_background": KEY_X, "dodge": KEY_ALT,
 	}
 	for action in defaults:
 		if not InputMap.has_action(action):

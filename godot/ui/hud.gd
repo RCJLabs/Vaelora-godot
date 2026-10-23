@@ -76,6 +76,42 @@ func flash_hit() -> void:
 	tween.tween_property(crosshair, "modulate", Color.WHITE, 0.25)
 
 
+## The crosshair grows while a heavy attack charges, and turns gold when it's full.
+func set_charge(amount: float) -> void:
+	crosshair.pivot_offset = crosshair.size / 2.0
+	crosshair.scale = Vector2.ONE * (1.0 + amount * 0.8)
+	if amount >= 1.0:
+		crosshair.modulate = Color(1, 0.8, 0.3)
+	elif amount <= 0.0 and crosshair.modulate == Color(1, 0.8, 0.3):
+		crosshair.modulate = Color.WHITE
+
+
+## The Stamina bar blinks when there isn't enough for an attack or dodge.
+func flash_tired() -> void:
+	var tween := create_tween()
+	tween.tween_property(stamina_bar, "modulate", Color(1, 0.3, 0.3), 0.05)
+	tween.tween_property(stamina_bar, "modulate", Color.WHITE, 0.3)
+
+
+## Blue crosshair flash for a block; gold and "Parry!" for a parry.
+func flash_block(parried: bool) -> void:
+	var tween := create_tween()
+	tween.tween_property(crosshair, "modulate", Color(1, 0.85, 0.3) if parried else Color(0.5, 0.7, 1), 0.03)
+	tween.tween_property(crosshair, "modulate", Color.WHITE, 0.3)
+	if parried:
+		var label := Label.new()
+		label.text = "Parry!"
+		label.label_settings = prompt_label.label_settings
+		label.modulate = Color(1, 0.85, 0.3)
+		label.set_anchors_preset(Control.PRESET_CENTER)
+		label.position = get_viewport().get_visible_rect().size / 2.0 + Vector2(-30, 24)
+		add_child(label)
+		var fade := label.create_tween()
+		fade.tween_interval(0.4)
+		fade.tween_property(label, "modulate:a", 0.0, 0.4)
+		fade.tween_callback(label.queue_free)
+
+
 ## Shows the health of whatever you just hit, at the top of the screen.
 func show_enemy_health(stats: Stats) -> void:
 	_enemy_stats = stats
@@ -101,12 +137,10 @@ func notify(text: String) -> void:
 	tween.tween_callback(label.queue_free)
 
 
-## Name of the spell in the left hand, above the Magicka bar.
+## What the left hand is doing (a spell, or Block), above the Magicka bar.
 func set_spell(spell: SpellData, known_count: int) -> void:
-	if spell == null:
-		spell_label.text = ""
-	else:
-		spell_label.text = spell.display_name + ("   [Q] switch" if known_count > 1 else "")
+	var hand := spell.display_name if spell else "Block"
+	spell_label.text = hand + ("   [Q] switch" if known_count > 0 else "")
 
 
 ## Shows the player's status effects (name, stacks, seconds left) above the bars.

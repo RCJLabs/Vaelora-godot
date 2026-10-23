@@ -4,7 +4,9 @@ extends CharacterBody3D
 # comes close, bites, and gives up if dragged too far from home.
 # Finds its way around obstacles with its NavigationAgent3D, using the level's
 # NavigationRegion3D. Without one it simply runs straight at its target.
-# Any node with take_hit(damage, from_position) can be hit by the player.
+# Any node with take_hit(damage, from_position, knockback, poise_damage) can be
+# hit by the player. Bites are telegraphed: the wolf crouches back and its eyes
+# flare for bite_windup seconds, so they can be blocked, parried or dodged.
 
 signal died
 
@@ -12,15 +14,20 @@ signal died
 var prompt: String = ""
 var _skinned := false
 
-enum State { IDLE, CHASE, ATTACK, RETURN, DEAD }
+enum State { IDLE, CHASE, ATTACK, RETURN, STAGGER, DEAD }
 
 @export var run_speed: float = 6.0          # player walks 5, sprints 8: you can outrun it
 @export var wander_speed: float = 1.5
 @export var aggro_range: float = 14.0
 @export var leash_range: float = 30.0       # max distance from home before it gives up
 @export var bite_range: float = 1.7
-@export var bite_damage: float = 5.0
-@export var bite_cooldown: float = 1.5
+@export var bite_damage: float = 7.0
+@export var bite_cooldown: float = 1.2
+## The telegraph: seconds between starting a bite and it landing.
+@export var bite_windup: float = 0.5
+@export var bite_poise_damage: float = 6.0
+## How long it reels after a parry or when its poise breaks.
+@export var stagger_time: float = 1.0
 ## Chance (0-1) that a bite makes the target bleed.
 @export var bleed_chance: float = 0.25
 
@@ -41,6 +48,11 @@ var _fur: StandardMaterial3D
 var _flank_angle := 0.0     # where around the player this wolf is heading
 var _close_in := false      # within 4 m and circling in on its flank spot
 var _blocked_time := 0.0    # how long a packmate has been in the way
+var _windup_left := 0.0     # > 0 while a bite is coming
+var _stagger_left := 0.0
+var _eyes: StandardMaterial3D
+var _eye_glow := 3.0
+var _pose_tween: Tween      # crouch, stagger or flinch: stopped when it dies
 
 
 func _ready() -> void:
@@ -49,6 +61,10 @@ func _ready() -> void:
 	_wander_target = home
 	stats.died.connect(_on_died)
 	stats.damaged.connect(_on_damaged)
+	stats.poise_broken.connect(func(): stagger(stagger_time * 0.8))
+	_eyes = ($Model/Eyes as MeshInstance3D).mesh.surface_get_material(0).duplicate()
+	$Model/Eyes.material_override = _eyes
+	_eye_glow = _eyes.emission_energy_multiplier
 	# Own copy of the fur material so only this wolf flashes when hit.
 	_fur = ($Model/Body as MeshInstance3D).mesh.surface_get_material(0).duplicate()
 	for part in model.get_children():
@@ -63,6 +79,9 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	_bite_left -= delta
+	# Eyes flare while a bite is coming: the telegraph to watch for.
+	var glow := _eye_glow * (5.0 if _windup_left > 0.0 else 1.0)
+	_eyes.emission_energy_multiplier = lerpf(_eyes.emission_energy_multiplier, glow, minf(delta * 12.0, 1.0))
 
 	var player := get_tree().get_first_node_in_group("player")
 	var paused: bool = player == null or player.is_dead or DialogueManager.is_active
@@ -101,13 +120,26 @@ func _think(player: Node3D, delta: float) -> void:
 				_close_in = false
 				_move_toward(player.global_position, run_speed, delta)
 		State.ATTACK:
-			if dist > bite_range * 1.3:
+			if _windup_left > 0.0:
+				# Committed: tracks you slowly, so a sidestep or dodge makes it miss.
+				_windup_left -= delta
+				_move_toward(global_position, 0.0, delta)
+				_face(player.global_position, delta * 0.3)
+				if _windup_left <= 0.0:
+					_finish_bite(player)
+			elif dist > bite_range * 1.3:
 				state = State.CHASE
 			else:
 				_move_toward(global_position, 0.0, delta)
 				_face(player.global_position, delta)
 				if _bite_left <= 0.0:
-					_bite(player)
+					_begin_bite()
+		State.STAGGER:
+			_move_toward(global_position, 0.0, delta)
+			_stagger_left -= delta
+			if _stagger_left <= 0.0:
+				model.rotation = Vector3.ZERO
+				state = State.CHASE
 		State.RETURN:
 			if from_home < 1.0:
 				state = State.IDLE
@@ -163,15 +195,57 @@ func _blocked_by_packmate() -> bool:
 	return false
 
 
-func _bite(player: Node) -> void:
+# The telegraph: crouch back, eyes flare.
+func _begin_bite() -> void:
+	_windup_left = bite_windup
+	var tween := _new_pose_tween().set_parallel()
+	tween.tween_property(model, "position:z", 0.22, bite_windup * 0.8).set_ease(Tween.EASE_OUT)
+	tween.tween_property(model, "rotation:x", deg_to_rad(-8), bite_windup * 0.8)
+
+
+# The lunge: lands if you're still in front of it and close enough.
+func _finish_bite(player: Node3D) -> void:
 	_bite_left = bite_cooldown
-	player.stats.take_damage(bite_damage)
-	if randf() < bleed_chance and player.get("effects"):
-		player.effects.apply("bleeding")
-	# small lunge so the bite reads visually
 	var tween := create_tween()
-	tween.tween_property(model, "position:z", -0.35, 0.08)
+	tween.tween_property(model, "position:z", -0.4, 0.07)
 	tween.tween_property(model, "position:z", 0.0, 0.2)
+	_new_pose_tween().tween_property(model, "rotation:x", 0.0, 0.15)
+	var to_player := player.global_position - global_position
+	to_player.y = 0.0
+	var forward := -global_transform.basis.z
+	if to_player.length() <= bite_range * 1.25 and rad_to_deg(Vector3(forward.x, 0, forward.z).angle_to(to_player)) < 60.0:
+		_bite(player)
+
+
+## The bite connecting. Returns what the target did about it.
+func _bite(player: Node) -> String:
+	var result := "hit"
+	if player.has_method("receive_attack"):
+		result = player.receive_attack(bite_damage, self, bite_poise_damage)
+	else:
+		player.stats.take_damage(bite_damage)
+	if result == "hit" and randf() < bleed_chance and player.get("effects"):
+		player.effects.apply("bleeding")
+	if result == "parried":
+		var push: Vector3 = global_position - player.global_position
+		push.y = 0.0
+		_knockback = push.normalized() * 6.0
+		stagger(stagger_time)
+	return result
+
+
+## Reels for `seconds`: no biting, and a bite that was coming is cancelled.
+func stagger(seconds: float) -> void:
+	if state == State.DEAD:
+		return
+	state = State.STAGGER
+	_stagger_left = seconds
+	_windup_left = 0.0
+	model.position.z = 0.0
+	var tween := _new_pose_tween()
+	tween.tween_property(model, "rotation", Vector3(deg_to_rad(14), 0, deg_to_rad(12)), 0.12)
+	tween.tween_property(model, "rotation", Vector3(deg_to_rad(6), 0, deg_to_rad(-8)), seconds * 0.5)
+	tween.tween_property(model, "rotation", Vector3.ZERO, seconds * 0.3)
 
 
 func _wander(delta: float) -> void:
@@ -225,8 +299,16 @@ func _face(target: Vector3, delta: float) -> void:
 	rotation.y = lerp_angle(rotation.y, target_yaw, minf(10.0 * delta, 1.0))
 
 
-## Called by the player's sword (knockback 5) and spells (knockback 0).
-func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0) -> void:
+func _new_pose_tween() -> Tween:
+	if _pose_tween:
+		_pose_tween.kill()
+	_pose_tween = create_tween()
+	return _pose_tween
+
+
+## Called by the player's weapons (knockback and poise from the attack) and
+## spells (knockback 0, no poise damage).
+func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0, poise_damage: float = 0.0) -> void:
 	if state == State.DEAD:
 		return
 	if knockback > 0.0:
@@ -236,6 +318,15 @@ func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0) -> 
 	if state == State.IDLE or state == State.RETURN:
 		_start_hunt()   # hit from outside aggro range: it still comes for you
 	stats.take_damage(damage)
+	if state != State.DEAD and not stats.take_poise_damage(poise_damage) and knockback > 0.0 and state != State.STAGGER:
+		_flinch()
+
+
+# A small jolt on every melee hit that doesn't stagger.
+func _flinch() -> void:
+	var tween := _new_pose_tween()
+	tween.tween_property(model, "rotation:x", deg_to_rad(10), 0.05)
+	tween.tween_property(model, "rotation:x", deg_to_rad(-8) if _windup_left > 0.0 else 0.0, 0.15)
 
 
 var _flash_tween: Tween
@@ -276,6 +367,11 @@ func _become_corpse(animate: bool) -> void:
 	collision_mask = 0
 	prompt = "Skin wolf"
 	velocity = Vector3.ZERO
+	_windup_left = 0.0
+	if _pose_tween:
+		_pose_tween.kill()
+	model.position.z = 0.0
+	model.rotation = Vector3.ZERO
 	$Model/Eyes.visible = false
 	if animate:
 		var tween := create_tween().set_parallel()

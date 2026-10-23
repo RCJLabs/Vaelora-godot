@@ -2,6 +2,9 @@
 	"armsman_1": { "name": "Armsman", "skill": "one_handed", "level": 15, "description": "+20% damage with one-handed weapons.", "modifiers": { "weapon_damage_one_handed": 1.2 } },
 	"fighting_rhythm": { "name": "Fighting Rhythm", "skill": "one_handed", "level": 25, "description": "Swings cost 25% less Stamina.", "modifiers": { "attack_stamina": 0.75 } },
 	"armsman_2": { "name": "Armsman II", "skill": "one_handed", "level": 35, "requires": "armsman_1", "description": "Another +20% damage with one-handed weapons.", "modifiers": { "weapon_damage_one_handed": 1.2 } },
+	"steady_guard": { "name": "Steady Guard", "skill": "block", "level": 20, "description": "Blocking costs 25% less Stamina.", "modifiers": { "block_stamina": 0.75 } },
+	"deflection": { "name": "Deflection", "skill": "block", "level": 25, "description": "The parry window is 50% longer.", "modifiers": { "parry_window": 1.5 } },
+	"riposte": { "name": "Riposte", "skill": "block", "level": 35, "requires": "deflection", "description": "For 2 seconds after a parry, your attacks deal +50% damage.", "modifiers": { "riposte_damage": 1.5 } },
 
 	"wind_runner": { "name": "Wind Runner", "skill": "athletics", "level": 20, "description": "Sprinting costs 25% less Stamina.", "modifiers": { "sprint_stamina": 0.75 } },
 	"sure_footed": { "name": "Sure-Footed", "skill": "athletics", "level": 25, "description": "Falls do half damage.", "modifiers": { "fall_damage": 0.5 } },

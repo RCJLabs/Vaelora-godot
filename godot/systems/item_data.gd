@@ -26,7 +26,7 @@ enum Slot { NONE, MAIN_HAND, OFF_HAND, HEAD, BODY, HANDS, FEET, RING, AMULET }
 
 @export_group("Weapon")
 @export var damage: float = 0.0
-## Seconds between swings.
+## Only used when Light Attacks is empty: roughly the seconds between swings.
 @export var attack_cooldown: float = 0.55
 ## Metres in front of the camera the swing reaches.
 @export var reach: float = 1.8
@@ -35,6 +35,12 @@ enum Slot { NONE, MAIN_HAND, OFF_HAND, HEAD, BODY, HANDS, FEET, RING, AMULET }
 @export var weapon_skill: String = "one_handed"
 ## First-person model shown in the right hand (a scene with meshes).
 @export var held_scene: PackedScene
+## The light combo, in order (click, click, click). Empty = one simple swing.
+@export var light_attacks: Array[AttackData] = []
+## Hold attack to charge, release to strike.
+@export var heavy_attack: AttackData
+## Share of a hit's damage stopped while blocking with this weapon (0-1).
+@export var block_reduction: float = 0.6
 
 @export_group("Armor")
 @export var slot: Slot = Slot.NONE

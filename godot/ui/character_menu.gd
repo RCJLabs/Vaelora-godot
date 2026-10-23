@@ -271,7 +271,12 @@ func _refresh_magic() -> void:
 		var spell := Spellbook.get_spell(id)
 		spell_list.add_item(spell.display_name)
 	var current := Spellbook.current()
-	if current:
+	if current == null:
+		spell_list.deselect_all()
+		%SpellName.text = "Left hand: Block"
+		%SpellDescription.text = "Hold right-click to block. Block just before a hit lands to parry it. Pick a spell here, or press Q, to ready it instead."
+		%SpellStats.text = "Blocks %d%% of a hit with what you're holding" % roundi(Skills.block_share(_block_reduction()) * 100.0)
+	else:
 		spell_list.select(Spellbook.current_index)
 		%SpellName.text = current.display_name
 		%SpellDescription.text = current.description
@@ -280,6 +285,11 @@ func _refresh_magic() -> void:
 			current.magicka_per_second,
 			current.power_per_second * Skills.spell_power_mult(current.skill), verb,
 			Skills.SKILLS[current.skill]["name"]]
+
+
+func _block_reduction() -> float:
+	var item := Inventory.equipped_item("main_hand")
+	return item.block_reduction if item else 0.3
 
 
 func _refresh_quests() -> void:
