@@ -10,12 +10,15 @@ extends StaticBody3D
 @export var gold: int = 0
 ## Shown as "Take <label>". Leave empty to use the item's name.
 @export var label: String = ""
+## Placed in a level: stays gone once taken. Off for drops made at runtime
+## (an enemy's loot), which have no level path to remember.
+@export var remember: bool = true
 
 var prompt: String
 
 
 func _ready() -> void:
-	if GameState.has_flag(_taken_flag()):
+	if remember and GameState.has_flag(_taken_flag()):
 		queue_free()
 		return
 	var shown := label
@@ -29,7 +32,8 @@ func interact(_player: Node) -> void:
 		Inventory.add(item_id, item_count)
 	if gold > 0:
 		Inventory.add_gold(gold)
-	GameState.set_flag(_taken_flag())
+	if remember:
+		GameState.set_flag(_taken_flag())
 	queue_free()
 
 

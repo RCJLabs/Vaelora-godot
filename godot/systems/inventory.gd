@@ -40,6 +40,7 @@ const ITEM_FILES := [
 	"res://items/water_flask.tres",
 	"res://items/raw_wolf_meat.tres",
 	"res://items/cooked_wolf_meat.tres",
+	"res://items/wisp_essence.tres",
 ]
 
 ## What every new character starts with (equipped). Backgrounds will change this.

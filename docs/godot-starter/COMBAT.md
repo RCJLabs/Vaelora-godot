@@ -1,4 +1,4 @@
-# Combat, Weapons, Wolves & Bandits
+# Combat, Weapons, Wolves, Bandits & Wisps
 
 ## Fighting (Phase 1c)
 
@@ -183,6 +183,30 @@ Tested with two bots: one that only swings (dies with the leader on about 15 HP,
 potion would have turned it) and one that blocks and parries every telegraphed swing
 (clears the camp with 57/100 Health). Real players will land somewhere in between.
 
+## Wisps
+
+Knots of cold light that drift around the **stone circle at night** (20:00–06:00). Three
+appear when night falls and fade at dawn, and killed ones come back the next night. They're
+spawned by `StoneWisps` (`enemies/wisp_spawner.gd`); the wisp is `enemies/wisp.gd`/`.tscn`
+(glowing spheres, so no animation needed).
+- **They fight from range:** hovering about 8 m away, circling, and throwing slow arcane bolts
+  (12 damage, 14 m/s).
+- **The telegraph:** a wisp stops, **swells and brightens** for 0.9 s with a rising hum, then
+  throws.
+- **Defending:** block, a shield or a ward stops the bolt like a blow (from the front).
+  **Dodge** and it flies past. **Parry it and the bolt flies back at the wisp** (homing, ×1.5
+  damage).
+- **Blink:** get within 3.5 m and a wisp flashes away 5–7 m (every 4 s or so).
+- **Resistant to magic** (half damage from spells) but fragile to blades and arrows (30
+  Health). A heavy attack, a shield bash, or enough poise damage **knocks it out of the
+  air** for 1.6 s: it sinks to the ground and can't cast.
+- **Wisp Essence** drops where one dies: +40 Magicka when used, and it sells for 20 gold.
+- You can't rest while a wisp is hunting you.
+
+Enemy bolts (`combat/spell_bolt.gd` with `hits_player`) go through the same
+`player.receive_attack()` as melee, so any future caster gets blocking, wards, dodging and
+parry-reflects for free.
+
 ## Pathfinding
 
 Wolves find their way **around** walls, rocks and buildings instead of running straight at
@@ -218,7 +242,7 @@ Named in **Project Settings → Layer Names → 3D Physics** so the Inspector sh
 |---|---|---|---|
 | 1 | world | ground, walls, props, NPCs | player, wolves, interaction ray |
 | 2 | player | player | wolves |
-| 3 | enemies | wolves, bandits | player, other enemies, weapons, arrows |
+| 3 | enemies | wolves, bandits, wisps | player, other enemies, weapons, arrows, spells |
 | 4 | loot | pickups, dead wolves and bandits | interaction ray only (the player walks through) |
 
 ## Known limits

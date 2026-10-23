@@ -54,13 +54,24 @@ The first time something comes up, a short tip appears in the lower middle of th
 Each shows once per character. Turn them off in **Settings → Tutorial hints**.
 
 ## Changing bindings
-**Project → Project Settings → Input Map.** Each action lists its key, mouse and gamepad
-events; add or remove events there. The prompts read the Input Map, so they update by
-themselves. `ui_accept` and `ui_cancel` are overridden there to add the gamepad's A and B
-(Godot 4.3's defaults have no gamepad buttons for them).
+**In the game: Esc → Settings → Controls...** Every action has a keyboard-and-mouse binding
+and a gamepad binding:
+- **Click a binding**, then press the new key, mouse button, gamepad button, trigger or
+  stick direction. **Esc** cancels. Pressing a key while it waits for a gamepad button (or
+  the other way round) is ignored.
+- If another action already used that key, it moves to the new action, and the page says
+  which action lost it.
+- **Reset to defaults** puts everything back.
+- Bindings are saved to `user://controls.cfg` and apply to every character. Prompts ("[E]
+  Talk") and the HUD update straight away.
+- Mouse/stick look, the pause button (Esc / Menu) and menu navigation can't be rebound.
+
+**In the editor:** Project → Project Settings → Input Map holds the defaults. The list of
+actions the Controls page shows is `ACTIONS` in `systems/key_bindings.gd`. `ui_accept` and
+`ui_cancel` are overridden there to add the gamepad's A and B (Godot 4.3's defaults have no
+gamepad buttons for them).
 
 ## Known limits
-- No aim assist for the stick yet, and no rebinding screen in the game (only the editor's
-  Input Map).
+- No aim assist for the stick yet.
 - Typing a name in the character creator needs a keyboard (leave it blank for "Traveller").
 - Gamepad was tested with simulated input; it hasn't been tried with a real controller.

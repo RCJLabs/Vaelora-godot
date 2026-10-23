@@ -14,6 +14,7 @@ var is_open := false
 var _page := ""
 var _from_title := false     # opened from the title screen: no "main" page, no pausing
 var _confirm_slot := ""      # slot waiting for a second click to overwrite/delete
+var _capturing := {}         # Controls page: {"action", "gamepad", "button"} while waiting for a key
 
 
 func _ready() -> void:
@@ -23,6 +24,9 @@ func _ready() -> void:
 # _input so Esc is seen before the game. Dialogue and the Tab menu handle
 # their own Esc, so leave it to them while they're open.
 func _input(event: InputEvent) -> void:
+	if not _capturing.is_empty():
+		_capture(event)
+		return
 	# "pause" is Esc / the gamepad's Menu button. In the menu, "ui_cancel"
 	# (Esc / gamepad B) goes back too. B alone doesn't open it: in the game B dodges.
 	var pause := event.is_action_pressed("pause")
@@ -72,6 +76,7 @@ func _show(page: String) -> void:
 		"save": _build_save()
 		"load": _build_load()
 		"settings": _build_settings()
+		"controls": _build_controls()
 	_focus_first.call_deferred()
 
 
@@ -174,13 +179,74 @@ func _build_settings() -> void:
 	_checkbox("Fullscreen", "fullscreen")
 	_checkbox("VSync", "vsync")
 	_checkbox("Tutorial hints", "show_hints")
-	var controls := Label.new()
-	controls.text = "Controls:  WASD move  -  Shift sprint  -  Space jump  -  E use / talk  -  Left-click attack\n" \
-		+ "Hold right-click cast  -  Q switch spell  -  Tab character menu  -  J journal\n" \
-		+ "F5 quicksave  -  F9 load latest save  -  Esc pause"
-	controls.modulate = Color(1, 1, 1, 0.65)
-	content.add_child(controls)
+	_button("Controls...", _show.bind("controls"))
 	_back_button()
+
+
+# --- Controls: rebinding -------------------------------------------------------
+
+func _build_controls() -> void:
+	title_label.text = "Controls"
+	var note := Label.new()
+	note.text = "Click a binding, then press the new key, mouse button or gamepad button. Esc cancels."
+	note.modulate = Color(1, 1, 1, 0.7)
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	content.add_child(note)
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(620, 380)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true   # the D-pad scrolls the list
+	content.add_child(scroll)
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.add_theme_constant_override("h_separation", 12)
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(grid)
+	for header in ["Action", "Keyboard & mouse", "Gamepad"]:
+		var label := Label.new()
+		label.text = header
+		label.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
+		grid.add_child(label)
+	for pair in KeyBindings.ACTIONS:
+		var name_label := Label.new()
+		name_label.text = pair[1]
+		name_label.custom_minimum_size.x = 250
+		grid.add_child(name_label)
+		for gamepad in [false, true]:
+			var button := Button.new()
+			button.text = KeyBindings.event_name(KeyBindings.binding(pair[0], gamepad))
+			button.custom_minimum_size = Vector2(160, 34)
+			button.pressed.connect(_start_capture.bind(pair[0], gamepad, button))
+			grid.add_child(button)
+	_button("Reset to defaults", func(): KeyBindings.reset(); _show("controls"))
+	_button("Back", _show.bind("settings"))
+
+
+func _start_capture(action: String, gamepad: bool, button: Button) -> void:
+	button.text = "press a %s..." % ("button" if gamepad else "key")
+	# Wait a frame, so the click / button press that started this isn't captured.
+	await get_tree().process_frame
+	_capturing = {"action": action, "gamepad": gamepad, "button": button}
+
+
+func _capture(event: InputEvent) -> void:
+	get_viewport().set_input_as_handled()
+	if event is InputEventKey and event.pressed and event.physical_keycode == KEY_ESCAPE:
+		_capturing = {}
+		_show("controls")   # cancelled
+		return
+	if not KeyBindings.is_bindable(event) or KeyBindings.is_gamepad(event) != _capturing["gamepad"]:
+		return   # e.g. a key while waiting for a gamepad button: keep waiting
+	var taken := KeyBindings.rebind(_capturing["action"], _capturing["gamepad"], event)
+	_capturing = {}
+	_show("controls")
+	if taken != "":
+		var warning := Label.new()
+		warning.text = "%s was also used by \"%s\", which is now unbound there." % [KeyBindings.event_name(event), taken]
+		warning.add_theme_color_override("font_color", Color(1, 0.6, 0.45))
+		warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		content.add_child(warning)
+		content.move_child(warning, 1)
 
 
 # --- small UI helpers ------------------------------------------------------------

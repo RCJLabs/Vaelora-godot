@@ -1,8 +1,12 @@
 class_name SpellBolt
 extends Node3D
 
-# A spell projectile (Firebolt): flies straight, glowing, and bursts on the
-# first thing it touches. Like Arrow, it ray-checks the path each frame.
+# A spell projectile (Firebolt, wisp bolts): flies straight, glowing, and
+# bursts on the first thing it touches. Like Arrow, it ray-checks the path
+# each frame.
+# The player's bolts hit enemies (take_hit). Enemies' bolts (hits_player) hit
+# the player through receive_attack, so blocks, wards and dodges work, and a
+# parry sends the bolt back at whoever threw it.
 
 signal hit(target: Node, damage: float)
 
@@ -14,6 +18,9 @@ var poise_damage := 8.0
 var applies_effect := ""
 var color := Color(1, 0.5, 0.15)
 var shooter: Node3D
+var hits_player := false
+## Steers towards this while flying (a parried bolt heading back to its caster).
+var homing: Node3D
 var _life := LIFETIME
 
 
@@ -33,17 +40,28 @@ func _physics_process(delta: float) -> void:
 	if _life <= 0.0:
 		queue_free()
 		return
+	if is_instance_valid(homing):
+		var want := (homing.global_position - global_position).normalized() * velocity.length()
+		velocity = velocity.lerp(want, minf(delta * 6.0, 1.0))
 	var from := global_position
 	var to := from + velocity * delta
-	var query := PhysicsRayQueryParameters3D.create(from, to, 1 | 4)
-	if shooter is CollisionObject3D:
+	var query := PhysicsRayQueryParameters3D.create(from, to, 1 | (2 if hits_player else 4))
+	if shooter is CollisionObject3D and is_instance_valid(shooter):
 		query.exclude = [shooter.get_rid()]
 	var result := get_world_3d().direct_space_state.intersect_ray(query)
 	if result.is_empty():
 		global_position = to
 		return
 	var target: Object = result["collider"]
-	if target.has_method("take_hit"):
+	if hits_player and target.has_method("receive_attack"):
+		var outcome: String = target.receive_attack(damage, shooter, poise_damage)
+		if outcome == "parried":
+			_reflect(target)
+			return
+		if outcome == "dodged":
+			global_position = to   # flies on past
+			return
+	elif target.has_method("take_hit"):
 		var origin := shooter.global_position if is_instance_valid(shooter) else from
 		target.take_hit(damage, origin, 2.0, poise_damage)
 		if applies_effect != "" and target.has_method("add_effect"):
@@ -52,3 +70,17 @@ func _physics_process(delta: float) -> void:
 	SpellBurst.spawn(get_parent(), result["position"], 0.8 * scale.x, color)
 	Sfx.play_at("spell_impact", result["position"])
 	queue_free()
+
+
+# Parried: back towards whoever threw it, now the player's, and stronger.
+func _reflect(player: Node3D) -> void:
+	var back := -velocity
+	if is_instance_valid(shooter):
+		back = (shooter.global_position - global_position).normalized() * velocity.length() * 1.3
+		homing = shooter
+	velocity = back
+	damage *= 1.5
+	hits_player = false
+	shooter = player
+	_life = LIFETIME
+	Sfx.play("parry", -2.0)

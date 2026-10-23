@@ -146,8 +146,9 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
 - [ ] **One or two dungeons** (interiors): traps, a puzzle, a boss.
 - [ ] **A short main questline** (3–5 quests) with a real choice that changes the ending,
       plus **5–8 side quests** and **2–3 factions** that react to you.
-- [ ] **3–5 enemy types:** wolves (existing), bandits (human, uses the combat system),
-      something magical, a boss.
+- [~] **3–5 enemy types:** wolves (existing), bandits (human, uses the combat system),
+      something magical, a boss. (Wolves, bandits and night-time wisps done; a boss waits for
+      the dungeon it belongs in.)
 - [x] **Survival v1 (optional mode):** hunger, thirst, sleep, cold, with food, camping and
       inns. (Plus a world clock with day and night. Beds and campfires rest and autosave;
       inns and paid beds come with a town. See SURVIVAL.md.)
@@ -158,7 +159,8 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       travel, limited saves. (Damage and healing done; saving only by resting done; there's
       no fast travel to forbid yet. Permadeath is still an open question.)
 - [ ] **Polish:** tutorial prompts, a title screen, key rebinding, performance on mid-range
-      PCs, a bug-report link. (Tutorial hints done, with a setting to turn them off.)
+      PCs, a bug-report link. (Tutorial hints done, with a setting to turn them off; key
+      rebinding done: Settings → Controls.)
 - [ ] **itch.io page:** screenshots, a trailer, a feedback form.
 
 **Done when:** five people who aren't you finish the demo and say what they'd want next.

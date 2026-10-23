@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://enemies/wisp.gd" id="1_wisp"]
+[ext_resource type="Script" path="res://systems/stats.gd" id="2_stats"]
+[ext_resource type="Script" path="res://systems/status_effects.gd" id="3_fx"]
+
+[sub_resource type="SphereShape3D" id="Shape_wisp"]
+radius = 0.35
+
+[sub_resource type="SphereMesh" id="Mesh_core"]
+radius = 0.16
+height = 0.32
+
+[sub_resource type="SphereMesh" id="Mesh_halo"]
+radius = 0.38
+height = 0.76
+
+[sub_resource type="SphereMesh" id="Mesh_mote"]
+radius = 0.04
+height = 0.08
+
+[node name="Wisp" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+motion_mode = 1
+script = ExtResource("1_wisp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape_wisp")
+
+[node name="Stats" type="Node" parent="."]
+script = ExtResource("2_stats")
+max_health = 30.0
+max_stamina = 0.0
+max_magicka = 0.0
+health_regen = 0.0
+max_poise = 15.0
+
+[node name="StatusEffects" type="Node" parent="."]
+script = ExtResource("3_fx")
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Core" type="MeshInstance3D" parent="Model"]
+cast_shadow = 0
+mesh = SubResource("Mesh_core")
+
+[node name="Halo" type="MeshInstance3D" parent="Model"]
+cast_shadow = 0
+mesh = SubResource("Mesh_halo")
+
+[node name="Mote1" type="MeshInstance3D" parent="Model"]
+cast_shadow = 0
+mesh = SubResource("Mesh_mote")
+
+[node name="Mote2" type="MeshInstance3D" parent="Model"]
+cast_shadow = 0
+mesh = SubResource("Mesh_mote")
+
+[node name="Mote3" type="MeshInstance3D" parent="Model"]
+cast_shadow = 0
+mesh = SubResource("Mesh_mote")
+
+[node name="Light" type="OmniLight3D" parent="Model"]
+light_energy = 1.2
+omni_range = 5.0

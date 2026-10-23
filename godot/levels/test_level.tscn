@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3]
+[gd_scene load_steps=74 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" path="res://items/models/iron_mace_fp.tscn" id="17_mace"]
 [ext_resource type="Script" path="res://levels/day_night.gd" id="18_daynight"]
 [ext_resource type="Script" path="res://props/campfire.gd" id="19_campfire"]
+[ext_resource type="Script" path="res://enemies/wisp_spawner.gd" id="20_wisps"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -648,6 +649,10 @@ mesh = SubResource("Mesh_boulder")
 
 [node name="Shape" type="CollisionShape3D" parent="Boulder"]
 shape = SubResource("Shape_boulder")
+
+[node name="StoneWisps" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -9)
+script = ExtResource("20_wisps")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)

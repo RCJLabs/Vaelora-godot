@@ -153,6 +153,18 @@ def main():
     t = seconds(0.6)
     save("ward_hit", ring(t, [(660, 1.0), (1320, 0.4), (1980, 0.25), (2970, 0.15)], 0.5) * envelope(t, 0.002, 0.2), 0.7)
 
+    # Wisp charging: a rising, wavering hum (the telegraph to listen for).
+    t = seconds(0.9)
+    pitch = 220 + 380 * (t / 0.9) ** 1.5
+    phase = np.cumsum(pitch) / RATE
+    hum = (np.sin(2 * np.pi * phase) + 0.4 * np.sin(4 * np.pi * phase)) * (0.6 + 0.4 * np.sin(2 * np.pi * 7 * t))
+    save("wisp_charge", hum * np.clip(t / 0.6, 0, 1) * np.exp(-np.maximum(t - 0.8, 0) / 0.05), 0.5)
+
+    # Wisp blink: a quick airy "fwip", high to low.
+    t = seconds(0.3)
+    sweep = lowpass(rng.standard_normal(len(t)), 6000 * np.exp(-t / 0.08) + 300)
+    save("wisp_blink", highpass(sweep, 500.0) * envelope(t, 0.005, 0.07), 0.6)
+
     # Out of stamina / guard broken: a dull low thud.
     t = seconds(0.3)
     save("guard_break", np.sin(2 * np.pi * (120 * t - 60 * t ** 2)) * envelope(t, 0.002, 0.09)
