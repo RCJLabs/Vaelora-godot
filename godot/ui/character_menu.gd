@@ -94,6 +94,18 @@ func _refresh() -> void:
 		return
 	level_label.text = "Level %d   -   %d / %d skill increases to the next level" % [
 		Skills.character_level, Skills.skill_ups_toward_level, Skills.SKILL_UPS_PER_LEVEL]
+	var attribute_row: HBoxContainer = %AttributeRow
+	for child in attribute_row.get_children():
+		attribute_row.remove_child(child)
+		child.queue_free()
+	for id in Attributes.ATTRIBUTES:
+		var info: Dictionary = Attributes.ATTRIBUTES[id]
+		var label := Label.new()
+		label.text = "%s  %d" % [info["name"], Attributes.value(id)]
+		label.tooltip_text = info["description"]
+		label.mouse_filter = Control.MOUSE_FILTER_PASS
+		label.add_theme_font_size_override("font_size", 18)
+		attribute_row.add_child(label)
 	level_up_box.visible = Skills.unspent_level_ups > 0
 	%LevelUpLabel.text = "Level up! Choose a bonus (%d left):" % Skills.unspent_level_ups
 

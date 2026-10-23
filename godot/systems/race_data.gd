@@ -24,6 +24,8 @@ extends Resource
 @export var reputation_gain_mult: float = 1.0
 ## Multiplies melee damage.
 @export var melee_damage_mult: float = 1.0
+## Attribute changes from 10, e.g. {"strength": 2, "intellect": -2}. See systems/attributes.gd.
+@export var attribute_bonuses: Dictionary = {}
 ## Extra starting levels per skill id, e.g. {"one_handed": 10}. See systems/skills.gd.
 @export var skill_bonuses: Dictionary = {}
 ## Spell ids known from the start. See systems/spellbook.gd.

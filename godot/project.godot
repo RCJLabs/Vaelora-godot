@@ -14,6 +14,7 @@ config/features=PackedStringArray("4.3", "Forward Plus")
 GameState="*res://systems/game_state.gd"
 EffectLibrary="*res://systems/effect_library.gd"
 Skills="*res://systems/skills.gd"
+Attributes="*res://systems/attributes.gd"
 Inventory="*res://systems/inventory.gd"
 Spellbook="*res://systems/spellbook.gd"
 Reputation="*res://systems/reputation.gd"

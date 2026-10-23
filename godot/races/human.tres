@@ -12,6 +12,10 @@ magicka = 100
 move_speed_mult = 1.0
 jump_height_mult = 1.0
 skill_xp_mult = 1.15
+attribute_bonuses = {
+"presence": 2,
+"willpower": 1
+}
 skill_bonuses = {}
 starting_spells = Array[String](["healing"])
 reputation_gain_mult = 1.2

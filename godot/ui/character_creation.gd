@@ -51,9 +51,14 @@ func select_race(race: RaceData) -> void:
 	selected = race
 	name_label.text = race.display_name
 	description_label.text = race.description
-	stats_label.text = "Health %d    Stamina %d    Magicka %d\nSpeed %s    Jump %s" % [
-		race.health, race.stamina, race.magicka,
-		_percent(race.move_speed_mult), _percent(race.jump_height_mult)]
+	var attrs := []
+	for id in Attributes.ATTRIBUTES:
+		attrs.append("%s %d" % [Attributes.ATTRIBUTES[id]["short"], Attributes.BASE + int(race.attribute_bonuses.get(id, 0))])
+	var end := int(race.attribute_bonuses.get("endurance", 0))
+	var intl := int(race.attribute_bonuses.get("intellect", 0))
+	stats_label.text = "Health %d    Stamina %d    Magicka %d\nSpeed %s    Jump %s\n%s" % [
+		race.health + end * 5, race.stamina + end * 3, race.magicka + intl * 5,
+		_percent(race.move_speed_mult), _percent(race.jump_height_mult), "   ".join(attrs)]
 	traits_label.text = race.traits
 	ability_label.text = "%s - %s" % [race.signature_ability, race.signature_description]
 
@@ -63,6 +68,7 @@ func begin() -> void:
 	GameState.flags = {}   # new game: forget the previous character's story
 	GameState.play_time = 0.0
 	Skills.reset(selected)
+	Attributes.reset(selected)
 	Inventory.reset()
 	Spellbook.reset(selected)
 	Reputation.reset()

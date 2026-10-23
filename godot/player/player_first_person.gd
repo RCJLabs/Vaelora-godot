@@ -180,7 +180,7 @@ func _try_attack() -> void:
 	for i in attack_cast.get_collision_count():
 		var target := attack_cast.get_collider(i)
 		if target and target.has_method("take_hit"):
-			target.take_hit(attack_damage * GameState.race_data.melee_damage_mult
+			target.take_hit(attack_damage * GameState.race_data.melee_damage_mult * Attributes.melee_mult()
 					* Skills.one_handed_damage_mult() * stats.modifier("damage_dealt"), global_position)
 			hud.flash_hit()
 			Skills.add_xp("one_handed", 3.0)
@@ -197,7 +197,8 @@ func _update_casting(delta: float, blocked: bool) -> void:
 	var wants := Input.is_action_pressed("cast") and not blocked and spell != null
 	is_casting = wants and stats.try_use_magicka(spell.magicka_per_second * delta)
 	if is_casting:
-		var power := spell.power_per_second * delta * Skills.spell_power_mult(spell.skill) * stats.modifier("damage_dealt")
+		var power := spell.power_per_second * delta * Skills.spell_power_mult(spell.skill) \
+				* Attributes.spell_mult() * stats.modifier("damage_dealt")
 		match spell.effect:
 			SpellData.Effect.DAMAGE_STREAM:
 				_cast_damage_stream(spell, power)
@@ -316,13 +317,15 @@ func apply_save_data(data: Dictionary) -> void:
 
 # Race modifiers from res://races/*.tres (chosen on the character creation screen).
 func _apply_race(race: RaceData) -> void:
-	walk_speed *= race.move_speed_mult
-	sprint_speed *= race.move_speed_mult
+	walk_speed *= race.move_speed_mult * Attributes.move_speed_mult()
+	sprint_speed *= race.move_speed_mult * Attributes.move_speed_mult()
 	# Jump height grows with the square of jump speed, so take the square root.
 	jump_velocity *= sqrt(race.jump_height_mult)
-	stats.setup(race.health + Skills.bonus["health"],
-			race.stamina + Skills.bonus["stamina"],
-			race.magicka + Skills.bonus["magicka"])
+	stats.setup(race.health + Skills.bonus["health"] + Attributes.health_bonus(),
+			race.stamina + Skills.bonus["stamina"] + Attributes.stamina_bonus(),
+			race.magicka + Skills.bonus["magicka"] + Attributes.magicka_bonus())
+	stats.stamina_regen *= Attributes.stamina_regen_mult()
+	stats.magicka_regen *= Attributes.magicka_regen_mult()
 
 
 # Whatever the crosshair points at within reach: if it has an `interact(player)`

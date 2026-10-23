@@ -6,7 +6,7 @@ extends Node
 # Saves live in user://saves/<slot>.json. Find that folder with
 # Project > Open User Data Folder (in the editor).
 #
-# What is saved: current level, race, story flags, skills and character level,
+# What is saved: current level, race, story flags, attributes, skills and character level,
 # inventory and gold, known spells, faction reputation, play time, player
 # position/look direction and Health/Stamina/Magicka. Quest progress comes
 # from flags and items. Things not driven by flags (e.g. a door you left
@@ -96,6 +96,7 @@ func save_game(slot: String = QUICKSAVE) -> bool:
 		"flags": GameState.flags,
 		"play_time": GameState.play_time,
 		"skills": Skills.to_dict(),
+		"attributes": Attributes.to_dict(),
 		"inventory": Inventory.to_dict(),
 		"spells": Spellbook.to_dict(),
 		"reputation": Reputation.to_dict(),
@@ -132,6 +133,10 @@ func load_game(slot: String = "") -> bool:
 	GameState.set_race(load(data["race"]))
 	GameState.flags = data["flags"]
 	GameState.play_time = float(data.get("play_time", 0.0))
+	if data.has("attributes"):
+		Attributes.from_dict(data["attributes"])
+	else:
+		Attributes.reset(GameState.race_data)   # older saves: race values
 	if data.has("skills"):
 		Skills.from_dict(data["skills"])
 	else:

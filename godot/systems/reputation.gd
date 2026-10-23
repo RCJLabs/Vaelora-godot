@@ -5,7 +5,7 @@ extends Node
 #   Reputation.add("riverwatch", 10)       Reputation.value("riverwatch")
 #   Reputation.rank("riverwatch") -> "Friendly"
 # Values run from -100 to 100. Gains (not losses) are multiplied by the race's
-# reputation_gain_mult - Humans get on with people more easily.
+# reputation_gain_mult and by Presence - Humans get on with people more easily.
 #
 # Dialogue: "add_reputation": {"riverwatch": 10} as an action, and the
 # conditions "requires_reputation": {"riverwatch": 10} (at least) and
@@ -54,7 +54,7 @@ func add(id: String, amount: int) -> void:
 		push_error("Reputation: unknown faction '%s'. Is it in %s?" % [id, FACTIONS_FILE])
 		return
 	if amount > 0:
-		amount = roundi(amount * GameState.race_data.reputation_gain_mult)
+		amount = roundi(amount * GameState.race_data.reputation_gain_mult * Attributes.reputation_mult())
 	var old_rank := rank(id)
 	values[id] = clampi(value(id) + amount, -100, 100)
 	var name: String = factions[id]["name"]

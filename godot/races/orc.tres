@@ -12,6 +12,12 @@ magicka = 70
 move_speed_mult = 0.95
 jump_height_mult = 0.95
 skill_xp_mult = 1.0
+attribute_bonuses = {
+"strength": 3,
+"endurance": 2,
+"intellect": -2,
+"presence": -1
+}
 skill_bonuses = {
 "one_handed": 10
 }
