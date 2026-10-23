@@ -73,6 +73,7 @@ func begin() -> void:
 	Inventory.give_starting_gear()
 	Spellbook.reset(selected)
 	Reputation.reset()
+	WorldState.reset()
 	QuestLog.reset_baseline()
 	get_tree().change_scene_to_file(START_LEVEL)
 

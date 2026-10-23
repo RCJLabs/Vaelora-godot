@@ -107,6 +107,7 @@ func _ready() -> void:
 	var saved := SaveSystem.take_pending_player_state()
 	if not saved.is_empty():
 		apply_save_data(saved)
+	_arrive_at_marker(SaveSystem.take_pending_marker())
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -336,15 +337,30 @@ func get_save_data() -> Dictionary:
 
 
 func apply_save_data(data: Dictionary) -> void:
-	var p: Array = data["position"]
-	global_position = Vector3(p[0], p[1], p[2])
-	rotation.y = data["yaw"]
-	head.rotation.x = data["pitch"]
+	if data.has("position"):   # travelling between locations leaves it out
+		var p: Array = data["position"]
+		global_position = Vector3(p[0], p[1], p[2])
+		rotation.y = data["yaw"]
+		head.rotation.x = data["pitch"]
 	stats.health = data["health"]
 	stats.stamina = data["stamina"]
 	stats.magicka = data["magicka"]
 	effects.from_array(data.get("effects", []))
 	stats.changed.emit()
+
+
+# After going through a location door: stand at the named Marker3D in this level.
+func _arrive_at_marker(marker_name: String) -> void:
+	if marker_name == "" or owner == null:
+		return
+	var marker := owner.find_child(marker_name, true, false) as Node3D
+	if marker == null:
+		push_warning("No Marker3D called '%s' in this level - staying at the default spawn." % marker_name)
+		return
+	global_position = marker.global_position
+	rotation.y = marker.global_rotation.y
+	head.rotation.x = 0.0
+	spawn_position = global_position
 
 
 # Race modifiers from res://races/*.tres (chosen on the character creation screen).

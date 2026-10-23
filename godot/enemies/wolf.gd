@@ -44,6 +44,7 @@ var _blocked_time := 0.0    # how long a packmate has been in the way
 
 
 func _ready() -> void:
+	add_to_group("persistent")
 	home = global_position
 	_wander_target = home
 	stats.died.connect(_on_died)
@@ -53,6 +54,7 @@ func _ready() -> void:
 	for part in model.get_children():
 		if part is MeshInstance3D and part.name != "Eyes":
 			part.material_override = _fur
+	WorldState.restore(self)
 
 
 func _physics_process(delta: float) -> void:
@@ -264,13 +266,39 @@ func interact(_player: Node) -> void:
 
 
 func _on_died() -> void:
+	_become_corpse(true)
+	died.emit()
+
+
+func _become_corpse(animate: bool) -> void:
 	state = State.DEAD
 	collision_layer = 8   # layer 4 "loot": the E ray finds it, the player walks through it
 	collision_mask = 0
 	prompt = "Skin wolf"
 	velocity = Vector3.ZERO
 	$Model/Eyes.visible = false
-	var tween := create_tween().set_parallel()
-	tween.tween_property(model, "rotation:z", deg_to_rad(90), 0.4)
-	tween.tween_property(model, "position:y", -0.25, 0.4)
-	died.emit()
+	if animate:
+		var tween := create_tween().set_parallel()
+		tween.tween_property(model, "rotation:z", deg_to_rad(90), 0.4)
+		tween.tween_property(model, "position:y", -0.25, 0.4)
+	else:
+		model.rotation.z = deg_to_rad(90)
+		model.position.y = -0.25
+
+
+# --- WorldState: dead wolves stay dead, skinned ones are gone ---------------------
+
+func get_persist_state() -> Dictionary:
+	return {"dead": state == State.DEAD, "skinned": _skinned,
+			"position": [global_position.x, global_position.y, global_position.z]}
+
+
+func apply_persist_state(saved: Dictionary) -> void:
+	if not saved["dead"]:
+		return   # living wolves start back at their den
+	var p: Array = saved["position"]
+	global_position = Vector3(p[0], p[1], p[2])
+	_skinned = saved["skinned"]
+	_become_corpse(false)
+	if _skinned:
+		queue_free()

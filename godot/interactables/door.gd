@@ -17,6 +17,21 @@ var is_open := false
 var _tween: Tween
 
 
+func _ready() -> void:
+	add_to_group("persistent")
+	WorldState.restore(self)
+
+
+func get_persist_state() -> Dictionary:
+	return {"open": is_open}
+
+
+func apply_persist_state(saved: Dictionary) -> void:
+	is_open = saved["open"]
+	prompt = "Close door" if is_open else "Open door"
+	rotation.y = deg_to_rad(open_angle_degrees) if is_open else 0.0
+
+
 func interact(_player: Node) -> void:
 	is_open = not is_open
 	prompt = "Close door" if is_open else "Open door"

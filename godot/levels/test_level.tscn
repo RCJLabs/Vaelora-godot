@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3]
+[gd_scene load_steps=50 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://interactables/pickup.gd" id="9_pickup"]
 [ext_resource type="Script" path="res://levels/nav_region.gd" id="10_nav"]
 [ext_resource type="Script" path="res://levels/terrain_slot.gd" id="11_terrain"]
+[ext_resource type="Script" path="res://interactables/location_door.gd" id="12_door"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -185,6 +186,13 @@ roughness = 0.35
 [sub_resource type="BoxMesh" id="Mesh_dagger"]
 material = SubResource("Mat_dagger")
 size = Vector3(0.04, 0.015, 0.45)
+
+[sub_resource type="BoxMesh" id="Mesh_hatch"]
+material = SubResource("Mat_wood")
+size = Vector3(1.2, 0.06, 1.2)
+
+[sub_resource type="BoxShape3D" id="Shape_hatch"]
+size = Vector3(1.2, 0.3, 1.2)
 
 [node name="TestLevel" type="Node3D" groups=["navmesh_source"]]
 
@@ -398,6 +406,25 @@ mesh = SubResource("Mesh_dagger")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HuntingDagger"]
 shape = SubResource("Shape_pickup")
+
+[node name="CellarHatch" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.03, -2.2)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("12_door")
+target_scene = "res://levels/waystation_cellar.tscn"
+target_marker = "FromWaystation"
+destination_name = "the waystation cellar"
+verb = "Climb down into"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CellarHatch"]
+mesh = SubResource("Mesh_hatch")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CellarHatch"]
+shape = SubResource("Shape_hatch")
+
+[node name="CellarExit" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0, -0.6)
 
 [node name="TerrainSlot" type="Node3D" parent="."]
 script = ExtResource("11_terrain")

@@ -20,6 +20,7 @@ const QUICKSAVE := "quicksave"
 const MANUAL_SLOTS := ["slot_1", "slot_2", "slot_3", "slot_4", "slot_5"]
 
 var _pending_player_state: Dictionary = {}
+var _pending_marker := ""   # where to put the player after travelling
 
 
 func _ready() -> void:
@@ -82,6 +83,7 @@ func save_game(slot: String = QUICKSAVE) -> bool:
 		return false
 
 	var level := get_tree().current_scene
+	WorldState.collect()
 	var data := {
 		"version": SAVE_VERSION,
 		"meta": {
@@ -101,6 +103,7 @@ func save_game(slot: String = QUICKSAVE) -> bool:
 		"inventory": Inventory.to_dict(),
 		"spells": Spellbook.to_dict(),
 		"reputation": Reputation.to_dict(),
+		"world": WorldState.to_dict(),
 		"player": player.get_save_data(),
 	}
 	var file := FileAccess.open(_path(slot), FileAccess.WRITE)
@@ -154,11 +157,43 @@ func load_game(slot: String = "") -> bool:
 		Reputation.from_dict(data["reputation"])
 	else:
 		Reputation.reset()                     # versions 1-4 had no reputation
+	WorldState.from_dict(data.get("world", {}))   # versions 1-6: nothing remembered yet
 	QuestLog.silent = false
 	QuestLog.reset_baseline()
 	_pending_player_state = data["player"]
-	get_tree().change_scene_to_file(data["level"])
+	_pending_marker = ""
+	_change_scene_at_end_of_frame(data["level"])
 	return true
+
+
+# change_scene_to_file() takes the current level out of the tree immediately.
+# Travel and loading are usually triggered from inside the player's own update
+# (E on a door, dying), so the rest of that update would run on a player that's
+# no longer in the world. Deferring the change avoids that.
+func _change_scene_at_end_of_frame(scene_path: String) -> void:
+	get_tree().call_deferred("change_scene_to_file", scene_path)
+
+
+## Go to another location (used by location doors). The current location is
+## remembered, and the player keeps health, effects, items and so on, arriving
+## at the Marker3D named `marker` in the new scene.
+func travel(scene_path: String, marker: String) -> void:
+	var player := get_tree().get_first_node_in_group("player")
+	if player == null or not ResourceLoader.exists(scene_path):
+		push_error("SaveSystem.travel: can't go to %s" % scene_path)
+		return
+	WorldState.collect()
+	_pending_player_state = player.get_save_data()
+	_pending_player_state.erase("position")   # the marker decides where you appear
+	_pending_marker = marker
+	_change_scene_at_end_of_frame(scene_path)
+
+
+## Called by the player when it spawns: the Marker3D name to appear at, or "".
+func take_pending_marker() -> String:
+	var marker := _pending_marker
+	_pending_marker = ""
+	return marker
 
 
 ## Called by the player when it spawns. Returns {} unless a load is in progress.

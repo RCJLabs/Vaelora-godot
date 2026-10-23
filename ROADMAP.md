@@ -79,18 +79,19 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
 **Goal:** the character you build plays **noticeably differently**, and combat feels good.
 **Rough size:** 250–400 hours (≈ 3–5 months).
 
-### 1a. Foundations other features depend on (do first)
-- [ ] **Status effects:** one system for buffs and debuffs (poisoned, burning, bleeding,
+### 1a. Foundations other features depend on (do first) ✅ done, see `docs/godot-starter/FOUNDATIONS.md`
+- [x] **Status effects:** one system for buffs and debuffs (poisoned, burning, bleeding,
       blessed, exhausted…), with duration, stacking and HUD icons. Abilities, survival,
       hardcore and potions all use it.
-- [ ] **Equipment:** slots (main hand, off hand, head, body, hands, feet, rings, amulet),
+- [x] **Equipment:** slots (main hand, off hand, head, body, hands, feet, rings, amulet),
       weapon and armour data (damage, speed, reach, weight, armour rating), equip from the
       inventory.
-- [ ] **Attributes:** a small set of core attributes that drive derived stats. To decide
-      together (draft: Strength, Endurance, Agility, Intellect, Willpower, Presence).
-- [ ] **World state per location:** remember dead enemies, opened containers, taken items
+- [x] **Attributes:** a small set of core attributes that drive derived stats. Built with
+      the draft list (Strength, Endurance, Agility, Intellect, Willpower, Presence). Still
+      open to change.
+- [x] **World state per location:** remember dead enemies, opened containers, taken items
       and doors per region/interior. Needed before there's more than one scene.
-- [ ] **Region/interior transitions:** doors that load interiors and return you to where you
+- [x] **Region/interior transitions:** doors that load interiors and return you to where you
       left, keeping saves and quests consistent.
 
 ### 1b. Character creation depth (mechanics now, visuals later)
