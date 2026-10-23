@@ -37,3 +37,6 @@ extends Resource
 @export var lunge: float = 0.0
 ## Hits every enemy in reach instead of just the first.
 @export var cleave: bool = false
+## A status effect the hit can leave (e.g. "bleeding" for axes), and the chance (0-1).
+@export var applies_effect: String = ""
+@export var effect_chance: float = 0.0

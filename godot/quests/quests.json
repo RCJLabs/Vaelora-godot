@@ -94,5 +94,38 @@
 				"text": "I kept the shards for myself. Brannoc won't forget it, and neither will the garrison."
 			}
 		]
+	},
+	"bandit_camp": {
+		"title": "Thieves by the Fire",
+		"giver": "Brannoc, a scout of the Riverwatch garrison",
+		"description": "Bandits have made camp south-west of the old stone circle. The Riverwatch garrison pays a bounty to whoever clears them out.",
+		"started_when": {
+			"requires_flag": "heard_about_bandits"
+		},
+		"completed_when": {
+			"requires_flag": "bandit_bounty_paid"
+		},
+		"objectives": [
+			{
+				"text": "Clear the bandit camp south-west of the stone circle.",
+				"done_when": {
+					"requires_flag": "bandits_cleared"
+				}
+			},
+			{
+				"text": "Tell Brannoc.",
+				"done_when": {
+					"requires_flag": "bandit_bounty_paid"
+				}
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "bandit_bounty_paid"
+				},
+				"text": "The bandit camp is ash and bodies. Brannoc paid the garrison's bounty and promised the captain would hear of it."
+			}
+		]
 	}
 }

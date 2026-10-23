@@ -5,6 +5,12 @@
 	"steady_guard": { "name": "Steady Guard", "skill": "block", "level": 20, "description": "Blocking costs 25% less Stamina.", "modifiers": { "block_stamina": 0.75 } },
 	"deflection": { "name": "Deflection", "skill": "block", "level": 25, "description": "The parry window is 50% longer.", "modifiers": { "parry_window": 1.5 } },
 	"riposte": { "name": "Riposte", "skill": "block", "level": 35, "requires": "deflection", "description": "For 2 seconds after a parry, your attacks deal +50% damage.", "modifiers": { "riposte_damage": 1.5 } },
+	"barbarian_1": { "name": "Barbarian", "skill": "two_handed", "level": 15, "description": "+20% damage with two-handed weapons.", "modifiers": { "weapon_damage_two_handed": 1.2 } },
+	"reaver": { "name": "Reaver", "skill": "two_handed", "level": 25, "description": "Heavy attacks cost 25% less Stamina.", "modifiers": { "heavy_stamina": 0.75 } },
+	"barbarian_2": { "name": "Barbarian II", "skill": "two_handed", "level": 35, "requires": "barbarian_1", "description": "Another +20% damage with two-handed weapons.", "modifiers": { "weapon_damage_two_handed": 1.2 } },
+	"overdraw_1": { "name": "Overdraw", "skill": "archery", "level": 15, "description": "+20% bow damage.", "modifiers": { "weapon_damage_archery": 1.2 } },
+	"quick_draw": { "name": "Quick Draw", "skill": "archery", "level": 25, "description": "Bows draw 30% faster.", "modifiers": { "draw_time": 0.7 } },
+	"overdraw_2": { "name": "Overdraw II", "skill": "archery", "level": 35, "requires": "overdraw_1", "description": "Another +20% bow damage.", "modifiers": { "weapon_damage_archery": 1.2 } },
 
 	"wind_runner": { "name": "Wind Runner", "skill": "athletics", "level": 20, "description": "Sprinting costs 25% less Stamina.", "modifiers": { "sprint_stamina": 0.75 } },
 	"sure_footed": { "name": "Sure-Footed", "skill": "athletics", "level": 25, "description": "Falls do half damage.", "modifiers": { "fall_damage": 0.5 } },

@@ -5,7 +5,7 @@
 		"attributes": { "strength": 1, "endurance": 1 },
 		"skills": { "one_handed": 5, "athletics": 5 },
 		"gear": ["iron_sword", "leather_cuirass", "leather_boots", "iron_helmet"],
-		"items": { "minor_healing_potion": 1 },
+		"items": { "minor_healing_potion": 1, "wooden_shield": 1 },
 		"gold": 20,
 		"reputation": { "riverwatch": 10 },
 		"ability": "second_wind"
@@ -36,8 +36,8 @@
 		"description": "You grew up in the hills, reading tracks and weather. Wolves are no stranger to you.",
 		"attributes": { "agility": 1, "endurance": 1 },
 		"skills": { "athletics": 10 },
-		"gear": ["hunting_dagger", "leather_cuirass", "leather_boots"],
-		"items": { "wolf_pelt": 1 },
+		"gear": ["hunting_dagger", "leather_cuirass", "leather_boots", "hunting_bow"],
+		"items": { "wolf_pelt": 1, "arrow": 24 },
 		"gold": 25,
 		"ability": "hunters_focus"
 	},

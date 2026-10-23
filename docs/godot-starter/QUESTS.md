@@ -12,6 +12,7 @@ next objective), **Quest completed**.
 | Quest | Giver | Steps | Endings |
 |---|---|---|---|
 | The Greyfang Pack | Maren (waystation) | Kill the wolves NE of spawn → return to Maren | 50 gold + healing potion, +10 Riverwatch reputation |
+| Thieves by the Fire | Brannoc ("Anything else I should know about out here?") | Clear the bandit camp south-west of the stone circle → tell Brannoc | 75 gold, +10 Riverwatch reputation |
 | The Waking Stones | Brannoc (Riverwatch scout, between spawn and the stone circle) | Touch the crystal → find 3 rune shards (glowing, scattered around the circle) → bring them to Brannoc → **choose** | **Riverwatch:** 60 gold, +15 Riverwatch reputation. **The stones:** return the shards to the crystal yourself: +10 max Magicka, the crystal burns brighter. **Keep them:** −15 Riverwatch reputation, Brannoc goes cold |
 
 Brannoc has extra lines for Elves, and both quests remember what you did. Kill the wolves

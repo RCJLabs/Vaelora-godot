@@ -27,6 +27,11 @@ const POSES := {
 	"parry":          {"pos": Vector3(0.02, -0.02, -0.55), "rot": Vector3(20, 70, 35)},
 	"stagger":        {"pos": Vector3(0.42, -0.45, -0.45), "rot": Vector3(-20, -25, -40)},
 	"dodge":          {"pos": Vector3(0.32, -0.40, -0.45), "rot": Vector3(20, 10, -20)},
+	# Held low out of the way while a shield blocks.
+	"lowered":        {"pos": Vector3(0.36, -0.46, -0.45), "rot": Vector3(15, 5, -25)},
+	# Bows stand upright (the model's limbs are along Y, string towards the camera).
+	"bow_rest":       {"pos": Vector3(-0.22, -0.16, -0.85), "rot": Vector3(0, 0, 20)},
+	"bow_draw":       {"pos": Vector3(-0.10, -0.04, -0.78), "rot": Vector3(0, 0, 6)},
 }
 
 ## How much the weapon bobs while walking (metres), and how fast.
@@ -57,8 +62,8 @@ func _ready() -> void:
 ## > 1 starts slow and snaps (strikes), negative eases both ends.
 ## `arc` pushes the path out by that much halfway through (camera space metres).
 func go(pose: String, seconds: float, curve: float = -1.6, arc: Vector3 = Vector3.ZERO) -> void:
-	if not POSES.has(pose):
-		push_warning("WeaponAnimator: no pose called '%s'." % pose)
+	if not _poses().has(pose):
+		push_warning("%s: no pose called '%s'." % [name, pose])
 		pose = "rest"
 	_from = _current_pose()
 	_to = _pose_transform(pose)
@@ -109,8 +114,13 @@ func _current_pose() -> Transform3D:
 	return pose
 
 
+## The pose table. The shield's animator (shield_animator.gd) returns its own.
+func _poses() -> Dictionary:
+	return POSES
+
+
 func _pose_transform(pose: String) -> Transform3D:
-	var data: Dictionary = POSES[pose]
+	var data: Dictionary = _poses()[pose]
 	var rot: Vector3 = data["rot"]
 	var basis := Basis.from_euler(Vector3(deg_to_rad(rot.x), deg_to_rad(rot.y), deg_to_rad(rot.z)))
 	return Transform3D(basis, data["pos"])

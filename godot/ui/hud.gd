@@ -137,6 +137,11 @@ func notify(text: String) -> void:
 	tween.tween_callback(label.queue_free)
 
 
+## Free text for the left hand (shield, two-handed weapon, bow), above the Magicka bar.
+func set_left_hand(text: String) -> void:
+	spell_label.text = text
+
+
 ## What the left hand is doing (a spell, or Block), above the Magicka bar.
 func set_spell(spell: SpellData, known_count: int) -> void:
 	var hand := spell.display_name if spell else "Block"

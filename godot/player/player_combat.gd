@@ -1,24 +1,32 @@
 class_name PlayerCombat
 extends Node
 
-# The player's melee: light combos, charged heavy attacks, blocking, timed
-# parries, dodging and being staggered. A child of the Player called "Combat".
+# The player's fighting: light combos, charged heavy attacks, blocking, timed
+# parries, shield bashes, bows, dodging and being staggered. A child of the
+# Player called "Combat".
 #
 #   Left click (tap)        light attack; tap again during a swing to combo
 #   Left click (hold)       charge a heavy attack, release to strike
-#   Right click (hold)      block, when the left hand isn't holding a spell
-#                           (Q cycles Block / spells). Block just before a hit to parry.
+#                           (bow: hold to draw, release to loose an arrow)
+#   Right click (hold)      what the left hand does (left_hand()):
+#                             free hand     block, or cast the ready spell (Q cycles)
+#                             shield        block (left click while blocking = bash)
+#                             two-handed    block with the weapon
+#                             bow           aim (zoom)
+#                           Block just before a hit to parry.
 #   Alt                     dodge in the direction you're moving (backwards if none)
 #
 # Every swing is an AttackData (windup -> active -> recovery). Enemies call
 # receive_attack() when their attack lands, and it decides hit / blocked /
-# parried / dodged. Numbers are drafts: the constants below and each weapon's
-# .tres are the places to tune the feel.
+# parried / dodged. Targets can answer a hit with "blocked" or "parried"
+# (humanoid enemies do), which bounces the swing. Numbers are drafts: the
+# constants below and each weapon's .tres are the places to tune the feel.
 
 signal attack_landed(target: Node, damage: float)
 signal defended(result: String)   # "blocked", "parried", "dodged", "guard_broken"
 
-enum State { READY, WINDUP, ACTIVE, RECOVERY, CHARGING, BLOCKING, DODGING, STAGGERED }
+enum State { READY, WINDUP, ACTIVE, RECOVERY, CHARGING, BLOCKING, DODGING, STAGGERED, DRAWING }
+enum Hand { BLOCK, SPELL, SHIELD, TWO_HANDED, BOW }
 
 ## Holding attack longer than this starts a heavy attack instead of a light one.
 const TAP_TIME := 0.2
@@ -41,17 +49,33 @@ const DODGE_COOLDOWN := 0.2
 const STAGGER_TIME := 0.6
 const GUARD_BREAK_TIME := 1.0
 const RIPOSTE_TIME := 2.0
+## When an enemy blocks your swing, you're stuck this long; when it parries, you stagger.
+const RECOIL_TIME := 0.35
+const PARRIED_TIME := 1.0
+## Bows: arrows fired below this much draw are cancelled; weakest arrow at that draw.
+const MIN_DRAW := 0.15
+const BOW_RECOVERY := 0.3
 ## Engine slow-down when a swing connects ("hit stop"), in real seconds.
 const HIT_STOP_LIGHT := 0.045
 const HIT_STOP_HEAVY := 0.09
 const HIT_STOP_PARRY := 0.12
+## The space a swing reaches: width (wider when cleaving), height, and how far
+## below the view line its centre sits (metres). Reach comes from the weapon.
+const SWING_WIDTH := 0.9
+const SWING_WIDTH_CLEAVE := 1.8
+const SWING_HEIGHT := 1.4
+const SWING_DROP := 0.25
+const ARROW_SCENE := preload("res://combat/arrow.tscn")
 
 var state := State.READY
 var player: CharacterBody3D
-var animator: WeaponAnimator
+var animator: WeaponAnimator        # right hand: the weapon
+var off_animator: WeaponAnimator    # left hand: the shield, when there is one
 var attack_cast: ShapeCast3D
 
-# From the equipped weapon (set_weapon).
+# From the equipped weapon (set_weapon) and shield (set_shield).
+var main_item: ItemData
+var shield_item: ItemData
 var base_damage := 4.0
 var base_stamina_cost := 5.0
 var weapon_skill := "one_handed"
@@ -62,7 +86,8 @@ var block_reduction := 0.3
 var current_attack: AttackData
 var combo_index := 0              # which light attack comes next
 var is_heavy := false
-var charge := 0.0                 # 0..1 for the heavy attack being charged / swung
+var is_bash := false
+var charge := 0.0                 # 0..1 for the heavy attack being charged / bow being drawn
 
 var _state_time := 0.0
 var _press_held := false          # attack is held, not yet a tap or a charge
@@ -81,6 +106,7 @@ var _hit_stops := 0
 func _ready() -> void:
 	player = get_parent()
 	animator = player.get_node("Head/Camera3D/Weapon")
+	off_animator = player.get_node("Head/Camera3D/OffHand")
 	attack_cast = player.get_node("Head/Camera3D/AttackCast")
 	# The player's @onready vars aren't set yet (children are ready first).
 	player.get_node("Stats").poise_broken.connect(func(): stagger(STAGGER_TIME))
@@ -88,6 +114,7 @@ func _ready() -> void:
 
 ## Takes the moveset from a weapon item, or fists when `item` is null.
 func set_weapon(item: ItemData) -> void:
+	main_item = item
 	if item:
 		base_damage = item.damage
 		base_stamina_cost = item.stamina_cost
@@ -95,7 +122,7 @@ func set_weapon(item: ItemData) -> void:
 		block_reduction = item.block_reduction
 		light_attacks = item.light_attacks.duplicate()
 		heavy_attack = item.heavy_attack
-		if light_attacks.is_empty():
+		if light_attacks.is_empty() and item.weapon_kind == ItemData.WeaponKind.MELEE:
 			light_attacks = [_simple_attack(item.attack_cooldown)]
 		attack_cast.target_position = Vector3(0, 0, -item.reach)
 	else:
@@ -107,8 +134,36 @@ func set_weapon(item: ItemData) -> void:
 		heavy_attack = _fist_heavy()
 		attack_cast.target_position = Vector3(0, 0, -player.unarmed_reach)
 	combo_index = 0
+	_to_ready()
+	animator.go(_rest_pose(), 0.2)
+
+
+## The off-hand shield, or null.
+func set_shield(item: ItemData) -> void:
+	shield_item = item
+	off_animator.visible = item != null
 	if state != State.READY:
 		_to_ready()
+
+
+## What the left hand does with right-click right now.
+func left_hand() -> Hand:
+	if main_item and main_item.weapon_kind == ItemData.WeaponKind.BOW:
+		return Hand.BOW
+	if main_item and main_item.two_handed:
+		return Hand.TWO_HANDED
+	if shield_item:
+		return Hand.SHIELD
+	return Hand.SPELL if Spellbook.current() else Hand.BLOCK
+
+
+## Spells need a free left hand, and no swing or block in progress.
+func can_cast() -> bool:
+	return left_hand() == Hand.SPELL and state == State.READY
+
+
+func is_bow() -> bool:
+	return left_hand() == Hand.BOW
 
 
 # --- input (called by the player) ---------------------------------------------------
@@ -116,15 +171,23 @@ func set_weapon(item: ItemData) -> void:
 func attack_pressed() -> void:
 	match state:
 		State.READY:
-			_press_held = true
-			_press_time = 0.0
+			if is_bow():
+				_start_drawing()
+			else:
+				_press_held = true
+				_press_time = 0.0
+		State.BLOCKING:
+			if left_hand() == Hand.SHIELD and shield_item.bash_attack:
+				_start_bash()
 		State.WINDUP, State.ACTIVE, State.RECOVERY:
-			_queued = not is_heavy   # heavy attacks don't combo
+			_queued = not is_heavy and not is_bash and not is_bow()   # heavies and bashes don't combo
 
 
 func attack_released() -> void:
 	if state == State.CHARGING:
 		_start_attack(heavy_attack, true)
+	elif state == State.DRAWING:
+		_loose_arrow()
 	elif _press_held and state == State.READY:
 		_start_light()
 	_press_held = false
@@ -140,7 +203,9 @@ func dodge_pressed(input_dir: Vector2) -> void:
 	_set_state(State.DODGING)
 	_iframes_left = DODGE_IFRAMES
 	_press_held = false
-	animator.go("dodge", 0.08, 0.5)
+	animator.go("dodge" if not is_bow() else "bow_rest", 0.08, 0.5)
+	if shield_item:
+		off_animator.go("dodge", 0.08, 0.5)
 	Sfx.play("dodge", -4.0)
 	player.camera_kick(Vector3(0.0, 0.0, -signf(input_dir.x) * 4.0))
 
@@ -176,18 +241,23 @@ func _physics_process(delta: float) -> void:
 			charge = minf(_state_time / maxf(heavy_attack.charge_time, 0.01), 1.0)
 			animator.set_charge(charge)
 			player.hud.set_charge(charge)
+		State.DRAWING:
+			var draw_time := maxf(main_item.draw_time * player.stats.modifier("draw_time"), 0.05)
+			charge = minf(_state_time / draw_time, 1.0)
+			animator.set_charge(charge * 0.5)
+			player.hud.set_charge(charge)
 		State.WINDUP:
 			if _state_time >= current_attack.windup:
 				_begin_active()
 		State.ACTIVE:
 			_sweep()
-			if _state_time >= current_attack.active:
+			if state == State.ACTIVE and _state_time >= current_attack.active:
 				_begin_recovery()
 		State.RECOVERY:
-			if _queued and not is_heavy and _state_time >= current_attack.recovery * COMBO_CANCEL:
+			if _queued and _state_time >= current_attack.recovery * COMBO_CANCEL:
 				_queued = false
 				_start_light()
-			elif Input.is_action_pressed("cast") and Spellbook.current() == null:
+			elif _wants_block() and not is_bow():
 				_update_block()   # blocking cancels the rest of a recovery
 			elif _state_time >= current_attack.recovery:
 				_to_ready()
@@ -216,7 +286,7 @@ func _start_light() -> void:
 
 
 func _start_charging() -> void:
-	if player.stats.stamina < _stamina_cost(heavy_attack):
+	if player.stats.stamina < _stamina_cost(heavy_attack, true):
 		player.hud.flash_tired()
 		return
 	_set_state(State.CHARGING)
@@ -226,14 +296,29 @@ func _start_charging() -> void:
 	animator.go(heavy_attack.windup_pose, maxf(heavy_attack.charge_time * 0.5, 0.15), 0.5)
 
 
+func _start_bash() -> void:
+	var bash: AttackData = shield_item.bash_attack
+	if not player.stats.try_use_stamina(shield_item.stamina_cost * bash.stamina_mult * player.stats.modifier("attack_stamina")):
+		player.hud.flash_tired()
+		return
+	current_attack = bash
+	is_heavy = false
+	is_bash = true
+	charge = 0.0
+	_queued = false
+	_set_state(State.WINDUP)
+	off_animator.go(bash.windup_pose, bash.windup, 0.5)
+
+
 ## Returns false if there isn't enough stamina.
 func _start_attack(attack: AttackData, heavy: bool) -> bool:
-	if not player.stats.try_use_stamina(_stamina_cost(attack)):
+	if not player.stats.try_use_stamina(_stamina_cost(attack, heavy)):
 		player.hud.flash_tired()
 		_to_ready()
 		return false
 	current_attack = attack
 	is_heavy = heavy
+	is_bash = false
 	if not heavy:
 		charge = 0.0
 	_queued = false
@@ -248,53 +333,120 @@ func _start_attack(attack: AttackData, heavy: bool) -> bool:
 func _begin_active() -> void:
 	_set_state(State.ACTIVE)
 	_hit_this_swing = []
-	animator.go(current_attack.strike_pose, current_attack.active, 2.2, Vector3(0.0, 0.05, -0.18))
-	var side := -1.0 if current_attack.windup_pose.ends_with("right") else 1.0
-	player.camera_kick(Vector3(-1.2 if is_heavy else -0.6, side * 0.8, side * 1.5))
-	Sfx.play("swing_heavy" if is_heavy else "swing_light", -6.0)
+	if is_bash:
+		off_animator.go(current_attack.strike_pose, current_attack.active, 2.0)
+		player.camera_kick(Vector3(-0.8, 0.0, 0.0))
+		Sfx.play("swing_light", -8.0)
+	else:
+		animator.go(current_attack.strike_pose, current_attack.active, 2.2, Vector3(0.0, 0.05, -0.18))
+		var side := -1.0 if current_attack.windup_pose.ends_with("right") else 1.0
+		player.camera_kick(Vector3(-1.2 if is_heavy else -0.6, side * 0.8, side * 1.5))
+		Sfx.play("swing_heavy" if is_heavy or (main_item and main_item.two_handed) else "swing_light", -6.0)
 	if current_attack.lunge > 0.0:
 		player.lunge(current_attack.lunge, current_attack.active)
 
 
 func _begin_recovery() -> void:
 	_set_state(State.RECOVERY)
-	animator.go("rest", current_attack.recovery, -1.6)
+	if is_bash:
+		off_animator.go("block" if _wants_block() else "rest", current_attack.recovery, -1.6)
+	else:
+		animator.go(_rest_pose(), current_attack.recovery, -1.6)
 
 
 # Every frame of the active window: anything newly in reach gets hit once.
 func _sweep() -> void:
 	if not current_attack.cleave and not _hit_this_swing.is_empty():
 		return
-	attack_cast.force_shapecast_update()
-	for i in attack_cast.get_collision_count():
-		var target := attack_cast.get_collider(i)
-		if target == null or target in _hit_this_swing or not target.has_method("take_hit"):
+	for target in _targets_in_reach():
+		if target in _hit_this_swing or not target.has_method("take_hit"):
 			continue
 		_hit_this_swing.append(target)
 		_land_hit(target)
-		if not current_attack.cleave:
-			return
+		if state != State.ACTIVE or not current_attack.cleave:
+			return   # bounced off a block, or one target per swing
+
+
+## Enemies inside the swing's reach (a box in front of the camera, reaching a
+## little lower than the view so low enemies like wolves are easy to hit),
+## nearest to the crosshair first. Cleaving swings use a wider box.
+func _targets_in_reach() -> Array:
+	var camera: Camera3D = player.camera
+	var reach := -attack_cast.target_position.z
+	var box := BoxShape3D.new()
+	box.size = Vector3(SWING_WIDTH_CLEAVE if current_attack.cleave else SWING_WIDTH, SWING_HEIGHT, reach)
+	var basis := camera.global_transform.basis
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = box
+	query.collision_mask = attack_cast.collision_mask
+	query.transform = Transform3D(basis, camera.global_position - basis.z * reach * 0.5 - basis.y * SWING_DROP)
+	var found := []
+	for hit in player.get_world_3d().direct_space_state.intersect_shape(query, 16):
+		if not hit["collider"] in found:
+			found.append(hit["collider"])
+	# Closest to the line through the crosshair wins.
+	var eye := camera.global_position
+	var forward := -basis.z
+	found.sort_custom(func(a, b):
+		var da: Vector3 = a.global_position - eye
+		var db: Vector3 = b.global_position - eye
+		return (da - forward * da.dot(forward)).length() < (db - forward * db.dot(forward)).length())
+	return found
 
 
 func _land_hit(target: Node) -> void:
 	var stats: Stats = player.stats
-	var damage := base_damage * current_attack.damage_mult * _charge_mult() \
-			* GameState.race_data.melee_damage_mult * Attributes.melee_mult() \
-			* Skills.weapon_damage_mult(weapon_skill) * stats.modifier("damage_dealt") \
-			* stats.modifier("weapon_damage_" + weapon_skill)
+	var skill := "block" if is_bash else weapon_skill
+	var damage := (shield_item.damage if is_bash else base_damage) * current_attack.damage_mult * _charge_mult()
+	damage *= Attributes.melee_mult() * stats.modifier("damage_dealt")
+	if not is_bash:
+		damage *= GameState.race_data.melee_damage_mult * Skills.weapon_damage_mult(skill) \
+				* stats.modifier("weapon_damage_" + skill)
 	if _riposte_left > 0.0:
 		damage *= stats.modifier("riposte_damage")
 	var poise := current_attack.poise_damage * _charge_mult()
-	target.take_hit(damage, player.global_position, current_attack.knockback, poise)
-	Skills.add_xp(weapon_skill, 5.0 if is_heavy else 3.0)
+	var result = target.take_hit(damage, player.global_position, current_attack.knockback, poise, is_heavy)
+	if result == "blocked" or result == "parried":
+		_bounced(result == "parried")
+		return
+	if current_attack.applies_effect != "" and randf() < current_attack.effect_chance and target.has_method("add_effect"):
+		target.add_effect(current_attack.applies_effect)
+	Skills.add_xp(skill, 5.0 if is_heavy else 3.0)
 	player.hud.flash_hit()
+	_show_target_health(target)
+	(off_animator if is_bash else animator).kick(Vector3(0.0, 0.0, 0.04))
+	Sfx.play("hit_heavy" if is_heavy or is_bash else "hit_flesh")
+	hit_stop(HIT_STOP_HEAVY if is_heavy else HIT_STOP_LIGHT)
+	attack_landed.emit(target, damage)
+
+
+# The enemy blocked (you're stuck a moment) or parried (you stagger).
+func _bounced(parried: bool) -> void:
+	_show_target_health(null)
+	if parried:
+		Sfx.play("parry", -2.0)
+		hit_stop(HIT_STOP_PARRY)
+		stagger(PARRIED_TIME)
+		return
+	Sfx.play("block", -2.0)
+	hit_stop(HIT_STOP_LIGHT)
+	(off_animator if is_bash else animator).kick(Vector3(0.0, 0.04, 0.1))
+	player.camera_kick(Vector3(1.0, 0.0, 0.0))
+	_set_state(State.RECOVERY)
+	_queued = false
+	combo_index = 0
+	var recoil := AttackData.new()
+	recoil.recovery = current_attack.recovery + RECOIL_TIME
+	current_attack = recoil
+	animator.go(_rest_pose(), recoil.recovery, -1.6)
+
+
+func _show_target_health(target: Node) -> void:
+	if target == null:
+		return
 	var target_stats = target.get("stats")
 	if target_stats is Stats:
 		player.hud.show_enemy_health(target_stats)
-	animator.kick(Vector3(0.0, 0.0, 0.04))
-	Sfx.play("hit_heavy" if is_heavy else "hit_flesh")
-	hit_stop(HIT_STOP_HEAVY if is_heavy else HIT_STOP_LIGHT)
-	attack_landed.emit(target, damage)
 
 
 # A partly charged heavy does 60% of its damage, a full one 100%.
@@ -302,23 +454,88 @@ func _charge_mult() -> float:
 	return lerpf(0.6, 1.0, charge) if is_heavy else 1.0
 
 
-func _stamina_cost(attack: AttackData) -> float:
-	return base_stamina_cost * attack.stamina_mult * player.stats.modifier("attack_stamina")
+func _stamina_cost(attack: AttackData, heavy: bool = false) -> float:
+	var cost: float = base_stamina_cost * attack.stamina_mult * player.stats.modifier("attack_stamina")
+	if heavy:
+		cost *= player.stats.modifier("heavy_stamina")
+	return cost
+
+
+# --- bows ----------------------------------------------------------------------------
+
+func _start_drawing() -> void:
+	if Inventory.count(main_item.ammo) <= 0:
+		player.hud.flash_tired()
+		player.hud.notify("No arrows")
+		return
+	_set_state(State.DRAWING)
+	charge = 0.0
+	animator.go("bow_draw", main_item.draw_time * player.stats.modifier("draw_time"), 0.6)
+
+
+func _loose_arrow() -> void:
+	if charge < MIN_DRAW or not player.stats.try_use_stamina(base_stamina_cost * player.stats.modifier("attack_stamina")):
+		_to_ready()
+		return
+	Inventory.remove(main_item.ammo, 1)
+	var power := lerpf(0.3, 1.0, (charge - MIN_DRAW) / (1.0 - MIN_DRAW))
+	var stats: Stats = player.stats
+	var arrow: Arrow = ARROW_SCENE.instantiate()
+	arrow.shooter = player
+	arrow.damage = base_damage * power * Skills.weapon_damage_mult("archery") \
+			* stats.modifier("damage_dealt") * stats.modifier("weapon_damage_archery")
+	arrow.poise_damage = lerpf(3.0, 15.0, power)
+	arrow.hit.connect(_on_arrow_hit)
+	player.get_parent().add_child(arrow)
+	var camera: Camera3D = player.camera
+	var forward := -camera.global_transform.basis.z
+	arrow.launch(camera.global_position + forward * 0.6, forward, main_item.arrow_speed * lerpf(0.55, 1.0, power))
+	Sfx.play("bow_release", -3.0)
+	player.camera_kick(Vector3(-0.8, 0.0, 0.0))
+	animator.kick(Vector3(0.0, 0.0, 0.05))
+	var recovery := AttackData.new()
+	recovery.recovery = BOW_RECOVERY
+	current_attack = recovery
+	is_heavy = false
+	charge = 0.0
+	player.hud.set_charge(0.0)
+	animator.set_charge(0.0)
+	_set_state(State.RECOVERY)
+	animator.go("bow_rest", BOW_RECOVERY)
+
+
+func _on_arrow_hit(target: Node, _damage: float) -> void:
+	Skills.add_xp("archery", 4.0)
+	player.hud.flash_hit()
+	_show_target_health(target)
 
 
 # --- defending ------------------------------------------------------------------------
 
+func _wants_block() -> bool:
+	return Input.is_action_pressed("cast") and left_hand() in [Hand.BLOCK, Hand.SHIELD, Hand.TWO_HANDED]
+
+
 func _update_block() -> void:
-	var wants := Input.is_action_pressed("cast") and Spellbook.current() == null
+	var wants := _wants_block()
 	if wants and state != State.BLOCKING:
 		_set_state(State.BLOCKING)
-		animator.go("block", 0.1, 0.5)
+		if left_hand() == Hand.SHIELD:
+			off_animator.go("block", 0.08, 0.5)
+			animator.go("lowered", 0.12)
+		else:
+			animator.go("block", 0.1, 0.5)
 	elif not wants and state == State.BLOCKING:
 		_to_ready()
 
 
 func is_blocking() -> bool:
 	return state == State.BLOCKING
+
+
+## Share of a hit the current block stops (before the Block skill).
+func guard_share() -> float:
+	return shield_item.block_reduction if left_hand() == Hand.SHIELD else block_reduction
 
 
 ## Enemies call this when their attack lands. Returns "hit", "blocked",
@@ -334,7 +551,7 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 		if _state_time <= PARRY_WINDOW * stats.modifier("parry_window"):
 			_parried()
 			return "parried"
-		var share := Skills.block_share(block_reduction)
+		var share := Skills.block_share(guard_share())
 		var stopped := damage * share
 		var cost := stopped * BLOCK_STAMINA_PER_DAMAGE * stats.modifier("block_stamina")
 		Skills.add_xp("block", stopped / 4.0)
@@ -347,7 +564,7 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 			return "guard_broken"
 		stats.use_stamina(cost)
 		stats.take_damage(damage - stopped)
-		animator.kick(Vector3(0.0, -0.03, 0.06))
+		_guard_animator().kick(Vector3(0.0, -0.03, 0.06))
 		player.hud.flash_block(false)
 		Sfx.play("block", -3.0)
 		player.camera_kick(Vector3(-1.0, 0.0, 0.0))
@@ -364,11 +581,18 @@ func _parried() -> void:
 	player.stats.stamina = minf(player.stats.stamina + 10.0, player.stats.max_stamina)
 	player.stats.changed.emit()
 	_riposte_left = RIPOSTE_TIME
-	animator.go("parry", 0.06, 0.4)
+	if left_hand() == Hand.SHIELD:
+		off_animator.go("bash", 0.06, 0.4)
+	else:
+		animator.go("parry", 0.06, 0.4)
 	player.hud.flash_block(true)
 	Sfx.play("parry")
 	hit_stop(HIT_STOP_PARRY)
 	defended.emit("parried")
+
+
+func _guard_animator() -> WeaponAnimator:
+	return off_animator if left_hand() == Hand.SHIELD else animator
 
 
 # Is the attacker roughly in front of the camera?
@@ -394,7 +618,9 @@ func stagger(seconds: float) -> void:
 	charge = 0.0
 	animator.set_charge(0.0)
 	player.hud.set_charge(0.0)
-	animator.go("stagger", 0.1, 0.5)
+	animator.go("stagger" if not is_bow() else "bow_rest", 0.1, 0.5)
+	if shield_item:
+		off_animator.go("stagger", 0.1, 0.5)
 
 
 # --- for the player's movement ------------------------------------------------------
@@ -403,7 +629,7 @@ func stagger(seconds: float) -> void:
 func move_mult() -> float:
 	match state:
 		State.BLOCKING: return BLOCK_MOVE_MULT
-		State.CHARGING: return 0.6
+		State.CHARGING, State.DRAWING: return 0.6
 		State.WINDUP, State.ACTIVE: return 0.75
 		State.STAGGERED: return 0.25
 	return 1.0
@@ -439,6 +665,10 @@ func hit_stop(seconds: float) -> void:
 		Engine.time_scale = 1.0
 
 
+func _rest_pose() -> String:
+	return "bow_rest" if is_bow() else "rest"
+
+
 func _set_state(new_state: State) -> void:
 	state = new_state
 	_state_time = 0.0
@@ -448,12 +678,15 @@ func _to_ready() -> void:
 	var was_blocking := state == State.BLOCKING
 	_set_state(State.READY)
 	is_heavy = false
+	is_bash = false
 	charge = 0.0
 	_queued = false
 	animator.set_charge(0.0)
 	player.hud.set_charge(0.0)
-	if animator.pose_name() != "rest":
-		animator.go("rest", 0.15 if was_blocking else 0.25)
+	if animator.pose_name() != _rest_pose():
+		animator.go(_rest_pose(), 0.15 if was_blocking else 0.25)
+	if shield_item and off_animator.pose_name() != "rest":
+		off_animator.go("rest", 0.15)
 
 
 # Weapons without a light combo in their .tres: one swing sized to the old cooldown.

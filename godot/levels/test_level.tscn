@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3]
+[gd_scene load_steps=64 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -12,6 +12,11 @@
 [ext_resource type="Script" path="res://levels/nav_region.gd" id="10_nav"]
 [ext_resource type="Script" path="res://levels/terrain_slot.gd" id="11_terrain"]
 [ext_resource type="Script" path="res://interactables/location_door.gd" id="12_door"]
+[ext_resource type="PackedScene" path="res://enemies/bandit.tscn" id="13_bandit"]
+[ext_resource type="Script" path="res://interactables/loot_container.gd" id="14_container"]
+[ext_resource type="Script" path="res://props/flicker_light.gd" id="15_flicker"]
+[ext_resource type="PackedScene" path="res://items/models/iron_axe_fp.tscn" id="16_axe"]
+[ext_resource type="PackedScene" path="res://items/models/iron_mace_fp.tscn" id="17_mace"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -193,6 +198,40 @@ size = Vector3(1.2, 0.06, 1.2)
 
 [sub_resource type="BoxShape3D" id="Shape_hatch"]
 size = Vector3(1.2, 0.3, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="Mat_canvas"]
+albedo_color = Color(0.45, 0.4, 0.3, 1)
+roughness = 1.0
+
+[sub_resource type="PrismMesh" id="Mesh_tent"]
+material = SubResource("Mat_canvas")
+size = Vector3(2.4, 1.7, 2.8)
+
+[sub_resource type="BoxShape3D" id="Shape_tent"]
+size = Vector3(2.0, 1.7, 2.8)
+
+[sub_resource type="StandardMaterial3D" id="Mat_log"]
+albedo_color = Color(0.25, 0.16, 0.1, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="Mesh_log"]
+material = SubResource("Mat_log")
+size = Vector3(1.0, 0.14, 0.14)
+
+[sub_resource type="StandardMaterial3D" id="Mat_flame"]
+shading_mode = 0
+albedo_color = Color(1, 0.55, 0.15, 1)
+
+[sub_resource type="PrismMesh" id="Mesh_flame"]
+material = SubResource("Mat_flame")
+size = Vector3(0.35, 0.55, 0.35)
+
+[sub_resource type="BoxMesh" id="Mesh_camp_chest"]
+material = SubResource("Mat_log")
+size = Vector3(0.9, 0.6, 0.55)
+
+[sub_resource type="BoxShape3D" id="Shape_camp_chest"]
+size = Vector3(0.9, 0.6, 0.55)
 
 [node name="TestLevel" type="Node3D" groups=["navmesh_source"]]
 
@@ -432,6 +471,97 @@ script = ExtResource("11_terrain")
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavMesh")
 script = ExtResource("10_nav")
+
+[node name="BanditCamp" type="Node3D" parent="."]
+script = ExtResource("7_pack")
+cleared_flag = "bandits_cleared"
+cleared_message = "The bandit camp falls silent."
+
+[node name="Bandit1" parent="BanditCamp" instance=ExtResource("13_bandit")]
+transform = Transform3D(-0.93969, 0, 0.34202, 0, 1, 0, -0.34202, 0, -0.93969, -35.5, 0, -32.2)
+gold = 12
+loot = {
+"iron_axe": 1
+}
+weapon_scene = ExtResource("16_axe")
+
+[node name="Bandit2" parent="BanditCamp" instance=ExtResource("13_bandit")]
+transform = Transform3D(-0.93969, 0, -0.34202, 0, 1, 0, 0.34202, 0, -0.93969, -32.0, 0, -32.8)
+gold = 9
+loot = {
+"minor_healing_potion": 1
+}
+
+[node name="Leader" parent="BanditCamp" instance=ExtResource("13_bandit")]
+transform = Transform3D(-1.00000, 0, -0.00000, 0, 1, 0, 0.00000, 0, -1.00000, -33.7, 0, -36.2)
+display_name = "Bandit Leader"
+attack_damage = 13.0
+guard_chance = 0.7
+parry_chance = 0.3
+max_health = 90.0
+gold = 30
+loot = {
+"iron_mace": 1
+}
+weapon_scene = ExtResource("17_mace")
+
+[node name="TentA" type="StaticBody3D" parent="."]
+transform = Transform3D(0.86603, 0, -0.50000, 0, 1, 0, 0.50000, 0, 0.86603, -37.5, 0.85, -37.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="TentA"]
+mesh = SubResource("Mesh_tent")
+
+[node name="Shape" type="CollisionShape3D" parent="TentA"]
+shape = SubResource("Shape_tent")
+
+[node name="TentB" type="StaticBody3D" parent="."]
+transform = Transform3D(0.90631, 0, 0.42262, 0, 1, 0, -0.42262, 0, 0.90631, -30.4, 0.85, -37.4)
+
+[node name="Mesh" type="MeshInstance3D" parent="TentB"]
+mesh = SubResource("Mesh_tent")
+
+[node name="Shape" type="CollisionShape3D" parent="TentB"]
+shape = SubResource("Shape_tent")
+
+[node name="Campfire" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.0, 0.0, -34.0)
+
+[node name="LogA" type="MeshInstance3D" parent="Campfire"]
+transform = Transform3D(0.707, 0, -0.707, 0, 1, 0, 0.707, 0, 0.707, 0, 0.07, 0)
+mesh = SubResource("Mesh_log")
+
+[node name="LogB" type="MeshInstance3D" parent="Campfire"]
+transform = Transform3D(0.707, 0, 0.707, 0, 1, 0, -0.707, 0, 0.707, 0, 0.07, 0)
+mesh = SubResource("Mesh_log")
+
+[node name="Flame" type="MeshInstance3D" parent="Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_flame")
+
+[node name="Light" type="OmniLight3D" parent="Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+light_color = Color(1, 0.6, 0.3, 1)
+light_energy = 2.5
+omni_range = 9.0
+script = ExtResource("15_flicker")
+
+[node name="BanditChest" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.4, 0.3, -38.6)
+script = ExtResource("14_container")
+container_name = "bandit chest"
+contents = {
+"arrow": 12,
+"minor_healing_potion": 2,
+"steel_greatsword": 1
+}
+gold = 40
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditChest"]
+mesh = SubResource("Mesh_camp_chest")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditChest"]
+shape = SubResource("Shape_camp_chest")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)

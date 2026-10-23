@@ -74,6 +74,20 @@
 					"requires_background": "scholar"
 				},
 				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
 					"text": "Not my concern.",
 					"next": "end"
 				}
@@ -97,6 +111,20 @@
 						"riverwatch": 10
 					},
 					"requires_gold": 30
+				},
+				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
 				},
 				{
 					"text": "Not yet.",
@@ -178,6 +206,20 @@
 						"riverwatch": 10
 					},
 					"requires_gold": 30
+				},
+				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
 				},
 				{
 					"text": "Still looking.",
@@ -263,6 +305,20 @@
 					"requires_gold": 30
 				},
 				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -280,6 +336,20 @@
 					"requires_gold": 30
 				},
 				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -295,6 +365,20 @@
 						"riverwatch": 10
 					},
 					"requires_gold": 30
+				},
+				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
 				},
 				{
 					"text": "Goodbye.",
@@ -322,6 +406,12 @@
 		"after_kept": {
 			"text": "You. I've nothing to say to you, and nothing to sell. The garrison remembers.",
 			"choices": [
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
 				{
 					"text": "Goodbye.",
 					"next": "end"
@@ -410,6 +500,47 @@
 				},
 				{
 					"text": "Another time.",
+					"next": "end"
+				}
+			]
+		},
+		"bandits_info": {
+			"text": "Bandits. They've a camp south-west of the stones, three of them at least. The one in charge swings a mace and knows how to keep his guard up. The garrison pays a bounty if someone clears them out.",
+			"set_flag": "heard_about_bandits",
+			"choices": [
+				{
+					"text": "I'll deal with them.",
+					"next": "end"
+				},
+				{
+					"text": "Any advice?",
+					"next": "bandit_advice"
+				},
+				{
+					"text": "Not my fight.",
+					"next": "end"
+				}
+			]
+		},
+		"bandit_advice": {
+			"text": "They're not wolves. They'll put a blade up when you swing, so lean on them: a heavy blow or a shield to the face breaks a guard. And watch for the glint before they swing.",
+			"choices": [
+				{
+					"text": "I'll remember that.",
+					"next": "end"
+				}
+			]
+		},
+		"bandit_bounty": {
+			"text": "All three? Then the south road can breathe again. Here - the garrison's bounty, and I'll see your name goes in the captain's book.",
+			"set_flag": "bandit_bounty_paid",
+			"give_gold": 75,
+			"add_reputation": {
+				"riverwatch": 10
+			},
+			"choices": [
+				{
+					"text": "Glad to help.",
 					"next": "end"
 				}
 			]

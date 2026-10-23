@@ -20,7 +20,15 @@ signal level_bonus_spent(stat: String, amount: int)
 const SKILLS := {
 	"one_handed": {
 		"name": "One-Handed",
-		"description": "+1% sword damage per level. Improves when your swings land.",
+		"description": "+1% damage with swords, axes, maces and daggers per level. Improves when your swings land.",
+	},
+	"two_handed": {
+		"name": "Two-Handed",
+		"description": "+1% greatsword damage per level. Improves when your swings land.",
+	},
+	"archery": {
+		"name": "Archery",
+		"description": "+1% bow damage per level. Improves when your arrows hit.",
 	},
 	"block": {
 		"name": "Block",

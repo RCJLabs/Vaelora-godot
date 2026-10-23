@@ -19,8 +19,9 @@ extends CharacterBody3D
 #   └── HUD (instance of ui/hud.tscn)
 #
 # Controls: WASD move, Shift sprint, Space jump, mouse look, E interact,
-# left-click attack (hold for a heavy attack), hold right-click to cast the
-# ready spell or block, Q switch spell / Block, Alt dodge, Z race power,
+# left-click attack (hold for a heavy attack; bows: hold to draw), hold
+# right-click for the left hand (cast the ready spell, block, shield, or aim a
+# bow), Q switch spell / Block, Alt dodge, Z race power,
 # X background power, F5 quicksave,
 # F9 load the latest save, Esc pause menu.
 
@@ -58,6 +59,7 @@ extends CharacterBody3D
 @onready var effects: StatusEffects = $StatusEffects
 @onready var attack_cast: ShapeCast3D = $Head/Camera3D/AttackCast
 @onready var weapon: WeaponAnimator = $Head/Camera3D/Weapon
+@onready var off_hand: WeaponAnimator = $Head/Camera3D/OffHand
 @onready var combat: PlayerCombat = $Combat
 @onready var spell_cast: ShapeCast3D = $Head/Camera3D/SpellCast
 @onready var spell_orb: MeshInstance3D = $Head/Camera3D/SpellHand/Orb
@@ -97,6 +99,7 @@ func _ready() -> void:
 	Inventory.item_added.connect(_on_item_added)
 	Inventory.gold_added.connect(_on_gold_added)
 	Inventory.equipment_changed.connect(_apply_equipment)
+	Inventory.changed.connect(func(): if combat.is_bow(): _on_spell_changed())   # arrow count
 	_apply_equipment()
 	Spellbook.changed.connect(_on_spell_changed)
 	Spellbook.learned.connect(_on_spell_learned)
@@ -208,7 +211,7 @@ func _physics_process(delta: float) -> void:
 # the ready spell runs every physics frame.
 func _update_casting(delta: float, blocked: bool) -> void:
 	var spell := Spellbook.current()
-	var wants := Input.is_action_pressed("cast") and not blocked and spell != null and not combat.is_busy()
+	var wants := Input.is_action_pressed("cast") and not blocked and spell != null and combat.can_cast()
 	var cost := 0.0
 	if spell:
 		cost = spell.magicka_per_second * delta * stats.modifier("spell_cost") * stats.modifier("spell_cost_" + spell.skill)
@@ -250,12 +253,22 @@ func _cast_damage_stream(spell: SpellData, damage: float) -> void:
 
 func _on_spell_changed() -> void:
 	var spell := Spellbook.current()
-	spell_orb.visible = spell != null
-	spell_light.visible = spell != null
-	if spell:
+	var hand_free := combat.left_hand() == PlayerCombat.Hand.SPELL
+	spell_orb.visible = hand_free
+	spell_light.visible = hand_free
+	if spell and _orb_material:
 		_orb_material.albedo_color = spell.color
 		spell_light.light_color = spell.color
-	hud.set_spell(spell, Spellbook.known.size())
+	match combat.left_hand():
+		PlayerCombat.Hand.SHIELD:
+			hud.set_left_hand("Shield   (left-click while blocking to bash)")
+		PlayerCombat.Hand.TWO_HANDED:
+			hud.set_left_hand("Two-handed   (right-click blocks)")
+		PlayerCombat.Hand.BOW:
+			var ammo := Inventory.equipped_item("main_hand").ammo
+			hud.set_left_hand("%d %ss   (right-click to aim)" % [Inventory.count(ammo), Inventory.get_item(ammo).display_name.to_lower()])
+		_:
+			hud.set_spell(spell, Spellbook.known.size())
 
 
 func _on_spell_learned(spell: SpellData) -> void:
@@ -271,7 +284,15 @@ func _apply_equipment() -> void:
 	if weapon_item and weapon_item.held_scene:
 		weapon.add_child(weapon_item.held_scene.instantiate())
 	combat.set_weapon(weapon_item)
+	var shield := Inventory.equipped_item("off_hand")
+	for child in off_hand.get_children():
+		off_hand.remove_child(child)
+		child.queue_free()
+	if shield and shield.held_scene:
+		off_hand.add_child(shield.held_scene.instantiate())
+	combat.set_shield(shield)
 	stats.armor_rating = Inventory.armor_total()
+	_on_spell_changed()   # what the left hand shows depends on the gear
 
 
 ## Enemies call this when their attack reaches you. See PlayerCombat.receive_attack.
@@ -296,6 +317,9 @@ func lunge(speed: float, seconds: float) -> void:
 
 
 func _process(delta: float) -> void:
+	# Bows: hold right-click to aim (zoom in).
+	var aiming := combat.is_bow() and Input.is_action_pressed("cast") and can_fight()
+	camera.fov = lerpf(camera.fov, Settings.fov * (0.6 if aiming else 1.0), minf(delta * 10.0, 1.0))
 	_camera_kick = _camera_kick.lerp(Vector3.ZERO, minf(delta * 12.0, 1.0))
 	camera.rotation = Vector3(deg_to_rad(_camera_kick.x), deg_to_rad(_camera_kick.y), deg_to_rad(_camera_kick.z))
 

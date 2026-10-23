@@ -1,12 +1,14 @@
-# Combat & the Greyfang Wolves
+# Combat, Weapons, Wolves & Bandits
 
 ## Fighting (Phase 1c)
 
 | Input | What it does |
 |---|---|
-| **Left-click** (tap) | Light attack. Tap again during a swing to **combo**: the sword and dagger each have 3 swings, and the third hits harder |
+| **Left-click** (tap) | Light attack. Tap again during a swing to **combo** (2–3 swings depending on the weapon; the last hits harder) |
 | **Left-click** (hold) | Charge a **heavy attack** (the crosshair grows, then turns gold at full charge). Release to strike. A partial charge does 60–100% |
-| **Right-click** (hold) | **Block**, when your left hand is free. **Q** cycles the left hand through Block → each spell → Block. The HUD shows which, above the Magicka bar |
+| **Right-click** (hold) | Whatever your **left hand** does (shown above the Magicka bar): with a free hand, **block** or cast the ready spell (**Q** cycles Block → each spell → Block); with a **shield**, block with it; with a **two-handed** weapon, block with it; with a **bow**, aim (zoom) |
+| Left-click while blocking with a shield | **Shield bash**: breaks guards, big poise damage |
+| Bow: hold / release left-click | **Draw** (the crosshair grows), release to loose an arrow. Short draws are weaker; under 15% drawn cancels. Uses one Arrow |
 | Right-click just before a hit | **Parry**: no damage, the attacker staggers, you get 10 Stamina back, and a gold "Parry!" appears |
 | **Alt** | **Dodge** in the direction you're moving (backwards if standing still). Nothing can hit you for the first 0.22 s |
 
@@ -34,8 +36,30 @@ The Hunting Dagger is faster and weaker (a thrust, two slashes, and a lunging he
 Global feel (parry window, dodge speed, hit stop, combo timing) is in the constants at the
 top of `player/player_combat.gd`.
 
+### Weapons
+
+| Weapon | Hands / skill | Damage | Combo | Feel | Where |
+|---|---|---|---|---|---|
+| Iron Sword | 1H / One-Handed | 15 | 3 | Balanced and quick; blocks 60% | Most starting kits |
+| Hunting Dagger | 1H / One-Handed | 9 | 3 | Fastest; ×2.5 lunging heavy stab; blocks 40% | Wolf den |
+| Iron Axe | 1H / One-Handed | 14 | 3 | Every hit can cause **Bleeding** (25%, the finisher 40%, the heavy 75%) | Bandit's body |
+| Iron Mace | 1H / One-Handed | 16 | 2 | Slow, huge **poise** damage: two hits stagger a wolf; heavy 40 poise | Bandit Leader's body |
+| Steel Greatsword | **2H** / Two-Handed | 26 | 3 | Slow, wide swings that **cleave** (hit everyone in front); blocks 70% | Bandit camp chest |
+| Wooden Shield | Off hand / Block | bash 5 | – | Blocks **85%**, +8 armour, bash breaks guards. Takes your casting hand | Soldiers start with one; equip it from Tab → Inventory |
+| Hunting Bow | **2H** / Archery | 16 at full draw | – | 0.8 s draw, arrows drop with distance. Can't block | Hunters start with one (and 24 arrows); Maren sells one (60 gold) and arrows (10 for 10) |
+
+- **Two-handed weapons and shields** can't be used together: equipping one takes off the
+  other. While holding a two-handed weapon or a shield, you can't cast spells.
+- **New skills:** **Two-Handed** and **Archery** (+1% damage per level), with perks:
+  Barbarian / Reaver (heavy attacks −25% Stamina) / Barbarian II, and Overdraw / Quick Draw
+  (draw 30% faster) / Overdraw II.
+- **Reach** is a box in front of you (0.9 m wide, 1.8 m when cleaving, and a little lower
+  than your view, so wolves are easy to hit). A normal swing hits the enemy nearest the
+  crosshair; cleaving swings hit everyone in it.
+
 ### Defending
-- **Blocking** stops 60% of a hit with a sword, 40% with a dagger, 30% unarmed. The Block
+- **Blocking** stops 60% of a hit with a sword, 40% with a dagger, 30% unarmed, 85% with a
+  shield. The Block
   skill adds 0.5% per level, up to 95%. Each point of damage stopped costs **1.5 Stamina**.
   Run out and your **guard breaks**: you take the rest of the hit and stagger for 1 s.
 - Blocks only work against attacks from within **75°** of where you're looking. You move at
@@ -62,7 +86,10 @@ blocking costs 25% less Stamina), **Deflection** (25, 50% longer parry window), 
 (35, after Deflection: +50% damage for 2 s after a parry).
 
 ### Making something hittable
-Give it `take_hit(damage, from_position, knockback = 5.0, poise_damage = 0.0)`. For the top
+Give it `take_hit(damage, from_position, knockback = 5.0, poise_damage = 0.0, heavy = false) -> String`
+and return `"hit"`, or `"blocked"` / `"parried"` to make the player's swing bounce (that's
+how bandits guard). `heavy` is true for heavy attacks and shield bashes. Spells call it
+with no knockback or poise damage. For the top
 health bar, give it a `Stats` child and a `stats` variable pointing to it. Put it on physics
 layer 3 **enemies**. To make an enemy's attack blockable, call
 `player.receive_attack(damage, self, poise_damage)` when it lands, instead of damaging the
@@ -128,6 +155,34 @@ Dead wolves can be skinned with **E** for a Wolf Pelt. When the last wolf dies, 
 (`wolf_quest_done`). It's saved like any flag, so the pack stays dead after loading.
 **Partly killed packs are not saved:** reload and all three are back.
 
+## Bandits
+
+A camp **south-west of the stone circle** (around x −34, z −34): two bandits (axe, sword)
+and a **Bandit Leader** (mace), two tents, a campfire and a chest. Brannoc can tell you about
+them ("Anything else I should know about out here?") and pays a **75 gold bounty** and +10
+Riverwatch reputation when the camp is cleared (quest *Thieves by the Fire*).
+
+They fight with the same swing system you do (`enemies/bandit.gd`, swings in
+`enemies/bandit.tscn`):
+- **Telegraphs:** the sword arm winds up and the blade **glints**, white for a normal swing
+  (0.45–0.55 s) and **red for a heavy overhead** (0.95 s, ×1.8 damage, staggers if it lands).
+  Block, parry or sidestep.
+- **They guard.** When you start a swing they often raise their weapon. A guarded light hit
+  **bounces** (you lose a moment, they take 15%). **Heavy attacks and shield bashes break the
+  guard** and stagger them, as does running their stamina out. **Spells go straight
+  through** a guard.
+- **The leader parries** about 30% of guarded hits: your weapon is thrown back and you
+  stagger for a second.
+- **Parrying a bandit's swing** staggers it for about 1.4 s: free hits.
+- **One at a time:** only one bandit swings at you at once; the others circle and guard.
+  Without that, three swinging together was close to unwinnable for a normal player.
+- 60 Health each (the leader 90), slower than your sprint, and they give up 28 m from camp.
+- **Search the bodies** (E) for gold and their weapons. They stay dead and searched.
+
+Tested with two bots: one that only swings (dies with the leader on about 15 HP, so one
+potion would have turned it) and one that blocks and parries every telegraphed swing
+(clears the camp with 57/100 Health). Real players will land somewhere in between.
+
 ## Pathfinding
 
 Wolves find their way **around** walls, rocks and buildings instead of running straight at
@@ -163,8 +218,8 @@ Named in **Project Settings → Layer Names → 3D Physics** so the Inspector sh
 |---|---|---|---|
 | 1 | world | ground, walls, props, NPCs | player, wolves, interaction ray |
 | 2 | player | player | wolves |
-| 3 | enemies | wolves | player, other wolves, sword |
-| 4 | loot | pickups, dead wolves | interaction ray only (the player walks through) |
+| 3 | enemies | wolves, bandits | player, other enemies, weapons, arrows |
+| 4 | loot | pickups, dead wolves and bandits | interaction ray only (the player walks through) |
 
 ## Known limits
 
@@ -173,6 +228,8 @@ Named in **Project Settings → Layer Names → 3D Physics** so the Inspector sh
 - Animation is procedural poses (see above), and the sounds are synthesised placeholders
   from `tools/make_placeholder_sfx.py`. To replace one, drop a recording with the same name
   in `assets/sfx/` (`.wav` or `.ogg`).
-- Only wolves to fight, so far. Wolves can't block or parry you.
+- Wolves can't block or parry you; bandits can. Bandits don't use bows or chase you into
+  interiors yet.
+- Arrows can't be picked back up after they land.
 - The wolves and sword are placeholder boxes until real models arrive (see ASSETS.md).
 - Mouse and keyboard only (gamepad is later in 1c).

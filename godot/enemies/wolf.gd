@@ -309,11 +309,12 @@ func _new_pose_tween() -> Tween:
 	return _pose_tween
 
 
-## Called by the player's weapons (knockback and poise from the attack) and
-## spells (knockback 0, no poise damage).
-func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0, poise_damage: float = 0.0) -> void:
+## Called by the player's weapons and arrows (knockback and poise from the
+## attack) and spells (knockback 0, no poise damage).
+## Returns "hit" (wolves can't block; humanoid enemies can answer "blocked" / "parried").
+func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0, poise_damage: float = 0.0, _heavy: bool = false) -> String:
 	if state == State.DEAD:
-		return
+		return "hit"
 	if knockback > 0.0:
 		var push := global_position - from_position
 		push.y = 0.0
@@ -323,6 +324,7 @@ func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0, poi
 	stats.take_damage(damage)
 	if state != State.DEAD and not stats.take_poise_damage(poise_damage) and knockback > 0.0 and state != State.STAGGER:
 		_flinch()
+	return "hit"
 
 
 # A small jolt on every melee hit that doesn't stagger.

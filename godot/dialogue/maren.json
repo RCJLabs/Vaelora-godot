@@ -82,6 +82,25 @@
 					"requires_item": "wolf_pelt"
 				},
 				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -207,6 +226,44 @@
 				},
 				{
 					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"arrows": {
+			"text": "Fletched them myself over the winter. Straight enough, mostly.",
+			"choices": [
+				{
+					"text": "Ten more. (10 gold)",
+					"next": "arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"bow": {
+			"text": "Good yew, and the string's new. My eyes aren't what they were for hunting. Look after it.",
+			"choices": [
+				{
+					"text": "I'll need arrows for it. (10 for 10 gold)",
+					"next": "arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Thank you.",
 					"next": "end"
 				}
 			]

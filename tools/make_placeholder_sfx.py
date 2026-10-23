@@ -125,6 +125,18 @@ def main():
     knock = np.sin(2 * np.pi * 300 * t) * envelope(t, 0.001, 0.03)
     save("wolf_bite", snap + knock, 0.8)
 
+    # Bow release: the string's twang (a decaying pluck with a little buzz) and a whip of air.
+    t = seconds(0.4)
+    pluck = sum(np.sin(2 * np.pi * f * t) * a for f, a in [(196, 1.0), (392, 0.5), (590, 0.25)])
+    twang = pluck * envelope(t, 0.001, 0.08)
+    air = highpass(rng.standard_normal(len(t)), 1500.0) * envelope(t, 0.002, 0.03)
+    save("bow_release", twang + 0.5 * air, 0.7)
+
+    # Arrow hitting wood or earth: a short knock.
+    t = seconds(0.15)
+    knock = np.sin(2 * np.pi * (520 * t - 900 * t ** 2)) * envelope(t, 0.0005, 0.025)
+    save("arrow_thud", knock + 0.4 * lowpass(rng.standard_normal(len(t)), 3000.0) * envelope(t, 0.0005, 0.01), 0.7)
+
     # Out of stamina / guard broken: a dull low thud.
     t = seconds(0.3)
     save("guard_break", np.sin(2 * np.pi * (120 * t - 60 * t ** 2)) * envelope(t, 0.002, 0.09)

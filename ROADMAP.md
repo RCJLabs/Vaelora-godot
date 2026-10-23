@@ -112,8 +112,11 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
 ### 1c. Avowed-style combat (first-person) (core done, see `docs/godot-starter/COMBAT.md`)
 - [x] Light attacks with **combos**, charged **heavy** attacks, **block**, timed **parry**,
       **dodge** with i-frames (moments of invulnerability), **stagger/poise**.
-- [ ] **Weapon types:** sword, axe, mace, dagger, two-hander, shield, bow. Each has its own
-      feel and its own skill.
+- [x] **Weapon types:** sword, axe, mace, dagger, two-hander, shield, bow. Each has its own
+      feel and its own skill. (Axe bleeds, mace staggers, greatsword cleaves, shield blocks
+      85% and bashes, bow draws and drops. Skills: One-Handed, Two-Handed, Block, Archery.)
+- [x] **A humanoid enemy that fights back:** bandits telegraph, guard (heavies break it),
+      parry (the leader), and take turns attacking. Bandit camp + bounty quest.
 - [ ] **Spells:** cast styles (stream, bolt, area, ward), dual-casting, 6–8 spells across 3 schools.
 - [x] **First-person animation pipeline:** bought first-person arm/weapon animation packs, or
       procedural animation as a placeholder. Decide early; it shapes everything above.

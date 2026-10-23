@@ -37,8 +37,9 @@ the safest plan is to **sculpt around this area, not under it**:
 | Brannoc | -6, -3 |
 | Stone circle (radius ~5) and rune shards (~8 m around it) | -11, -9 |
 | Wolf den (they wander ~4 m) | 8, -30 |
+| Bandit camp (tents, fire, chest; the bandits fight within ~28 m) | -34, -34 |
 
-Roughly **x −25 to 20, z −40 to 10** is the "village". Keep it flat, or gently rolling and
+Roughly **x −40 to 20, z −40 to 10** is the "village" (the bandit camp is the south-west corner). Keep it flat, or gently rolling and
 then nudge props up or down to sit on the ground.
 
 ## Step 1: Create the terrain scene

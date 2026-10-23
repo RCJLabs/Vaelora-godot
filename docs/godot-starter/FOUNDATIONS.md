@@ -63,6 +63,7 @@ Weapons and armour are items with extra stats (`items/*.tres`, type Weapon or Ar
 | Leather Cuirass | Body | 20 armour | Starting kit |
 | Leather Boots | Feet | 6 armour | Starting kit |
 | Iron Helmet | Head | 12 armour | The chest in the waystation cellar |
+| Axe, mace, greatsword, wooden shield, hunting bow | | See COMBAT.md → Weapons | Bandits, Maren, starting kits |
 | (no weapon) | — | Fists: 4 damage, 0.45 s, reach 1.3 m | — |
 
 - **Tab → Inventory:** select an item → **Equip / Unequip**. Equipped items say
@@ -71,8 +72,8 @@ Weapons and armour are items with extra stats (`items/*.tres`, type Weapon or Ar
   all three pieces (38) mean −28%.
 - **First-person models:** each weapon has a `Held Scene` (`items/models/*_fp.tscn`). Swap
   in a real sword model later by changing that one field.
-- **Slots:** main hand, off hand, head, body, hands, feet, ring, amulet (only main hand,
-  head, body and feet have items so far).
+- **Slots:** main hand, off hand, head, body, hands, feet, ring, amulet (hands, ring and
+  amulet have no items yet). Shields go in the off hand.
 - Equipped items stay in your inventory. Selling or dropping the last one unequips it.
 - Old saves from before equipment get the starting kit.
 

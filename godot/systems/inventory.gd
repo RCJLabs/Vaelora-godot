@@ -23,6 +23,12 @@ const ITEM_FILES := [
 	"res://items/leather_cuirass.tres",
 	"res://items/leather_boots.tres",
 	"res://items/iron_helmet.tres",
+	"res://items/iron_axe.tres",
+	"res://items/iron_mace.tres",
+	"res://items/steel_greatsword.tres",
+	"res://items/wooden_shield.tres",
+	"res://items/hunting_bow.tres",
+	"res://items/arrow.tres",
 ]
 
 ## What every new character starts with (equipped). Backgrounds will change this.
@@ -102,6 +108,11 @@ func equip(id: String) -> bool:
 	var item := get_item(id)
 	if item == null or not item.is_equipment() or count(id) == 0:
 		return false
+	# Two-handed weapons and shields can't be used together.
+	if item.slot_name() == "main_hand" and item.two_handed:
+		equipped.erase("off_hand")
+	elif item.slot_name() == "off_hand" and equipped_item("main_hand") and equipped_item("main_hand").two_handed:
+		equipped.erase("main_hand")
 	equipped[item.slot_name()] = id
 	equipment_changed.emit()
 	changed.emit()

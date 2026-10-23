@@ -7,6 +7,7 @@ extends Resource
 enum Type { MISC, CONSUMABLE, WEAPON, ARMOR }
 ## Where armour is worn. Weapons always go in MAIN_HAND.
 enum Slot { NONE, MAIN_HAND, OFF_HAND, HEAD, BODY, HANDS, FEET, RING, AMULET }
+enum WeaponKind { MELEE, BOW }
 
 ## Unique name used in code, dialogue JSON and save files. Don't change it once
 ## saves exist.
@@ -25,6 +26,10 @@ enum Slot { NONE, MAIN_HAND, OFF_HAND, HEAD, BODY, HANDS, FEET, RING, AMULET }
 @export var restore_magicka: float = 0.0
 
 @export_group("Weapon")
+@export var weapon_kind: WeaponKind = WeaponKind.MELEE
+## Needs both hands: unequips the off hand (shield), and no spells while it's out.
+@export var two_handed: bool = false
+## Weapons: per hit (bows: at full draw). Shields: the bash.
 @export var damage: float = 0.0
 ## Only used when Light Attacks is empty: roughly the seconds between swings.
 @export var attack_cooldown: float = 0.55
@@ -39,8 +44,20 @@ enum Slot { NONE, MAIN_HAND, OFF_HAND, HEAD, BODY, HANDS, FEET, RING, AMULET }
 @export var light_attacks: Array[AttackData] = []
 ## Hold attack to charge, release to strike.
 @export var heavy_attack: AttackData
-## Share of a hit's damage stopped while blocking with this weapon (0-1).
+
+@export_group("Bow")
+## Seconds to draw fully. Releasing earlier fires a weaker arrow (from 30% drawn).
+@export var draw_time: float = 0.8
+## Metres per second at full draw.
+@export var arrow_speed: float = 45.0
+## Item used up per shot.
+@export var ammo: String = "arrow"
+
+@export_group("Blocking")
+## Share of a hit's damage stopped while blocking with this (0-1). Shields block best.
 @export var block_reduction: float = 0.6
+## Shields only: left-click while blocking.
+@export var bash_attack: AttackData
 
 @export_group("Armor")
 @export var slot: Slot = Slot.NONE
