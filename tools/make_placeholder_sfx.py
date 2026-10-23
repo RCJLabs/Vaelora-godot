@@ -198,6 +198,7 @@ def main():
 
     footsteps()
     ambience()
+    dungeon()
 
 
 def footsteps():
@@ -284,6 +285,54 @@ def ambience():
         add_wrapped(fire, int(rng.random() * n), burst * (0.15 + 0.6 * size))
     fire = fire - band(fire, 1.0, 120.0, rate) * 0.5   # take the boom out of the crackles
     save("campfire_crackle", fire, 0.5, loop=True, rate=rate)
+
+
+def dungeon():
+    """Traps, levers, gates and the stone guardian."""
+    # Pressure plate: a stony click.
+    t = seconds(0.12)
+    save("trap_click", highpass(rng.standard_normal(len(t)), 1800.0) * envelope(t, 0.0005, 0.01)
+         + np.sin(2 * np.pi * 900 * t) * envelope(t, 0.0005, 0.02), 0.6)
+
+    # Darts leaving the wall: a quick hiss.
+    t = seconds(0.25)
+    save("dart_fire", highpass(lowpass(rng.standard_normal(len(t)), 7000.0), 2500.0) * envelope(t, 0.003, 0.05), 0.5)
+
+    # Lever: a wooden clack with a short metal scrape.
+    t = seconds(0.35)
+    clack = ring(t, [(260, 1.0), (590, 0.5)], 0.05) * envelope(t, 0.001, 0.04)
+    scrape = highpass(lowpass(rng.standard_normal(len(t)), 4000.0), 1200.0) * envelope(t, 0.02, 0.08) * 0.4
+    save("lever", clack + scrape, 0.6)
+
+    # Gate: a long grinding rumble.
+    t = seconds(1.6)
+    grind = lowpass(rng.standard_normal(len(t)), 260.0) * (0.7 + 0.3 * np.sin(2 * np.pi * 11 * t))
+    chain = highpass(rng.standard_normal(len(t)), 2500.0) * (rng.random(len(t)) > 0.97) * 0.6
+    save("gate_rumble", (grind * 3.0 + chain) * np.clip(t / 0.15, 0, 1) * np.clip((1.6 - t) / 0.3, 0, 1), 0.7)
+
+    # Guardian waking: a deep groan of stone.
+    t = seconds(1.4)
+    phase = np.cumsum(55 + 25 * np.sin(2 * np.pi * 0.7 * t)) / RATE
+    groan = lowpass(2.0 * (phase % 1.0) - 1.0, 400.0)
+    save("guardian_wake", (groan + lowpass(rng.standard_normal(len(t)), 300.0) * 2.0) * envelope(t, 0.3, 0.6), 0.8)
+
+    # Guardian winding up: grinding stone rising.
+    t = seconds(0.9)
+    save("guardian_windup", lowpass(rng.standard_normal(len(t)), 300 + 900 * t / 0.9) * np.clip(t / 0.7, 0, 1) ** 2
+         * np.exp(-np.maximum(t - 0.8, 0) / 0.05), 0.6)
+
+    # Slam: a huge thump with rubble.
+    t = seconds(1.0)
+    boom = np.sin(2 * np.pi * (70 * t - 40 * t ** 2)) * envelope(t, 0.004, 0.25)
+    rubble = lowpass(rng.standard_normal(len(t)) * (rng.random(len(t)) > 0.8), 1800.0) * envelope(t, 0.01, 0.3)
+    save("guardian_slam", boom * 1.5 + rubble * 2.0, 0.95)
+
+    # Crumbling: a long fall of rubble.
+    t = seconds(2.2)
+    clatter = lowpass(rng.standard_normal(len(t)) * (rng.random(len(t)) > 0.9), 2200.0) * envelope(t, 0.05, 0.8)
+    thumps = sum(np.sin(2 * np.pi * 80 * np.maximum(t - d, 0)) * envelope(np.maximum(t - d, 0), 0.003, 0.08) * (t > d)
+                 for d in [0.05, 0.4, 0.75, 1.1])
+    save("guardian_crumble", clatter * 2.5 + thumps, 0.85)
 
 
 if __name__ == "__main__":

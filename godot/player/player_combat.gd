@@ -617,6 +617,11 @@ func _facing(attacker: Node3D) -> bool:
 	return rad_to_deg(forward.angle_to(to_attacker)) <= BLOCK_ANGLE
 
 
+## True during a dodge's invulnerable frames (traps check this for unblockable hits).
+func is_invulnerable() -> bool:
+	return _iframes_left > 0.0
+
+
 func stagger(seconds: float) -> void:
 	if player.stats.is_dead:
 		return

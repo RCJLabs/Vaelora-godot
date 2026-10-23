@@ -428,11 +428,11 @@ func _recalculate_stats(first_time: bool = false) -> void:
 # method it's usable. Its optional `prompt` property is shown on screen.
 func _update_interaction() -> void:
 	var target: Object = interact_ray.get_collider() if interact_ray.is_colliding() else null
-	if target == null or not target.has_method("interact"):
-		hud.set_prompt("")
+	var prompt = target.get("prompt") if target else null
+	if target == null or not target.has_method("interact") or prompt == "":
+		hud.set_prompt("")   # an empty prompt means "nothing to do here right now"
 		return
 
-	var prompt = target.get("prompt")
 	hud.set_prompt("[%s] %s" % [InputHints.label("interact"), prompt if prompt else "Use"])
 	if Input.is_action_just_pressed("interact"):
 		target.interact(self)

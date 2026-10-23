@@ -143,7 +143,10 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       plus humanoid NPC models and animations. Terrain3D landscape for the region.
 - [ ] **One outdoor region** (~1 km²), with a small town or village, a road, wilderness,
       landmarks and secrets.
-- [ ] **One or two dungeons** (interiors): traps, a puzzle, a boss.
+- [~] **One or two dungeons** (interiors): traps, a puzzle, a boss. (Toolkit done with a
+      greybox test dungeon: pressure plates, darts, swinging blades, levers and gates, and a
+      two-phase Stone Guardian boss. See DUNGEONS.md. The real dungeons wait on the region
+      and the lore.)
 - [ ] **A short main questline** (3–5 quests) with a real choice that changes the ending,
       plus **5–8 side quests** and **2–3 factions** that react to you.
 - [~] **3–5 enemy types:** wolves (existing), bandits (human, uses the combat system),
@@ -165,7 +168,8 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       rebinding done: Settings → Controls; title screen done, with a placeholder name;
       Low–Ultra graphics presets, render scale and an FPS counter done, but not yet profiled
       on real hardware; Report a Bug copies diagnostics, with no public link to send them to yet.)
-- [ ] **itch.io page:** screenshots, a trailer, a feedback form.
+- [ ] **itch.io page:** screenshots, a trailer, a feedback form. (CI now exports Windows and
+      Linux builds; see TESTING.md. Uploading to itch.io isn't automated yet.)
 
 **Done when:** five people who aren't you finish the demo and say what they'd want next.
 

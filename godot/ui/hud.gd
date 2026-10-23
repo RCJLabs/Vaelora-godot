@@ -21,6 +21,8 @@ var _stats: Stats
 var _enemy_stats: Stats
 var _enemy_bar_time_left := 0.0
 var _effects: StatusEffects
+var _boss_stats: Stats
+var _boss_bar: ProgressBar
 
 
 func _process(delta: float) -> void:
@@ -35,6 +37,8 @@ func _process(delta: float) -> void:
 			enemy_bar.max_value = _enemy_stats.max_health
 			enemy_bar.value = _enemy_stats.health
 		enemy_bar.visible = _enemy_bar_time_left > 0.0
+	if _boss_bar and _boss_bar.visible and is_instance_valid(_boss_stats):
+		_boss_bar.value = _boss_stats.health
 
 
 ## Connects the bars to a Stats node so they update by themselves.
@@ -147,6 +151,8 @@ func flash_block(parried: bool) -> void:
 
 ## Shows the health of whatever you just hit, at the top of the screen.
 func show_enemy_health(stats: Stats) -> void:
+	if stats == _boss_stats:
+		return   # the boss has its own bar
 	_enemy_stats = stats
 	_enemy_bar_time_left = 4.0
 	enemy_bar.max_value = stats.max_health
@@ -235,3 +241,35 @@ func _update_powers() -> void:
 			text += " %ds" % ceili(Character.cooldowns[id])
 		parts.append(text)
 	powers_label.text = "   ".join(parts)
+
+
+## A boss's name and a wide health bar at the top of the screen, until hide_boss().
+func show_boss(boss_name: String, stats: Stats) -> void:
+	if _boss_bar == null:
+		_boss_bar = enemy_bar.duplicate()
+		_boss_bar.offset_left = -300.0
+		_boss_bar.offset_right = 300.0
+		_boss_bar.offset_top = 40.0
+		_boss_bar.offset_bottom = 54.0
+		add_child(_boss_bar)
+		var label := Label.new()
+		label.name = "BossName"
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.position = Vector2(0, -26)
+		label.size = Vector2(600, 24)
+		label.add_theme_font_size_override("font_size", 18)
+		label.add_theme_color_override("font_outline_color", Color.BLACK)
+		label.add_theme_constant_override("outline_size", 4)
+		_boss_bar.add_child(label)
+	_boss_stats = stats
+	_boss_bar.get_node("BossName").text = boss_name
+	_boss_bar.max_value = stats.max_health
+	_boss_bar.value = stats.health
+	_boss_bar.visible = true
+	enemy_bar.visible = false
+
+
+func hide_boss() -> void:
+	_boss_stats = null
+	if _boss_bar:
+		_boss_bar.visible = false
