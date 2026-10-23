@@ -78,5 +78,4 @@ The Output panel shows a clear error and the conversation closes:
   **Project → Export → (your preset) → Resources → Filters to export non-resource files**,
   add `*.json`, or dialogue will be missing in the exported build.
 - Flags are not saved to disk yet. That comes with a save system.
-- To test race lines before race selection exists, change `race` at the top of
-  `systems/game_state.gd` to `"Orc"` or `"Elf"`.
+- To test race lines, pick that race on the start screen (F5). F6 on a level plays as Human.

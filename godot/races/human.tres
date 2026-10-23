@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/race_data.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+display_name = "Human"
+description = "The adaptable wanderer. Humans can excel at almost anything through effort."
+health = 100
+stamina = 100
+magicka = 100
+move_speed_mult = 1.0
+jump_height_mult = 1.0
+skill_xp_mult = 1.15
+melee_damage_mult = 1.0
+traits = "Skills improve 15% faster through use.
+Factions warm to you a little more quickly."
+signature_ability = "Adaptable"
+signature_description = "Once per rest, boost the next skill you use."

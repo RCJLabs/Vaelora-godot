@@ -162,15 +162,8 @@ the door *looks* open but its collision stays where it was.
 See [DIALOGUE.md](DIALOGUE.md). The `GameState` autoload it added (`race`, `flags`) is what
 race selection builds on.
 
-### 4.3 Race selection
-- Extend the existing `GameState` autoload (`systems/game_state.gd`) with
-  `skills: Dictionary` and `reputation: Dictionary`.
-- A `RaceData` Resource (`class_name RaceData extends Resource`) with `name`, `description`,
-  and stat modifiers; create `human.tres`, `elf.tres`, `orc.tres` from `docs/races.md`.
-- A `character_creation.tscn` (Control scene) with three buttons → sets `GameState.race` →
-  `get_tree().change_scene_to_file("res://levels/test_level.tscn")`. Make it the main scene.
-- Have the player read modifiers on `_ready()` (e.g. Orc `walk_speed`, Elf `jump_velocity`)
-  so you can immediately feel the difference.
+### 4.3 Race selection — done
+See [RACES.md](RACES.md).
 
 Inventory, skill-use XP and faction reputation all hang off that same `GameState` autoload,
 so building 4.3 early pays off.

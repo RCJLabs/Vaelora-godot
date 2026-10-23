@@ -13,7 +13,7 @@ The full design plan, pillars, scope, and foundational decisions are in [DESIGN.
 
 ## Current Status
 
-Godot 4 project in [`godot/`](godot) with a working first-person controller and test level. Setup/troubleshooting guide: [docs/godot-starter/FIRST_PERSON_SETUP.md](docs/godot-starter/FIRST_PERSON_SETUP.md). Next: interaction raycast, dialogue, race selection.
+Godot 4 project in [`godot/`](godot): race selection, first-person controller, E-to-interact, and JSON dialogue in a small test level. Guides: [setup & collision](docs/godot-starter/FIRST_PERSON_SETUP.md), [dialogue](docs/godot-starter/DIALOGUE.md), [races](docs/godot-starter/RACES.md).
 
 ## Repo
 

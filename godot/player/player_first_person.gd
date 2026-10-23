@@ -35,6 +35,7 @@ var spawn_position: Vector3
 
 func _ready() -> void:
 	spawn_position = global_position
+	_apply_race(GameState.race_data)
 	_ensure_input_actions()
 	_check_collision_setup()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -84,6 +85,14 @@ func _physics_process(delta: float) -> void:
 		push_warning("Player fell below kill_y. Collision is not working - turn on Debug > Visible Collision Shapes.")
 		global_position = spawn_position
 		velocity = Vector3.ZERO
+
+
+# Race modifiers from res://races/*.tres (chosen on the character creation screen).
+func _apply_race(race: RaceData) -> void:
+	walk_speed *= race.move_speed_mult
+	sprint_speed *= race.move_speed_mult
+	# Jump height grows with the square of jump speed, so take the square root.
+	jump_velocity *= sqrt(race.jump_height_mult)
 
 
 # Whatever the crosshair points at within reach: if it has an `interact(player)`
