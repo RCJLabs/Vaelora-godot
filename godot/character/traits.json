@@ -1,0 +1,18 @@
+{
+	"hardy": { "name": "Hardy", "positive": true, "description": "+2 Endurance.", "attributes": { "endurance": 2 } },
+	"strong_arm": { "name": "Strong Arm", "positive": true, "description": "+2 Strength.", "attributes": { "strength": 2 } },
+	"nimble": { "name": "Nimble", "positive": true, "description": "+2 Agility.", "attributes": { "agility": 2 } },
+	"bookish": { "name": "Bookish", "positive": true, "description": "+2 Intellect.", "attributes": { "intellect": 2 } },
+	"quick_learner": { "name": "Quick Learner", "positive": true, "description": "Skills improve 10% faster.", "modifiers": { "skill_xp": 1.1 } },
+	"fleet_footed": { "name": "Fleet-Footed", "positive": true, "description": "+5% movement speed.", "modifiers": { "move_speed": 1.05 } },
+	"thick_skinned": { "name": "Thick-Skinned", "positive": true, "description": "Take 8% less damage.", "modifiers": { "damage_taken": 0.92 } },
+	"charming": { "name": "Charming", "positive": true, "description": "+15% reputation gains.", "modifiers": { "reputation_gain": 1.15 } },
+	"arcane_spark": { "name": "Arcane Spark", "positive": true, "description": "+10% spell power.", "modifiers": { "spell_power": 1.1 } },
+
+	"frail": { "name": "Frail", "positive": false, "description": "-2 Endurance.", "attributes": { "endurance": -2 } },
+	"clumsy": { "name": "Clumsy", "positive": false, "description": "-2 Agility.", "attributes": { "agility": -2 } },
+	"dim": { "name": "Dim", "positive": false, "description": "-2 Intellect.", "attributes": { "intellect": -2 } },
+	"glass_jaw": { "name": "Glass Jaw", "positive": false, "description": "Take 10% more damage.", "modifiers": { "damage_taken": 1.1 } },
+	"slow_learner": { "name": "Slow Learner", "positive": false, "description": "Skills improve 10% slower.", "modifiers": { "skill_xp": 0.9 } },
+	"bad_reputation": { "name": "Bad Reputation", "positive": false, "description": "Riverwatch starts at -15 toward you.", "reputation": { "riverwatch": -15 } }
+}

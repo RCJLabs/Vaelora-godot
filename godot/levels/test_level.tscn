@@ -1,0 +1,701 @@
+[gd_scene load_steps=79 format=3]
+
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
+[ext_resource type="Script" path="res://interactables/door.gd" id="3_door"]
+[ext_resource type="Script" path="res://interactables/npc.gd" id="4_npc"]
+[ext_resource type="Environment" path="res://levels/atmosphere.tres" id="5_env"]
+[ext_resource type="PackedScene" path="res://props/stone_circle.tscn" id="6_circle"]
+[ext_resource type="Script" path="res://enemies/wolf_pack.gd" id="7_pack"]
+[ext_resource type="PackedScene" path="res://enemies/wolf.tscn" id="8_wolf"]
+[ext_resource type="Script" path="res://interactables/pickup.gd" id="9_pickup"]
+[ext_resource type="Script" path="res://levels/nav_region.gd" id="10_nav"]
+[ext_resource type="Script" path="res://levels/terrain_slot.gd" id="11_terrain"]
+[ext_resource type="Script" path="res://interactables/location_door.gd" id="12_door"]
+[ext_resource type="PackedScene" path="res://enemies/bandit.tscn" id="13_bandit"]
+[ext_resource type="Script" path="res://interactables/loot_container.gd" id="14_container"]
+[ext_resource type="Script" path="res://props/flicker_light.gd" id="15_flicker"]
+[ext_resource type="PackedScene" path="res://items/models/iron_axe_fp.tscn" id="16_axe"]
+[ext_resource type="PackedScene" path="res://items/models/iron_mace_fp.tscn" id="17_mace"]
+[ext_resource type="Script" path="res://levels/day_night.gd" id="18_daynight"]
+[ext_resource type="Script" path="res://props/campfire.gd" id="19_campfire"]
+[ext_resource type="Script" path="res://enemies/wisp_spawner.gd" id="20_wisps"]
+[ext_resource type="Script" path="res://levels/ambience.gd" id="99_ambience"]
+
+[sub_resource type="FastNoiseLite" id="Noise_grass"]
+frequency = 0.02
+fractal_octaves = 4
+
+[sub_resource type="Gradient" id="Grad_grass"]
+offsets = PackedFloat32Array(0, 0.45, 0.7, 1)
+colors = PackedColorArray(0.1, 0.15, 0.06, 1, 0.17, 0.23, 0.09, 1, 0.24, 0.26, 0.11, 1, 0.3, 0.26, 0.15, 1)
+
+[sub_resource type="NoiseTexture2D" id="Tex_grass"]
+width = 512
+height = 512
+seamless = true
+color_ramp = SubResource("Grad_grass")
+noise = SubResource("Noise_grass")
+
+[sub_resource type="StandardMaterial3D" id="Mat_grass"]
+albedo_texture = SubResource("Tex_grass")
+roughness = 1.0
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv1_scale = Vector3(0.04, 0.04, 0.04)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+material = SubResource("Mat_grass")
+size = Vector3(120, 1, 120)
+
+[sub_resource type="BoxShape3D" id="BoxShape_ground"]
+size = Vector3(120, 1, 120)
+
+[sub_resource type="FastNoiseLite" id="Noise_stone"]
+noise_type = 3
+frequency = 0.03
+fractal_octaves = 5
+
+[sub_resource type="Gradient" id="Grad_stone"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(0.16, 0.16, 0.16, 1, 0.33, 0.32, 0.3, 1, 0.45, 0.45, 0.42, 1)
+
+[sub_resource type="NoiseTexture2D" id="Tex_stone"]
+width = 256
+height = 256
+seamless = true
+color_ramp = SubResource("Grad_stone")
+noise = SubResource("Noise_stone")
+
+[sub_resource type="NoiseTexture2D" id="Tex_stone_normal"]
+width = 256
+height = 256
+seamless = true
+as_normal_map = true
+bump_strength = 6.0
+noise = SubResource("Noise_stone")
+
+[sub_resource type="StandardMaterial3D" id="Mat_stone"]
+albedo_texture = SubResource("Tex_stone")
+normal_enabled = true
+normal_texture = SubResource("Tex_stone_normal")
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv1_scale = Vector3(0.35, 0.35, 0.35)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_crate"]
+material = SubResource("Mat_stone")
+size = Vector3(2, 1, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape_crate"]
+size = Vector3(2, 1, 2)
+
+[sub_resource type="StandardMaterial3D" id="Mat_wood"]
+albedo_color = Color(0.26, 0.17, 0.1, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_sign"]
+material = SubResource("Mat_wood")
+size = Vector3(1.2, 0.8, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape_sign"]
+size = Vector3(1.2, 0.8, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_door"]
+material = SubResource("Mat_wood")
+size = Vector3(1.2, 2.2, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape_door"]
+size = Vector3(1.2, 2.2, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall"]
+material = SubResource("Mat_stone")
+size = Vector3(3, 3, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape_wall"]
+size = Vector3(3, 3, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="Mat_cloak"]
+albedo_color = Color(0.2, 0.24, 0.38, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_npc"]
+material = SubResource("Mat_cloak")
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape_npc"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_potion"]
+transparency = 1
+albedo_color = Color(0.75, 0.08, 0.1, 0.85)
+roughness = 0.15
+emission_enabled = true
+emission = Color(0.6, 0.05, 0.05, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="CylinderMesh" id="Mesh_potion"]
+material = SubResource("Mat_potion")
+top_radius = 0.035
+bottom_radius = 0.07
+height = 0.2
+radial_segments = 10
+
+[sub_resource type="StandardMaterial3D" id="Mat_leather"]
+albedo_color = Color(0.32, 0.2, 0.1, 1)
+roughness = 0.9
+
+[sub_resource type="SphereMesh" id="Mesh_purse"]
+material = SubResource("Mat_leather")
+radius = 0.12
+height = 0.18
+radial_segments = 10
+rings = 6
+
+[sub_resource type="BoxShape3D" id="Shape_pickup"]
+size = Vector3(0.35, 0.35, 0.35)
+
+[sub_resource type="NavigationMesh" id="NavMesh"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 1
+geometry_source_geometry_mode = 1
+geometry_source_group_name = &"navmesh_source"
+cell_size = 0.25
+cell_height = 0.25
+agent_height = 1.0
+agent_radius = 0.5
+agent_max_climb = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_scout"]
+albedo_color = Color(0.4, 0.12, 0.1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_scout"]
+material = SubResource("Mat_scout")
+radius = 0.4
+height = 1.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_shard"]
+albedo_color = Color(0.75, 0.8, 0.82, 1)
+emission_enabled = true
+emission = Color(0.35, 0.85, 1, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="PrismMesh" id="Mesh_shard"]
+material = SubResource("Mat_shard")
+left_to_right = 0.3
+size = Vector3(0.12, 0.26, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="Mat_dagger"]
+albedo_color = Color(0.55, 0.56, 0.58, 1)
+metallic = 0.9
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="Mesh_dagger"]
+material = SubResource("Mat_dagger")
+size = Vector3(0.04, 0.015, 0.45)
+
+[sub_resource type="BoxMesh" id="Mesh_hatch"]
+material = SubResource("Mat_wood")
+size = Vector3(1.2, 0.06, 1.2)
+
+[sub_resource type="BoxShape3D" id="Shape_hatch"]
+size = Vector3(1.2, 0.3, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="Mat_canvas"]
+albedo_color = Color(0.45, 0.4, 0.3, 1)
+roughness = 1.0
+
+[sub_resource type="PrismMesh" id="Mesh_tent"]
+material = SubResource("Mat_canvas")
+size = Vector3(2.4, 1.7, 2.8)
+
+[sub_resource type="BoxShape3D" id="Shape_tent"]
+size = Vector3(2.0, 1.7, 2.8)
+
+[sub_resource type="StandardMaterial3D" id="Mat_log"]
+albedo_color = Color(0.25, 0.16, 0.1, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="Mesh_log"]
+material = SubResource("Mat_log")
+size = Vector3(1.0, 0.14, 0.14)
+
+[sub_resource type="StandardMaterial3D" id="Mat_flame"]
+shading_mode = 0
+albedo_color = Color(1, 0.55, 0.15, 1)
+
+[sub_resource type="PrismMesh" id="Mesh_flame"]
+material = SubResource("Mat_flame")
+size = Vector3(0.35, 0.55, 0.35)
+
+[sub_resource type="BoxMesh" id="Mesh_camp_chest"]
+material = SubResource("Mat_log")
+size = Vector3(0.9, 0.6, 0.55)
+
+[sub_resource type="CylinderShape3D" id="Shape_fire"]
+height = 0.5
+radius = 0.5
+
+[sub_resource type="BoxShape3D" id="Shape_camp_chest"]
+size = Vector3(0.9, 0.6, 0.55)
+
+[sub_resource type="StandardMaterial3D" id="Mat_fence"]
+albedo_color = Color(0.42, 0.3, 0.18, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="Mesh_fence"]
+material = SubResource("Mat_fence")
+size = Vector3(4, 0.95, 0.12)
+
+[sub_resource type="BoxShape3D" id="Shape_fence"]
+size = Vector3(4, 0.95, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="Mat_boulder"]
+albedo_color = Color(0.45, 0.44, 0.42, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="Mesh_boulder"]
+material = SubResource("Mat_boulder")
+size = Vector3(3, 1.8, 3)
+
+[sub_resource type="BoxShape3D" id="Shape_boulder"]
+size = Vector3(3, 1.8, 3)
+
+[sub_resource type="BoxMesh" id="Mesh_barrow"]
+material = SubResource("Mat_stone")
+size = Vector3(5, 3, 5)
+
+[sub_resource type="BoxShape3D" id="Shape_barrow"]
+size = Vector3(5, 3, 5)
+
+[sub_resource type="BoxMesh" id="Mesh_barrow_door"]
+material = SubResource("Mat_wood")
+size = Vector3(1.8, 2.4, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_barrow_door"]
+size = Vector3(1.8, 2.4, 0.2)
+
+[node name="TestLevel" type="Node3D" groups=["navmesh_source"]]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("5_env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.906308, -0.158316, 0.391845, 0, 0.927184, 0.374607, -0.422618, -0.339509, 0.840314, 0, 10, 0)
+light_color = Color(1, 0.84, 0.66, 1)
+light_energy = 1.6
+shadow_enabled = true
+directional_shadow_max_distance = 80.0
+
+[node name="DayNight" type="Node" parent="."]
+script = ExtResource("18_daynight")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_ground")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape_ground")
+
+[node name="StoneBlock" type="StaticBody3D" parent="." groups=["surface_stone"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StoneBlock"]
+mesh = SubResource("BoxMesh_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StoneBlock"]
+shape = SubResource("BoxShape_crate")
+
+[node name="Sign" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.4, -4)
+script = ExtResource("2_sign")
+text = "Riverwatch - 2 leagues north.
+Beware the Greyfang wolves."
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sign"]
+mesh = SubResource("BoxMesh_sign")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sign"]
+shape = SubResource("BoxShape_sign")
+
+[node name="WallLeft" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 1.5, -10)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WallLeft"]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallLeft"]
+shape = SubResource("BoxShape_wall")
+
+[node name="WallRight" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1, 1.5, -10)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WallRight"]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallRight"]
+shape = SubResource("BoxShape_wall")
+
+[node name="Door" type="AnimatableBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, -10)
+script = ExtResource("3_door")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 1.1, 0)
+mesh = SubResource("BoxMesh_door")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 1.1, 0)
+shape = SubResource("BoxShape_door")
+
+[node name="Maren" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -4)
+script = ExtResource("4_npc")
+display_name = "Maren"
+dialogue_file = "res://dialogue/maren.json"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Maren"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_npc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Maren"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape_npc")
+
+[node name="StoneCircle" parent="." instance=ExtResource("6_circle")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -9)
+
+[node name="GreyfangPack" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -30)
+script = ExtResource("7_pack")
+
+[node name="Wolf1" parent="GreyfangPack" instance=ExtResource("8_wolf")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+
+[node name="Wolf2" parent="GreyfangPack" instance=ExtResource("8_wolf")]
+transform = Transform3D(-0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, -0.866025, 2.5, 0, -1.5)
+
+[node name="Wolf3" parent="GreyfangPack" instance=ExtResource("8_wolf")]
+transform = Transform3D(-0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, -2, 0, -2.5)
+
+[node name="Potion" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 1.1, -5.6)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "minor_healing_potion"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Potion"]
+mesh = SubResource("Mesh_potion")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Potion"]
+shape = SubResource("Shape_pickup")
+
+[node name="CoinPurse" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0.89, -8.6)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+gold = 20
+label = "coin purse"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CoinPurse"]
+mesh = SubResource("Mesh_purse")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CoinPurse"]
+shape = SubResource("Shape_pickup")
+
+[node name="Brannoc" type="StaticBody3D" parent="."]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -6, 0, -3)
+script = ExtResource("4_npc")
+display_name = "Brannoc"
+dialogue_file = "res://dialogue/brannoc.json"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Brannoc"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.925, 0)
+mesh = SubResource("CapsuleMesh_scout")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Brannoc"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape_npc")
+
+[node name="RuneShard1" type="StaticBody3D" parent="."]
+transform = Transform3D(0.93969, -0.34202, 0, 0.34202, 0.93969, 0, 0, 0, 1, -17.5, 0.13, -5.0)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "rune_shard"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RuneShard1"]
+mesh = SubResource("Mesh_shard")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RuneShard1"]
+shape = SubResource("Shape_pickup")
+
+[node name="Glow" type="OmniLight3D" parent="RuneShard1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+light_color = Color(0.4, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 2.0
+
+[node name="RuneShard2" type="StaticBody3D" parent="."]
+transform = Transform3D(0.81915, 0.57358, 0, -0.57358, 0.81915, 0, 0, 0, 1, -5.5, 0.13, -14.5)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "rune_shard"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RuneShard2"]
+mesh = SubResource("Mesh_shard")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RuneShard2"]
+shape = SubResource("Shape_pickup")
+
+[node name="Glow" type="OmniLight3D" parent="RuneShard2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+light_color = Color(0.4, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 2.0
+
+[node name="RuneShard3" type="StaticBody3D" parent="."]
+transform = Transform3D(0.34202, -0.93969, 0, 0.93969, 0.34202, 0, 0, 0, 1, -14.0, 0.13, -16.5)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "rune_shard"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RuneShard3"]
+mesh = SubResource("Mesh_shard")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RuneShard3"]
+shape = SubResource("Shape_pickup")
+
+[node name="Glow" type="OmniLight3D" parent="RuneShard3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+light_color = Color(0.4, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 2.0
+
+[node name="HuntingDagger" type="StaticBody3D" parent="."]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 10.5, 0.03, -27.5)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "hunting_dagger"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HuntingDagger"]
+mesh = SubResource("Mesh_dagger")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HuntingDagger"]
+shape = SubResource("Shape_pickup")
+
+[node name="CellarHatch" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.03, -2.2)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("12_door")
+target_scene = "res://levels/waystation_cellar.tscn"
+target_marker = "FromWaystation"
+destination_name = "the waystation cellar"
+verb = "Climb down into"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CellarHatch"]
+mesh = SubResource("Mesh_hatch")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CellarHatch"]
+shape = SubResource("Shape_hatch")
+
+[node name="CellarExit" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0, -0.6)
+
+[node name="TerrainSlot" type="Node3D" parent="."]
+script = ExtResource("11_terrain")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavMesh")
+script = ExtResource("10_nav")
+
+[node name="BanditCamp" type="Node3D" parent="."]
+script = ExtResource("7_pack")
+cleared_flag = "bandits_cleared"
+cleared_message = "The bandit camp falls silent."
+
+[node name="Bandit1" parent="BanditCamp" instance=ExtResource("13_bandit")]
+transform = Transform3D(-0.93969, 0, 0.34202, 0, 1, 0, -0.34202, 0, -0.93969, -35.5, 0, -32.2)
+gold = 12
+loot = {
+"iron_axe": 1
+}
+weapon_scene = ExtResource("16_axe")
+
+[node name="Bandit2" parent="BanditCamp" instance=ExtResource("13_bandit")]
+transform = Transform3D(-0.93969, 0, -0.34202, 0, 1, 0, 0.34202, 0, -0.93969, -32.0, 0, -32.8)
+gold = 9
+loot = {
+"apple": 2,
+"bread": 1,
+"minor_healing_potion": 1
+}
+
+[node name="Leader" parent="BanditCamp" instance=ExtResource("13_bandit")]
+transform = Transform3D(-1.00000, 0, -0.00000, 0, 1, 0, 0.00000, 0, -1.00000, -33.7, 0, -36.2)
+display_name = "Bandit Leader"
+attack_damage = 13.0
+guard_chance = 0.7
+parry_chance = 0.3
+max_health = 90.0
+gold = 30
+loot = {
+"iron_mace": 1,
+"tome_frost_burst": 1
+}
+weapon_scene = ExtResource("17_mace")
+
+[node name="TentA" type="StaticBody3D" parent="."]
+transform = Transform3D(0.86603, 0, -0.50000, 0, 1, 0, 0.50000, 0, 0.86603, -37.5, 0.85, -37.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="TentA"]
+mesh = SubResource("Mesh_tent")
+
+[node name="Shape" type="CollisionShape3D" parent="TentA"]
+shape = SubResource("Shape_tent")
+
+[node name="TentB" type="StaticBody3D" parent="."]
+transform = Transform3D(0.90631, 0, 0.42262, 0, 1, 0, -0.42262, 0, 0.90631, -30.4, 0.85, -37.4)
+
+[node name="Mesh" type="MeshInstance3D" parent="TentB"]
+mesh = SubResource("Mesh_tent")
+
+[node name="Shape" type="CollisionShape3D" parent="TentB"]
+shape = SubResource("Shape_tent")
+
+[node name="Campfire" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.0, 0.0, -34.0)
+script = ExtResource("19_campfire")
+
+[node name="LogA" type="MeshInstance3D" parent="Campfire"]
+transform = Transform3D(0.707, 0, -0.707, 0, 1, 0, 0.707, 0, 0.707, 0, 0.07, 0)
+mesh = SubResource("Mesh_log")
+
+[node name="LogB" type="MeshInstance3D" parent="Campfire"]
+transform = Transform3D(0.707, 0, 0.707, 0, 1, 0, -0.707, 0, 0.707, 0, 0.07, 0)
+mesh = SubResource("Mesh_log")
+
+[node name="Flame" type="MeshInstance3D" parent="Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_flame")
+
+[node name="Light" type="OmniLight3D" parent="Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+light_color = Color(1, 0.6, 0.3, 1)
+light_energy = 2.5
+omni_range = 9.0
+script = ExtResource("15_flicker")
+
+[node name="Shape" type="CollisionShape3D" parent="Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("Shape_fire")
+
+[node name="WaystationFire" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 2.5)
+script = ExtResource("19_campfire")
+
+[node name="LogA" type="MeshInstance3D" parent="WaystationFire"]
+transform = Transform3D(0.707, 0, -0.707, 0, 1, 0, 0.707, 0, 0.707, 0, 0.07, 0)
+mesh = SubResource("Mesh_log")
+
+[node name="LogB" type="MeshInstance3D" parent="WaystationFire"]
+transform = Transform3D(0.707, 0, 0.707, 0, 1, 0, -0.707, 0, 0.707, 0, 0.07, 0)
+mesh = SubResource("Mesh_log")
+
+[node name="Flame" type="MeshInstance3D" parent="WaystationFire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_flame")
+
+[node name="Light" type="OmniLight3D" parent="WaystationFire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+light_color = Color(1, 0.6, 0.3, 1)
+light_energy = 2.5
+omni_range = 9.0
+script = ExtResource("15_flicker")
+
+[node name="Shape" type="CollisionShape3D" parent="WaystationFire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("Shape_fire")
+
+[node name="BanditChest" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.4, 0.3, -38.6)
+script = ExtResource("14_container")
+container_name = "bandit chest"
+contents = {
+"arrow": 12,
+"minor_healing_potion": 2,
+"steel_greatsword": 1,
+"tome_firebolt": 1
+}
+gold = 40
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditChest"]
+mesh = SubResource("Mesh_camp_chest")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditChest"]
+shape = SubResource("Shape_camp_chest")
+
+[node name="Fence" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.475, -12)
+
+[node name="Mesh" type="MeshInstance3D" parent="Fence"]
+mesh = SubResource("Mesh_fence")
+
+[node name="Shape" type="CollisionShape3D" parent="Fence"]
+shape = SubResource("Shape_fence")
+
+[node name="Boulder" type="StaticBody3D" parent="." groups=["surface_stone"]]
+transform = Transform3D(0.94, 0, 0.342, 0, 1, 0, -0.342, 0, 0.94, -16, 0.9, 3)
+
+[node name="Mesh" type="MeshInstance3D" parent="Boulder"]
+mesh = SubResource("Mesh_boulder")
+
+[node name="Shape" type="CollisionShape3D" parent="Boulder"]
+shape = SubResource("Shape_boulder")
+
+[node name="StoneWisps" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -9)
+script = ExtResource("20_wisps")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="Ambience" type="Node" parent="."]
+script = ExtResource("99_ambience")
+
+[node name="Barrow" type="StaticBody3D" parent="." groups=["surface_stone"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1.5, 33)
+
+[node name="Mesh" type="MeshInstance3D" parent="Barrow"]
+mesh = SubResource("Mesh_barrow")
+
+[node name="Shape" type="CollisionShape3D" parent="Barrow"]
+shape = SubResource("Shape_barrow")
+
+[node name="DungeonEntrance" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1.2, 30.45)
+script = ExtResource("12_door")
+target_scene = "res://levels/test_dungeon.tscn"
+target_marker = "FromOutside"
+destination_name = "the old barrow"
+
+[node name="Mesh" type="MeshInstance3D" parent="DungeonEntrance"]
+mesh = SubResource("Mesh_barrow_door")
+
+[node name="Shape" type="CollisionShape3D" parent="DungeonEntrance"]
+shape = SubResource("Shape_barrow_door")
+
+[node name="DungeonExit" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 28.7)

@@ -1,0 +1,549 @@
+{
+	"start": [
+		{
+			"node": "gift",
+			"requires_reputation": {
+				"riverwatch": 25
+			},
+			"requires_not_flag": "got_riverwatch_gift"
+		},
+		{
+			"node": "after_kept",
+			"requires_flag": "shards_kept"
+		},
+		{
+			"node": "after_given",
+			"requires_flag": "shards_given"
+		},
+		{
+			"node": "after_restored",
+			"requires_flag": "stones_restored"
+		},
+		{
+			"node": "waiting_on_stones",
+			"requires_flag": "shards_chose_stones"
+		},
+		{
+			"node": "progress",
+			"requires_flag": "stones_quest_started"
+		},
+		{
+			"node": "greet_again",
+			"requires_flag": "met_brannoc"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Easy - you're no bandit. Brannoc, scout for the Riverwatch garrison. That circle behind me has been glowing since the new moon. The captain wants to know why. I want to know why it hums when I'm not looking at it.",
+			"set_flag": "met_brannoc",
+			"choices": [
+				{
+					"text": "Maren says she told Riverwatch about the wolves.",
+					"next": "heard_of_you",
+					"requires_flag": "wolf_quest_done",
+					"requires_not_flag": "told_brannoc_wolves"
+				},
+				{
+					"text": "I'll look into it.",
+					"next": "accept"
+				},
+				{
+					"text": "What is this place?",
+					"next": "lore"
+				},
+				{
+					"text": "Elves raised these stones, didn't they?",
+					"next": "lore_elf",
+					"requires_race": "Elf"
+				},
+				{
+					"text": "Riverwatch sends scouts out alone now?",
+					"next": "alone"
+				},
+				{
+					"text": "(Keep your hood low.) Just passing through.",
+					"next": "outlaw_line",
+					"requires_background": "outlaw"
+				},
+				{
+					"text": "The stones are resonating. I've read about circles like this.",
+					"next": "scholar_line",
+					"requires_background": "scholar"
+				},
+				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "Not my concern.",
+					"next": "end"
+				}
+			]
+		},
+		"greet_again": {
+			"text": "Changed your mind about the stones?",
+			"choices": [
+				{
+					"text": "I'll look into it.",
+					"next": "accept"
+				},
+				{
+					"text": "What is this place?",
+					"next": "lore"
+				},
+				{
+					"text": "Can the garrison spare a healing potion? (30 gold)",
+					"next": "buy_potion",
+					"requires_reputation": {
+						"riverwatch": 10
+					},
+					"requires_gold": 30
+				},
+				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "Not yet.",
+					"next": "end"
+				}
+			]
+		},
+		"lore": {
+			"text": "Older than Riverwatch, older than the road. The stories say the stones keep something asleep. The stories also say a lot of things after the third ale.",
+			"choices": [
+				{
+					"text": "I'll look into it.",
+					"next": "accept",
+					"requires_not_flag": "stones_quest_started"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"lore_elf": {
+			"text": "So your people's songs say. Then maybe you'll understand it better than a garrison scout. Will you take a look?",
+			"choices": [
+				{
+					"text": "I'll look into it.",
+					"next": "accept"
+				},
+				{
+					"text": "Another time.",
+					"next": "end"
+				}
+			]
+		},
+		"alone": {
+			"text": "Riverwatch sends scouts out alone when it doesn't have enough scouts. Which is always.",
+			"choices": [
+				{
+					"text": "I'll look into the stones for you.",
+					"next": "accept"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"accept": {
+			"text": "Good. Touch the crystal if you dare - and look around the circle for anything that broke off it. Folk say shards of the old stones turn up after a storm.",
+			"set_flag": "stones_quest_started",
+			"choices": [
+				{
+					"text": "I'll be back.",
+					"next": "end"
+				}
+			]
+		},
+		"progress": {
+			"text": "Well? What did you find?",
+			"choices": [
+				{
+					"text": "I found three rune shards.",
+					"next": "decide",
+					"requires_item": {
+						"id": "rune_shard",
+						"count": 3
+					}
+				},
+				{
+					"text": "The crystal answered when I touched it. Fire ran up my arm.",
+					"next": "hint_shards",
+					"requires_flag": "touched_crystal",
+					"requires_not_flag": "told_brannoc_crystal"
+				},
+				{
+					"text": "Can the garrison spare a healing potion? (30 gold)",
+					"next": "buy_potion",
+					"requires_reputation": {
+						"riverwatch": 10
+					},
+					"requires_gold": 30
+				},
+				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "Still looking.",
+					"next": "end"
+				}
+			]
+		},
+		"hint_shards": {
+			"text": "Fire. Of course it was fire. Then it's waking, whatever it is. Find what broke off it - three pieces, if the old tale is right.",
+			"set_flag": "told_brannoc_crystal",
+			"choices": [
+				{
+					"text": "I'll find them.",
+					"next": "end"
+				}
+			]
+		},
+		"decide": {
+			"text": "Three of them. Still warm. The scholars in Riverwatch would pay a fortune to study these... but I've heard the old tales too. Maybe they belong to the stones.",
+			"choices": [
+				{
+					"text": "Take them to Riverwatch.",
+					"next": "given"
+				},
+				{
+					"text": "They should go back to the stones.",
+					"next": "chose_stones"
+				},
+				{
+					"text": "I think I'll keep them. Someone will pay more than Riverwatch.",
+					"next": "kept"
+				},
+				{
+					"text": "Let me think about it.",
+					"next": "end"
+				}
+			]
+		},
+		"given": {
+			"text": "Sixty gold from the garrison purse, and the captain will hear your name. I hope we're not making a mistake.",
+			"take_item": {
+				"id": "rune_shard",
+				"count": 3
+			},
+			"give_gold": 60,
+			"set_flag": [
+				"shards_decided",
+				"shards_given",
+				"stones_quest_done"
+			],
+			"choices": [
+				{
+					"text": "Farewell, Brannoc.",
+					"next": "end"
+				}
+			],
+			"add_reputation": {
+				"riverwatch": 15
+			}
+		},
+		"chose_stones": {
+			"text": "Then put them back yourself - I'm not touching that crystal. I'll tell the captain the circle is... being tended.",
+			"set_flag": [
+				"shards_chose_stones",
+				"shards_decided"
+			],
+			"choices": [
+				{
+					"text": "I will.",
+					"next": "end"
+				}
+			]
+		},
+		"waiting_on_stones": {
+			"text": "Still carrying those shards? The crystal's that way. I'll be here, at a respectful distance.",
+			"choices": [
+				{
+					"text": "Can the garrison spare a healing potion? (30 gold)",
+					"next": "buy_potion",
+					"requires_reputation": {
+						"riverwatch": 10
+					},
+					"requires_gold": 30
+				},
+				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"after_given": {
+			"text": "The scholars are beside themselves. Riverwatch owes you - I'll make sure the captain remembers it.",
+			"choices": [
+				{
+					"text": "Can the garrison spare a healing potion? (30 gold)",
+					"next": "buy_potion",
+					"requires_reputation": {
+						"riverwatch": 10
+					},
+					"requires_gold": 30
+				},
+				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"after_restored": {
+			"text": "The circle's light is steadier now. Calmer. Whatever you did, the humming's stopped keeping me up at night.",
+			"choices": [
+				{
+					"text": "Can the garrison spare a healing potion? (30 gold)",
+					"next": "buy_potion",
+					"requires_reputation": {
+						"riverwatch": 10
+					},
+					"requires_gold": 30
+				},
+				{
+					"text": "Anything else I should know about out here?",
+					"next": "bandits_info",
+					"requires_not_flag": [
+						"heard_about_bandits",
+						"bandits_cleared"
+					]
+				},
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"kept": {
+			"text": "...Keep them, then. But don't expect the garrison to look kindly on someone who pockets what belongs to the stones - or to Riverwatch.",
+			"add_reputation": {
+				"riverwatch": -15
+			},
+			"set_flag": [
+				"shards_kept",
+				"shards_decided",
+				"stones_quest_done"
+			],
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"after_kept": {
+			"text": "You. I've nothing to say to you, and nothing to sell. The garrison remembers.",
+			"choices": [
+				{
+					"text": "The bandit camp south-west of here is cleared.",
+					"next": "bandit_bounty",
+					"requires_flag": "bandits_cleared",
+					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"buy_potion": {
+			"text": "For a friend of Riverwatch? Thirty, and don't tell the quartermaster.",
+			"take_gold": 30,
+			"give_item": "minor_healing_potion",
+			"choices": [
+				{
+					"text": "Another, please. (30 gold)",
+					"next": "buy_potion",
+					"requires_reputation": {
+						"riverwatch": 10
+					},
+					"requires_gold": 30
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"gift": {
+			"text": "The captain sent word: anyone who's done this much for Riverwatch gets the garrison's thanks in something more useful than words. Take these - and you'll always find a friend at the river gate.",
+			"give_item": {
+				"id": "minor_healing_potion",
+				"count": 2
+			},
+			"give_gold": 50,
+			"set_flag": [
+				"got_riverwatch_gift",
+				"met_brannoc"
+			],
+			"choices": [
+				{
+					"text": "Thank you, Brannoc.",
+					"next": "end"
+				}
+			]
+		},
+		"heard_of_you": {
+			"text": "The wolf-killer from the waystation! Word travels fast when it's good news for once. Then I know who to ask about the stones.",
+			"set_flag": "told_brannoc_wolves",
+			"choices": [
+				{
+					"text": "Ask me what?",
+					"next": "greet_stones"
+				}
+			]
+		},
+		"greet_stones": {
+			"text": "That circle behind me has been glowing since the new moon. The captain wants to know why. Will you take a look?",
+			"choices": [
+				{
+					"text": "I'll look into it.",
+					"next": "accept"
+				},
+				{
+					"text": "Not now.",
+					"next": "end"
+				}
+			]
+		},
+		"outlaw_line": {
+			"text": "Hm. You've a face I've seen on a notice board in Riverwatch. Or one like it. I can't be sure, and I've bigger problems than a poster. Help me with these stones and I'll stop trying to remember where I saw you.",
+			"choices": [
+				{
+					"text": "I'll look into it.",
+					"next": "accept"
+				},
+				{
+					"text": "Not my concern.",
+					"next": "end"
+				}
+			]
+		},
+		"scholar_line": {
+			"text": "Read about them? Then you already know more than me, the captain and the last three they sent. Look at the circle for me. Whatever you find, I want it in plain words.",
+			"choices": [
+				{
+					"text": "I'll look into it.",
+					"next": "accept"
+				},
+				{
+					"text": "Another time.",
+					"next": "end"
+				}
+			]
+		},
+		"bandits_info": {
+			"text": "Bandits. They've a camp south-west of the stones, three of them at least. The one in charge swings a mace and knows how to keep his guard up. The garrison pays a bounty if someone clears them out.",
+			"set_flag": "heard_about_bandits",
+			"choices": [
+				{
+					"text": "I'll deal with them.",
+					"next": "end"
+				},
+				{
+					"text": "Any advice?",
+					"next": "bandit_advice"
+				},
+				{
+					"text": "Not my fight.",
+					"next": "end"
+				}
+			]
+		},
+		"bandit_advice": {
+			"text": "They're not wolves. They'll put a blade up when you swing, so lean on them: a heavy blow or a shield to the face breaks a guard. And watch for the glint before they swing.",
+			"choices": [
+				{
+					"text": "I'll remember that.",
+					"next": "end"
+				}
+			]
+		},
+		"bandit_bounty": {
+			"text": "All three? Then the south road can breathe again. Here - the garrison's bounty, and I'll see your name goes in the captain's book.",
+			"set_flag": "bandit_bounty_paid",
+			"give_gold": 75,
+			"add_reputation": {
+				"riverwatch": 10
+			},
+			"choices": [
+				{
+					"text": "Glad to help.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

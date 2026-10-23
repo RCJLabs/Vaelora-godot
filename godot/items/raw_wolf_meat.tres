@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "raw_wolf_meat"
+display_name = "Raw Wolf Meat"
+description = "Tough and gamey. Better cooked over a fire: eaten raw it might make you sick."
+type = 1
+value = 2
+weight = 1.0
+ease_hunger = 10.0
+side_effect = "poisoned"
+side_effect_chance = 0.35

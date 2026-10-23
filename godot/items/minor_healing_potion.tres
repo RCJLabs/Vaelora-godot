@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "minor_healing_potion"
+display_name = "Minor Healing Potion"
+description = "A small red vial that smells of crushed mountain flowers. Restores 40 Health."
+type = 1
+value = 25
+restore_health = 40.0

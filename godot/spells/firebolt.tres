@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "firebolt"
+display_name = "Firebolt"
+description = "Charge a ball of fire, then hurl it. It bursts on whatever it hits and leaves it burning."
+style = 1
+skill = "destruction"
+color = Color(1, 0.5, 0.15, 1)
+applies_effect = "burning"
+charge_time = 0.55
+magicka_cost = 24.0
+damage = 22.0
+projectile_speed = 30.0

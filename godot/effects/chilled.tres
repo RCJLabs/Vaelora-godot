@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "chilled"
+display_name = "Chilled"
+description = "Moving at 60% speed, recovering Stamina slowly."
+is_harmful = true
+duration = 4.0
+modifiers = {
+"move_speed": 0.6,
+"stamina_regen": 0.5
+}

@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+[ext_resource type="PackedScene" path="res://items/models/wooden_shield_fp.tscn" id="2_model"]
+[ext_resource type="Script" path="res://combat/attack_data.gd" id="3_attack"]
+
+[sub_resource type="Resource" id="Attack_bash"]
+script = ExtResource("3_attack")
+windup_pose = "block"
+strike_pose = "bash"
+windup = 0.08
+active = 0.1
+recovery = 0.35
+poise_damage = 22.0
+knockback = 6.0
+
+[resource]
+script = ExtResource("1_item")
+id = "wooden_shield"
+display_name = "Wooden Shield"
+description = "Oak boards, an iron boss and rim. Blocks far better than a blade, and you can bash with it. Takes the hand you'd cast with."
+type = 3
+value = 30
+weight = 6.0
+slot = 2
+armor = 8.0
+damage = 5.0
+stamina_cost = 15.0
+block_reduction = 0.85
+held_scene = ExtResource("2_model")
+bash_attack = SubResource("Attack_bash")

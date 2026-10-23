@@ -1,0 +1,30 @@
+{
+	"armsman_1": { "name": "Armsman", "skill": "one_handed", "level": 15, "description": "+20% damage with one-handed weapons.", "modifiers": { "weapon_damage_one_handed": 1.2 } },
+	"fighting_rhythm": { "name": "Fighting Rhythm", "skill": "one_handed", "level": 25, "description": "Swings cost 25% less Stamina.", "modifiers": { "attack_stamina": 0.75 } },
+	"armsman_2": { "name": "Armsman II", "skill": "one_handed", "level": 35, "requires": "armsman_1", "description": "Another +20% damage with one-handed weapons.", "modifiers": { "weapon_damage_one_handed": 1.2 } },
+	"steady_guard": { "name": "Steady Guard", "skill": "block", "level": 20, "description": "Blocking costs 25% less Stamina.", "modifiers": { "block_stamina": 0.75 } },
+	"deflection": { "name": "Deflection", "skill": "block", "level": 25, "description": "The parry window is 50% longer.", "modifiers": { "parry_window": 1.5 } },
+	"riposte": { "name": "Riposte", "skill": "block", "level": 35, "requires": "deflection", "description": "For 2 seconds after a parry, your attacks deal +50% damage.", "modifiers": { "riposte_damage": 1.5 } },
+	"barbarian_1": { "name": "Barbarian", "skill": "two_handed", "level": 15, "description": "+20% damage with two-handed weapons.", "modifiers": { "weapon_damage_two_handed": 1.2 } },
+	"reaver": { "name": "Reaver", "skill": "two_handed", "level": 25, "description": "Heavy attacks cost 25% less Stamina.", "modifiers": { "heavy_stamina": 0.75 } },
+	"barbarian_2": { "name": "Barbarian II", "skill": "two_handed", "level": 35, "requires": "barbarian_1", "description": "Another +20% damage with two-handed weapons.", "modifiers": { "weapon_damage_two_handed": 1.2 } },
+	"overdraw_1": { "name": "Overdraw", "skill": "archery", "level": 15, "description": "+20% bow damage.", "modifiers": { "weapon_damage_archery": 1.2 } },
+	"quick_draw": { "name": "Quick Draw", "skill": "archery", "level": 25, "description": "Bows draw 30% faster.", "modifiers": { "draw_time": 0.7 } },
+	"overdraw_2": { "name": "Overdraw II", "skill": "archery", "level": 35, "requires": "overdraw_1", "description": "Another +20% bow damage.", "modifiers": { "weapon_damage_archery": 1.2 } },
+
+	"wind_runner": { "name": "Wind Runner", "skill": "athletics", "level": 20, "description": "Sprinting costs 25% less Stamina.", "modifiers": { "sprint_stamina": 0.75 } },
+	"sure_footed": { "name": "Sure-Footed", "skill": "athletics", "level": 25, "description": "Falls do half damage.", "modifiers": { "fall_damage": 0.5 } },
+	"marathon": { "name": "Marathon", "skill": "athletics", "level": 30, "requires": "wind_runner", "description": "+20 max Stamina.", "stat_bonus": { "stamina": 20 } },
+
+	"augmented_flames": { "name": "Augmented Flames", "skill": "destruction", "level": 20, "description": "+25% Destruction spell damage.", "modifiers": { "spell_power_destruction": 1.25 } },
+	"efficient_destruction": { "name": "Efficient Destruction", "skill": "destruction", "level": 25, "description": "Destruction spells cost 20% less.", "modifiers": { "spell_cost_destruction": 0.8 } },
+	"searing": { "name": "Searing", "skill": "destruction", "level": 35, "requires": "augmented_flames", "description": "Another +25% Destruction spell damage.", "modifiers": { "spell_power_destruction": 1.25 } },
+
+	"recovery": { "name": "Recovery", "skill": "restoration", "level": 20, "description": "Magicka recovers 25% faster.", "modifiers": { "magicka_regen": 1.25 } },
+	"potent_healing": { "name": "Potent Healing", "skill": "restoration", "level": 25, "description": "+30% healing from Restoration spells.", "modifiers": { "spell_power_restoration": 1.3 } },
+	"efficient_restoration": { "name": "Efficient Restoration", "skill": "restoration", "level": 30, "requires": "potent_healing", "description": "Restoration spells cost 20% less.", "modifiers": { "spell_cost_restoration": 0.8 } },
+	"efficient_alteration": { "name": "Efficient Alteration", "skill": "alteration", "level": 20, "description": "Alteration spells cost 25% less.", "modifiers": { "spell_cost_alteration": 0.75 } },
+	"arcane_reserve": { "name": "Arcane Reserve", "skill": "alteration", "level": 25, "description": "+25 max Magicka.", "stat_bonus": { "magicka": 25 } },
+	"focused_mind": { "name": "Focused Mind", "skill": "alteration", "level": 35, "requires": "arcane_reserve", "description": "Magicka recovers 25% faster.", "modifiers": { "magicka_regen": 1.25 } },
+	"ward_mastery": { "name": "Ward Mastery", "skill": "restoration", "level": 30, "requires": "recovery", "description": "Wards stop 20% more of a hit and cost less to hold.", "modifiers": { "ward_strength": 1.2, "spell_cost_restoration": 0.9 } }
+}

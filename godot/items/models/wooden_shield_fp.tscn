@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Mat_wood"]
+albedo_color = Color(0.36, 0.22, 0.12, 1)
+metallic = 0.0
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_dark"]
+albedo_color = Color(0.32, 0.33, 0.36, 1)
+metallic = 0.85
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="Mat_steel"]
+albedo_color = Color(0.62, 0.64, 0.68, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="Mesh_board"]
+material = SubResource("Mat_wood")
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.035
+radial_segments = 24
+
+[sub_resource type="TorusMesh" id="Mesh_rim"]
+material = SubResource("Mat_dark")
+inner_radius = 0.285
+outer_radius = 0.315
+rings = 24
+ring_segments = 6
+
+[sub_resource type="SphereMesh" id="Mesh_boss"]
+material = SubResource("Mat_steel")
+radius = 0.07
+height = 0.08
+
+[sub_resource type="BoxMesh" id="Mesh_band"]
+material = SubResource("Mat_dark")
+size = Vector3(0.6, 0.04, 0.012)
+
+[node name="WoodenShield" type="Node3D"]
+
+[node name="Board" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -1.00000, 0.00000, 0.00000, 0.00000, 0.00000)
+cast_shadow = 0
+mesh = SubResource("Mesh_board")
+
+[node name="Rim" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -1.00000, 0.00000, 0.00000, 0.00000, 0.00000)
+cast_shadow = 0
+mesh = SubResource("Mesh_rim")
+
+[node name="Boss" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, -0.02000)
+cast_shadow = 0
+mesh = SubResource("Mesh_boss")
+
+[node name="Band" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.10000, -0.02200)
+cast_shadow = 0
+mesh = SubResource("Mesh_band")
+
+[node name="Band2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, -0.10000, -0.02200)
+cast_shadow = 0
+mesh = SubResource("Mesh_band")

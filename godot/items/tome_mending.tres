@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_mending"
+display_name = "Tome: Mending"
+description = "A worn book of practice and theory. Use it to learn Mending."
+type = 1
+value = 50
+weight = 1.0
+teaches_spell = "mending"

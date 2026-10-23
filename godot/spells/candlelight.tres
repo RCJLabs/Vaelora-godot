@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "candlelight"
+display_name = "Candlelight"
+description = "Charge, then release: a small light floats above you for three minutes. Handy in cellars and caves."
+style = 4
+skill = "alteration"
+color = Color(1, 0.95, 0.8, 1)
+can_dual_cast = false
+charge_time = 0.4
+magicka_cost = 15.0
+self_effect = "candlelight"

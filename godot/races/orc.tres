@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/race_data.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+display_name = "Orc"
+description = "Powerful, resilient warriors. Direct, tough and intimidating in a fight."
+health = 130
+stamina = 115
+magicka = 70
+move_speed_mult = 0.95
+jump_height_mult = 0.95
+skill_xp_mult = 1.0
+attribute_bonuses = {
+"strength": 3,
+"endurance": 2,
+"intellect": -2,
+"presence": -1
+}
+skill_bonuses = {
+"one_handed": 10
+}
+starting_spells = Array[String](["healing"])
+melee_damage_mult = 1.2
+traits = "More Health and Stamina, 20% stronger melee. One-Handed starts at 25.
+Less Magicka and a little slower."
+signature_ability = "Battle Fury"
+ability_id = "battle_fury"
+signature_description = "Power (Z): for 15 seconds, deal 25% more damage and take 20% less."

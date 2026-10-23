@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Mat_wood"]
+albedo_color = Color(0.36, 0.22, 0.12, 1)
+metallic = 0.0
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_dark"]
+albedo_color = Color(0.32, 0.33, 0.36, 1)
+metallic = 0.85
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="Mat_feather"]
+albedo_color = Color(0.75, 0.72, 0.65, 1)
+metallic = 0.0
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="Mesh_shaft"]
+material = SubResource("Mat_wood")
+size = Vector3(0.012, 0.012, 0.7)
+
+[sub_resource type="BoxMesh" id="Mesh_tip"]
+material = SubResource("Mat_dark")
+size = Vector3(0.025, 0.008, 0.06)
+
+[sub_resource type="BoxMesh" id="Mesh_fletch"]
+material = SubResource("Mat_feather")
+size = Vector3(0.002, 0.04, 0.1)
+
+[node name="ArrowModel" type="Node3D"]
+
+[node name="Shaft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000)
+cast_shadow = 0
+mesh = SubResource("Mesh_shaft")
+
+[node name="Tip" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, -0.37000)
+cast_shadow = 0
+mesh = SubResource("Mesh_tip")
+
+[node name="FletchA" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.30000)
+cast_shadow = 0
+mesh = SubResource("Mesh_fletch")
+
+[node name="FletchB" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.00000, 1.00000, 0.00000, -1.00000, 0.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.30000)
+cast_shadow = 0
+mesh = SubResource("Mesh_fletch")

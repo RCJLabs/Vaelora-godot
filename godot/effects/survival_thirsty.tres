@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "survival_thirsty"
+display_name = "Thirsty"
+description = "Magicka recovers slightly slower."
+is_harmful = true
+duration = 0.0
+modifiers = {
+"magicka_regen": 0.9
+}

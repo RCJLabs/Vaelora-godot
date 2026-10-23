@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Mat_steel"]
+albedo_color = Color(0.62, 0.64, 0.68, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_grip"]
+albedo_color = Color(0.2, 0.12, 0.07, 1)
+metallic = 0.0
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_dark"]
+albedo_color = Color(0.32, 0.33, 0.36, 1)
+metallic = 0.85
+roughness = 0.45
+
+[sub_resource type="BoxMesh" id="Mesh_blade"]
+material = SubResource("Mat_steel")
+size = Vector3(0.065, 0.018, 1.15)
+
+[sub_resource type="BoxMesh" id="Mesh_guard"]
+material = SubResource("Mat_dark")
+size = Vector3(0.32, 0.035, 0.045)
+
+[sub_resource type="BoxMesh" id="Mesh_grip"]
+material = SubResource("Mat_grip")
+size = Vector3(0.04, 0.04, 0.3)
+
+[sub_resource type="SphereMesh" id="Mesh_pommel"]
+material = SubResource("Mat_dark")
+radius = 0.035
+height = 0.07
+
+[node name="SteelGreatsword" type="Node3D"]
+
+[node name="Blade" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, -0.60000)
+cast_shadow = 0
+mesh = SubResource("Mesh_blade")
+
+[node name="Guard" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000)
+cast_shadow = 0
+mesh = SubResource("Mesh_guard")
+
+[node name="Grip" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.16500)
+cast_shadow = 0
+mesh = SubResource("Mesh_grip")
+
+[node name="Pommel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.00000, 1.00000, 0.00000, 0.00000, 0.33000)
+cast_shadow = 0
+mesh = SubResource("Mesh_pommel")

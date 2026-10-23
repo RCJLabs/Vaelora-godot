@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "adaptable"
+display_name = "Adaptable"
+description = "Skills improve twice as fast."
+is_harmful = false
+duration = 60.0
+modifiers = {
+"skill_xp": 2.0
+}

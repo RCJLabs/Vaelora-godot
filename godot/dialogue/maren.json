@@ -1,0 +1,637 @@
+{
+	"start": [
+		{
+			"node": "greet_hero",
+			"requires_flag": "wolf_quest_done"
+		},
+		{
+			"node": "greet_again",
+			"requires_flag": "met_maren"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A traveller! Not many come up the north road these days. I'm Maren - I keep this waystation.",
+			"set_flag": "met_maren",
+			"choices": [
+				{
+					"text": "I killed the wolves north of here. All of them.",
+					"next": "reward",
+					"requires_flag": "wolves_cleared"
+				},
+				{
+					"text": "Why don't people come this way?",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				},
+				{
+					"text": "You're not afraid of an orc on your doorstep?",
+					"next": "orc_line",
+					"requires_race": "Orc"
+				},
+				{
+					"text": "My people still sing of these hills.",
+					"next": "elf_line",
+					"requires_race": "Elf"
+				},
+				{
+					"text": "I served in a levy. A waystation this far out must see trouble.",
+					"next": "soldier_line",
+					"requires_background": "soldier"
+				},
+				{
+					"text": "Those were Greyfang tracks on the road.",
+					"next": "hunter_line",
+					"requires_background": "hunter"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"greet_again": {
+			"text": "Back again? The kettle's still warm.",
+			"choices": [
+				{
+					"text": "The Greyfang pack is dead.",
+					"next": "reward",
+					"requires_flag": "wolves_cleared",
+					"requires_not_flag": "wolf_quest_done"
+				},
+				{
+					"text": "Tell me about the wolves again.",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				},
+				{
+					"text": "I'll deal with the Greyfang pack.",
+					"next": "accept",
+					"requires_flag": "heard_about_wolves",
+					"requires_not_flag": [
+						"wolf_quest_accepted",
+						"wolves_cleared"
+					]
+				},
+				{
+					"text": "I have a wolf pelt to sell.",
+					"next": "buy_pelt",
+					"requires_item": "wolf_pelt"
+				},
+				{
+					"text": "Let's trade.",
+					"next": "shop"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"wolves": {
+			"text": "The Greyfang pack. They took two carts last month, and they den past the stone wall, to the north-east. Riverwatch won't send guards past the old bridge.",
+			"set_flag": "heard_about_wolves",
+			"choices": [
+				{
+					"text": "I'll deal with them.",
+					"next": "accept",
+					"requires_not_flag": [
+						"wolf_quest_accepted",
+						"wolves_cleared"
+					]
+				},
+				{
+					"text": "Sounds like someone else's problem.",
+					"next": "end",
+					"set_flag": "refused_maren"
+				}
+			]
+		},
+		"accept": {
+			"text": "Truly? Then may the road be kind to you. Three of them, maybe more. Mind their teeth - and don't let them circle you.",
+			"set_flag": "wolf_quest_accepted",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"orc_line": {
+			"text": "Orcs pay in coin like anyone else. And you'd be handy against what's out there.",
+			"choices": [
+				{
+					"text": "Why don't people come this way?",
+					"next": "wolves"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"elf_line": {
+			"text": "Then you'll know the old songs warn of wolves. They weren't wrong.",
+			"choices": [
+				{
+					"text": "Tell me more.",
+					"next": "wolves"
+				}
+			]
+		},
+		"reward": {
+			"text": "All of them? Then the north road is open again. Here - it isn't much, but it's honest coin. And take this, in case the next pack is bigger.",
+			"set_flag": "wolf_quest_done",
+			"choices": [
+				{
+					"text": "Glad to help.",
+					"next": "end"
+				}
+			],
+			"give_gold": 50,
+			"give_item": "minor_healing_potion",
+			"add_reputation": {
+				"riverwatch": 10
+			}
+		},
+		"greet_hero": {
+			"text": "The one who cleared the north road! Sit, rest your feet.",
+			"choices": [
+				{
+					"text": "I have a wolf pelt to sell.",
+					"next": "buy_pelt",
+					"requires_item": "wolf_pelt"
+				},
+				{
+					"text": "Let's trade.",
+					"next": "shop"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"buy_pelt": {
+			"text": "Greyfang fur, and a clean cut too. Fifteen gold.",
+			"take_item": "wolf_pelt",
+			"give_gold": 15,
+			"choices": [
+				{
+					"text": "I have another.",
+					"next": "buy_pelt",
+					"requires_item": "wolf_pelt"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"soldier_line": {
+			"text": "Trouble's all we see. The garrison sends a patrol when it remembers we exist. You've the look of someone who finishes a job, and there's a wolf pack out there that needs finishing.",
+			"choices": [
+				{
+					"text": "Tell me about the wolves.",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"hunter_line": {
+			"text": "You know your tracks. Aye, the Greyfang pack - bold enough to take a mule off the road last week. Bring me their pelts and I'll buy every one.",
+			"choices": [
+				{
+					"text": "Tell me about the wolves.",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"arrows": {
+			"text": "Fletched them myself over the winter. Straight enough, mostly.",
+			"choices": [
+				{
+					"text": "Bread. (3 gold)",
+					"next": "shop_food",
+					"requires_gold": 3,
+					"take_gold": 3,
+					"give_item": "bread"
+				},
+				{
+					"text": "A flask of water. (2 gold)",
+					"next": "shop_food",
+					"requires_gold": 2,
+					"take_gold": 2,
+					"give_item": "water_flask"
+				},
+				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"bow": {
+			"text": "Good yew, and the string's new. My eyes aren't what they were for hunting. Look after it.",
+			"choices": [
+				{
+					"text": "Bread. (3 gold)",
+					"next": "shop_food",
+					"requires_gold": 3,
+					"take_gold": 3,
+					"give_item": "bread"
+				},
+				{
+					"text": "A flask of water. (2 gold)",
+					"next": "shop_food",
+					"requires_gold": 2,
+					"take_gold": 2,
+					"give_item": "water_flask"
+				},
+				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"shop": {
+			"text": "Arrows I fletch myself, and a bow I've no use for. And a few books a travelling mage left for her board - spells, she said, if you've the head for them.",
+			"choices": [
+				{
+					"text": "Bread. (3 gold)",
+					"next": "shop_food",
+					"requires_gold": 3,
+					"take_gold": 3,
+					"give_item": "bread"
+				},
+				{
+					"text": "A flask of water. (2 gold)",
+					"next": "shop_food",
+					"requires_gold": 2,
+					"take_gold": 2,
+					"give_item": "water_flask"
+				},
+				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"shop_arrows": {
+			"text": "Straight enough, mostly.",
+			"choices": [
+				{
+					"text": "Bread. (3 gold)",
+					"next": "shop_food",
+					"requires_gold": 3,
+					"take_gold": 3,
+					"give_item": "bread"
+				},
+				{
+					"text": "A flask of water. (2 gold)",
+					"next": "shop_food",
+					"requires_gold": 2,
+					"take_gold": 2,
+					"give_item": "water_flask"
+				},
+				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"bought_tome": {
+			"text": "Read it somewhere quiet. And not near the thatch, if it's that fire one.",
+			"choices": [
+				{
+					"text": "Bread. (3 gold)",
+					"next": "shop_food",
+					"requires_gold": 3,
+					"take_gold": 3,
+					"give_item": "bread"
+				},
+				{
+					"text": "A flask of water. (2 gold)",
+					"next": "shop_food",
+					"requires_gold": 2,
+					"take_gold": 2,
+					"give_item": "water_flask"
+				},
+				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"shop_food": {
+			"text": "Baked this morning. Well, yesterday morning.",
+			"choices": [
+				{
+					"text": "Bread. (3 gold)",
+					"next": "shop_food",
+					"requires_gold": 3,
+					"take_gold": 3,
+					"give_item": "bread"
+				},
+				{
+					"text": "A flask of water. (2 gold)",
+					"next": "shop_food",
+					"requires_gold": 2,
+					"take_gold": 2,
+					"give_item": "water_flask"
+				},
+				{
+					"text": "I need arrows. (10 for 10 gold)",
+					"next": "shop_arrows",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"give_item": {
+						"id": "arrow",
+						"count": 10
+					}
+				},
+				{
+					"text": "Is that bow on the wall for sale? (60 gold)",
+					"next": "bow",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_maren_bow",
+					"set_flag": "bought_maren_bow",
+					"take_gold": 60,
+					"give_item": "hunting_bow"
+				},
+				{
+					"text": "Tome: Candlelight (25 gold)",
+					"next": "bought_tome",
+					"requires_gold": 25,
+					"requires_not_flag": "bought_tome_candlelight",
+					"set_flag": "bought_tome_candlelight",
+					"take_gold": 25,
+					"give_item": "tome_candlelight"
+				},
+				{
+					"text": "Tome: Stoneflesh (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_stoneflesh",
+					"set_flag": "bought_tome_stoneflesh",
+					"take_gold": 60,
+					"give_item": "tome_stoneflesh"
+				},
+				{
+					"text": "Tome: Healing Ward (60 gold)",
+					"next": "bought_tome",
+					"requires_gold": 60,
+					"requires_not_flag": "bought_tome_healing_ward",
+					"set_flag": "bought_tome_healing_ward",
+					"take_gold": 60,
+					"give_item": "tome_healing_ward"
+				},
+				{
+					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

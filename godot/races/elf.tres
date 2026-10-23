@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/race_data.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+display_name = "Elf"
+description = "Graceful, long-lived and attuned to magic. Strong in spellcraft, precision and stealth."
+health = 85
+stamina = 100
+magicka = 130
+move_speed_mult = 1.08
+jump_height_mult = 1.15
+skill_xp_mult = 1.0
+attribute_bonuses = {
+"agility": 2,
+"intellect": 2,
+"willpower": 1,
+"endurance": -2,
+"strength": -1
+}
+skill_bonuses = {
+"athletics": 10,
+"destruction": 10
+}
+starting_spells = Array[String](["healing", "flames"])
+melee_damage_mult = 0.9
+traits = "Higher Magicka, lighter on your feet. Athletics starts at 25.
+Less Health and weaker in melee."
+signature_ability = "Innate Focus"
+ability_id = "innate_focus"
+signature_description = "Power (Z): for 20 seconds, spells cost half and hit 25% harder. Elves also start knowing Flames."

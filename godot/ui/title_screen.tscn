@@ -1,0 +1,132 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://ui/title_screen.gd" id="1_title"]
+[ext_resource type="Environment" path="res://levels/atmosphere.tres" id="2_env"]
+[ext_resource type="PackedScene" path="res://props/stone_circle.tscn" id="3_circle"]
+[ext_resource type="Script" path="res://levels/ambience.gd" id="99_ambience"]
+
+[sub_resource type="FastNoiseLite" id="Noise_grass"]
+frequency = 0.02
+fractal_octaves = 4
+
+[sub_resource type="Gradient" id="Grad_grass"]
+offsets = PackedFloat32Array(0, 0.45, 0.7, 1)
+colors = PackedColorArray(0.1, 0.15, 0.06, 1, 0.17, 0.23, 0.09, 1, 0.24, 0.26, 0.11, 1, 0.3, 0.26, 0.15, 1)
+
+[sub_resource type="NoiseTexture2D" id="Tex_grass"]
+width = 512
+height = 512
+seamless = true
+color_ramp = SubResource("Grad_grass")
+noise = SubResource("Noise_grass")
+
+[sub_resource type="StandardMaterial3D" id="Mat_grass"]
+albedo_texture = SubResource("Tex_grass")
+roughness = 1.0
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv1_scale = Vector3(0.04, 0.04, 0.04)
+
+[sub_resource type="PlaneMesh" id="Mesh_ground"]
+material = SubResource("Mat_grass")
+size = Vector2(300, 300)
+
+[sub_resource type="Gradient" id="Grad_shade"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(0.03, 0.03, 0.05, 0.92, 0.03, 0.03, 0.05, 0.55, 0.03, 0.03, 0.05, 0)
+
+[sub_resource type="GradientTexture2D" id="Tex_shade"]
+gradient = SubResource("Grad_shade")
+fill_to = Vector2(1, 0)
+
+[node name="TitleScreen" type="Node3D"]
+script = ExtResource("1_title")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2_env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.906308, -0.158316, 0.391845, 0, 0.927184, 0.374607, -0.422618, -0.339509, 0.840314, 0, 10, 0)
+light_color = Color(1, 0.84, 0.66, 1)
+light_energy = 1.6
+shadow_enabled = true
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh_ground")
+
+[node name="StoneCircle" parent="." instance=ExtResource("3_circle")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 15)
+fov = 60.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Shade" type="TextureRect" parent="UI"]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 760.0
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("Tex_shade")
+expand_mode = 1
+
+[node name="Margin" type="MarginContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 90
+theme_override_constants/margin_top = 90
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 50
+
+[node name="VBox" type="VBoxContainer" parent="UI/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="UI/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.82, 0.5, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 72
+text = "Title"
+
+[node name="SubtitleLabel" type="Label" parent="UI/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.85, 0.8)
+theme_override_font_sizes/font_size = 22
+text = "subtitle"
+
+[node name="Gap" type="Control" parent="UI/Margin/VBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Buttons" type="VBoxContainer" parent="UI/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 10
+
+[node name="Spacer" type="Control" parent="UI/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="VersionLabel" type="Label" parent="UI/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 0.6)
+theme_override_font_sizes/font_size = 14
+text = "v0"
+
+[node name="Ambience" type="Node" parent="."]
+script = ExtResource("99_ambience")

@@ -1,0 +1,5 @@
+# Godot 4 generated files
+.godot/
+*.import
+# export_presets.cfg is committed (CI exports with it). Since Godot 4.1, passwords and
+# keys live in .godot/export_credentials.cfg, which is ignored with .godot/ above.

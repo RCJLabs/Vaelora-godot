@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "water_flask"
+display_name = "Flask of Water"
+description = "Clean water from the waystation well."
+type = 1
+value = 2
+weight = 1.0
+restore_stamina = 10.0
+ease_thirst = 40.0

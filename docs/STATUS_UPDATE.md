@@ -101,4 +101,4 @@ Keep instructions beginner-friendly and specific to Godot 4.
 
 ---
 
-**Status:** Blocked on basic 3D collision. Once the player stands on the ground, we can resume building the exploration prototype.
+**Status (update):** Unblocked. A known-good Godot project now lives in `godot/` (player lands, walks, sprints, jumps — verified headless on Godot 4.3). The five causes that reproduce the fall, and the click-by-click fix, are in `docs/godot-starter/FIRST_PERSON_SETUP.md`. Note: spawning overlapped with the floor and scaling the ground did *not* cause falling in testing, so causes 5–6 above are unlikely.

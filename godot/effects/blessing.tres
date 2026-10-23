@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "blessing"
+display_name = "Blessing"
+description = "Restoring health."
+is_harmful = false
+duration = 10.0
+health_per_second = 4.0

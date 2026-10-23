@@ -1,0 +1,169 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://enemies/bandit.gd" id="1_bandit"]
+[ext_resource type="Script" path="res://systems/stats.gd" id="2_stats"]
+[ext_resource type="Script" path="res://systems/status_effects.gd" id="3_fx"]
+[ext_resource type="Script" path="res://combat/attack_data.gd" id="4_attack"]
+[ext_resource type="PackedScene" path="res://items/models/iron_sword_fp.tscn" id="5_sword"]
+
+[sub_resource type="Resource" id="Attack_1"]
+script = ExtResource("4_attack")
+windup_pose = "high_right"
+strike_pose = "low_left"
+windup = 0.55
+active = 0.15
+recovery = 0.5
+poise_damage = 10.0
+knockback = 0.0
+
+[sub_resource type="Resource" id="Attack_2"]
+script = ExtResource("4_attack")
+windup_pose = "high_left"
+strike_pose = "low_right"
+windup = 0.45
+active = 0.15
+recovery = 0.6
+poise_damage = 10.0
+knockback = 0.0
+
+[sub_resource type="Resource" id="Attack_heavy"]
+script = ExtResource("4_attack")
+windup_pose = "overhead"
+strike_pose = "low_center"
+windup = 0.95
+active = 0.18
+recovery = 0.9
+damage_mult = 1.8
+poise_damage = 30.0
+knockback = 0.0
+lunge = 3.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_leather"]
+albedo_color = Color(0.33, 0.24, 0.16, 1)
+roughness = 0.9
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_trousers"]
+albedo_color = Color(0.18, 0.17, 0.15, 1)
+roughness = 0.9
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_skin"]
+albedo_color = Color(0.72, 0.55, 0.42, 1)
+roughness = 0.7
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_hood"]
+albedo_color = Color(0.22, 0.26, 0.2, 1)
+roughness = 0.9
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_mask"]
+albedo_color = Color(0.55, 0.1, 0.08, 1)
+roughness = 0.9
+metallic = 0.0
+
+[sub_resource type="CapsuleShape3D" id="Shape_body"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="Mesh_body"]
+material = SubResource("Mat_leather")
+radius = 0.27
+height = 1.0
+
+[sub_resource type="BoxMesh" id="Mesh_leg"]
+material = SubResource("Mat_trousers")
+size = Vector3(0.15, 0.75, 0.17)
+
+[sub_resource type="SphereMesh" id="Mesh_head"]
+material = SubResource("Mat_skin")
+radius = 0.13
+height = 0.27
+
+[sub_resource type="SphereMesh" id="Mesh_hood"]
+material = SubResource("Mat_hood")
+radius = 0.16
+height = 0.3
+
+[sub_resource type="BoxMesh" id="Mesh_mask"]
+material = SubResource("Mat_mask")
+size = Vector3(0.24, 0.1, 0.1)
+
+[sub_resource type="BoxMesh" id="Mesh_arm"]
+material = SubResource("Mat_leather")
+size = Vector3(0.1, 0.55, 0.1)
+
+[node name="Bandit" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_bandit")
+attacks = Array[ExtResource("4_attack")]([SubResource("Attack_1"), SubResource("Attack_2")])
+heavy_attack = SubResource("Attack_heavy")
+weapon_scene = ExtResource("5_sword")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Shape_body")
+
+[node name="Stats" type="Node" parent="."]
+script = ExtResource("2_stats")
+max_health = 60.0
+max_stamina = 60.0
+max_magicka = 0.0
+health_regen = 0.0
+stamina_regen = 8.0
+max_poise = 35.0
+
+[node name="StatusEffects" type="Node" parent="."]
+script = ExtResource("3_fx")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.6
+target_desired_distance = 0.8
+path_max_distance = 3.0
+radius = 0.4
+height = 1.8
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+mesh = SubResource("Mesh_body")
+
+[node name="LegL" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 0.38, 0)
+mesh = SubResource("Mesh_leg")
+
+[node name="LegR" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12, 0.38, 0)
+mesh = SubResource("Mesh_leg")
+
+[node name="Head" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
+mesh = SubResource("Mesh_head")
+
+[node name="Hood" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76, 0.03)
+mesh = SubResource("Mesh_hood")
+
+[node name="Mask" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66, -0.09)
+mesh = SubResource("Mesh_mask")
+
+[node name="RightArm" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36, 1.5, 0)
+
+[node name="Arm" type="MeshInstance3D" parent="Model/RightArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
+mesh = SubResource("Mesh_arm")
+
+[node name="Hand" type="Node3D" parent="Model/RightArm"]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, -0.55, 0)
+
+[node name="LeftArm" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36, 1.5, 0)
+
+[node name="Arm" type="MeshInstance3D" parent="Model/LeftArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
+mesh = SubResource("Mesh_arm")

@@ -1,0 +1,361 @@
+[gd_scene load_steps=34 format=3]
+
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://interactables/loot_container.gd" id="2_container"]
+[ext_resource type="Script" path="res://interactables/location_door.gd" id="3_door"]
+[ext_resource type="Script" path="res://props/flicker_light.gd" id="4_flicker"]
+[ext_resource type="Script" path="res://levels/nav_region.gd" id="5_nav"]
+[ext_resource type="Script" path="res://interactables/bed.gd" id="9_bed"]
+[ext_resource type="Script" path="res://levels/ambience.gd" id="99_ambience"]
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 1
+background_color = Color(0.02, 0.02, 0.025, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.35, 0.3, 0.27, 1)
+ambient_light_energy = 0.5
+tonemap_mode = 3
+ssao_enabled = true
+glow_enabled = true
+glow_intensity = 0.6
+glow_hdr_threshold = 1.1
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.03
+volumetric_fog_albedo = Color(0.8, 0.75, 0.7, 1)
+
+[sub_resource type="FastNoiseLite" id="Noise_stone"]
+noise_type = 3
+frequency = 0.04
+fractal_octaves = 5
+
+[sub_resource type="Gradient" id="Grad_stone"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(0.12, 0.11, 0.1, 1, 0.26, 0.24, 0.22, 1, 0.38, 0.36, 0.33, 1)
+
+[sub_resource type="NoiseTexture2D" id="Tex_stone"]
+width = 256
+height = 256
+seamless = true
+color_ramp = SubResource("Grad_stone")
+noise = SubResource("Noise_stone")
+
+[sub_resource type="StandardMaterial3D" id="Mat_stone"]
+albedo_texture = SubResource("Tex_stone")
+roughness = 0.95
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv1_scale = Vector3(0.4, 0.4, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="Mat_wood"]
+albedo_color = Color(0.24, 0.15, 0.08, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_flame"]
+shading_mode = 0
+albedo_color = Color(1, 0.6, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_floor"]
+material = SubResource("Mat_stone")
+size = Vector3(8, 0.5, 10)
+
+[sub_resource type="BoxShape3D" id="Shape_floor"]
+size = Vector3(8, 0.5, 10)
+
+[sub_resource type="BoxMesh" id="Mesh_ceiling"]
+material = SubResource("Mat_stone")
+size = Vector3(8, 0.5, 10)
+
+[sub_resource type="BoxShape3D" id="Shape_ceiling"]
+size = Vector3(8, 0.5, 10)
+
+[sub_resource type="BoxMesh" id="Mesh_wall_long"]
+material = SubResource("Mat_stone")
+size = Vector3(0.5, 3, 10)
+
+[sub_resource type="BoxShape3D" id="Shape_wall_long"]
+size = Vector3(0.5, 3, 10)
+
+[sub_resource type="BoxMesh" id="Mesh_wall_short"]
+material = SubResource("Mat_stone")
+size = Vector3(8, 3, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_wall_short"]
+size = Vector3(8, 3, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_crate"]
+material = SubResource("Mat_wood")
+size = Vector3(0.9, 0.9, 0.9)
+
+[sub_resource type="BoxShape3D" id="Shape_crate"]
+size = Vector3(0.9, 0.9, 0.9)
+
+[sub_resource type="BoxMesh" id="Mesh_chest"]
+material = SubResource("Mat_wood")
+size = Vector3(1.0, 0.6, 0.6)
+
+[sub_resource type="BoxShape3D" id="Shape_chest"]
+size = Vector3(1.0, 0.6, 0.6)
+
+[sub_resource type="BoxMesh" id="Mesh_stairs"]
+material = SubResource("Mat_wood")
+size = Vector3(1.6, 0.25, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_stairs"]
+size = Vector3(1.6, 0.25, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_torch"]
+material = SubResource("Mat_flame")
+size = Vector3(0.08, 0.16, 0.08)
+
+[sub_resource type="NavigationMesh" id="NavMesh"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 1
+geometry_source_geometry_mode = 1
+geometry_source_group_name = &"navmesh_source"
+cell_size = 0.25
+cell_height = 0.25
+agent_height = 1.0
+agent_radius = 0.5
+agent_max_climb = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_straw"]
+albedo_color = Color(0.62, 0.52, 0.32, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="Mesh_bed"]
+material = SubResource("Mat_straw")
+size = Vector3(0.9, 0.35, 2.0)
+
+[sub_resource type="BoxShape3D" id="Shape_bed"]
+size = Vector3(0.9, 0.35, 2.0)
+
+[node name="WaystationCellar" type="Node3D" groups=["navmesh_source"]]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env")
+
+[node name="Floor" type="StaticBody3D" parent="." groups=["surface_stone"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("Mesh_floor")
+
+[node name="Shape" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("Shape_floor")
+
+[node name="Ceiling" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.25, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Ceiling"]
+mesh = SubResource("Mesh_ceiling")
+
+[node name="Shape" type="CollisionShape3D" parent="Ceiling"]
+shape = SubResource("Shape_ceiling")
+
+[node name="WallWest" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.25, 1.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallWest"]
+mesh = SubResource("Mesh_wall_long")
+
+[node name="Shape" type="CollisionShape3D" parent="WallWest"]
+shape = SubResource("Shape_wall_long")
+
+[node name="WallEast" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 1.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallEast"]
+mesh = SubResource("Mesh_wall_long")
+
+[node name="Shape" type="CollisionShape3D" parent="WallEast"]
+shape = SubResource("Shape_wall_long")
+
+[node name="WallNorth" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -5.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallNorth"]
+mesh = SubResource("Mesh_wall_short")
+
+[node name="Shape" type="CollisionShape3D" parent="WallNorth"]
+shape = SubResource("Shape_wall_short")
+
+[node name="WallSouth" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 5.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallSouth"]
+mesh = SubResource("Mesh_wall_short")
+
+[node name="Shape" type="CollisionShape3D" parent="WallSouth"]
+shape = SubResource("Shape_wall_short")
+
+[node name="Crate1" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.45, -3.9)
+
+[node name="Mesh" type="MeshInstance3D" parent="Crate1"]
+mesh = SubResource("Mesh_crate")
+
+[node name="Shape" type="CollisionShape3D" parent="Crate1"]
+shape = SubResource("Shape_crate")
+
+[node name="Crate2" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3, 0.45, -2.8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Crate2"]
+mesh = SubResource("Mesh_crate")
+
+[node name="Shape" type="CollisionShape3D" parent="Crate2"]
+shape = SubResource("Shape_crate")
+
+[node name="Crate3" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 1.35, -3.4)
+
+[node name="Mesh" type="MeshInstance3D" parent="Crate3"]
+mesh = SubResource("Mesh_crate")
+
+[node name="Shape" type="CollisionShape3D" parent="Crate3"]
+shape = SubResource("Shape_crate")
+
+[node name="Crate4" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 0.45, 1.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Crate4"]
+mesh = SubResource("Mesh_crate")
+
+[node name="Shape" type="CollisionShape3D" parent="Crate4"]
+shape = SubResource("Shape_crate")
+
+[node name="Step1" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.125, 4.8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Step1"]
+mesh = SubResource("Mesh_stairs")
+
+[node name="Shape" type="CollisionShape3D" parent="Step1"]
+shape = SubResource("Shape_stairs")
+
+[node name="Step2" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.375, 4.3)
+
+[node name="Mesh" type="MeshInstance3D" parent="Step2"]
+mesh = SubResource("Mesh_stairs")
+
+[node name="Shape" type="CollisionShape3D" parent="Step2"]
+shape = SubResource("Shape_stairs")
+
+[node name="Step3" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.625, 3.8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Step3"]
+mesh = SubResource("Mesh_stairs")
+
+[node name="Shape" type="CollisionShape3D" parent="Step3"]
+shape = SubResource("Shape_stairs")
+
+[node name="Step4" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0.875, 3.3)
+
+[node name="Mesh" type="MeshInstance3D" parent="Step4"]
+mesh = SubResource("Mesh_stairs")
+
+[node name="Shape" type="CollisionShape3D" parent="Step4"]
+shape = SubResource("Shape_stairs")
+
+[node name="Torch1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9, 1.9, -1.0)
+mesh = SubResource("Mesh_torch")
+
+[node name="Light" type="OmniLight3D" parent="Torch1"]
+light_color = Color(1, 0.62, 0.3, 1)
+light_energy = 1.8
+light_volumetric_fog_energy = 1.5
+shadow_enabled = true
+omni_range = 8.0
+script = ExtResource("4_flicker")
+
+[node name="Torch2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9, 1.9, -3.5)
+mesh = SubResource("Mesh_torch")
+
+[node name="Light" type="OmniLight3D" parent="Torch2"]
+light_color = Color(1, 0.62, 0.3, 1)
+light_energy = 1.8
+light_volumetric_fog_energy = 1.5
+shadow_enabled = true
+omni_range = 8.0
+script = ExtResource("4_flicker")
+
+[node name="Torch3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, -4.9)
+mesh = SubResource("Mesh_torch")
+
+[node name="Light" type="OmniLight3D" parent="Torch3"]
+light_color = Color(1, 0.62, 0.3, 1)
+light_energy = 1.8
+light_volumetric_fog_energy = 1.5
+shadow_enabled = true
+omni_range = 8.0
+script = ExtResource("4_flicker")
+
+[node name="Chest" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, -4.4)
+script = ExtResource("2_container")
+container_name = "old chest"
+contents = {
+"iron_helmet": 1,
+"minor_healing_potion": 1,
+"tome_mending": 1
+}
+gold = 15
+
+[node name="Mesh" type="MeshInstance3D" parent="Chest"]
+mesh = SubResource("Mesh_chest")
+
+[node name="Shape" type="CollisionShape3D" parent="Chest"]
+shape = SubResource("Shape_chest")
+
+[node name="ExitHatch" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 2.6, 3.2)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("3_door")
+target_scene = "res://levels/test_level.tscn"
+target_marker = "CellarExit"
+destination_name = "the waystation"
+verb = "Climb up to"
+
+[node name="Mesh" type="MeshInstance3D" parent="ExitHatch"]
+transform = Transform3D(1.4, 0, 0, 0, 0.1, 0, 0, 0, 1.4, 0, 0.35, 0)
+mesh = SubResource("Mesh_crate")
+
+[node name="Shape" type="CollisionShape3D" parent="ExitHatch"]
+shape = SubResource("Shape_crate")
+
+[node name="FromWaystation" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 0.05, 2.5)
+
+[node name="FillLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+light_color = Color(0.5, 0.58, 0.8, 1)
+light_energy = 0.6
+omni_range = 9.0
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavMesh")
+script = ExtResource("5_nav")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 0.05, 2.5)
+
+[node name="Bed" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3, 0.18, 2.6)
+script = ExtResource("9_bed")
+
+[node name="Mesh" type="MeshInstance3D" parent="Bed"]
+mesh = SubResource("Mesh_bed")
+
+[node name="Shape" type="CollisionShape3D" parent="Bed"]
+shape = SubResource("Shape_bed")
+
+[node name="Ambience" type="Node" parent="."]
+script = ExtResource("99_ambience")
+indoor = true
