@@ -19,7 +19,7 @@ GODOT=~/bin/godot python3 tools/run_tests.py -j 2                          # 2 a
   worth fixing. `--retries 0` turns this off.
 - Each test runs in its **own user folder**, so tests never touch your real saves, settings or
   key bindings, and can run in parallel.
-- The whole suite takes about 5–10 minutes with 4 at a time. Some tests are timing-sensitive
+- The whole suite takes about 4 minutes on GitHub's runners (2 at a time) and 5–10 on a laptop. Some tests are timing-sensitive
   (combat bots, wolves): on a heavily loaded machine, use fewer jobs (`-j 2`).
 - Run one test by hand to watch its output:
   `godot --headless --path godot -s res://tests/test_move.gd`
@@ -51,9 +51,10 @@ On pushes to `main`, tags, and manual runs (**Actions → CI → Run workflow**)
 templates are downloaded once and cached.
 
 **Cost:** GitHub gives private repositories 2,000 free Action minutes a month (public: free).
-A test run takes roughly 10–15 minutes on GitHub's 2-core runners, so about 130 runs a month.
-To use fewer minutes: run tests only on pull requests (change `on:` in the workflow), or push
-less often.
+A test run takes about 4 minutes on GitHub's runners (measured; the first run also downloads
+Godot, about 1 minute more), so roughly 450 runs a month. An export run adds a few minutes,
+more the first time (the 1 GB template download, then cached). To use fewer minutes: run
+tests only on pull requests (change `on:` in the workflow), or push less often.
 
 ## Builds
 
