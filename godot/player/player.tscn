@@ -1,8 +1,9 @@
-[gd_scene load_steps=25 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://player/player_first_person.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="2_hud"]
 [ext_resource type="Script" path="res://systems/stats.gd" id="3_stats"]
+[ext_resource type="Script" path="res://systems/status_effects.gd" id="4_fx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -193,5 +194,8 @@ mesh = SubResource("Mesh_grip")
 
 [node name="Stats" type="Node" parent="."]
 script = ExtResource("3_stats")
+
+[node name="StatusEffects" type="Node" parent="."]
+script = ExtResource("4_fx")
 
 [node name="HUD" parent="." instance=ExtResource("2_hud")]

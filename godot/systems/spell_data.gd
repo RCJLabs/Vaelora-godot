@@ -19,5 +19,7 @@ enum Effect { DAMAGE_STREAM, HEAL_SELF }
 @export var power_per_second: float = 14.0
 ## How far a stream reaches (DAMAGE_STREAM only).
 @export var range: float = 6.0
+## Status effect id left on targets it hits (e.g. "burning"), or empty.
+@export var applies_effect: String = ""
 ## Colour of the hand glow and particles.
 @export var color: Color = Color(1, 0.5, 0.15)

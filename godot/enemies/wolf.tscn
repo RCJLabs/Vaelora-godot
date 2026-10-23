@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://enemies/wolf.gd" id="1_wolf"]
 [ext_resource type="Script" path="res://systems/stats.gd" id="2_stats"]
+[ext_resource type="Script" path="res://systems/status_effects.gd" id="3_fx"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_fur"]
 albedo_color = Color(0.3, 0.3, 0.32, 1)
@@ -79,6 +80,9 @@ max_health = 35.0
 max_stamina = 50.0
 max_magicka = 0.0
 health_regen = 0.0
+
+[node name="StatusEffects" type="Node" parent="."]
+script = ExtResource("3_fx")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.6

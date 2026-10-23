@@ -4,6 +4,8 @@ extends Node
 # Health / Stamina / Magicka for anything that can be hurt (player, wolves, NPCs).
 # Add as a child node named "Stats" and set the maximums in the Inspector,
 # or call setup() from code (the player does this from its race).
+# If there's a sibling "StatusEffects" node, its modifiers change damage taken
+# and regeneration. Armour (armor_rating) reduces hits but not damage over time.
 
 signal changed            # any value changed - HUD bars listen to this
 signal damaged(amount: float)
@@ -22,6 +24,10 @@ signal died
 ## Seconds after casting before magicka starts refilling.
 @export var magicka_regen_delay: float = 1.0
 
+## Total armour from equipment. Damage from hits is cut by armor / (armor + 100):
+## 25 armour = -20%, 100 armour = -50%.
+var armor_rating: float = 0.0
+
 var health: float
 var stamina: float
 var magicka: float
@@ -29,10 +35,17 @@ var is_dead := false
 
 var _stamina_delay_left := 0.0
 var _magicka_delay_left := 0.0
+var _effects: Node   # sibling StatusEffects, if any
 
 
 func _ready() -> void:
+	_effects = get_parent().get_node_or_null("StatusEffects")
 	refill()
+
+
+## Multiplier from status effects (1.0 when there are none).
+func modifier(key: String) -> float:
+	return _effects.modifier(key) if _effects else 1.0
 
 
 func setup(new_max_health: float, new_max_stamina: float, new_max_magicka: float) -> void:
@@ -54,22 +67,26 @@ func _process(delta: float) -> void:
 	if is_dead:
 		return
 	var before := Vector3(health, stamina, magicka)
-	health = minf(health + health_regen * delta, max_health)
+	health = minf(health + health_regen * modifier("health_regen") * delta, max_health)
 	if _magicka_delay_left > 0.0:
 		_magicka_delay_left -= delta
 	else:
-		magicka = minf(magicka + magicka_regen * delta, max_magicka)
+		magicka = minf(magicka + magicka_regen * modifier("magicka_regen") * delta, max_magicka)
 	if _stamina_delay_left > 0.0:
 		_stamina_delay_left -= delta
 	else:
-		stamina = minf(stamina + stamina_regen * delta, max_stamina)
+		stamina = minf(stamina + stamina_regen * modifier("stamina_regen") * delta, max_stamina)
 	if Vector3(health, stamina, magicka) != before:
 		changed.emit()
 
 
-func take_damage(amount: float) -> void:
+## `over_time` = bleeding, poison, burning ticks: they skip armour.
+func take_damage(amount: float, over_time: bool = false) -> void:
 	if is_dead or amount <= 0.0:
 		return
+	amount *= modifier("damage_taken")
+	if not over_time:
+		amount *= 1.0 - armor_rating / (armor_rating + 100.0)
 	health = maxf(health - amount, 0.0)
 	damaged.emit(amount)
 	changed.emit()

@@ -13,11 +13,13 @@ extends CanvasLayer
 @onready var enemy_bar: ProgressBar = $EnemyBar
 @onready var notices: VBoxContainer = $Notices
 @onready var spell_label: Label = $Bars/SpellLabel
+@onready var effects_row: HBoxContainer = $Bars/Effects
 
 var _message_time_left := 0.0
 var _stats: Stats
 var _enemy_stats: Stats
 var _enemy_bar_time_left := 0.0
+var _effects: StatusEffects
 
 
 func _process(delta: float) -> void:
@@ -103,3 +105,33 @@ func set_spell(spell: SpellData, known_count: int) -> void:
 		spell_label.text = ""
 	else:
 		spell_label.text = spell.display_name + ("   [Q] switch" if known_count > 1 else "")
+
+
+## Shows the player's status effects (name, stacks, seconds left) above the bars.
+func track_effects(effects: StatusEffects) -> void:
+	_effects = effects
+	effects.changed.connect(_refresh_effects)
+	_refresh_effects()
+
+
+func _refresh_effects() -> void:
+	var entries: Array = _effects.active.values()
+	while effects_row.get_child_count() < entries.size():
+		var label := Label.new()
+		label.label_settings = prompt_label.label_settings.duplicate()
+		label.label_settings.font_size = 16
+		effects_row.add_child(label)
+	for i in effects_row.get_child_count():
+		var label: Label = effects_row.get_child(i)
+		label.visible = i < entries.size()
+		if not label.visible:
+			continue
+		var entry: Dictionary = entries[i]
+		var data: StatusEffectData = entry["data"]
+		var text := data.display_name
+		if entry["stacks"] > 1:
+			text += " x%d" % entry["stacks"]
+		if data.duration > 0.0:
+			text += "  %ds" % ceili(entry["time_left"])
+		label.text = text
+		label.label_settings.font_color = Color(1, 0.45, 0.4) if data.is_harmful else Color(0.55, 1, 0.6)

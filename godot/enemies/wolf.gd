@@ -21,8 +21,11 @@ enum State { IDLE, CHASE, ATTACK, RETURN, DEAD }
 @export var bite_range: float = 1.7
 @export var bite_damage: float = 5.0
 @export var bite_cooldown: float = 1.5
+## Chance (0-1) that a bite makes the target bleed.
+@export var bleed_chance: float = 0.25
 
 @onready var stats: Stats = $Stats
+@onready var effects: StatusEffects = $StatusEffects
 @onready var model: Node3D = $Model
 @onready var agent: NavigationAgent3D = get_node_or_null("NavigationAgent3D")
 
@@ -161,6 +164,8 @@ func _blocked_by_packmate() -> bool:
 func _bite(player: Node) -> void:
 	_bite_left = bite_cooldown
 	player.stats.take_damage(bite_damage)
+	if randf() < bleed_chance and player.get("effects"):
+		player.effects.apply("bleeding")
 	# small lunge so the bite reads visually
 	var tween := create_tween()
 	tween.tween_property(model, "position:z", -0.35, 0.08)
@@ -192,6 +197,7 @@ func _move_toward(target: Vector3, speed: float, delta: float) -> void:
 	if step.length() < 0.05:
 		step = dir
 	step = step.normalized()
+	speed *= stats.modifier("move_speed")
 	velocity.x = step.x * speed
 	velocity.z = step.z * speed
 	_face(global_position + step, delta)
@@ -231,6 +237,11 @@ func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0) -> 
 
 
 var _flash_tween: Tween
+
+
+## Spells and weapons can leave status effects (e.g. Flames -> burning).
+func add_effect(id: String) -> void:
+	effects.apply(id)
 
 
 func _on_damaged(_amount: float) -> void:

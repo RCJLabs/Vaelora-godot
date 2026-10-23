@@ -14,6 +14,7 @@ extends CharacterBody3D
 #   │       ├── SpellHand (Node3D)       left-hand glow orb, light, Fire + HealSparks particles
 #   │       └── Weapon (Node3D)          placeholder sword, swung by _swing_weapon()
 #   ├── Stats (systems/stats.gd)    Health / Stamina / Magicka
+#   ├── StatusEffects               bleeding, burning... (systems/status_effects.gd)
 #   └── HUD (instance of ui/hud.tscn)
 #
 # Controls: WASD move, Shift sprint, Space jump, mouse look, E interact,
@@ -49,6 +50,7 @@ extends CharacterBody3D
 @onready var interact_ray: RayCast3D = $Head/Camera3D/InteractRay
 @onready var hud: CanvasLayer = $HUD
 @onready var stats: Stats = $Stats
+@onready var effects: StatusEffects = $StatusEffects
 @onready var attack_cast: ShapeCast3D = $Head/Camera3D/AttackCast
 @onready var weapon: Node3D = $Head/Camera3D/Weapon
 @onready var weapon_rest_rotation: Vector3 = weapon.rotation
@@ -73,7 +75,8 @@ func _ready() -> void:
 	_apply_race(GameState.race_data)
 	hud.track_stats(stats)
 	stats.died.connect(_on_died)
-	stats.damaged.connect(func(_amount): hud.flash_damage())
+	stats.damaged.connect(func(amount): if amount >= 1.0: hud.flash_damage())   # not every bleed tick
+	hud.track_effects(effects)
 	Skills.skill_increased.connect(_on_skill_increased)
 	Skills.leveled_up.connect(_on_leveled_up)
 	Skills.level_bonus_spent.connect(_on_level_bonus_spent)
@@ -141,7 +144,7 @@ func _physics_process(delta: float) -> void:
 	if sprinting:
 		stats.use_stamina(sprint_stamina_per_second * Skills.athletics_stamina_mult() * delta)
 		Skills.add_xp("athletics", Vector2(velocity.x, velocity.z).length() * delta / 5.0)   # 1 XP per 5 m
-	var target_speed := sprint_speed if sprinting else walk_speed
+	var target_speed := (sprint_speed if sprinting else walk_speed) * stats.modifier("move_speed")
 	var accel := ground_accel if is_on_floor() else air_accel
 
 	var horizontal := Vector3(velocity.x, 0, velocity.z)
@@ -178,7 +181,7 @@ func _try_attack() -> void:
 		var target := attack_cast.get_collider(i)
 		if target and target.has_method("take_hit"):
 			target.take_hit(attack_damage * GameState.race_data.melee_damage_mult
-					* Skills.one_handed_damage_mult(), global_position)
+					* Skills.one_handed_damage_mult() * stats.modifier("damage_dealt"), global_position)
 			hud.flash_hit()
 			Skills.add_xp("one_handed", 3.0)
 			var target_stats = target.get("stats")
@@ -194,7 +197,7 @@ func _update_casting(delta: float, blocked: bool) -> void:
 	var wants := Input.is_action_pressed("cast") and not blocked and spell != null
 	is_casting = wants and stats.try_use_magicka(spell.magicka_per_second * delta)
 	if is_casting:
-		var power := spell.power_per_second * delta * Skills.spell_power_mult(spell.skill)
+		var power := spell.power_per_second * delta * Skills.spell_power_mult(spell.skill) * stats.modifier("damage_dealt")
 		match spell.effect:
 			SpellData.Effect.DAMAGE_STREAM:
 				_cast_damage_stream(spell, power)
@@ -217,6 +220,8 @@ func _cast_damage_stream(spell: SpellData, damage: float) -> void:
 		var target := spell_cast.get_collider(i)
 		if target and target.has_method("take_hit"):
 			target.take_hit(damage, global_position, 0.0)
+			if spell.applies_effect != "" and target.has_method("add_effect"):
+				target.add_effect(spell.applies_effect)
 			Skills.add_xp(spell.skill, damage / 5.0)   # 1 XP per 5 damage dealt
 			var target_stats = target.get("stats")
 			if target_stats is Stats:
@@ -280,6 +285,7 @@ func _on_died() -> void:
 	else:
 		global_position = spawn_position
 		velocity = Vector3.ZERO
+		effects.clear()
 		stats.refill()
 		is_dead = false
 
@@ -292,6 +298,7 @@ func get_save_data() -> Dictionary:
 		"health": stats.health,
 		"stamina": stats.stamina,
 		"magicka": stats.magicka,
+		"effects": effects.to_array(),
 	}
 
 
@@ -303,6 +310,7 @@ func apply_save_data(data: Dictionary) -> void:
 	stats.health = data["health"]
 	stats.stamina = data["stamina"]
 	stats.magicka = data["magicka"]
+	effects.from_array(data.get("effects", []))
 	stats.changed.emit()
 
 

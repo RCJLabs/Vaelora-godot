@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "poisoned"
+display_name = "Poisoned"
+description = "Weak and sickly: loses health slowly, stamina and health recover at half speed."
+duration = 20.0
+health_per_second = -0.5
+modifiers = {
+"health_regen": 0.5,
+"stamina_regen": 0.5
+}
