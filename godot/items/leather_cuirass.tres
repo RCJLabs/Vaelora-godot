@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "leather_cuirass"
+display_name = "Leather Cuirass"
+description = "Boiled leather over a padded shirt. It won't stop a blade, but it turns teeth."
+type = 3
+value = 35
+weight = 6.0
+slot = 4
+armor = 20.0

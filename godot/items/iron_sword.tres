@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+[ext_resource type="PackedScene" path="res://items/models/iron_sword_fp.tscn" id="2_model"]
+
+[resource]
+script = ExtResource("1_item")
+id = "iron_sword"
+display_name = "Iron Sword"
+description = "A plain, honest blade. Every traveller on the north road carries one like it."
+type = 2
+value = 40
+weight = 9.0
+damage = 15.0
+attack_cooldown = 0.55
+reach = 1.8
+stamina_cost = 10.0
+held_scene = ExtResource("2_model")

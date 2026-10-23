@@ -14,7 +14,8 @@ extends Node
 
 const SAVE_DIR := "user://saves/"
 const OLD_SAVE_PATH := "user://savegame.json"   # before slots existed
-const SAVE_VERSION := 6   # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time
+const SAVE_VERSION := 7   # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time,
+                          # 7: attributes, equipment, status effects
 const QUICKSAVE := "quicksave"
 const MANUAL_SLOTS := ["slot_1", "slot_2", "slot_3", "slot_4", "slot_5"]
 

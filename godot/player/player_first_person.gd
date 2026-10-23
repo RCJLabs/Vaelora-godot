@@ -12,7 +12,7 @@ extends CharacterBody3D
 #   │       ├── AttackCast (ShapeCast3D) sphere r=0.45, Target (0, 0, -1.8), Mask: layer 3 "enemies"
 #   │       ├── SpellCast (ShapeCast3D)  sphere r=0.5, reach set from the spell, Mask: layer 3
 #   │       ├── SpellHand (Node3D)       left-hand glow orb, light, Fire + HealSparks particles
-#   │       └── Weapon (Node3D)          placeholder sword, swung by _swing_weapon()
+#   │       └── Weapon (Node3D)          holds the equipped weapon's held_scene; swung by _swing_weapon()
 #   ├── Stats (systems/stats.gd)    Health / Stamina / Magicka
 #   ├── StatusEffects               bleeding, burning... (systems/status_effects.gd)
 #   └── HUD (instance of ui/hud.tscn)
@@ -32,10 +32,12 @@ extends CharacterBody3D
 ## (and a warning is printed, because it means collision isn't working).
 @export var kill_y: float = -50.0
 
-@export_group("Melee")
-@export var attack_damage: float = 15.0      # multiplied by the race's melee_damage_mult
-@export var attack_stamina_cost: float = 10.0
-@export var attack_cooldown: float = 0.55
+@export_group("Melee (unarmed)")
+## Fists, used when no weapon is equipped. Weapons bring their own values (items/*.tres).
+@export var unarmed_damage: float = 4.0
+@export var unarmed_stamina_cost: float = 5.0
+@export var unarmed_cooldown: float = 0.45
+@export var unarmed_reach: float = 1.3
 
 @export_group("Stamina & falling")
 @export var sprint_stamina_per_second: float = 12.0
@@ -65,6 +67,11 @@ var spawn_position: Vector3
 var is_dead := false
 var _exhausted := false   # ran out of stamina; no sprinting until it recovers
 var _attack_cooldown_left := 0.0
+# Current weapon numbers (from the equipped weapon, or unarmed).
+var attack_damage := 4.0
+var attack_stamina_cost := 5.0
+var attack_cooldown := 0.45
+var attack_skill := "one_handed"
 var is_casting := false
 var _orb_material: StandardMaterial3D
 
@@ -82,6 +89,8 @@ func _ready() -> void:
 	Skills.level_bonus_spent.connect(_on_level_bonus_spent)
 	Inventory.item_added.connect(_on_item_added)
 	Inventory.gold_added.connect(_on_gold_added)
+	Inventory.equipment_changed.connect(_apply_equipment)
+	_apply_equipment()
 	Spellbook.changed.connect(_on_spell_changed)
 	Spellbook.learned.connect(_on_spell_learned)
 	QuestLog.notice.connect(hud.notify)
@@ -183,7 +192,7 @@ func _try_attack() -> void:
 			target.take_hit(attack_damage * GameState.race_data.melee_damage_mult * Attributes.melee_mult()
 					* Skills.one_handed_damage_mult() * stats.modifier("damage_dealt"), global_position)
 			hud.flash_hit()
-			Skills.add_xp("one_handed", 3.0)
+			Skills.add_xp(attack_skill, 3.0)
 			var target_stats = target.get("stats")
 			if target_stats is Stats:
 				hud.show_enemy_health(target_stats)
@@ -241,6 +250,29 @@ func _on_spell_changed() -> void:
 
 func _on_spell_learned(spell: SpellData) -> void:
 	hud.notify("Spell learned: %s" % spell.display_name)
+
+
+# Weapon stats, model and armour from what's equipped (Inventory).
+func _apply_equipment() -> void:
+	var weapon_item := Inventory.equipped_item("main_hand")
+	for child in weapon.get_children():
+		weapon.remove_child(child)
+		child.queue_free()
+	if weapon_item:
+		attack_damage = weapon_item.damage
+		attack_stamina_cost = weapon_item.stamina_cost
+		attack_cooldown = weapon_item.attack_cooldown
+		attack_skill = weapon_item.weapon_skill
+		attack_cast.target_position = Vector3(0, 0, -weapon_item.reach)
+		if weapon_item.held_scene:
+			weapon.add_child(weapon_item.held_scene.instantiate())
+	else:
+		attack_damage = unarmed_damage
+		attack_stamina_cost = unarmed_stamina_cost
+		attack_cooldown = unarmed_cooldown
+		attack_skill = "one_handed"   # until there's a Hand-to-Hand skill
+		attack_cast.target_position = Vector3(0, 0, -unarmed_reach)
+	stats.armor_rating = Inventory.armor_total()
 
 
 func _swing_weapon() -> void:

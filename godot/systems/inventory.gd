@@ -1,23 +1,36 @@
 extends Node
 
-# The player's items and gold. Autoloaded as "Inventory".
+# The player's items, gold and equipped gear. Autoloaded as "Inventory".
 #   Inventory.add("wolf_pelt")           Inventory.remove("wolf_pelt", 2)
-#   Inventory.count("wolf_pelt")         Inventory.gold += 10  (or add_gold)
+#   Inventory.count("wolf_pelt")         Inventory.add_gold(10)
 #   Inventory.use("minor_healing_potion")
+#   Inventory.equip("iron_sword")        Inventory.equipped_item("main_hand")
+# Equipped items stay in the inventory (like Skyrim); removing the last one
+# unequips it.
 
 signal changed
 signal item_added(item: ItemData, amount: int)
 signal gold_added(amount: int)
+signal equipment_changed
 
 ## Every item in the game. Add new item files here.
 const ITEM_FILES := [
 	"res://items/wolf_pelt.tres",
 	"res://items/minor_healing_potion.tres",
 	"res://items/rune_shard.tres",
+	"res://items/iron_sword.tres",
+	"res://items/hunting_dagger.tres",
+	"res://items/leather_cuirass.tres",
+	"res://items/leather_boots.tres",
+	"res://items/iron_helmet.tres",
 ]
+
+## What every new character starts with (equipped). Backgrounds will change this.
+const STARTING_GEAR := ["iron_sword", "leather_cuirass", "leather_boots"]
 
 var items: Dictionary = {}   # item id -> how many
 var gold: int = 0
+var equipped: Dictionary = {}   # slot name -> item id
 
 var _catalog: Dictionary = {}   # item id -> ItemData
 
@@ -26,6 +39,7 @@ func _ready() -> void:
 	for path in ITEM_FILES:
 		var item: ItemData = load(path)
 		_catalog[item.id] = item
+	give_starting_gear()   # so levels run on their own (F6) armed
 
 
 func get_item(id: String) -> ItemData:
@@ -50,6 +64,9 @@ func remove(id: String, amount: int = 1) -> bool:
 	items[id] -= amount
 	if items[id] == 0:
 		items.erase(id)
+		for slot in equipped.keys():
+			if equipped[slot] == id:
+				unequip(slot)
 	changed.emit()
 	return true
 
@@ -79,14 +96,56 @@ func use(id: String) -> bool:
 	return true
 
 
+# --- equipment ----------------------------------------------------------------------
+
+func equip(id: String) -> bool:
+	var item := get_item(id)
+	if item == null or not item.is_equipment() or count(id) == 0:
+		return false
+	equipped[item.slot_name()] = id
+	equipment_changed.emit()
+	changed.emit()
+	return true
+
+
+func unequip(slot: String) -> void:
+	if equipped.erase(slot):
+		equipment_changed.emit()
+		changed.emit()
+
+
+func is_equipped(id: String) -> bool:
+	return id in equipped.values()
+
+
+func equipped_item(slot: String) -> ItemData:
+	return get_item(equipped[slot]) if equipped.has(slot) else null
+
+
+func armor_total() -> float:
+	var total := 0.0
+	for id in equipped.values():
+		total += get_item(id).armor
+	return total
+
+
+func give_starting_gear() -> void:
+	for id in STARTING_GEAR:
+		if count(id) == 0:
+			items[id] = 1
+		equip(id)
+
+
 func reset() -> void:
 	items = {}
 	gold = 0
+	equipped = {}
+	equipment_changed.emit()
 	changed.emit()
 
 
 func to_dict() -> Dictionary:
-	return {"items": items, "gold": gold}
+	return {"items": items, "gold": gold, "equipped": equipped}
 
 
 func from_dict(data: Dictionary) -> void:
@@ -95,4 +154,13 @@ func from_dict(data: Dictionary) -> void:
 		if _catalog.has(id):   # skip items removed from the game since the save
 			items[id] = int(data["items"][id])
 	gold = int(data["gold"])
+	equipped = {}
+	if data.has("equipped"):
+		for slot in data["equipped"]:
+			var id: String = data["equipped"][slot]
+			if _catalog.has(id) and count(id) > 0:
+				equipped[slot] = id
+	else:
+		give_starting_gear()   # saves from before equipment existed: don't leave them unarmed
+	equipment_changed.emit()
 	changed.emit()

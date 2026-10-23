@@ -70,6 +70,7 @@ func begin() -> void:
 	Skills.reset(selected)
 	Attributes.reset(selected)
 	Inventory.reset()
+	Inventory.give_starting_gear()
 	Spellbook.reset(selected)
 	Reputation.reset()
 	QuestLog.reset_baseline()

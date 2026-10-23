@@ -141,14 +141,17 @@ func _refresh_inventory() -> void:
 	if not is_open:
 		return
 	var selected_id: String = _selected_id()
-	%GoldLabel.text = "Gold: %d" % Inventory.gold
+	%GoldLabel.text = "Gold: %d      Armor: %d" % [Inventory.gold, Inventory.armor_total()]
 	item_list.clear()
 	_item_ids = Inventory.items.keys()
 	_item_ids.sort()
 	for id in _item_ids:
 		var count: int = Inventory.items[id]
 		var item := Inventory.get_item(id)
-		item_list.add_item(item.display_name if count == 1 else "%s  (%d)" % [item.display_name, count])
+		var text := item.display_name if count == 1 else "%s  (%d)" % [item.display_name, count]
+		if Inventory.is_equipped(id):
+			text += "   (equipped)"
+		item_list.add_item(text)
 	if _item_ids.is_empty():
 		item_list.add_item("(empty)", null, false)
 	else:   # keep the same item selected after using one, if any are left
@@ -168,14 +171,33 @@ func _show_selected_item() -> void:
 	var item := Inventory.get_item(id) if id != "" else null
 	%ItemName.text = item.display_name if item else ""
 	%ItemDescription.text = item.description if item else ""
-	%ItemValue.text = ("Value: %d gold" % item.value) if item else ""
-	use_button.visible = item != null and item.type == ItemData.Type.CONSUMABLE
-	use_button.text = "Drink" if use_button.visible else "Use"
+	var details := ""
+	if item:
+		if item.type == ItemData.Type.WEAPON:
+			details = "Damage %d   -   %.2f s per swing   -   Reach %.1f m   -   %d stamina per swing\n" % [
+				item.damage, item.attack_cooldown, item.reach, item.stamina_cost]
+		elif item.type == ItemData.Type.ARMOR:
+			details = "Armor %d   -   %s\n" % [item.armor, item.slot_name().capitalize()]
+		details += "Value: %d gold   -   Weight: %.1f" % [item.value, item.weight]
+	%ItemValue.text = details
+	use_button.visible = item != null and (item.type == ItemData.Type.CONSUMABLE or item.is_equipment())
+	if item and item.is_equipment():
+		use_button.text = "Unequip" if Inventory.is_equipped(id) else "Equip"
+	else:
+		use_button.text = "Drink"
 
 
 func _use_selected() -> void:
 	var id := _selected_id()
-	if id != "":
+	if id == "":
+		return
+	var item := Inventory.get_item(id)
+	if item.is_equipment():
+		if Inventory.is_equipped(id):
+			Inventory.unequip(item.slot_name())
+		else:
+			Inventory.equip(id)
+	else:
 		Inventory.use(id)
 
 
