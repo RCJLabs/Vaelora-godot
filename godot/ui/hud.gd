@@ -14,6 +14,7 @@ extends CanvasLayer
 @onready var notices: VBoxContainer = $Notices
 @onready var spell_label: Label = $Bars/SpellLabel
 @onready var effects_row: HBoxContainer = $Bars/Effects
+@onready var powers_label: Label = $Bars/PowersLabel
 
 var _message_time_left := 0.0
 var _stats: Stats
@@ -23,6 +24,7 @@ var _effects: StatusEffects
 
 
 func _process(delta: float) -> void:
+	_update_powers()
 	if _message_time_left > 0.0:
 		_message_time_left -= delta
 		if _message_time_left <= 0.0:
@@ -135,3 +137,19 @@ func _refresh_effects() -> void:
 			text += "  %ds" % ceili(entry["time_left"])
 		label.text = text
 		label.label_settings.font_color = Color(1, 0.45, 0.4) if data.is_harmful else Color(0.55, 1, 0.6)
+
+
+# "Z Battle Fury   X Second Wind 42s"
+func _update_powers() -> void:
+	var parts := []
+	var keys := ["Z", "X"]
+	var ids: Array = Character.powers()
+	for i in ids.size():
+		var id: String = ids[i]
+		if id == "":
+			continue
+		var text: String = "%s %s" % [keys[i], Character.ability_list[id]["name"]]
+		if Character.cooldowns.has(id):
+			text += " %ds" % ceili(Character.cooldowns[id])
+		parts.append(text)
+	powers_label.text = "   ".join(parts)

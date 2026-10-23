@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "innate_focus"
+display_name = "Innate Focus"
+description = "Spells cost half and hit 25% harder."
+is_harmful = false
+duration = 20.0
+modifiers = {
+"spell_cost": 0.5,
+"spell_power": 1.25
+}

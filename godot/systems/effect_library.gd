@@ -7,6 +7,14 @@ const EFFECT_FILES := [
 	"res://effects/bleeding.tres",
 	"res://effects/burning.tres",
 	"res://effects/poisoned.tres",
+	# powers (res://character/abilities.json)
+	"res://effects/adaptable.tres",
+	"res://effects/innate_focus.tres",
+	"res://effects/battle_fury.tres",
+	"res://effects/shadowstep.tres",
+	"res://effects/hunters_focus.tres",
+	"res://effects/blessing.tres",
+	"res://effects/steady_nerves.tres",
 ]
 
 var _catalog: Dictionary = {}

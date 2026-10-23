@@ -54,7 +54,9 @@ func add(id: String, amount: int) -> void:
 		push_error("Reputation: unknown faction '%s'. Is it in %s?" % [id, FACTIONS_FILE])
 		return
 	if amount > 0:
-		amount = roundi(amount * GameState.race_data.reputation_gain_mult * Attributes.reputation_mult())
+		var player := get_tree().get_first_node_in_group("player")
+		var trait_mult: float = player.stats.modifier("reputation_gain") if player else 1.0
+		amount = roundi(amount * GameState.race_data.reputation_gain_mult * Attributes.reputation_mult() * trait_mult)
 	var old_rank := rank(id)
 	values[id] = clampi(value(id) + amount, -100, 100)
 	var name: String = factions[id]["name"]

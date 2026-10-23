@@ -18,7 +18,8 @@ extends CharacterBody3D
 #   └── HUD (instance of ui/hud.tscn)
 #
 # Controls: WASD move, Shift sprint, Space jump, mouse look, E interact,
-# left-click attack, hold right-click cast spell, Q switch spell, F5 quicksave,
+# left-click attack, hold right-click cast spell, Q switch spell, Z race power,
+# X background power, F5 quicksave,
 # F9 load the latest save, Esc pause menu.
 
 @export var walk_speed: float = 5.0
@@ -73,20 +74,27 @@ var attack_stamina_cost := 5.0
 var attack_cooldown := 0.45
 var attack_skill := "one_handed"
 var is_casting := false
+var _base: Dictionary = {}   # speeds and regen before race/attribute bonuses
 var _orb_material: StandardMaterial3D
 
 
 func _ready() -> void:
 	add_to_group("player")
 	spawn_position = global_position
-	_apply_race(GameState.race_data)
+	stats.permanent = Character
+	_base = {"walk": walk_speed, "sprint": sprint_speed, "jump": jump_velocity,
+			"stamina_regen": stats.stamina_regen, "magicka_regen": stats.magicka_regen}
+	_recalculate_stats(true)
+	Attributes.changed.connect(_recalculate_stats)
+	Character.changed.connect(_recalculate_stats)
+	Character.notice.connect(hud.notify)
 	hud.track_stats(stats)
 	stats.died.connect(_on_died)
 	stats.damaged.connect(func(amount): if amount >= 1.0: hud.flash_damage())   # not every bleed tick
 	hud.track_effects(effects)
 	Skills.skill_increased.connect(_on_skill_increased)
 	Skills.leveled_up.connect(_on_leveled_up)
-	Skills.level_bonus_spent.connect(_on_level_bonus_spent)
+	Skills.level_bonus_spent.connect(func(_stat, _amount): _recalculate_stats())
 	Inventory.item_added.connect(_on_item_added)
 	Inventory.gold_added.connect(_on_gold_added)
 	Inventory.equipment_changed.connect(_apply_equipment)
@@ -127,6 +135,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_try_attack()
 	elif event.is_action_pressed("switch_spell"):
 		Spellbook.cycle()
+	elif event.is_action_pressed("power_race"):
+		Character.use_power(0)
+	elif event.is_action_pressed("power_background"):
+		Character.use_power(1)
 
 
 func _physics_process(delta: float) -> void:
@@ -152,7 +164,8 @@ func _physics_process(delta: float) -> void:
 	var sprinting := Input.is_action_pressed("sprint") and direction != Vector3.ZERO \
 			and is_on_floor() and moving and not _exhausted
 	if sprinting:
-		stats.use_stamina(sprint_stamina_per_second * Skills.athletics_stamina_mult() * delta)
+		stats.use_stamina(sprint_stamina_per_second * Skills.athletics_stamina_mult()
+				* stats.modifier("sprint_stamina") * delta)
 		Skills.add_xp("athletics", Vector2(velocity.x, velocity.z).length() * delta / 5.0)   # 1 XP per 5 m
 	var target_speed := (sprint_speed if sprinting else walk_speed) * stats.modifier("move_speed")
 	var accel := ground_accel if is_on_floor() else air_accel
@@ -168,7 +181,7 @@ func _physics_process(delta: float) -> void:
 	var fall_speed := -velocity.y
 	move_and_slide()
 	if was_in_air and is_on_floor() and fall_speed > safe_fall_speed:
-		stats.take_damage((fall_speed - safe_fall_speed) * fall_damage_per_speed)
+		stats.take_damage((fall_speed - safe_fall_speed) * fall_damage_per_speed * stats.modifier("fall_damage"))
 
 	if talking:
 		hud.set_prompt("")
@@ -182,7 +195,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _try_attack() -> void:
-	if _attack_cooldown_left > 0.0 or not stats.try_use_stamina(attack_stamina_cost):
+	if _attack_cooldown_left > 0.0 or not stats.try_use_stamina(attack_stamina_cost * stats.modifier("attack_stamina")):
 		return
 	_attack_cooldown_left = attack_cooldown
 	_swing_weapon()
@@ -191,7 +204,8 @@ func _try_attack() -> void:
 		var target := attack_cast.get_collider(i)
 		if target and target.has_method("take_hit"):
 			target.take_hit(attack_damage * GameState.race_data.melee_damage_mult * Attributes.melee_mult()
-					* Skills.one_handed_damage_mult() * stats.modifier("damage_dealt"), global_position)
+					* Skills.one_handed_damage_mult() * stats.modifier("damage_dealt")
+					* stats.modifier("weapon_damage_" + attack_skill), global_position)
 			hud.flash_hit()
 			Skills.add_xp(attack_skill, 3.0)
 			var target_stats = target.get("stats")
@@ -205,10 +219,15 @@ func _try_attack() -> void:
 func _update_casting(delta: float, blocked: bool) -> void:
 	var spell := Spellbook.current()
 	var wants := Input.is_action_pressed("cast") and not blocked and spell != null
-	is_casting = wants and stats.try_use_magicka(spell.magicka_per_second * delta)
+	var cost := 0.0
+	if spell:
+		cost = spell.magicka_per_second * delta * stats.modifier("spell_cost") * stats.modifier("spell_cost_" + spell.skill)
+	is_casting = wants and stats.try_use_magicka(cost)
 	if is_casting:
 		var power := spell.power_per_second * delta * Skills.spell_power_mult(spell.skill) \
-				* Attributes.spell_mult() * stats.modifier("damage_dealt")
+				* Attributes.spell_mult() * stats.modifier("spell_power") * stats.modifier("spell_power_" + spell.skill)
+		if spell.effect == SpellData.Effect.DAMAGE_STREAM:
+			power *= stats.modifier("damage_dealt")
 		match spell.effect:
 			SpellData.Effect.DAMAGE_STREAM:
 				_cast_damage_stream(spell, power)
@@ -295,11 +314,6 @@ func _on_leveled_up(new_level: int) -> void:
 	hud.notify("Level %d!  Press Tab to choose a bonus." % new_level)
 
 
-func _on_level_bonus_spent(stat: String, amount: int) -> void:
-	stats.set("max_" + stat, stats.get("max_" + stat) + amount)
-	stats.set(stat, stats.get(stat) + amount)   # the new points arrive full
-	stats.changed.emit()
-
 
 func _on_item_added(item: ItemData, amount: int) -> void:
 	hud.notify("%s added" % item.display_name if amount == 1 else "%s (%d) added" % [item.display_name, amount])
@@ -363,17 +377,30 @@ func _arrive_at_marker(marker_name: String) -> void:
 	spawn_position = global_position
 
 
-# Race modifiers from res://races/*.tres (chosen on the character creation screen).
-func _apply_race(race: RaceData) -> void:
-	walk_speed *= race.move_speed_mult * Attributes.move_speed_mult()
-	sprint_speed *= race.move_speed_mult * Attributes.move_speed_mult()
+# Speeds, maximums and regen from race (res://races/*.tres), attributes,
+# level-up bonuses and perks. Runs at spawn and whenever any of those change.
+func _recalculate_stats(first_time: bool = false) -> void:
+	var race := GameState.race_data
+	walk_speed = _base["walk"] * race.move_speed_mult * Attributes.move_speed_mult()
+	sprint_speed = _base["sprint"] * race.move_speed_mult * Attributes.move_speed_mult()
 	# Jump height grows with the square of jump speed, so take the square root.
-	jump_velocity *= sqrt(race.jump_height_mult)
-	stats.setup(race.health + Skills.bonus["health"] + Attributes.health_bonus(),
-			race.stamina + Skills.bonus["stamina"] + Attributes.stamina_bonus(),
-			race.magicka + Skills.bonus["magicka"] + Attributes.magicka_bonus())
-	stats.stamina_regen *= Attributes.stamina_regen_mult()
-	stats.magicka_regen *= Attributes.magicka_regen_mult()
+	jump_velocity = _base["jump"] * sqrt(race.jump_height_mult)
+	stats.stamina_regen = _base["stamina_regen"] * Attributes.stamina_regen_mult()
+	stats.magicka_regen = _base["magicka_regen"] * Attributes.magicka_regen_mult()
+	var new_max := {
+		"health": race.health + Skills.bonus["health"] + Attributes.health_bonus() + Character.stat_bonus("health"),
+		"stamina": race.stamina + Skills.bonus["stamina"] + Attributes.stamina_bonus() + Character.stat_bonus("stamina"),
+		"magicka": race.magicka + Skills.bonus["magicka"] + Attributes.magicka_bonus() + Character.stat_bonus("magicka"),
+	}
+	if first_time:
+		stats.setup(new_max["health"], new_max["stamina"], new_max["magicka"])
+		return
+	for stat in new_max:
+		var gained: float = new_max[stat] - stats.get("max_" + stat)
+		stats.set("max_" + stat, new_max[stat])
+		# new points arrive full; lost ones only cap the current value
+		stats.set(stat, clampf(stats.get(stat) + maxf(gained, 0.0), 0.0, new_max[stat]))
+	stats.changed.emit()
 
 
 # Whatever the crosshair points at within reach: if it has an `interact(player)`
@@ -419,6 +446,7 @@ func _ensure_input_actions() -> void:
 		"move_left": KEY_A, "move_right": KEY_D,
 		"jump": KEY_SPACE, "sprint": KEY_SHIFT, "interact": KEY_E,
 		"quicksave": KEY_F5, "quickload": KEY_F9,
+		"power_race": KEY_Z, "power_background": KEY_X,
 	}
 	for action in defaults:
 		if not InputMap.has_action(action):

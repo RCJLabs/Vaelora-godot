@@ -26,4 +26,5 @@ melee_damage_mult = 1.2
 traits = "More Health and Stamina, 20% stronger melee. One-Handed starts at 25.
 Less Magicka and a little slower."
 signature_ability = "Battle Fury"
-signature_description = "Short burst of extra melee damage and damage resistance."
+ability_id = "battle_fury"
+signature_description = "Power (Z): for 15 seconds, deal 25% more damage and take 20% less."

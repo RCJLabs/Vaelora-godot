@@ -28,4 +28,5 @@ melee_damage_mult = 0.9
 traits = "Higher Magicka, lighter on your feet. Athletics starts at 25.
 Less Health and weaker in melee."
 signature_ability = "Innate Focus"
-signature_description = "Knows the Flames spell from the start, and Destruction starts at 25."
+ability_id = "innate_focus"
+signature_description = "Power (Z): for 20 seconds, spells cost half and hit 25% harder. Elves also start knowing Flames."

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "shadowstep"
+display_name = "Shadowstep"
+description = "Moving 40% faster."
+is_harmful = false
+duration = 6.0
+modifiers = {
+"move_speed": 1.4
+}

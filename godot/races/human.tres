@@ -23,4 +23,5 @@ melee_damage_mult = 1.0
 traits = "Skills improve 15% faster through use.
 Reputation gains with factions are 20% higher."
 signature_ability = "Adaptable"
-signature_description = "Once per rest, boost the next skill you use."
+ability_id = "adaptable"
+signature_description = "Power (Z): for 60 seconds, every skill improves twice as fast."

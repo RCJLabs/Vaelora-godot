@@ -1,0 +1,11 @@
+{
+	"adaptable": { "name": "Adaptable", "description": "For 60 seconds, every skill improves twice as fast.", "cooldown": 300, "effect": "adaptable" },
+	"innate_focus": { "name": "Innate Focus", "description": "For 20 seconds, spells cost half as much and hit 25% harder.", "cooldown": 180, "effect": "innate_focus" },
+	"battle_fury": { "name": "Battle Fury", "description": "For 15 seconds, deal 25% more damage and take 20% less.", "cooldown": 120, "effect": "battle_fury" },
+	"second_wind": { "name": "Second Wind", "description": "Instantly recover 50 Stamina and 20 Health.", "cooldown": 120, "restore": { "stamina": 50, "health": 20 } },
+	"clarity": { "name": "Clarity", "description": "Instantly recover 60 Magicka.", "cooldown": 120, "restore": { "magicka": 60 } },
+	"shadowstep": { "name": "Shadowstep", "description": "For 6 seconds, move 40% faster.", "cooldown": 60, "effect": "shadowstep" },
+	"hunters_focus": { "name": "Hunter's Focus", "description": "For 20 seconds, deal 15% more damage.", "cooldown": 90, "effect": "hunters_focus" },
+	"blessing": { "name": "Blessing", "description": "Restore 4 Health per second for 10 seconds.", "cooldown": 90, "effect": "blessing" },
+	"steady_nerves": { "name": "Steady Nerves", "description": "For 12 seconds, take 20% less damage and recover Stamina 50% faster.", "cooldown": 90, "effect": "steady_nerves" }
+}

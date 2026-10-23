@@ -158,6 +158,22 @@ grow_vertical = 0
 mouse_filter = 2
 label_settings = SubResource("Label_shadow")
 
+[node name="PowersLabel" type="Label" parent="Bars"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 170.0
+offset_top = -64.0
+offset_right = 470.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+label_settings = SubResource("Label_shadow")
+horizontal_alignment = 2
+
 [node name="Magicka" type="ProgressBar" parent="Bars"]
 anchors_preset = 7
 anchor_left = 0.5

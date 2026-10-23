@@ -21,6 +21,7 @@ Reputation="*res://systems/reputation.gd"
 WorldState="*res://systems/world_state.gd"
 Settings="*res://systems/settings.gd"
 QuestLog="*res://systems/quest_log.gd"
+Character="*res://systems/character.gd"
 DialogueManager="*res://ui/dialogue_box.tscn"
 SaveSystem="*res://systems/save_system.gd"
 CharacterMenu="*res://ui/character_menu.tscn"
@@ -83,6 +84,16 @@ quickload={
 }journal={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":74,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+power_race={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":90,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+power_background={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":88,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 attack={

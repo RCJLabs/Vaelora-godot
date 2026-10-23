@@ -1,0 +1,64 @@
+{
+	"soldier": {
+		"name": "Soldier",
+		"description": "You served in a garrison or a lord's levy. You know how to hold a line, march all day, and keep your blade clean.",
+		"attributes": { "strength": 1, "endurance": 1 },
+		"skills": { "one_handed": 5, "athletics": 5 },
+		"gear": ["iron_sword", "leather_cuirass", "leather_boots", "iron_helmet"],
+		"items": { "minor_healing_potion": 1 },
+		"gold": 20,
+		"reputation": { "riverwatch": 10 },
+		"ability": "second_wind"
+	},
+	"scholar": {
+		"name": "Scholar",
+		"description": "Years of books, lamplight and lectures. You learned a little of the old magic, and a great deal about what it costs.",
+		"attributes": { "intellect": 2 },
+		"skills": { "destruction": 5, "restoration": 5 },
+		"spells": ["flames"],
+		"gear": ["hunting_dagger", "leather_boots"],
+		"items": { "minor_healing_potion": 2 },
+		"gold": 40,
+		"ability": "clarity"
+	},
+	"outlaw": {
+		"name": "Outlaw",
+		"description": "There's a price on your head in Riverwatch, and you've learned to live quick and light because of it.",
+		"attributes": { "agility": 1, "presence": 1 },
+		"skills": { "one_handed": 5, "athletics": 5 },
+		"gear": ["hunting_dagger", "leather_cuirass", "leather_boots"],
+		"gold": 60,
+		"reputation": { "riverwatch": -15 },
+		"ability": "shadowstep"
+	},
+	"hunter": {
+		"name": "Hunter",
+		"description": "You grew up in the hills, reading tracks and weather. Wolves are no stranger to you.",
+		"attributes": { "agility": 1, "endurance": 1 },
+		"skills": { "athletics": 10 },
+		"gear": ["hunting_dagger", "leather_cuirass", "leather_boots"],
+		"items": { "wolf_pelt": 1 },
+		"gold": 25,
+		"ability": "hunters_focus"
+	},
+	"acolyte": {
+		"name": "Acolyte",
+		"description": "Raised in a shrine, taught to tend the sick and keep the old rites. Your faith is quiet, but it has weight.",
+		"attributes": { "willpower": 1, "presence": 1 },
+		"skills": { "restoration": 10 },
+		"gear": ["iron_sword", "leather_boots"],
+		"items": { "minor_healing_potion": 3 },
+		"gold": 15,
+		"ability": "blessing"
+	},
+	"merchant": {
+		"name": "Merchant",
+		"description": "You've haggled in every market from the coast to the river. Coin opens doors that swords can't.",
+		"attributes": { "presence": 2 },
+		"skills": {},
+		"gear": ["iron_sword", "leather_cuirass", "leather_boots"],
+		"gold": 150,
+		"reputation": { "riverwatch": 5 },
+		"ability": "steady_nerves"
+	}
+}

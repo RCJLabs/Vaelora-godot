@@ -34,4 +34,6 @@ extends Resource
 @export_group("Flavour")
 @export_multiline var traits: String = ""
 @export var signature_ability: String = ""
+## Active power used with Z (an id from res://character/abilities.json).
+@export var ability_id: String = ""
 @export_multiline var signature_description: String = ""

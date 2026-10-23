@@ -64,17 +64,7 @@ func select_race(race: RaceData) -> void:
 
 
 func begin() -> void:
-	GameState.set_race(selected)
-	GameState.flags = {}   # new game: forget the previous character's story
-	GameState.play_time = 0.0
-	Skills.reset(selected)
-	Attributes.reset(selected)
-	Inventory.reset()
-	Inventory.give_starting_gear()
-	Spellbook.reset(selected)
-	Reputation.reset()
-	WorldState.reset()
-	QuestLog.reset_baseline()
+	Character.create(selected, "Traveller", "soldier", [], {}, {})
 	get_tree().change_scene_to_file(START_LEVEL)
 
 

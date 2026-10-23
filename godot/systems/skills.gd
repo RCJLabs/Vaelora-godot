@@ -72,7 +72,9 @@ func xp_needed(id: String) -> float:
 func add_xp(id: String, amount: float) -> void:
 	if levels[id] >= MAX_LEVEL:
 		return
-	xp[id] += amount * GameState.race_data.skill_xp_mult
+	var player := get_tree().get_first_node_in_group("player")
+	var trait_mult: float = player.stats.modifier("skill_xp") if player else 1.0   # traits, Adaptable
+	xp[id] += amount * GameState.race_data.skill_xp_mult * trait_mult
 	while levels[id] < MAX_LEVEL and xp[id] >= xp_needed(id):
 		xp[id] -= xp_needed(id)
 		levels[id] += 1

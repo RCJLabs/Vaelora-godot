@@ -14,8 +14,8 @@ extends Node
 
 const SAVE_DIR := "user://saves/"
 const OLD_SAVE_PATH := "user://savegame.json"   # before slots existed
-const SAVE_VERSION := 7   # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time,
-                          # 7: attributes, equipment, status effects
+const SAVE_VERSION := 8   # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time,
+                          # 7: attributes, equipment, status effects, 8: character (background, traits, perks, modes)
 const QUICKSAVE := "quicksave"
 const MANUAL_SLOTS := ["slot_1", "slot_2", "slot_3", "slot_4", "slot_5"]
 
@@ -69,8 +69,13 @@ func most_recent_slot() -> String:
 ## One line describing a save, for menus.
 func describe(meta: Dictionary) -> String:
 	var minutes := int(meta.get("play_time", 0.0) / 60.0)
+	var who: String = meta.get("race", "?")
+	if meta.get("background", "") != "":
+		who += " " + meta["background"]
+	if meta.get("name", "") != "":
+		who = "%s (%s)" % [meta["name"], who]
 	return "%s, level %d  -  %s  -  %dh %02dm played  -  %s" % [
-		meta.get("race", "?"), meta.get("character_level", 1), meta.get("location", "?"),
+		who, meta.get("character_level", 1), meta.get("location", "?"),
 		minutes / 60, minutes % 60, meta.get("saved_at_text", "")]
 
 
@@ -90,6 +95,8 @@ func save_game(slot: String = QUICKSAVE) -> bool:
 			"saved_at": Time.get_unix_time_from_system(),
 			"saved_at_text": Time.get_datetime_string_from_system(false, true).substr(0, 16),
 			"race": GameState.race,
+			"name": Character.player_name,
+			"background": Character.backgrounds.get(Character.background, {}).get("name", ""),
 			"character_level": Skills.character_level,
 			"location": level.name.capitalize(),   # "TestLevel" -> "Test Level"
 			"play_time": GameState.play_time,
@@ -100,6 +107,7 @@ func save_game(slot: String = QUICKSAVE) -> bool:
 		"play_time": GameState.play_time,
 		"skills": Skills.to_dict(),
 		"attributes": Attributes.to_dict(),
+		"character": Character.to_dict(),
 		"inventory": Inventory.to_dict(),
 		"spells": Spellbook.to_dict(),
 		"reputation": Reputation.to_dict(),
@@ -141,6 +149,10 @@ func load_game(slot: String = "") -> bool:
 		Attributes.from_dict(data["attributes"])
 	else:
 		Attributes.reset(GameState.race_data)   # older saves: race values
+	if data.has("character"):
+		Character.from_dict(data["character"])
+	else:
+		Character.reset()   # older saves: no background, traits or perks
 	if data.has("skills"):
 		Skills.from_dict(data["skills"])
 	else:

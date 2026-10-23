@@ -36,6 +36,9 @@ var is_dead := false
 var _stamina_delay_left := 0.0
 var _magicka_delay_left := 0.0
 var _effects: Node   # sibling StatusEffects, if any
+## Anything with modifier(key) -> float that always applies (the player sets
+## this to the Character autoload: traits, perks, Hardcore). null for others.
+var permanent: Object = null
 
 
 func _ready() -> void:
@@ -43,9 +46,12 @@ func _ready() -> void:
 	refill()
 
 
-## Multiplier from status effects (1.0 when there are none).
+## Multiplier from status effects and permanent modifiers (1.0 when there are none).
 func modifier(key: String) -> float:
-	return _effects.modifier(key) if _effects else 1.0
+	var result: float = _effects.modifier(key) if _effects else 1.0
+	if permanent:
+		result *= permanent.modifier(key)
+	return result
 
 
 func setup(new_max_health: float, new_max_stamina: float, new_max_magicka: float) -> void:

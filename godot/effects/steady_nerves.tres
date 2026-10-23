@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "steady_nerves"
+display_name = "Steady Nerves"
+description = "Take 20% less damage, Stamina recovers faster."
+is_harmful = false
+duration = 12.0
+modifiers = {
+"damage_taken": 0.8,
+"stamina_regen": 1.5
+}
