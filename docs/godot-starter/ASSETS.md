@@ -34,22 +34,11 @@ project uses on desktop). The **Mobile** and **Compatibility** renderers skip th
 target Android/Google Play with the Mobile renderer, the scene will look flatter and you'll
 want to make up for it with regular fog and baked lighting.
 
-## Terrain3D (installed in your local project)
+## Terrain3D
 
-- **Updating from this repo:** `project.godot` here lists Terrain3D under
-  **[editor_plugins]**, so copying `godot/` over your project keeps the plugin enabled. The
-  addon itself lives in your `addons/terrain_3d/` folder, which isn't in the repo, so copying
-  never touches it. Without the addon, the editor shows a one-time "failed to load" warning and
-  carries on.
-- **The test level doesn't use Terrain3D yet.** It needs testing with the real addon,
-  which can't be downloaded in the cloud session that builds these systems.
-- **When you add a Terrain3D node, check these three things:**
-  1. **Collision layer 1 "world"** (Terrain3D → Collision → Layer). Otherwise the player and
-     wolves fall through it (the same lesson as the very first bug).
-  2. **Navigation:** wolves need the terrain in their walkable map. Terrain3D has its own
-     navigation-baking support; see its docs ("Navigation").
-     `levels/nav_region.gd` only reads StaticBody3D collision, which Terrain3D isn't.
-  3. **Delete or lower the green box ground**, so the two don't fight.
+Installed in your local project. Setup steps for the test level are in
+[TERRAIN3D.md](TERRAIN3D.md): your terrain goes in its own scene
+(`levels/test_level_terrain.tscn`), and the test level loads it automatically.
 
 ## Download list (by category)
 

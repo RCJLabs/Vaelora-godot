@@ -2,6 +2,7 @@ extends Node3D
 
 # Put wolves (or any enemy with a `died` signal) under this node.
 # When all of them are dead, sets `cleared_flag` - quests and dialogue check it.
+# When one starts hunting the player, the others join in (alert()).
 # On load, if the flag is already set, the pack doesn't respawn.
 
 @export var cleared_flag: String = "wolves_cleared"
@@ -19,6 +20,13 @@ func _ready() -> void:
 	_alive = members.size()
 	for member in members:
 		member.died.connect(_on_member_died)
+
+
+## A member started hunting: the rest of the pack joins in.
+func alert(_by: Node) -> void:
+	for member in get_children():
+		if member.has_method("join_hunt"):
+			member.join_hunt()
 
 
 func _on_member_died() -> void:

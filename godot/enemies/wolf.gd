@@ -82,7 +82,7 @@ func _think(player: Node3D, delta: float) -> void:
 	match state:
 		State.IDLE:
 			if dist < aggro_range:
-				state = State.CHASE
+				_start_hunt()
 			else:
 				_wander(delta)
 		State.CHASE:
@@ -111,6 +111,20 @@ func _think(player: Node3D, delta: float) -> void:
 				state = State.CHASE   # you followed it back: fight on
 			else:
 				_move_toward(home, run_speed * 0.7, delta)
+
+
+# Start chasing, and tell the pack (the WolfPack parent, if any) so the
+# others join in instead of wandering while their packmates fight.
+func _start_hunt() -> void:
+	state = State.CHASE
+	if get_parent().has_method("alert"):
+		get_parent().alert(self)
+
+
+## Called by the pack when a packmate starts hunting.
+func join_hunt() -> void:
+	if state == State.IDLE or state == State.RETURN:
+		state = State.CHASE
 
 
 # Up close, head for a spot beside the player rather than the player's exact
@@ -212,7 +226,7 @@ func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0) -> 
 		push.y = 0.0
 		_knockback = push.normalized() * knockback
 	if state == State.IDLE or state == State.RETURN:
-		state = State.CHASE   # hit from outside aggro range: it still comes for you
+		_start_hunt()   # hit from outside aggro range: it still comes for you
 	stats.take_damage(damage)
 
 

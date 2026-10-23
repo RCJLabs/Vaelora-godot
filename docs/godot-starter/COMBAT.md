@@ -24,8 +24,9 @@ health bar. Put it on physics layer 3 **enemies** so the sword can find it.
 Three **Greyfang** wolves den about 30 m north-east of spawn (`GreyfangPack` in the level).
 
 - **Idle**: wander around their den.
-- **Chase**: when you come within 14 m, or when you hit one. They run at 6 m/s: walking (5)
-  won't escape them, sprinting (8) will.
+- **Chase**: when you come within 14 m, or when you hit one. **The pack hunts together:**
+  when one starts chasing, the rest join in, wherever they've wandered. They run at 6 m/s:
+  walking (5) won't escape them, sprinting (8) will.
 - **Bite**: 5 damage every 1.5 s each, so three wolves together can kill a careless player.
 - **Give up**: dragged 30 m from home, a wolf runs back and heals.
 - They freeze while you're in a conversation.
@@ -42,11 +43,12 @@ you.
 
 - **`NavigationRegion3D`** in the level holds the *navigation mesh*: a map of where a
   wolf-sized creature can walk. It's built from every StaticBody3D on layer 1 "world" (the
-  level root is in the group `navmesh_source`, so the whole level counts).
+  level root is in the group `navmesh_source`, so the whole level counts), plus the painted
+  navigable areas of a Terrain3D if there is one (see TERRAIN3D.md).
 - **It builds itself when the level loads** (a few milliseconds here), so it always matches
-  your level after you move things. For big levels later: select **NavigationRegion3D** and
-  click **Bake NavigationMesh** in the toolbar, then save. The script sees a baked mesh and
-  leaves it alone. Remember to re-bake after editing the level.
+  your level after you move things. A mesh baked in the editor is used as-is instead (and
+  must be re-baked after edits). For the test level with a Terrain3D, **don't** bake in the
+  editor (TERRAIN3D.md explains why).
 - **See it:** **Debug → Visible Navigation**, then play. The walkable area shows as a
   coloured overlay.
 - **Each wolf has a `NavigationAgent3D`** that plans the path. With no NavigationRegion3D in
