@@ -1,7 +1,8 @@
 # Magic
 
 **Hold right-click** to cast the spell in your left hand. **Q** switches between known
-spells, and so does clicking one in **Tab → Magic**. The ready spell's name sits above the
+spells and **Block** (an empty left hand blocks; see COMBAT.md), and clicking a spell in
+**Tab → Magic** readies it. You can't cast mid-swing or while blocking. The ready spell's name sits above the
 Magicka bar, and the left-hand orb takes its colour.
 
 | Spell | School / skill | Cost | Effect | How you get it |

@@ -23,7 +23,7 @@ const POSES := {
 	"low_center":     {"pos": Vector3(0.05, -0.38, -0.62), "rot": Vector3(-35, 5, 0)},
 	"thrust_back":    {"pos": Vector3(0.28, -0.26, -0.28), "rot": Vector3(2, 4, -85)},
 	"thrust_forward": {"pos": Vector3(0.12, -0.18, -0.88), "rot": Vector3(0, 2, -85)},
-	"block":          {"pos": Vector3(0.12, -0.12, -0.45), "rot": Vector3(8, 80, 15)},
+	"block":          {"pos": Vector3(0.20, -0.26, -0.48), "rot": Vector3(38, 62, 22)},
 	"parry":          {"pos": Vector3(0.02, -0.02, -0.55), "rot": Vector3(20, 70, 35)},
 	"stagger":        {"pos": Vector3(0.42, -0.45, -0.45), "rot": Vector3(-20, -25, -40)},
 	"dodge":          {"pos": Vector3(0.32, -0.40, -0.45), "rot": Vector3(20, 10, -20)},

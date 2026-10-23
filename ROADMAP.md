@@ -109,15 +109,18 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       plus a **Survival** and **Hardcore** toggle. (Built as race → background → traits →
       attributes → name & mode. Survival is saved but does nothing until survival needs exist.)
 
-### 1c. Avowed-style combat (first-person)
-- [ ] Light attacks with **combos**, charged **heavy** attacks, **block**, timed **parry**,
+### 1c. Avowed-style combat (first-person) (core done, see `docs/godot-starter/COMBAT.md`)
+- [x] Light attacks with **combos**, charged **heavy** attacks, **block**, timed **parry**,
       **dodge** with i-frames (moments of invulnerability), **stagger/poise**.
 - [ ] **Weapon types:** sword, axe, mace, dagger, two-hander, shield, bow. Each has its own
       feel and its own skill.
 - [ ] **Spells:** cast styles (stream, bolt, area, ward), dual-casting, 6–8 spells across 3 schools.
-- [ ] **First-person animation pipeline:** bought first-person arm/weapon animation packs, or
+- [x] **First-person animation pipeline:** bought first-person arm/weapon animation packs, or
       procedural animation as a placeholder. Decide early; it shapes everything above.
-- [ ] **Enemy telegraphs and hit reactions**, readable at a glance.
+      (Decided: procedural placeholder now, behind an interface a bought pack can replace;
+      timing lives in AttackData. Trying a real pack needs the PC.)
+- [x] **Enemy telegraphs and hit reactions**, readable at a glance. (Wolves: crouch, eye
+      flare and growl before a bite; flinch, stagger. Placeholder synthesised sounds.)
 - [ ] **Gamepad support.**
 
 **Done when:** a Human soldier and an Elf scholar feel like different games for 20 minutes.

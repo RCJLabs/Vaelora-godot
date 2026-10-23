@@ -7,7 +7,8 @@ Add a row for **every** downloaded asset, at the time you download it.
 | Godot Engine | — | Godot Engine contributors | MIT | https://godotengine.org/license |
 
 Everything else in this project (scripts, scenes, the stone circle, procedural noise
-materials) is original to this repo.
+materials, and the placeholder sounds in `assets/sfx/`, synthesised by
+`tools/make_placeholder_sfx.py`) is original to this repo.
 
 ## License rules for this project
 - **CC0**: OK. No credit legally required, but list it anyway.

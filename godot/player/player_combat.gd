@@ -141,6 +141,7 @@ func dodge_pressed(input_dir: Vector2) -> void:
 	_iframes_left = DODGE_IFRAMES
 	_press_held = false
 	animator.go("dodge", 0.08, 0.5)
+	Sfx.play("dodge", -4.0)
 	player.camera_kick(Vector3(0.0, 0.0, -signf(input_dir.x) * 4.0))
 
 
@@ -250,6 +251,7 @@ func _begin_active() -> void:
 	animator.go(current_attack.strike_pose, current_attack.active, 2.2, Vector3(0.0, 0.05, -0.18))
 	var side := -1.0 if current_attack.windup_pose.ends_with("right") else 1.0
 	player.camera_kick(Vector3(-1.2 if is_heavy else -0.6, side * 0.8, side * 1.5))
+	Sfx.play("swing_heavy" if is_heavy else "swing_light", -6.0)
 	if current_attack.lunge > 0.0:
 		player.lunge(current_attack.lunge, current_attack.active)
 
@@ -290,6 +292,7 @@ func _land_hit(target: Node) -> void:
 	if target_stats is Stats:
 		player.hud.show_enemy_health(target_stats)
 	animator.kick(Vector3(0.0, 0.0, 0.04))
+	Sfx.play("hit_heavy" if is_heavy else "hit_flesh")
 	hit_stop(HIT_STOP_HEAVY if is_heavy else HIT_STOP_LIGHT)
 	attack_landed.emit(target, damage)
 
@@ -339,12 +342,14 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 			stats.use_stamina(stats.stamina)
 			stats.take_damage(damage - stopped)
 			stagger(GUARD_BREAK_TIME)
+			Sfx.play("guard_break")
 			defended.emit("guard_broken")
 			return "guard_broken"
 		stats.use_stamina(cost)
 		stats.take_damage(damage - stopped)
 		animator.kick(Vector3(0.0, -0.03, 0.06))
 		player.hud.flash_block(false)
+		Sfx.play("block", -3.0)
 		player.camera_kick(Vector3(-1.0, 0.0, 0.0))
 		defended.emit("blocked")
 		return "blocked"
@@ -361,6 +366,7 @@ func _parried() -> void:
 	_riposte_left = RIPOSTE_TIME
 	animator.go("parry", 0.06, 0.4)
 	player.hud.flash_block(true)
+	Sfx.play("parry")
 	hit_stop(HIT_STOP_PARRY)
 	defended.emit("parried")
 

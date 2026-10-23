@@ -198,6 +198,7 @@ func _blocked_by_packmate() -> bool:
 # The telegraph: crouch back, eyes flare.
 func _begin_bite() -> void:
 	_windup_left = bite_windup
+	Sfx.play_at("wolf_growl", global_position)
 	var tween := _new_pose_tween().set_parallel()
 	tween.tween_property(model, "position:z", 0.22, bite_windup * 0.8).set_ease(Tween.EASE_OUT)
 	tween.tween_property(model, "rotation:x", deg_to_rad(-8), bite_windup * 0.8)
@@ -224,6 +225,8 @@ func _bite(player: Node) -> String:
 		result = player.receive_attack(bite_damage, self, bite_poise_damage)
 	else:
 		player.stats.take_damage(bite_damage)
+	if result == "hit":
+		Sfx.play_at("wolf_bite", global_position)
 	if result == "hit" and randf() < bleed_chance and player.get("effects"):
 		player.effects.apply("bleeding")
 	if result == "parried":

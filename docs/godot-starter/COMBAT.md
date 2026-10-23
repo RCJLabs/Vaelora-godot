@@ -1,23 +1,110 @@
 # Combat & the Greyfang Wolves
 
-## Fighting
+## Fighting (Phase 1c)
 
-**Left-click** swings your sword. (If the mouse isn't captured, the first click only grabs
-the mouse.)
+| Input | What it does |
+|---|---|
+| **Left-click** (tap) | Light attack. Tap again during a swing to **combo**: the sword and dagger each have 3 swings, and the third hits harder |
+| **Left-click** (hold) | Charge a **heavy attack** (the crosshair grows, then turns gold at full charge). Release to strike. A partial charge does 60–100% |
+| **Right-click** (hold) | **Block**, when your left hand is free. **Q** cycles the left hand through Block → each spell → Block. The HUD shows which, above the Magicka bar |
+| Right-click just before a hit | **Parry**: no damage, the attacker staggers, you get 10 Stamina back, and a gold "Parry!" appears |
+| **Alt** | **Dodge** in the direction you're moving (backwards if standing still). Nothing can hit you for the first 0.22 s |
 
-| | Value | Where to change it |
-|---|---|---|
-| Damage | 15 × race melee bonus (Orc 18, Human 15, Elf 13.5) | Player → Melee → Attack Damage, `races/*.tres` |
-| Stamina per swing | 10. No stamina means no swing | Player → Melee |
-| Swing cooldown | 0.55 s | Player → Melee |
-| Reach | ~1.8 m in front of the camera, forgiving 0.45 m radius | Player → Head → Camera3D → AttackCast |
+(If the mouse isn't captured, the first click only grabs it.)
 
-When a hit lands, the crosshair flashes red and the target's health bar appears at the top of
-the screen. When you get hurt, the screen edges flash red.
+### How a swing works
+Every swing has three parts. **Windup** is the telegraph, before it can hit. **Active** is
+when anything that enters your reach gets hit, once. **Recovery** is when you're committed
+and can't swing again. Clicking during a swing queues the next one in the combo, and it
+starts halfway through the recovery, so combos flow faster than single clicks. Stop for 0.4 s
+and the combo starts over.
 
-**Making something hittable:** give it a method `take_hit(damage, from_position)`. Give it
-a `Stats` child named `Stats`, and a `stats` variable pointing to it, if you want the top
-health bar. Put it on physics layer 3 **enemies** so the sword can find it.
+| Iron Sword (15 damage) | Windup / active / recovery | Damage | Stamina | Poise |
+|---|---|---|---|---|
+| 1. Right-to-left slash | 0.14 / 0.12 / 0.26 s | ×1.0 | 10 | 8 |
+| 2. Left-to-right slash | 0.12 / 0.12 / 0.28 s | ×1.0 | 10 | 8 |
+| 3. Overhead chop | 0.20 / 0.12 / 0.42 s | ×1.4 | 13 | 14 |
+| Heavy (0.6 s charge, lunges forward) | 0.08 / 0.14 / 0.50 s | ×2.2 | 20 | 25 |
+
+The Hunting Dagger is faster and weaker (a thrust, two slashes, and a lunging heavy stab at
+×2.5). Fists jab, and have a heavy punch.
+
+**Tuning:** each swing is an **AttackData** inside the weapon's `.tres`. Open
+`items/iron_sword.tres` and expand **Light Attacks** / **Heavy Attack** in the Inspector.
+Global feel (parry window, dodge speed, hit stop, combo timing) is in the constants at the
+top of `player/player_combat.gd`.
+
+### Defending
+- **Blocking** stops 60% of a hit with a sword, 40% with a dagger, 30% unarmed. The Block
+  skill adds 0.5% per level, up to 95%. Each point of damage stopped costs **1.5 Stamina**.
+  Run out and your **guard breaks**: you take the rest of the hit and stagger for 1 s.
+- Blocks only work against attacks from within **75°** of where you're looking. You move at
+  half speed while blocking, and can't attack.
+- **Parry window:** 0.2 s after you start blocking (the Deflection perk makes it 0.3 s).
+- **Dodge** costs 18 Stamina, can cancel a recovery or a charging heavy, but not a swing
+  that's already coming down.
+- **Poise:** every hit wears it down, and when it breaks you (or the enemy) **stagger**:
+  no attacking or blocking for a moment. It refills after 1.5 s without being hit. Player
+  30, wolves 25. A full light combo (8 + 8 + 14) or a fully charged heavy staggers a wolf.
+
+### Feedback
+- **Hit stop:** the game freezes for 0.045 s on a light hit, 0.09 s on a heavy, and 0.12 s on a
+  parry. This is the biggest single thing that makes hits feel solid.
+- **Camera kick** on every swing and when you're hit. The weapon jolts on impact.
+- **Sounds** for swings, hits, blocks, parries, guard breaks, dodges, wolf growls and bites.
+  They're synthesised placeholders (see below).
+- Crosshair: red when a hit lands, blue on a block, gold on a parry. The Stamina bar blinks
+  when you can't afford an attack or dodge.
+
+### The Block skill
+It improves when you block (by damage stopped) and parry. Perks: **Steady Guard** (20,
+blocking costs 25% less Stamina), **Deflection** (25, 50% longer parry window), **Riposte**
+(35, after Deflection: +50% damage for 2 s after a parry).
+
+### Making something hittable
+Give it `take_hit(damage, from_position, knockback = 5.0, poise_damage = 0.0)`. For the top
+health bar, give it a `Stats` child and a `stats` variable pointing to it. Put it on physics
+layer 3 **enemies**. To make an enemy's attack blockable, call
+`player.receive_attack(damage, self, poise_damage)` when it lands, instead of damaging the
+player's Stats directly. It returns `"hit"`, `"blocked"`, `"parried"`, `"dodged"` or
+`"guard_broken"`, so the attacker can react (wolves stagger on `"parried"`).
+
+## Animation: now and later
+
+**Now:** `player/weapon_animator.gd` moves the held weapon between named **poses**
+(`rest`, `high_right`, `low_left`, `overhead`, `block`, `parry`, `stagger`...) with easing,
+an arc on strikes, walking bob and a tremble while charging. Tweak a pose's numbers in
+`POSES` at the top of the file. It's deliberately simple: the point is that **combat
+timing lives in AttackData, not in the animation**.
+
+**Later (when you're at your PC):** the combat code only calls
+`animator.go(pose_name, seconds)` plus a few small helpers (`kick`, `set_charge`,
+`set_movement`). A replacement animator for a bought first-person arms pack only needs to:
+1. Instance the arms scene (an AnimationPlayer plus a Skeleton3D with a BoneAttachment3D on
+   the hand bone, and the weapon model as its child).
+2. In `go()`, play the clip whose name matches the pose (rename the clips, or map them), at
+   a speed that makes it last `seconds`: `anim.play(clip, -1, clip_length / seconds)`.
+3. Keep the same function names, so `player_combat.gd` doesn't change.
+
+**Options** (researched from search results, because this cloud session can't open shop
+pages; **check each licence and price on the page before buying**):
+
+| Option | Cost | What it is | Notes |
+|---|---|---|---|
+| *FPP Melee Animset* by Kubold (Fab) | ~$75 | ~360 first-person arm animations: sword/axe/mace (+ shield), greatsword, spear, halberd, dagger | The closest match to this roadmap. Uses the Unreal mannequin skeleton (FBX included). Fab's FAQ says Standard-licence assets can be used in any engine. You'd need your own arms mesh, because the Unreal mannequin mesh's licence outside Unreal is unclear |
+| *Sword and Shield First Person Animation Set* (Fab) | ~$30 | ~35 arm animations including block and shield bash | Smaller, cheaper way to test the pipeline |
+| Quaternius *Universal Animation Library 2* | Free (CC0) | Third-person humanoid set with armed combos and deaths | Best free source for **humanoid enemies** (bandits). Not first-person arms |
+| Kevin Iglesias *Human Melee Animations* (itch.io) | ~$23 | ~280 third-person melee animations: block, parry, dodge, stun, deaths | Good for enemies. Licence not checked |
+| Mixamo | Free | Third-person clips, royalty-free in games | Mixed quality for sword combat; no redistribution of raw files |
+
+**Recommendation:** keep the procedural animator until the combat *feels* right (timing,
+parry window, poise). Then try one Fab first-person pack on your PC. Godot 4.3 imports FBX
+directly (the built-in "ufbx" importer), and the arms only need to look right through the
+camera. Use Quaternius UAL2 for the first humanoid enemies.
+
+**First-person gotchas to expect:** clipping into walls (render the arms in a SubViewport or
+with a separate camera layer), Unreal files being in centimetres and Z-up (check the import
+scale), turning off shadows on the arms, and A-pose vs T-pose retargeting (twisted hands).
 
 ## Wolves
 
@@ -27,10 +114,15 @@ Three **Greyfang** wolves den about 30 m north-east of spawn (`GreyfangPack` in 
 - **Chase**: when you come within 14 m, or when you hit one. **The pack hunts together:**
   when one starts chasing, the rest join in, wherever they've wandered. They run at 6 m/s:
   walking (5) won't escape them, sprinting (8) will.
-- **Bite**: 5 damage every 1.5 s each, so three wolves together can kill a careless player.
+- **Bite**: 7 damage, telegraphed. The wolf crouches back, its **eyes flare** and it
+  **growls** for 0.5 s, then lunges. During the windup it barely turns, so a sidestep or
+  dodge makes it miss, and a block or parry stops it. 1.2 s between bites. Three wolves
+  together can still kill a careless player.
+- **Stagger**: a parried bite, or broken poise, makes a wolf reel for about a second.
+  Every other hit makes it flinch.
 - **Give up**: dragged 30 m from home, a wolf runs back and heals.
 - They freeze while you're in a conversation.
-- 35 Health each: Orcs need 2 hits per wolf, Humans and Elves 3.
+- 35 Health each: Orcs need 2 sword hits per wolf, Humans and Elves 3 (or one full combo).
 
 Dead wolves can be skinned with **E** for a Wolf Pelt. When the last wolf dies, `wolves_cleared` is set. Tell Maren and she completes the quest
 (`wolf_quest_done`). It's saved like any flag, so the pack stays dead after loading.
@@ -78,5 +170,9 @@ Named in **Project Settings → Layer Names → 3D Physics** so the Inspector sh
 
 - Wolves don't jump or climb. Anything over 0.5 m tall (like the stone block) is a wall to
   them, so standing on top of it keeps you out of reach.
-- No blocking, power attacks, or attack animations beyond the sword swing tween.
+- Animation is procedural poses (see above), and the sounds are synthesised placeholders
+  from `tools/make_placeholder_sfx.py`. To replace one, drop a recording with the same name
+  in `assets/sfx/` (`.wav` or `.ogg`).
+- Only wolves to fight, so far. Wolves can't block or parry you.
 - The wolves and sword are placeholder boxes until real models arrive (see ASSETS.md).
+- Mouse and keyboard only (gamepad is later in 1c).

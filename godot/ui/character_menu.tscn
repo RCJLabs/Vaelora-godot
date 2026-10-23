@@ -210,7 +210,7 @@ layout_mode = 2
 [node name="SpellHint" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Magic/SpellDetails"]
 layout_mode = 2
 modulate = Color(1, 1, 1, 0.6)
-text = "Click a spell to ready it. Hold right-click to cast, Q to switch."
+text = "Click a spell to ready it. Hold right-click to cast (or block, with no spell ready). Q switches."
 autowrap_mode = 3
 
 [node name="Quests" type="HBoxContainer" parent="Root/Panel/Margin/VBox/Tabs"]
