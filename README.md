@@ -13,7 +13,7 @@ The full design plan, pillars, scope, and foundational decisions are in [DESIGN.
 
 ## Current Status
 
-Early planning. Next steps are defining the 3 starting races and establishing the visual style with concept art for a small demo zone.
+Godot 4 project in [`godot/`](godot) with a working first-person controller and test level. Setup/troubleshooting guide: [docs/godot-starter/FIRST_PERSON_SETUP.md](docs/godot-starter/FIRST_PERSON_SETUP.md). Next: interaction raycast, dialogue, race selection.
 
 ## Repo
 
