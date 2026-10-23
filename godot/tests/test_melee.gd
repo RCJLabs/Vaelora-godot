@@ -50,7 +50,8 @@ func _physics_process(_d: float) -> bool:
 		add(60, func(): ok(c.combo_index == 0, "combo resets after the grace period", c.combo_index))
 		# 3) heavy: hold 0.7 s, release
 		add(5, func():
-			w.stats.health = 10000; w.stats.poise = 20; log_hp = hp()
+			# Poise refills over (real) time, so freeze it: otherwise the outcome depends on frame timing.
+			w.stats.health = 10000; w.stats.poise = 20; w.stats.poise_regen = 0.0; log_hp = hp()
 			c.attack_pressed())
 		add(15, func(): ok(st() == "CHARGING", "holding charges a heavy", st()))
 		add(30, func(): between(c.charge, 0.7, 1.0, "charge after 0.75 s"); c.attack_released())

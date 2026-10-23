@@ -70,7 +70,8 @@ func _physics_process(_d: float) -> bool:
 			between(bleeds, 3, 20, "axe light hits that made the wolf bleed, of 40"))
 		# mace poise: 2 light hits break 25
 		add(10, func():
-			equip("iron_mace"); place(); w.stats.poise = 25; w.state = w.State.CHASE
+			# Poise refills over (real) time; freeze it so the check doesn't depend on frame timing.
+			equip("iron_mace"); place(); w.stats.poise = 25; w.stats.poise_regen = 0.0; w.state = w.State.CHASE
 			tap())
 		add(30, func():
 			ok(wolf_state(w) == "CHASE" and w.stats.poise < 25, "first mace hit chips poise, no stagger", [w.stats.poise, wolf_state(w)])

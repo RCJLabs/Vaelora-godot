@@ -36,7 +36,9 @@ func _physics_process(_d: float) -> bool:
 				watch_bolt = false
 				match defend:
 					"parry", "block": Input.action_press("cast")
-					"dodge": c.dodge_pressed(Vector2(1, 0)); snap_at = f + 30
+					# 12 frames: the bolt (14 m/s) covers the last 2.2 m in about 9, and the wisp's
+					# next bolt can land as soon as ~9 frames after that.
+					"dodge": c.dodge_pressed(Vector2(1, 0)); snap_at = f + 12
 	if f == snap_at:
 		first_lost = h0 - p.stats.health
 		first_results = results.duplicate()
@@ -82,7 +84,8 @@ func _physics_process(_d: float) -> bool:
 						# crawled to the wisp and missed. Fixed in spell_bolt.gd (it now flies straight at it).
 						near(w.stats.health, 12.0, 0.5, "parry: the reflected bolt hits the wisp (x1.5)")
 					"dodge":
-						ok(first_results.is_empty() and lost < 0.01 and lost >= 0.0, "dodge: bolt passes through", [first_results, lost])
+						# Either it clips the dodge's i-frames ("dodged") or misses the sidestep entirely.
+						ok(first_results in [[], ["dodged"]] and lost < 0.01 and lost >= 0.0, "dodge: bolt passes through", [first_results, lost])
 					"ward":
 						ok(first_results == ["warded"], "ward: bolt warded", first_results)
 						between(lost, 2.5, 4.5, "ward: damage taken")
