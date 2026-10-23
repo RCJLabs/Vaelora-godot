@@ -3,31 +3,96 @@
 		"title": "The Greyfang Pack",
 		"giver": "Maren, keeper of the north road waystation",
 		"description": "Wolves of the Greyfang pack have been taking carts on the north road. Maren asked me to deal with them.",
-		"started_when": { "requires_flag": "wolf_quest_accepted" },
-		"completed_when": { "requires_flag": "wolf_quest_done" },
+		"started_when": {
+			"requires_flag": "wolf_quest_accepted"
+		},
+		"completed_when": {
+			"requires_flag": "wolf_quest_done"
+		},
 		"objectives": [
-			{ "text": "Kill the Greyfang wolves north-east of the waystation.", "done_when": { "requires_flag": "wolves_cleared" } },
-			{ "text": "Return to Maren.", "done_when": { "requires_flag": "wolf_quest_done" } }
+			{
+				"text": "Kill the Greyfang wolves north-east of the waystation.",
+				"done_when": {
+					"requires_flag": "wolves_cleared"
+				}
+			},
+			{
+				"text": "Return to Maren.",
+				"done_when": {
+					"requires_flag": "wolf_quest_done"
+				}
+			}
 		],
 		"outcomes": [
-			{ "when": { "requires_flag": "wolf_quest_done" }, "text": "The north road is safe again. Maren paid me in gold and gave me a healing potion." }
+			{
+				"when": {
+					"requires_flag": "wolf_quest_done"
+				},
+				"text": "The north road is safe again. Maren paid me in gold and a healing potion, and told the Riverwatch garrison who to thank."
+			}
 		]
 	},
 	"waking_stones": {
 		"title": "The Waking Stones",
 		"giver": "Brannoc, a scout of the Riverwatch garrison",
 		"description": "The old stone circle west of the waystation has been glowing since the new moon. Brannoc wants to know why, but won't go near it himself.",
-		"started_when": { "requires_flag": "stones_quest_started" },
-		"completed_when": { "requires_flag": "stones_quest_done" },
+		"started_when": {
+			"requires_flag": "stones_quest_started"
+		},
+		"completed_when": {
+			"requires_flag": "stones_quest_done"
+		},
 		"objectives": [
-			{ "text": "Investigate the glowing crystal in the stone circle.", "done_when": { "requires_flag": "touched_crystal" } },
-			{ "text": "Find three rune shards scattered around the stone circle.", "done_when": { "requires_item": { "id": "rune_shard", "count": 3 } } },
-			{ "text": "Bring the rune shards to Brannoc.", "done_when": { "requires_flag": "shards_decided" } },
-			{ "text": "Return the rune shards to the crystal.", "show_when": { "requires_flag": "shards_chose_stones" }, "done_when": { "requires_flag": "stones_restored" } }
+			{
+				"text": "Investigate the glowing crystal in the stone circle.",
+				"done_when": {
+					"requires_flag": "touched_crystal"
+				}
+			},
+			{
+				"text": "Find three rune shards scattered around the stone circle.",
+				"done_when": {
+					"requires_item": {
+						"id": "rune_shard",
+						"count": 3
+					}
+				}
+			},
+			{
+				"text": "Bring the rune shards to Brannoc.",
+				"done_when": {
+					"requires_flag": "shards_decided"
+				}
+			},
+			{
+				"text": "Return the rune shards to the crystal.",
+				"show_when": {
+					"requires_flag": "shards_chose_stones"
+				},
+				"done_when": {
+					"requires_flag": "stones_restored"
+				}
+			}
 		],
 		"outcomes": [
-			{ "when": { "requires_flag": "shards_given" }, "text": "I gave the shards to Brannoc for the scholars of Riverwatch. The garrison paid well, and the captain knows my name." },
-			{ "when": { "requires_flag": "stones_restored" }, "text": "I returned the shards to the stones. The crystal burns brighter now, and some of its light stayed with me." }
+			{
+				"when": {
+					"requires_flag": "shards_given"
+				},
+				"text": "I gave the shards to Brannoc for the scholars of Riverwatch. The garrison paid well, and the captain knows my name."
+			},
+			{
+				"when": {
+					"requires_flag": "stones_restored"
+				},
+				"text": "I returned the shards to the stones. The crystal burns brighter now, and some of its light stayed with me."
+			},
+			{
+				"when": {
+					"requires_flag": "shards_kept"
+				},
+				"text": "I kept the shards for myself. Brannoc won't forget it, and neither will the garrison."
+			}
 		]
 	}
 }

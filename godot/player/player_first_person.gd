@@ -80,6 +80,7 @@ func _ready() -> void:
 	Spellbook.changed.connect(_on_spell_changed)
 	Spellbook.learned.connect(_on_spell_learned)
 	QuestLog.notice.connect(hud.notify)
+	Reputation.notice.connect(hud.notify)
 	_orb_material = spell_orb.mesh.surface_get_material(0).duplicate()
 	spell_orb.material_override = _orb_material
 	_on_spell_changed()

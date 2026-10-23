@@ -138,7 +138,10 @@
 				}
 			],
 			"give_gold": 50,
-			"give_item": "minor_healing_potion"
+			"give_item": "minor_healing_potion",
+			"add_reputation": {
+				"riverwatch": 10
+			}
 		},
 		"greet_hero": {
 			"text": "The one who cleared the north road! Sit, rest your feet.",

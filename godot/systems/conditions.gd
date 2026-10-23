@@ -8,6 +8,8 @@ class_name Conditions
 #   "requires_race": "Orc"
 #   "requires_item": "id" or {"id": "id", "count": 3}
 #   "requires_gold": 50
+#   "requires_reputation": {"riverwatch": 10}        at least this much
+#   "requires_reputation_below": {"riverwatch": 0}   less than this
 # An empty Dictionary always passes.
 
 
@@ -26,6 +28,12 @@ static func met(entry: Dictionary) -> bool:
 			return false
 	if entry.has("requires_gold") and Inventory.gold < int(entry["requires_gold"]):
 		return false
+	for faction in entry.get("requires_reputation", {}):
+		if Reputation.value(faction) < int(entry["requires_reputation"][faction]):
+			return false
+	for faction in entry.get("requires_reputation_below", {}):
+		if Reputation.value(faction) >= int(entry["requires_reputation_below"][faction]):
+			return false
 	return true
 
 

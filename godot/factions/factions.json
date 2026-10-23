@@ -1,0 +1,18 @@
+{
+	"ranks": [
+		{ "min": 50, "name": "Champion" },
+		{ "min": 25, "name": "Honored" },
+		{ "min": 10, "name": "Friendly" },
+		{ "min": 0, "name": "Neutral" },
+		{ "min": -24, "name": "Distrusted" },
+		{ "min": -100, "name": "Hated" }
+	],
+	"factions": {
+		"riverwatch": {
+			"name": "Riverwatch Garrison",
+			"description": "The soldiers and scouts who hold the river town of Riverwatch and, in theory, the roads around it. Short of men, long on paperwork, and slow to trust outsiders.",
+			"known_when": { "requires_flag": "met_brannoc" },
+			"also_known_when": { "requires_flag": "wolf_quest_done" }
+		}
+	}
+}

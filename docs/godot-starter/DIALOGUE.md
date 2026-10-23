@@ -58,10 +58,12 @@ They're listed in **Project → Project Settings → Globals → Autoload** (alr
 - **Conditions** (on choices or `start` entries): `requires_flag`, `requires_not_flag`,
   `requires_race` (`"Human"`, `"Elf"`, `"Orc"`). The flag ones take one name or a list, which
   means all of them: `"requires_not_flag": ["wolf_quest_accepted", "wolves_cleared"]`.
-- **More conditions:** `requires_item` (`"wolf_pelt"` or `{"id": "wolf_pelt", "count": 3}`)
-  and `requires_gold` (a number).
+- **More conditions:** `requires_item` (`"wolf_pelt"` or `{"id": "wolf_pelt", "count": 3}`),
+  `requires_gold` (a number), `requires_reputation` / `requires_reputation_below`
+  (`{"riverwatch": 10}`).
 - **Actions**, on a node (run when the line is shown) or a choice (run when picked):
-  `set_flag` (one name or a list), `give_gold`, `take_gold`, `give_item`, `take_item`. The item ones take the same
+  `set_flag` (one name or a list), `give_gold`, `take_gold`, `give_item`, `take_item`,
+  `add_reputation` (`{"riverwatch": 10}`). The item ones take the same
   forms as `requires_item`. Example, Maren buying a pelt:
   `"buy_pelt": {"text": "Fifteen gold.", "take_item": "wolf_pelt", "give_gold": 15, "choices": [...]}`
 - A node with no choices that pass gets an automatic **(Leave)** button.

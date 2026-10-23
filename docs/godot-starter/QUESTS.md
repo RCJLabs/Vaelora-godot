@@ -11,8 +11,8 @@ next objective), **Quest completed**.
 
 | Quest | Giver | Steps | Endings |
 |---|---|---|---|
-| The Greyfang Pack | Maren (waystation) | Kill the wolves NE of spawn → return to Maren | 50 gold + healing potion |
-| The Waking Stones | Brannoc (Riverwatch scout, between spawn and the stone circle) | Touch the crystal → find 3 rune shards (glowing, scattered around the circle) → bring them to Brannoc → **choose** | **Riverwatch:** 60 gold, Brannoc is grateful. **The stones:** return the shards to the crystal yourself: +10 max Magicka, the crystal burns brighter |
+| The Greyfang Pack | Maren (waystation) | Kill the wolves NE of spawn → return to Maren | 50 gold + healing potion, +10 Riverwatch reputation |
+| The Waking Stones | Brannoc (Riverwatch scout, between spawn and the stone circle) | Touch the crystal → find 3 rune shards (glowing, scattered around the circle) → bring them to Brannoc → **choose** | **Riverwatch:** 60 gold, +15 Riverwatch reputation. **The stones:** return the shards to the crystal yourself: +10 max Magicka, the crystal burns brighter. **Keep them:** −15 Riverwatch reputation, Brannoc goes cold |
 
 Brannoc has extra lines for Elves, and both quests remember what you did. Kill the wolves
 *before* Maren asks and you can still report it. Touch the crystal before meeting Brannoc
@@ -74,5 +74,4 @@ Quests live in `quests/quests.json`:
 
 - No map markers or compass. Directions live in the objective text.
 - No quest-tracking toggle. All active quests are shown.
-- Reputation (from the design doc) isn't a system yet. Brannoc's "the captain will hear your
-  name" is just a flag (`shards_given`) that later content can check.
+- Quest rewards that change reputation are dialogue actions (`add_reputation`). See FACTIONS.md.

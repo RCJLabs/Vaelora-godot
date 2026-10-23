@@ -14,8 +14,9 @@ jump_height_mult = 1.0
 skill_xp_mult = 1.15
 skill_bonuses = {}
 starting_spells = Array[String](["healing"])
+reputation_gain_mult = 1.2
 melee_damage_mult = 1.0
 traits = "Skills improve 15% faster through use.
-Factions warm to you a little more quickly."
+Reputation gains with factions are 20% higher."
 signature_ability = "Adaptable"
 signature_description = "Once per rest, boost the next skill you use."

@@ -5,12 +5,12 @@ extends Node
 # Project > Open User Data Folder (in the editor).
 #
 # What is saved: current level, race, story flags, skills and character level,
-# inventory and gold, known spells (quest progress comes from flags and items),
+# inventory and gold, known spells, faction reputation (quest progress comes from flags and items),
 # player position/look direction and Health/Stamina/Magicka. Things not driven by flags (e.g. a
 # door you left open) reset when you load.
 
 const SAVE_PATH := "user://savegame.json"
-const SAVE_VERSION := 4   # 2: skills, 3: inventory, 4: spells
+const SAVE_VERSION := 5   # 2: skills, 3: inventory, 4: spells, 5: reputation
 
 var _pending_player_state: Dictionary = {}
 
@@ -42,6 +42,7 @@ func save_game() -> bool:
 		"skills": Skills.to_dict(),
 		"inventory": Inventory.to_dict(),
 		"spells": Spellbook.to_dict(),
+		"reputation": Reputation.to_dict(),
 		"player": player.get_save_data(),
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -82,6 +83,10 @@ func load_game() -> bool:
 		Spellbook.from_dict(data["spells"])
 	else:
 		Spellbook.reset(GameState.race_data)   # versions 1-3 had no spells
+	if data.has("reputation"):
+		Reputation.from_dict(data["reputation"])
+	else:
+		Reputation.reset()                     # versions 1-4 had no reputation
 	QuestLog.silent = false
 	QuestLog.reset_baseline()
 	_pending_player_state = data["player"]

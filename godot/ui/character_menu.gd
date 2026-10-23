@@ -1,8 +1,8 @@
 extends CanvasLayer
 
 # Tab menu: Skills tab (levels, level-up bonuses), Inventory tab (items,
-# gold, using potions), Magic tab (known spells) and Quests tab (the journal,
-# also opened directly with J). Pauses the game.
+# gold, using potions), Magic tab (known spells), Quests tab (the journal,
+# also opened directly with J) and Factions tab (reputation). Pauses the game.
 # Autoloaded as "CharacterMenu" (process mode Always, so it runs while paused).
 
 @onready var root_control: Control = $Root
@@ -22,6 +22,7 @@ var _item_ids: Array = []   # item id for each row of item_list
 
 const XP_BG := preload("res://ui/xp_bar_bg.tres")
 const XP_FILL := preload("res://ui/xp_bar_fill.tres")
+const REP_FILL := preload("res://ui/rep_bar_fill.tres")
 
 var is_open := false
 
@@ -38,6 +39,7 @@ func _ready() -> void:
 	Spellbook.changed.connect(_refresh_magic)
 	spell_list.item_selected.connect(func(row): Spellbook.select(Spellbook.known[row]))
 	quest_list.item_selected.connect(func(_row): _show_selected_quest())
+	Reputation.changed.connect(_refresh_factions)
 
 
 # _input (not _unhandled_input) so Tab works even when a button has focus.
@@ -73,6 +75,7 @@ func open() -> void:
 	_refresh_inventory()
 	_refresh_magic()
 	_refresh_quests()
+	_refresh_factions()
 	root_control.show()
 
 
@@ -219,3 +222,42 @@ func _show_selected_quest() -> void:
 		lines.append(("[x]  " if o["done"] else "[  ]  ") + o["text"])
 	%QuestObjectives.text = "\n".join(lines)
 	%QuestOutcome.text = status["outcome"]
+
+
+func _refresh_factions() -> void:
+	if not is_open:
+		return
+	var list: VBoxContainer = %FactionList
+	for child in list.get_children():
+		list.remove_child(child)
+		child.queue_free()
+	for id in Reputation.factions:
+		if not Reputation.known(id):
+			continue
+		var faction: Dictionary = Reputation.factions[id]
+		var box := VBoxContainer.new()
+		var title := Label.new()
+		title.text = "%s  -  %s (%d)" % [faction["name"], Reputation.rank(id), Reputation.value(id)]
+		title.add_theme_font_size_override("font_size", 22)
+		title.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
+		var bar := ProgressBar.new()   # -100 .. 100
+		bar.min_value = -100
+		bar.max_value = 100
+		bar.value = Reputation.value(id)
+		bar.show_percentage = false
+		bar.custom_minimum_size = Vector2(420, 14)
+		bar.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		bar.add_theme_stylebox_override("background", XP_BG)
+		bar.add_theme_stylebox_override("fill", REP_FILL)
+		var desc := Label.new()
+		desc.text = faction["description"]
+		desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		desc.modulate = Color(1, 1, 1, 0.75)
+		for c in [title, bar, desc]:
+			box.add_child(c)
+		list.add_child(box)
+	if list.get_child_count() == 0:
+		var none := Label.new()
+		none.text = "You haven't dealt with any factions yet."
+		none.modulate = Color(1, 1, 1, 0.6)
+		list.add_child(none)

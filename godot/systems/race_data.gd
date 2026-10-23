@@ -20,6 +20,8 @@ extends Resource
 @export var jump_height_mult: float = 1.0
 ## Multiplies skill XP gained from use.
 @export var skill_xp_mult: float = 1.0
+## Multiplies reputation gains with factions (not losses).
+@export var reputation_gain_mult: float = 1.0
 ## Multiplies melee damage.
 @export var melee_damage_mult: float = 1.0
 ## Extra starting levels per skill id, e.g. {"one_handed": 10}. See systems/skills.gd.

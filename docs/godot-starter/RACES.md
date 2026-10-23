@@ -7,7 +7,7 @@ stats, then **Begin journey**. **F6** on a level skips the screen and plays as H
 
 | | Health | Stamina | Magicka | Speed | Jump height | Other |
 |---|---|---|---|---|---|---|
-| Human | 100 | 100 | 100 | normal | normal | Skill XP ×1.15 |
+| Human | 100 | 100 | 100 | normal | normal | Skill XP ×1.15, reputation gains ×1.2 |
 | Elf | 85 | 100 | 130 | +8% | +15% | Melee ×0.9, Athletics and Destruction start at 25, knows Flames |
 | Orc | 130 | 115 | 70 | −5% | −5% | Melee ×1.2, One-Handed starts at 25 |
 
