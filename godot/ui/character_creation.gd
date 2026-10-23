@@ -17,6 +17,7 @@ const START_LEVEL := "res://levels/test_level.tscn"
 @onready var traits_label: Label = %Traits
 @onready var ability_label: Label = %Ability
 @onready var begin_button: Button = %BeginButton
+@onready var continue_button: Button = %ContinueButton
 
 var races: Array[RaceData] = []
 var selected: RaceData
@@ -37,6 +38,8 @@ func _ready() -> void:
 		button.pressed.connect(select_race.bind(race))
 		race_buttons.add_child(button)
 	begin_button.pressed.connect(begin)
+	continue_button.visible = SaveSystem.has_save()
+	continue_button.pressed.connect(SaveSystem.load_game)
 	race_buttons.get_child(0).button_pressed = true
 	select_race(races[0])
 
@@ -54,6 +57,7 @@ func select_race(race: RaceData) -> void:
 
 func begin() -> void:
 	GameState.set_race(selected)
+	GameState.flags = {}   # new game: forget the previous character's story
 	get_tree().change_scene_to_file(START_LEVEL)
 
 

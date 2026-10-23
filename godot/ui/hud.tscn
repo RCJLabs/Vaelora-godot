@@ -1,6 +1,32 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="Bar_bg"]
+bg_color = Color(0, 0, 0, 0.55)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.75, 0.7, 0.6, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="Fill_health"]
+bg_color = Color(0.72, 0.12, 0.1, 1)
+
+[sub_resource type="StyleBoxFlat" id="Fill_stamina"]
+bg_color = Color(0.25, 0.62, 0.25, 1)
+
+[sub_resource type="StyleBoxFlat" id="Fill_magicka"]
+bg_color = Color(0.2, 0.38, 0.85, 1)
+
+[sub_resource type="LabelSettings" id="Label_shadow"]
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.8)
+
+[sub_resource type="LabelSettings" id="Label_shadow_small"]
+font_size = 20
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.8)
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -19,6 +45,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 text = "+"
+label_settings = SubResource("Label_shadow")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -35,7 +62,7 @@ offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_font_sizes/font_size = 20
+label_settings = SubResource("Label_shadow_small")
 horizontal_alignment = 1
 
 [node name="Message" type="Label" parent="."]
@@ -45,9 +72,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -350.0
-offset_top = -140.0
+offset_top = -150.0
 offset_right = 350.0
-offset_bottom = -40.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
@@ -55,3 +82,66 @@ theme_override_font_sizes/font_size = 22
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="Bars" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Magicka" type="ProgressBar" parent="Bars"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -470.0
+offset_top = -36.0
+offset_right = -230.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Bar_bg")
+theme_override_styles/fill = SubResource("Fill_magicka")
+value = 100.0
+show_percentage = false
+
+[node name="Health" type="ProgressBar" parent="Bars"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -36.0
+offset_right = 120.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Bar_bg")
+theme_override_styles/fill = SubResource("Fill_health")
+value = 100.0
+show_percentage = false
+
+[node name="Stamina" type="ProgressBar" parent="Bars"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 230.0
+offset_top = -36.0
+offset_right = 470.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Bar_bg")
+theme_override_styles/fill = SubResource("Fill_stamina")
+value = 100.0
+show_percentage = false

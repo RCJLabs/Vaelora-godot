@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://player/player_first_person.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="2_hud"]
+[ext_resource type="Script" path="res://systems/stats.gd" id="3_stats"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -26,5 +27,8 @@ fov = 75.0
 [node name="InteractRay" type="RayCast3D" parent="Head/Camera3D"]
 target_position = Vector3(0, 0, -2.5)
 collision_mask = 1
+
+[node name="Stats" type="Node" parent="."]
+script = ExtResource("3_stats")
 
 [node name="HUD" parent="." instance=ExtResource("2_hud")]

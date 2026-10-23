@@ -13,7 +13,7 @@ The full design plan, pillars, scope, and foundational decisions are in [DESIGN.
 
 ## Current Status
 
-Godot 4 project in [`godot/`](godot): race selection, first-person controller, E-to-interact, and JSON dialogue in a small test level. Guides: [setup & collision](docs/godot-starter/FIRST_PERSON_SETUP.md), [dialogue](docs/godot-starter/DIALOGUE.md), [races](docs/godot-starter/RACES.md), [art & assets](docs/godot-starter/ASSETS.md).
+Godot 4 project in [`godot/`](godot): race selection, first-person controller, Health/Stamina/Magicka, quicksave/quickload, E-to-interact, and JSON dialogue in a small test level. Guides: [setup & collision](docs/godot-starter/FIRST_PERSON_SETUP.md), [dialogue](docs/godot-starter/DIALOGUE.md), [races](docs/godot-starter/RACES.md), [stats & saving](docs/godot-starter/STATS_AND_SAVING.md), [art & assets](docs/godot-starter/ASSETS.md).
 
 ## Repo
 

@@ -97,10 +97,21 @@ theme_override_colors/font_color = Color(0.95, 0.8, 0.45, 1)
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 
-[node name="BeginButton" type="Button" parent="Margin/VBox"]
+[node name="Buttons" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 16
+
+[node name="ContinueButton" type="Button" parent="Margin/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Continue"
+
+[node name="BeginButton" type="Button" parent="Margin/VBox/Buttons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(260, 56)
 layout_mode = 2
-size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 22
-text = "Begin journey"
+text = "Begin new journey"
