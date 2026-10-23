@@ -33,6 +33,8 @@ func _ready() -> void:
 	%StaminaButton.pressed.connect(Skills.spend_level_up.bind("stamina"))
 	%MagickaButton.pressed.connect(Skills.spend_level_up.bind("magicka"))
 	Skills.changed.connect(_refresh)
+	Character.changed.connect(_refresh)
+	Attributes.changed.connect(_refresh)
 	Inventory.changed.connect(_refresh_inventory)
 	item_list.item_selected.connect(func(_i): _show_selected_item())
 	use_button.pressed.connect(_use_selected)
@@ -94,10 +96,16 @@ func _refresh() -> void:
 		return
 	level_label.text = "Level %d   -   %d / %d skill increases to the next level" % [
 		Skills.character_level, Skills.skill_ups_toward_level, Skills.SKILL_UPS_PER_LEVEL]
+	%IdentityLabel.text = _identity_text()
 	var attribute_row: HBoxContainer = %AttributeRow
 	for child in attribute_row.get_children():
 		attribute_row.remove_child(child)
 		child.queue_free()
+	if Character.attribute_points > 0:
+		var points := Label.new()
+		points.text = "%d point%s:" % [Character.attribute_points, "" if Character.attribute_points == 1 else "s"]
+		points.add_theme_color_override("font_color", Color(0.95, 0.8, 0.45))
+		attribute_row.add_child(points)
 	for id in Attributes.ATTRIBUTES:
 		var info: Dictionary = Attributes.ATTRIBUTES[id]
 		var label := Label.new()
@@ -106,6 +114,12 @@ func _refresh() -> void:
 		label.mouse_filter = Control.MOUSE_FILTER_PASS
 		label.add_theme_font_size_override("font_size", 18)
 		attribute_row.add_child(label)
+		if Character.attribute_points > 0:
+			var plus := Button.new()
+			plus.text = "+"
+			plus.tooltip_text = "Spend a point on %s" % info["name"]
+			plus.pressed.connect(Character.spend_attribute_point.bind(id))
+			attribute_row.add_child(plus)
 	level_up_box.visible = Skills.unspent_level_ups > 0
 	%LevelUpLabel.text = "Level up! Choose a bonus (%d left):" % Skills.unspent_level_ups
 
@@ -135,6 +149,54 @@ func _refresh() -> void:
 		desc.modulate = Color(1, 1, 1, 0.6)
 		for c in [name_label, level, bar, desc]:
 			skill_list.add_child(c)
+	_refresh_perks()
+
+
+func _identity_text() -> String:
+	var race := GameState.race
+	var bg: String = Character.backgrounds.get(Character.background, {}).get("name", "")
+	var text := "%s  -  %s%s" % [Character.player_name, race, (" " + bg) if bg != "" else ""]
+	if not Character.traits.is_empty():
+		text += "  -  " + ", ".join(Character.traits.map(func(t): return Character.trait_list[t]["name"]))
+	var modes := []
+	if Character.modes["survival"]: modes.append("Survival")
+	if Character.modes["hardcore"]: modes.append("Hardcore")
+	if not modes.is_empty():
+		text += "  -  " + " + ".join(modes)
+	return text
+
+
+func _refresh_perks() -> void:
+	%PerksLabel.text = "Perks  -  %d point%s to spend" % [Character.perk_points, "" if Character.perk_points == 1 else "s"]
+	var list: VBoxContainer = %PerkList
+	for child in list.get_children():
+		list.remove_child(child)
+		child.queue_free()
+	for skill_id in Skills.SKILLS:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 10)
+		var skill_label := Label.new()
+		skill_label.text = Skills.SKILLS[skill_id]["name"]
+		skill_label.custom_minimum_size.x = 160
+		row.add_child(skill_label)
+		for perk_id in Character.perk_list:
+			var perk: Dictionary = Character.perk_list[perk_id]
+			if perk["skill"] != skill_id:
+				continue
+			var blocker := Character.perk_blocker(perk_id)
+			var button := Button.new()
+			button.tooltip_text = "%s (%s %d)" % [perk["description"], Skills.SKILLS[skill_id]["name"], perk["level"]]
+			if blocker == "taken":
+				button.text = "✓ " + perk["name"]
+				button.disabled = true
+			elif blocker == "":
+				button.text = "Take: " + perk["name"]
+				button.pressed.connect(Character.take_perk.bind(perk_id))
+			else:
+				button.text = "%s (%s)" % [perk["name"], blocker]
+				button.disabled = true
+			row.add_child(button)
+		list.add_child(row)
 
 
 func _refresh_inventory() -> void:

@@ -61,51 +61,73 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Skills" type="VBoxContainer" parent="Root/Panel/Margin/VBox/Tabs"]
+[node name="Skills" type="ScrollContainer" parent="Root/Panel/Margin/VBox/Tabs"]
 layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="SkillsBox" type="VBoxContainer" parent="Root/Panel/Margin/VBox/Tabs/Skills"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 14
 
-[node name="LevelLabel" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Skills"]
+[node name="IdentityLabel" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox"]
+unique_name_in_owner = true
+layout_mode = 2
+modulate = Color(1, 1, 1, 0.8)
+autowrap_mode = 3
+
+[node name="LevelLabel" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.8, 0.45, 1)
 theme_override_font_sizes/font_size = 22
 
-[node name="AttributeRow" type="HBoxContainer" parent="Root/Panel/Margin/VBox/Tabs/Skills"]
+[node name="AttributeRow" type="HBoxContainer" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 28
 
-[node name="LevelUpBox" type="HBoxContainer" parent="Root/Panel/Margin/VBox/Tabs/Skills"]
+[node name="LevelUpBox" type="HBoxContainer" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LevelUpLabel" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Skills/LevelUpBox"]
+[node name="LevelUpLabel" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox/LevelUpBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HealthButton" type="Button" parent="Root/Panel/Margin/VBox/Tabs/Skills/LevelUpBox"]
+[node name="HealthButton" type="Button" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox/LevelUpBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "+10 Health"
 
-[node name="StaminaButton" type="Button" parent="Root/Panel/Margin/VBox/Tabs/Skills/LevelUpBox"]
+[node name="StaminaButton" type="Button" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox/LevelUpBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "+10 Stamina"
 
-[node name="MagickaButton" type="Button" parent="Root/Panel/Margin/VBox/Tabs/Skills/LevelUpBox"]
+[node name="MagickaButton" type="Button" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox/LevelUpBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "+10 Magicka"
 
-[node name="SkillList" type="GridContainer" parent="Root/Panel/Margin/VBox/Tabs/Skills"]
+[node name="SkillList" type="GridContainer" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 10
 columns = 4
+
+[node name="PerksLabel" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.45, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="PerkList" type="VBoxContainer" parent="Root/Panel/Margin/VBox/Tabs/Skills/SkillsBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="Inventory" type="HBoxContainer" parent="Root/Panel/Margin/VBox/Tabs"]
 visible = false
