@@ -1,7 +1,7 @@
 # Phase 1a Foundations
 
-Four systems the later features build on (ROADMAP.md, Phase 1a): status effects,
-attributes, equipment, and world state with interiors.
+Systems the later features build on (ROADMAP.md, Phase 1a): status effects,
+attributes, equipment, world state with interiors, and (added later) footsteps and ambience.
 
 ---
 
@@ -116,3 +116,34 @@ Add the node to the group `persistent` and give it `get_persist_state()` /
 `change_scene_to_file()` removes the current level from the tree immediately, which broke
 the rest of the player's update when a door was used from inside it. Travel and loading now
 switch scenes at the end of the frame (`SaveSystem._change_scene_at_end_of_frame`).
+
+---
+
+## Footsteps & ambience
+
+**Footsteps** (`player/player_footsteps.gd`, the player's Footsteps node): one step every
+1.6 m walking and 2.3 m sprinting, and a louder one when landing from a fall. The sound
+depends on the floor's StaticBody3D group:
+
+| Group | Sound | Used on |
+|---|---|---|
+| `surface_stone` | `footstep_stone_1..3` | the stone block, the boulder, the cellar floor |
+| `surface_wood` | `footstep_wood_1..3` | the fence, chests, crates, the cellar stairs and bed |
+| (none) | `footstep_soft_1..3` | grass and dirt: everything else |
+
+To mark a new floor: select its StaticBody3D → **Node** dock → **Groups** → add
+`surface_stone` or `surface_wood`. Each step picks one of the three takes at random. For a
+new surface type (mud, water), add the group name to `surface()` and three files named
+`footstep_<name>_1..3`.
+
+**Ambience** (`levels/ambience.gd`, an Ambience node in each level): outdoors, a day loop
+(wind and birds) and a night loop (wind and crickets) crossfade with the time of day over
+3 seconds, so sleeping doesn't snap. With **Indoor** ticked it plays one room-tone loop
+(`ambience_cellar`: low hum and drips). Campfires play a 3D crackle loop you hear from about
+20 m.
+
+Every sound is a synthesised placeholder from `tools/make_placeholder_sfx.py`, so nothing
+needs licensing. Replace any file in `assets/sfx/` with a recording of the same name (`.wav`
+or `.ogg`). Loops are looped in code (`Sfx.loop`), so a replacement doesn't need its import
+settings changed. **Nobody has listened to these yet:** they were checked as waveforms
+(levels, step rate, seamless loops), not by ear.

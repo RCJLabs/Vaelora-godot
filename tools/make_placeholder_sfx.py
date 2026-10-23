@@ -49,17 +49,42 @@ def envelope(t, attack, decay):
     return rise * fall
 
 
-def save(name, signal, peak=0.8):
+def save(name, signal, peak=0.8, loop=False, rate=RATE):
     signal = signal / (np.max(np.abs(signal)) + 1e-9) * peak
-    fade = min(len(signal), int(RATE * 0.01))
-    signal[-fade:] *= np.linspace(1.0, 0.0, fade)   # no click at the end
+    if not loop:   # loops must not fade: their end runs straight into their start
+        fade = min(len(signal), int(rate * 0.01))
+        signal[-fade:] *= np.linspace(1.0, 0.0, fade)   # no click at the end
     data = (signal * 32767).astype(np.int16)
     with wave.open(os.path.join(OUT, name + ".wav"), "wb") as f:
         f.setnchannels(1)
         f.setsampwidth(2)
-        f.setframerate(RATE)
+        f.setframerate(rate)
         f.writeframes(data.tobytes())
     print("wrote", name)
+
+
+def band(signal, low, high, rate=RATE):
+    """Band-pass by FFT, with soft edges. Filtering in the frequency domain treats the
+    signal as repeating, so filtered noise loops without a seam."""
+    spectrum = np.fft.rfft(signal)
+    freqs = np.fft.rfftfreq(len(signal), 1.0 / rate)
+    gain = 1.0 / (1.0 + (low / np.maximum(freqs, 1e-3)) ** 4) / (1.0 + (freqs / high) ** 4)
+    return np.fft.irfft(spectrum * gain, len(signal))
+
+
+def chirp(t0, length, f_start, f_end, rate):
+    """One short pitch sweep (a bird call syllable), as (start sample, samples)."""
+    t = np.arange(int(rate * length)) / rate
+    freq = f_start + (f_end - f_start) * t / length
+    phase = np.cumsum(freq) / rate
+    shape = np.sin(np.pi * t / length) ** 2
+    return int(t0 * rate), np.sin(2 * np.pi * phase + 0.6 * np.sin(2 * np.pi * 38 * t)) * shape
+
+
+def add_wrapped(signal, start, piece):
+    """Adds `piece` at `start`, wrapping past the end (so loops stay seamless)."""
+    idx = (start + np.arange(len(piece))) % len(signal)
+    np.add.at(signal, idx, piece)
 
 
 def whoosh(length, low, high, peak_at):
@@ -169,6 +194,96 @@ def main():
     t = seconds(0.3)
     save("guard_break", np.sin(2 * np.pi * (120 * t - 60 * t ** 2)) * envelope(t, 0.002, 0.09)
          + 1.5 * lowpass(rng.standard_normal(len(t)), 900.0) * envelope(t, 0.001, 0.06), 0.9)
+
+
+    footsteps()
+    ambience()
+
+
+def footsteps():
+    """Three takes per surface; the game picks one at random each step."""
+    for take in range(1, 4):
+        # Soft ground (grass, dirt): a low thud and a crunch of grit.
+        t = seconds(0.2)
+        thud = np.sin(2 * np.pi * (95 + 10 * take) * t) * envelope(t, 0.004, 0.03)
+        grit = lowpass(rng.standard_normal(len(t)) * (rng.random(len(t)) > 0.55), 1400.0 + 300 * take, 2)
+        save("footstep_soft_%d" % take, thud + 2.2 * grit * envelope(t, 0.006, 0.045), 0.45)
+
+        # Stone: a hard heel click and a short scuff.
+        t = seconds(0.16)
+        click = highpass(rng.standard_normal(len(t)), 2200.0) * envelope(t, 0.0005, 0.007)
+        scuff = highpass(lowpass(rng.standard_normal(len(t)), 3200.0), 700.0) * envelope(t, 0.008, 0.03)
+        knock = np.sin(2 * np.pi * (180 + 15 * take) * t) * envelope(t, 0.001, 0.015)
+        save("footstep_stone_%d" % take, click + 0.7 * scuff + 0.5 * knock, 0.5)
+
+        # Wood: a hollow knock (a few resonances of the board) and a creak of noise.
+        t = seconds(0.22)
+        hollow = ring(t, [(150 + 12 * take, 1.0), (340 + 20 * take, 0.6), (720, 0.25)], 0.06)
+        tap = lowpass(rng.standard_normal(len(t)), 2500.0) * envelope(t, 0.001, 0.012)
+        save("footstep_wood_%d" % take, hollow * envelope(t, 0.002, 0.05) + 0.8 * tap, 0.5)
+
+
+def ambience():
+    """Seamless loops at 22 kHz (background beds don't need more)."""
+    rate = 22050
+    length = 12.0
+    n = int(rate * length)
+    t = np.arange(n) / rate
+
+    def gusts(*periods):
+        # Slow swells whose periods divide the loop length, so they line up at the seam.
+        out = np.ones(n) * 0.6
+        for cycles, depth in periods:
+            out += depth * np.sin(2 * np.pi * cycles * t / length + rng.random() * 6.28)
+        return np.clip(out, 0.1, None)
+
+    # Day: wind through grass plus scattered bird calls.
+    wind = band(rng.standard_normal(n), 120.0, 900.0, rate) * gusts((1, 0.3), (3, 0.15), (7, 0.08))
+    day = wind / np.max(np.abs(wind))
+    for call in range(9):
+        start = rng.random() * length
+        base = 2600 + rng.random() * 1600
+        for syllable in range(2 + int(rng.random() * 4)):
+            s0, piece = chirp(start + syllable * 0.13, 0.07 + rng.random() * 0.05, base, base * (1.25 + rng.random() * 0.3), rate)
+            add_wrapped(day, s0, piece * (0.12 + rng.random() * 0.1))
+    save("ambience_day", day, 0.5, loop=True, rate=rate)
+
+    # Night: lighter wind and two crickets chirping at different rates.
+    wind = band(rng.standard_normal(n), 90.0, 600.0, rate) * gusts((1, 0.25), (2, 0.15), (5, 0.1))
+    night = wind / np.max(np.abs(wind)) * 0.7
+    for freq, every, level in [(4400, 0.62, 0.07), (5100, 0.81, 0.045)]:
+        pulse = np.sin(2 * np.pi * freq * t)
+        for k in range(int(length / every)):
+            for p in range(3):   # each chirp is 3 quick pulses
+                s0 = int((k * every + p * 0.035 + rng.random() * 0.01) * rate)
+                width = int(0.022 * rate)
+                shape = np.sin(np.pi * np.arange(width) / width) ** 2
+                add_wrapped(night, s0, pulse[s0 % n: s0 % n + width][:width] * shape[:len(pulse[s0 % n: s0 % n + width])] * level)
+    save("ambience_night", night, 0.45, loop=True, rate=rate)
+
+    # Cellar: a low room hum and the odd drip.
+    room = band(rng.standard_normal(n), 40.0, 220.0, rate)
+    room = room / np.max(np.abs(room)) * 0.5
+    for drip in range(4):
+        start = rng.random() * length
+        dt = np.arange(int(rate * 0.25)) / rate
+        plink = np.sin(2 * np.pi * (900 + 900 * dt / 0.25) * dt) * envelope(dt, 0.001, 0.03)
+        for echo, gain in [(0.0, 0.5), (0.09, 0.2), (0.19, 0.08)]:   # a little echo off the walls
+            add_wrapped(room, int((start + echo) * rate), plink * gain)
+    save("ambience_cellar", room, 0.35, loop=True, rate=rate)
+
+    # Campfire: a soft roar with crackles and the occasional pop.
+    length = 6.0
+    n = int(rate * length)
+    roar = band(rng.standard_normal(n), 60.0, 400.0, rate)
+    fire = roar / np.max(np.abs(roar)) * 0.35
+    for crackle in range(int(length * 14)):
+        size = rng.random() ** 2
+        width = int(rate * (0.002 + 0.006 * size))
+        burst = rng.standard_normal(width) * np.exp(-np.arange(width) / (width * 0.3))
+        add_wrapped(fire, int(rng.random() * n), burst * (0.15 + 0.6 * size))
+    fire = fire - band(fire, 1.0, 120.0, rate) * 0.5   # take the boom out of the crackles
+    save("campfire_crackle", fire, 0.5, loop=True, rate=rate)
 
 
 if __name__ == "__main__":

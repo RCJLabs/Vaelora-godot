@@ -8,8 +8,8 @@ rebalancing doesn't need code.
 
 ## The creator
 
-The title screen is step 1 of a five-step creator. **Settings / Load Game / Continue** only
-show on step 1.
+**New Game** on the title screen (`ui/title_screen.tscn`) opens a five-step creator. **Title**
+on step 1 goes back to the title screen.
 
 | Step | What you pick |
 |---|---|

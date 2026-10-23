@@ -6,7 +6,8 @@ config_version=5
 [application]
 
 config/name="High Fantasy Sandbox RPG"
-run/main_scene="res://ui/character_creation.tscn"
+config/version="0.1.0-prototype"
+run/main_scene="res://ui/title_screen.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 
 [autoload]

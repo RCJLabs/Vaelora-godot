@@ -26,7 +26,7 @@ against.
 |---|---|
 | `systems/race_data.gd` | Defines what a race *is* (`class_name RaceData`) |
 | `races/human.tres`, `elf.tres`, `orc.tres` | The three races' numbers and text |
-| `ui/character_creation.tscn` + `.gd` | The selection screen (now the main scene) |
+| `ui/character_creation.tscn` + `.gd` | The creator, opened by **New Game** on the title screen |
 | `systems/game_state.gd` | Stores the choice: `GameState.race` (name) and `GameState.race_data` (everything) |
 | `player/player_first_person.gd` | `_apply_race()` applies speed and jump on spawn |
 

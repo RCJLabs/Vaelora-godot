@@ -103,27 +103,6 @@ theme_override_constants/separation = 14
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="SettingsButton" type="Button" parent="Margin/VBox/Buttons"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 52)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Settings"
-
-[node name="LoadButton" type="Button" parent="Margin/VBox/Buttons"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(170, 52)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Load Game"
-
-[node name="ContinueButton" type="Button" parent="Margin/VBox/Buttons"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(170, 52)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Continue"
-
 [node name="Spacer" type="Control" parent="Margin/VBox/Buttons"]
 layout_mode = 2
 size_flags_horizontal = 3

@@ -251,7 +251,7 @@ Named in **Project Settings → Layer Names → 3D Physics** so the Inspector sh
   them, so standing on top of it keeps you out of reach.
 - Animation is procedural poses (see above), and the sounds are synthesised placeholders
   from `tools/make_placeholder_sfx.py`. To replace one, drop a recording with the same name
-  in `assets/sfx/` (`.wav` or `.ogg`).
+  in `assets/sfx/` (`.wav` or `.ogg`). Footsteps and ambience: see FOUNDATIONS.md.
 - Wolves can't block or parry you; bandits can. Bandits don't use bows or chase you into
   interiors yet.
 - Arrows can't be picked back up after they land.

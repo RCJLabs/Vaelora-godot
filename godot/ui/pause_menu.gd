@@ -4,7 +4,7 @@ extends CanvasLayer
 # Autoloaded as "PauseMenu" (process mode Always, so it works while paused).
 # The title screen opens the Load and Settings pages directly with open_page().
 
-const TITLE_SCENE := "res://ui/character_creation.tscn"
+const TITLE_SCENE := "res://ui/title_screen.tscn"
 
 @onready var root_control: Control = $Root
 @onready var title_label: Label = %Title
@@ -35,7 +35,9 @@ func _input(event: InputEvent) -> void:
 	if DialogueManager.is_active or CharacterMenu.is_open or RestMenu.is_open:
 		return
 	if is_open:
-		if _page == "main" or _from_title:
+		if _page in ["graphics", "controls"]:
+			_show("settings")   # sub-pages of Settings go back one level
+		elif _page == "main" or _from_title:
 			close()
 		else:
 			_show("main")
@@ -76,6 +78,8 @@ func _show(page: String) -> void:
 		"save": _build_save()
 		"load": _build_load()
 		"settings": _build_settings()
+		"graphics": _build_graphics()
+		"report": _build_report()
 		"controls": _build_controls()
 	_focus_first.call_deferred()
 
@@ -96,6 +100,7 @@ func _build_main() -> void:
 	_button("Save Game", _show.bind("save"))
 	_button("Load Game", _show.bind("load"))
 	_button("Settings", _show.bind("settings"))
+	_button("Report a Bug", _show.bind("report"))
 	_button("Quit to Title", _quit_to_title)
 	_button("Quit Game", func(): get_tree().quit())
 
@@ -176,10 +181,48 @@ func _build_settings() -> void:
 	_checkbox("Invert mouse Y", "invert_y")
 	_slider("Field of view", "fov", 60.0, 100.0, 1.0, "%d")
 	_slider("Volume", "master_volume", 0.0, 1.0, 0.05, "%.0f%%", 100.0)
+	_checkbox("Tutorial hints", "show_hints")
+	_button("Graphics...", _show.bind("graphics"))
+	_button("Controls...", _show.bind("controls"))
+	_back_button()
+
+
+func _build_graphics() -> void:
+	title_label.text = "Graphics"
+	_choice("Quality", "graphics_quality", Settings.QUALITY_NAMES)
+	_slider("Render scale", "render_scale", 0.5, 1.0, 0.05, "%.0f%%", 100.0)
 	_checkbox("Fullscreen", "fullscreen")
 	_checkbox("VSync", "vsync")
-	_checkbox("Tutorial hints", "show_hints")
-	_button("Controls...", _show.bind("controls"))
+	_checkbox("Show FPS", "show_fps")
+	var note := Label.new()
+	note.text = "Low and Medium turn off volumetric fog; Low also turns off ambient occlusion and glow. Below 100% render scale, the picture is upscaled with FSR."
+	note.modulate = Color(1, 1, 1, 0.65)
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note.custom_minimum_size.x = 560
+	content.add_child(note)
+	_button("Back", _show.bind("settings"))
+
+
+func _build_report() -> void:
+	title_label.text = "Report a Bug"
+	var report := BugReport.build()
+	DisplayServer.clipboard_set(report)
+	var note := Label.new()
+	note.text = "The details below are copied to the clipboard. Paste them into your report and add what happened and what you expected."
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note.custom_minimum_size.x = 560
+	content.add_child(note)
+	var text := TextEdit.new()
+	text.text = report
+	text.editable = false
+	text.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	text.focus_mode = Control.FOCUS_CLICK   # the gamepad lands on the buttons, not in the text
+	text.custom_minimum_size = Vector2(620, 300)
+	text.add_theme_font_size_override("font_size", 13)
+	content.add_child(text)
+	if BugReport.REPORT_URL != "":
+		_button("Open bug report page", func(): OS.shell_open(BugReport.REPORT_URL))
+	_button("Copy again", func(): DisplayServer.clipboard_set(report))
 	_back_button()
 
 
@@ -283,6 +326,30 @@ func _slider(label_text: String, key: String, low: float, high: float, step: flo
 	slider.value_changed.connect(func(v):
 		value_label.text = format % (v * display_scale)
 		Settings.set_option(key, v))
+	for c in [label, slider, value_label]:
+		row.add_child(c)
+	content.add_child(row)
+
+
+## A slider over a list of named steps (gamepad: left/right).
+func _choice(label_text: String, key: String, names: Array) -> void:
+	var row := HBoxContainer.new()
+	var label := Label.new()
+	label.text = label_text
+	label.custom_minimum_size.x = 220
+	var slider := HSlider.new()
+	slider.max_value = names.size() - 1
+	slider.step = 1
+	slider.tick_count = names.size()
+	slider.ticks_on_borders = true
+	slider.value = Settings.get(key)
+	slider.custom_minimum_size.x = 320
+	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var value_label := Label.new()
+	value_label.text = names[int(slider.value)]
+	slider.value_changed.connect(func(v):
+		value_label.text = names[int(v)]
+		Settings.set_option(key, int(v)))
 	for c in [label, slider, value_label]:
 		row.add_child(c)
 	content.add_child(row)

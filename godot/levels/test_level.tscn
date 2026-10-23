@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3]
+[gd_scene load_steps=75 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://levels/day_night.gd" id="18_daynight"]
 [ext_resource type="Script" path="res://props/campfire.gd" id="19_campfire"]
 [ext_resource type="Script" path="res://enemies/wisp_spawner.gd" id="20_wisps"]
+[ext_resource type="Script" path="res://levels/ambience.gd" id="99_ambience"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -286,7 +287,7 @@ mesh = SubResource("BoxMesh_ground")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
 shape = SubResource("BoxShape_ground")
 
-[node name="StoneBlock" type="StaticBody3D" parent="."]
+[node name="StoneBlock" type="StaticBody3D" parent="." groups=["surface_stone"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -6)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StoneBlock"]
@@ -614,7 +615,7 @@ script = ExtResource("15_flicker")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("Shape_fire")
 
-[node name="BanditChest" type="StaticBody3D" parent="."]
+[node name="BanditChest" type="StaticBody3D" parent="." groups=["surface_wood"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.4, 0.3, -38.6)
 script = ExtResource("14_container")
 container_name = "bandit chest"
@@ -632,7 +633,7 @@ mesh = SubResource("Mesh_camp_chest")
 [node name="Shape" type="CollisionShape3D" parent="BanditChest"]
 shape = SubResource("Shape_camp_chest")
 
-[node name="Fence" type="StaticBody3D" parent="."]
+[node name="Fence" type="StaticBody3D" parent="." groups=["surface_wood"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.475, -12)
 
 [node name="Mesh" type="MeshInstance3D" parent="Fence"]
@@ -641,7 +642,7 @@ mesh = SubResource("Mesh_fence")
 [node name="Shape" type="CollisionShape3D" parent="Fence"]
 shape = SubResource("Shape_fence")
 
-[node name="Boulder" type="StaticBody3D" parent="."]
+[node name="Boulder" type="StaticBody3D" parent="." groups=["surface_stone"]]
 transform = Transform3D(0.94, 0, 0.342, 0, 1, 0, -0.342, 0, 0.94, -16, 0.9, 3)
 
 [node name="Mesh" type="MeshInstance3D" parent="Boulder"]
@@ -656,3 +657,6 @@ script = ExtResource("20_wisps")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="Ambience" type="Node" parent="."]
+script = ExtResource("99_ambience")

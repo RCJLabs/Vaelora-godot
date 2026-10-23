@@ -55,25 +55,72 @@ folder with **Project → Open User Data Folder** in the editor. A save from bef
 existed (`user://savegame.json`) is moved to the quicksave automatically. Older save
 versions still load.
 
-## Pause menu & settings
+## Title screen, pause menu & settings
 
-**Esc** pauses: Resume, Save Game, Load Game, Settings, Quit to Title, Quit Game. While
-talking or in the Tab menu, Esc closes those first.
+The game opens on the **title screen** (`ui/title_screen.tscn`, the project's main scene): the
+stone circle at dusk with the camera slowly circling it, and **Continue** (the most recent save;
+only shown if there is one), **New Game**, **Load Game**, **Settings**, **Report a Bug**, **Quit**.
+The name on it is `GAME_TITLE` in `ui/title_screen.gd`, a placeholder until the title is
+decided. The version under it is **Project Settings → Application → Config → Version**.
 
-**Settings** (also on the title screen) apply immediately and are kept in
-`user://settings.cfg`, separate from saves, so they apply to every character:
+![Title screen](../images/title_screen.png)
+
+**Esc** pauses: Resume, Save Game, Load Game, Settings, Report a Bug, Quit to Title, Quit Game.
+While talking or in the Tab menu, Esc closes those first. In a sub-page, Esc (or B) goes back
+one page.
+
+**Settings** apply immediately and are kept in `user://settings.cfg`, separate from saves, so
+they apply to every character:
 
 | Setting | Range |
 |---|---|
 | Mouse sensitivity | 0.2x - 3.0x |
 | Invert mouse Y | on/off |
 | Field of view | 60 - 100 |
-| Volume | 0 - 100% (there's no sound yet; this is ready for it) |
-| Fullscreen | on/off |
-| VSync | on/off |
+| Volume | 0 - 100% |
+| Tutorial hints | on/off |
+| **Graphics...** | see below |
+| **Controls...** | rebinding (CONTROLS.md) |
 
-The settings page also lists all controls. Keys can't be rebound in-game yet. Change them in
-**Project → Project Settings → Input Map**.
+### Graphics
+
+| Setting | What it does |
+|---|---|
+| Quality | Low / Medium / High / Ultra (below). High is the look as designed, plus 2x MSAA (the project had no anti-aliasing before) |
+| Render scale | 50 - 100%. Below 100% the 3D picture renders smaller and is upscaled with AMD FSR 1 (the menus stay sharp) |
+| Fullscreen, VSync | on/off |
+| Show FPS | frame rate and frame time, top right, in every scene |
+
+![Graphics settings](../images/graphics_settings.png)
+
+| | Low | Medium | High | Ultra |
+|---|---|---|---|---|
+| Volumetric fog | off | off | on | on, finer |
+| Ambient occlusion (SSAO) | off | low | medium | high, full size |
+| Glow | off | on | on | on |
+| Shadow map | 1024 | 2048 | 4096 | 8192 |
+| Shadow distance | 50% | 75% | 100% | 150% |
+| Soft shadows | hard | very low | low | high |
+| Anti-aliasing | FXAA | FXAA | MSAA 2x | MSAA 4x |
+
+The presets only switch effects **off** relative to how a scene was built: a level without
+volumetric fog doesn't gain it on Ultra. Shadow distance multiplies each sun's own **Directional
+Shadow → Max Distance**. To change a preset, edit `QUALITY` in `systems/settings.gd`. New
+scenes need nothing: `Settings` applies the preset to every WorldEnvironment and
+DirectionalLight3D as it enters the game.
+
+**Not measured yet:** these are standard Godot settings with typical costs, but nobody has
+profiled this game on real hardware. Check the FPS counter on your PC, and on a low-end
+laptop if you can, before trusting the presets.
+
+### Report a Bug
+
+**Report a Bug** (pause menu and title screen) copies a block of diagnostics to the clipboard
+and shows it: game and Godot version, OS, CPU, GPU and driver API, screen size, graphics
+settings and FPS, the scene, the player's position, level, race, background and modes, the
+in-game time, and the last 40 lines of the log (`user://logs/godot.log`). The player pastes
+it wherever you collect reports. To add an **Open bug report page** button, set `REPORT_URL`
+in `systems/bug_report.gd` (empty for now: there's no public tracker yet).
 
 **F5 in the editor:** F5 is also the editor's "Run" shortcut, but while the game window has
 focus, the game gets the key. If you use Godot 4.4+'s embedded game view and F5 restarts the

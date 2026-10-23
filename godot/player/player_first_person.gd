@@ -17,6 +17,7 @@ extends CharacterBody3D
 #   ├── Combat (player_combat.gd)   attacks, combos, block, parry, dodge, stagger
 #   ├── Magic (player_magic.gd)     spellcasting: streams, bolts, areas, wards, self, dual-casting
 #   ├── Traversal (player_traversal.gd)  mantling onto ledges, vaulting low obstacles
+#   ├── Footsteps (player_footsteps.gd)  step sounds by surface
 #   ├── StatusEffects               bleeding, burning... (systems/status_effects.gd)
 #   └── HUD (instance of ui/hud.tscn)
 #
@@ -68,6 +69,7 @@ extends CharacterBody3D
 @onready var combat: PlayerCombat = $Combat
 @onready var magic: PlayerMagic = $Magic
 @onready var traversal: PlayerTraversal = $Traversal
+@onready var footsteps: PlayerFootsteps = $Footsteps
 @onready var spell_cast: ShapeCast3D = $Head/Camera3D/SpellCast
 @onready var spell_orb: MeshInstance3D = $Head/Camera3D/SpellHand/Orb
 @onready var spell_light: OmniLight3D = $Head/Camera3D/SpellHand/Light
@@ -214,6 +216,7 @@ func _physics_process(delta: float) -> void:
 	var was_in_air := not is_on_floor()
 	var fall_speed := -velocity.y
 	move_and_slide()
+	footsteps.update(delta, was_in_air and is_on_floor(), fall_speed)
 	if was_in_air and is_on_floor() and fall_speed > safe_fall_speed:
 		stats.take_damage((fall_speed - safe_fall_speed) * fall_damage_per_speed * stats.modifier("fall_damage"))
 

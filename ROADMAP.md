@@ -154,13 +154,17 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       inns and paid beds come with a town. See SURVIVAL.md.)
 - [x] **First-person mantle and vault:** climb onto ledges, which opens up exploration.
       (Ledges up to 2.1 m, ledge grabs mid-jump, vaulting fences. See CONTROLS.md.)
-- [ ] **Sound and music:** footsteps, combat, ambience, a few tracks (CC0 plus bought).
+- [~] **Sound and music:** footsteps, combat, ambience, a few tracks (CC0 plus bought).
+      (Placeholder synthesised sounds for combat, footsteps by surface, day/night and cellar
+      ambience, campfire crackle. No music. All to be replaced with real recordings.)
 - [~] **Hardcore v1 (optional mode):** higher damage both ways, slower healing, no fast
       travel, limited saves. (Damage and healing done; saving only by resting done; there's
       no fast travel to forbid yet. Permadeath is still an open question.)
-- [ ] **Polish:** tutorial prompts, a title screen, key rebinding, performance on mid-range
+- [~] **Polish:** tutorial prompts, a title screen, key rebinding, performance on mid-range
       PCs, a bug-report link. (Tutorial hints done, with a setting to turn them off; key
-      rebinding done: Settings → Controls.)
+      rebinding done: Settings → Controls; title screen done, with a placeholder name;
+      Low–Ultra graphics presets, render scale and an FPS counter done, but not yet profiled
+      on real hardware; Report a Bug copies diagnostics, with no public link to send them to yet.)
 - [ ] **itch.io page:** screenshots, a trailer, a feedback form.
 
 **Done when:** five people who aren't you finish the demo and say what they'd want next.

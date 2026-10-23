@@ -3,6 +3,8 @@ extends Node
 # Plays short sound effects. Autoloaded as "Sfx".
 #   Sfx.play("block")                       at the listener (UI, the player's own sounds)
 #   Sfx.play_at("wolf_growl", position)     in the world: quieter with distance
+#   Sfx.play_any("footstep_stone", 3)       one of footstep_stone_1..3 at random
+#   Sfx.loop("ambience_day")                a looping copy, for an AudioStreamPlayer
 #
 # Each name is a file in res://assets/sfx/ (name.wav or name.ogg). Missing files
 # are skipped silently, so code can ask for sounds that don't exist yet.
@@ -54,6 +56,26 @@ func play_at(sound: String, position: Vector3, volume_db: float = 0.0) -> void:
 	player.global_position = position
 	player.finished.connect(player.queue_free)
 	player.play()
+
+
+## Plays one of `sound`_1 .. `sound`_`takes` (several recordings of the same thing).
+func play_any(sound: String, takes: int, volume_db: float = 0.0) -> void:
+	play("%s_%d" % [sound, randi_range(1, takes)], volume_db)
+
+
+## A copy of the sound set to loop (null if the file is missing).
+func loop(sound: String) -> AudioStream:
+	var stream := _stream(sound)
+	if stream == null:
+		return null
+	stream = stream.duplicate()
+	if stream is AudioStreamWAV:
+		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		stream.loop_begin = 0
+		stream.loop_end = stream.data.size() / (2 if stream.format == AudioStreamWAV.FORMAT_16_BITS else 1) / (2 if stream.stereo else 1)
+	elif "loop" in stream:   # Ogg Vorbis, MP3
+		stream.loop = true
+	return stream
 
 
 func _stream(sound: String) -> AudioStream:

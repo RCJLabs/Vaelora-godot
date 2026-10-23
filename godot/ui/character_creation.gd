@@ -52,15 +52,15 @@ func _ready() -> void:
 	background_id = Character.backgrounds.keys()[0]
 	back_button.pressed.connect(_go.bind(-1))
 	next_button.pressed.connect(_go.bind(1))
-	%ContinueButton.pressed.connect(func(): SaveSystem.load_game())   # most recent save
-	%LoadButton.pressed.connect(PauseMenu.open_page.bind("load"))
-	%SettingsButton.pressed.connect(PauseMenu.open_page.bind("settings"))
 	_show_step()
 
 
 func _go(direction: int) -> void:
 	if direction > 0 and step == STEPS.size() - 1:
 		begin()
+		return
+	if direction < 0 and step == 0:
+		get_tree().change_scene_to_file(PauseMenu.TITLE_SCENE)
 		return
 	step = clampi(step + direction, 0, STEPS.size() - 1)
 	_show_step()
@@ -70,11 +70,7 @@ func _show_step() -> void:
 	title_label.text = STEPS[step]["title"]
 	hint_label.text = STEPS[step]["hint"].replace("%d", str(Character.CREATION_ATTRIBUTE_POINTS))
 	step_label.text = "Step %d of %d" % [step + 1, STEPS.size()]
-	# Load / Continue / Settings only on the first step, so they read as the title screen.
-	%ContinueButton.visible = step == 0 and SaveSystem.has_save()
-	%LoadButton.visible = step == 0 and SaveSystem.has_save()
-	%SettingsButton.visible = step == 0
-	back_button.visible = step > 0
+	back_button.text = "Title" if step == 0 else "Back"
 	next_button.text = "Begin journey" if step == STEPS.size() - 1 else "Next"
 	for child in choices.get_children():
 		child.queue_free()

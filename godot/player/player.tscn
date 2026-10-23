@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://player/player_first_person.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="2_hud"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://player/shield_animator.gd" id="7_shield"]
 [ext_resource type="Script" path="res://player/player_magic.gd" id="8_magic"]
 [ext_resource type="Script" path="res://player/player_traversal.gd" id="9_traversal"]
+[ext_resource type="Script" path="res://player/player_footsteps.gd" id="10_footsteps"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -178,6 +179,9 @@ script = ExtResource("8_magic")
 
 [node name="Traversal" type="Node" parent="."]
 script = ExtResource("9_traversal")
+
+[node name="Footsteps" type="Node" parent="."]
+script = ExtResource("10_footsteps")
 
 [node name="StatusEffects" type="Node" parent="."]
 script = ExtResource("4_fx")
