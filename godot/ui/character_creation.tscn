@@ -102,6 +102,20 @@ layout_mode = 2
 size_flags_horizontal = 8
 theme_override_constants/separation = 16
 
+[node name="SettingsButton" type="Button" parent="Margin/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Settings"
+
+[node name="LoadButton" type="Button" parent="Margin/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Load Game"
+
 [node name="ContinueButton" type="Button" parent="Margin/VBox/Buttons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(220, 56)

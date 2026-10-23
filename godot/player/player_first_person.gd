@@ -17,11 +17,13 @@ extends CharacterBody3D
 #   └── HUD (instance of ui/hud.tscn)
 #
 # Controls: WASD move, Shift sprint, Space jump, mouse look, E interact,
-# left-click attack, hold right-click cast spell, Q switch spell, F5 quicksave, F9 quickload, Esc releases the mouse, left-click recaptures it.
+# left-click attack, hold right-click cast spell, Q switch spell, F5 quicksave,
+# F9 load the latest save, Esc pause menu.
 
 @export var walk_speed: float = 5.0
 @export var sprint_speed: float = 8.0
 @export var jump_velocity: float = 4.5
+## Base mouse speed; the player's own multiplier is in Settings (Esc > Settings).
 @export var mouse_sensitivity: float = 0.002
 @export var ground_accel: float = 40.0   # how fast you reach full speed on the ground
 @export var air_accel: float = 8.0       # how much you can steer mid-air
@@ -84,6 +86,8 @@ func _ready() -> void:
 	_orb_material = spell_orb.mesh.surface_get_material(0).duplicate()
 	spell_orb.material_override = _orb_material
 	_on_spell_changed()
+	Settings.changed.connect(_apply_settings)
+	_apply_settings()
 	_ensure_input_actions()
 	_check_collision_setup()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -98,13 +102,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		return   # the dialogue box owns the mouse and keys while talking
 
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		rotate_y(-event.relative.x * mouse_sensitivity)          # body turns left/right
-		head.rotate_x(-event.relative.y * mouse_sensitivity)     # head tilts up/down
+		var sensitivity := mouse_sensitivity * Settings.mouse_sensitivity
+		var vertical := -1.0 if Settings.invert_y else 1.0
+		rotate_y(-event.relative.x * sensitivity)                # body turns left/right
+		head.rotate_x(-event.relative.y * sensitivity * vertical)  # head tilts up/down
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-85), deg_to_rad(85))
 
-	if event.is_action_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	elif event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+	if event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED   # this click only grabs the mouse
 	elif event.is_action_pressed("attack"):
 		_try_attack()
@@ -238,6 +242,10 @@ func _swing_weapon() -> void:
 	var tween := create_tween()
 	tween.tween_property(weapon, "rotation", weapon_rest_rotation + Vector3(deg_to_rad(-80), deg_to_rad(30), 0), 0.08)
 	tween.tween_property(weapon, "rotation", weapon_rest_rotation, 0.25)
+
+
+func _apply_settings() -> void:
+	camera.fov = Settings.fov
 
 
 func _on_skill_increased(skill_id: String, new_level: int) -> void:

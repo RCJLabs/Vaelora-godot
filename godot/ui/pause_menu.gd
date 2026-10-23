@@ -1,0 +1,217 @@
+extends CanvasLayer
+
+# Esc menu: Resume / Save / Load / Settings / Quit to Title / Quit Game.
+# Autoloaded as "PauseMenu" (process mode Always, so it works while paused).
+# The title screen opens the Load and Settings pages directly with open_page().
+
+const TITLE_SCENE := "res://ui/character_creation.tscn"
+
+@onready var root_control: Control = $Root
+@onready var title_label: Label = %Title
+@onready var content: VBoxContainer = %Content
+
+var is_open := false
+var _page := ""
+var _from_title := false     # opened from the title screen: no "main" page, no pausing
+var _confirm_slot := ""      # slot waiting for a second click to overwrite/delete
+
+
+func _ready() -> void:
+	root_control.hide()
+
+
+# _input so Esc is seen before the game. Dialogue and the Tab menu handle
+# their own Esc, so leave it to them while they're open.
+func _input(event: InputEvent) -> void:
+	if not event.is_action_pressed("ui_cancel"):
+		return
+	if DialogueManager.is_active or CharacterMenu.is_open:
+		return
+	if is_open:
+		if _page == "main" or _from_title:
+			close()
+		else:
+			_show("main")
+	else:
+		var player := get_tree().get_first_node_in_group("player")
+		if player == null or player.is_dead:
+			return
+		open_page("main")
+	get_viewport().set_input_as_handled()
+
+
+func open_page(page: String) -> void:
+	_from_title = get_tree().get_first_node_in_group("player") == null
+	is_open = true
+	if not _from_title:
+		get_tree().paused = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	root_control.show()
+	_show(page)
+
+
+func close() -> void:
+	is_open = false
+	root_control.hide()
+	if not _from_title:
+		get_tree().paused = false
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _show(page: String) -> void:
+	_page = page
+	_confirm_slot = ""
+	for child in content.get_children():
+		content.remove_child(child)
+		child.queue_free()
+	match page:
+		"main": _build_main()
+		"save": _build_save()
+		"load": _build_load()
+		"settings": _build_settings()
+
+
+# --- pages ---------------------------------------------------------------------
+
+func _build_main() -> void:
+	title_label.text = "Paused"
+	_button("Resume", close)
+	_button("Save Game", _show.bind("save"))
+	_button("Load Game", _show.bind("load"))
+	_button("Settings", _show.bind("settings"))
+	_button("Quit to Title", _quit_to_title)
+	_button("Quit Game", func(): get_tree().quit())
+
+
+func _build_save() -> void:
+	title_label.text = "Save Game"
+	var metas := {}
+	for save in SaveSystem.list_saves():
+		metas[save["slot"]] = save["meta"]
+	for slot in SaveSystem.MANUAL_SLOTS:
+		var text := "%s  -  %s" % [SaveSystem.slot_title(slot),
+				SaveSystem.describe(metas[slot]) if metas.has(slot) else "empty"]
+		var button := _button(text, Callable())
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.pressed.connect(_on_save_slot.bind(slot, metas.has(slot), button))
+	_back_button()
+
+
+func _on_save_slot(slot: String, occupied: bool, button: Button) -> void:
+	if occupied and _confirm_slot != slot:
+		_confirm_slot = slot   # first click on a used slot asks for confirmation
+		button.text = "%s  -  click again to overwrite" % SaveSystem.slot_title(slot)
+		return
+	get_tree().paused = false   # saving reads the live game
+	SaveSystem.save_game(slot)
+	get_tree().paused = true
+	_show("save")
+
+
+func _build_load() -> void:
+	title_label.text = "Load Game"
+	var saves := SaveSystem.list_saves()
+	if saves.is_empty():
+		var none := Label.new()
+		none.text = "No saved games yet."
+		content.add_child(none)
+	for save in saves:
+		var row := HBoxContainer.new()
+		var load_button := Button.new()
+		load_button.text = "%s  -  %s" % [SaveSystem.slot_title(save["slot"]), SaveSystem.describe(save["meta"])]
+		load_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		load_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		load_button.pressed.connect(_on_load_slot.bind(save["slot"]))
+		var delete_button := Button.new()
+		delete_button.text = "Delete"
+		delete_button.pressed.connect(_on_delete_slot.bind(save["slot"], delete_button))
+		row.add_child(load_button)
+		row.add_child(delete_button)
+		content.add_child(row)
+	_back_button()
+
+
+func _on_load_slot(slot: String) -> void:
+	is_open = false
+	root_control.hide()
+	SaveSystem.load_game(slot)   # unpauses and changes scene
+
+
+func _on_delete_slot(slot: String, button: Button) -> void:
+	if _confirm_slot != slot:
+		_confirm_slot = slot
+		button.text = "Sure?"
+		return
+	SaveSystem.delete_save(slot)
+	_show("load")
+
+
+func _build_settings() -> void:
+	title_label.text = "Settings"
+	_slider("Mouse sensitivity", "mouse_sensitivity", 0.2, 3.0, 0.05, "%.2fx")
+	_checkbox("Invert mouse Y", "invert_y")
+	_slider("Field of view", "fov", 60.0, 100.0, 1.0, "%d")
+	_slider("Volume", "master_volume", 0.0, 1.0, 0.05, "%.0f%%", 100.0)
+	_checkbox("Fullscreen", "fullscreen")
+	_checkbox("VSync", "vsync")
+	var controls := Label.new()
+	controls.text = "Controls:  WASD move  -  Shift sprint  -  Space jump  -  E use / talk  -  Left-click attack\n" \
+		+ "Hold right-click cast  -  Q switch spell  -  Tab character menu  -  J journal\n" \
+		+ "F5 quicksave  -  F9 load latest save  -  Esc pause"
+	controls.modulate = Color(1, 1, 1, 0.65)
+	content.add_child(controls)
+	_back_button()
+
+
+# --- small UI helpers ------------------------------------------------------------
+
+func _button(text: String, action: Callable) -> Button:
+	var button := Button.new()
+	button.text = text
+	button.custom_minimum_size = Vector2(0, 40)
+	if action.is_valid():
+		button.pressed.connect(action)
+	content.add_child(button)
+	return button
+
+
+func _back_button() -> void:
+	_button("Back", close if _from_title else _show.bind("main"))
+
+
+func _slider(label_text: String, key: String, low: float, high: float, step: float,
+		format: String, display_scale: float = 1.0) -> void:
+	var row := HBoxContainer.new()
+	var label := Label.new()
+	label.text = label_text
+	label.custom_minimum_size.x = 220
+	var slider := HSlider.new()
+	slider.min_value = low
+	slider.max_value = high
+	slider.step = step
+	slider.value = Settings.get(key)
+	slider.custom_minimum_size.x = 320
+	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var value_label := Label.new()
+	value_label.text = format % (slider.value * display_scale)
+	slider.value_changed.connect(func(v):
+		value_label.text = format % (v * display_scale)
+		Settings.set_option(key, v))
+	for c in [label, slider, value_label]:
+		row.add_child(c)
+	content.add_child(row)
+
+
+func _checkbox(label_text: String, key: String) -> void:
+	var box := CheckBox.new()
+	box.text = label_text
+	box.button_pressed = Settings.get(key)
+	box.toggled.connect(func(on): Settings.set_option(key, on))
+	content.add_child(box)
+
+
+func _quit_to_title() -> void:
+	close()
+	get_tree().paused = false
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	get_tree().change_scene_to_file(TITLE_SCENE)

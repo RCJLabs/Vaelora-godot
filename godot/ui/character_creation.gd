@@ -39,7 +39,10 @@ func _ready() -> void:
 		race_buttons.add_child(button)
 	begin_button.pressed.connect(begin)
 	continue_button.visible = SaveSystem.has_save()
-	continue_button.pressed.connect(SaveSystem.load_game)
+	continue_button.pressed.connect(func(): SaveSystem.load_game())   # most recent save
+	%LoadButton.visible = SaveSystem.has_save()
+	%LoadButton.pressed.connect(PauseMenu.open_page.bind("load"))
+	%SettingsButton.pressed.connect(PauseMenu.open_page.bind("settings"))
 	race_buttons.get_child(0).button_pressed = true
 	select_race(races[0])
 
@@ -58,6 +61,7 @@ func select_race(race: RaceData) -> void:
 func begin() -> void:
 	GameState.set_race(selected)
 	GameState.flags = {}   # new game: forget the previous character's story
+	GameState.play_time = 0.0
 	Skills.reset(selected)
 	Inventory.reset()
 	Spellbook.reset(selected)

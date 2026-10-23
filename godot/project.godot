@@ -16,10 +16,16 @@ Skills="*res://systems/skills.gd"
 Inventory="*res://systems/inventory.gd"
 Spellbook="*res://systems/spellbook.gd"
 Reputation="*res://systems/reputation.gd"
+Settings="*res://systems/settings.gd"
 QuestLog="*res://systems/quest_log.gd"
 DialogueManager="*res://ui/dialogue_box.tscn"
 SaveSystem="*res://systems/save_system.gd"
 CharacterMenu="*res://ui/character_menu.tscn"
+PauseMenu="*res://ui/pause_menu.tscn"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/terrain_3d/plugin.cfg")
 
 [input]
 

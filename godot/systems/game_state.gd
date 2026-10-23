@@ -9,6 +9,7 @@ const DEFAULT_RACE := "res://races/human.tres"
 var race: String = "Human"        # name only, used by dialogue conditions
 var race_data: RaceData           # full stats/modifiers of the chosen race
 var flags: Dictionary = {}        # story memory, e.g. flags["met_maren"] = true
+var play_time := 0.0              # seconds spent in levels (not menus), shown on save slots
 
 signal flag_set(flag_name: String)
 
@@ -16,6 +17,12 @@ signal flag_set(flag_name: String)
 func _ready() -> void:
 	# Lets levels run on their own (F6) without going through character creation.
 	set_race(load(DEFAULT_RACE))
+
+
+func _process(delta: float) -> void:
+	# Pausable, so menus don't count; the title screen has no player, so it doesn't either.
+	if get_tree().get_first_node_in_group("player"):
+		play_time += delta
 
 
 func set_race(data: RaceData) -> void:
