@@ -166,6 +166,10 @@
 					"requires_item": "wolf_pelt"
 				},
 				{
+					"text": "Let's trade.",
+					"next": "shop"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}

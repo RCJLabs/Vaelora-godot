@@ -41,8 +41,10 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	if is_instance_valid(homing):
-		var want := (homing.global_position - global_position).normalized() * velocity.length()
-		velocity = velocity.lerp(want, minf(delta * 6.0, 1.0))
+		# Flies straight at its target at full speed: only parried bolts home, and a
+		# parry should pay off. (Blending velocities slowed it to a crawl; a turn-rate
+		# limit made it orbit a wisp at close range. Both missed.)
+		velocity = (homing.global_position - global_position).normalized() * velocity.length()
 	var from := global_position
 	var to := from + velocity * delta
 	var query := PhysicsRayQueryParameters3D.create(from, to, 1 | (2 if hits_player else 4))

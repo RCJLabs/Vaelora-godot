@@ -1,0 +1,105 @@
+# Runs the headless tests on pull requests and pushes to main, then exports Windows
+# and Linux builds (downloadable from the run's Artifacts) on pushes to main, tags,
+# and manual runs (Actions tab → CI → Run workflow). See docs/godot-starter/TESTING.md.
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["*"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true   # a newer push replaces a run still going
+
+env:
+  GODOT_VERSION: 4.3-stable
+  GODOT: /home/runner/godot/godot
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: ~/godot
+          key: godot-${{ env.GODOT_VERSION }}
+
+      - name: Download Godot
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot
+          curl -sSL -o /tmp/godot.zip "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d ~/godot
+          mv ~/godot/Godot_v${GODOT_VERSION}_linux.x86_64 "$GODOT"
+
+      - name: Import assets
+        run: $GODOT --headless --path godot --import
+
+      - name: Run tests
+        run: python3 tools/run_tests.py --godot "$GODOT" -j 2
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs
+          path: build/test-logs
+          retention-days: 14
+
+  export:
+    needs: tests
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Godot and export templates
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-export-${{ env.GODOT_VERSION }}
+
+      - name: Download Godot and export templates
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot
+          curl -sSL -o /tmp/godot.zip "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d ~/godot
+          mv ~/godot/Godot_v${GODOT_VERSION}_linux.x86_64 "$GODOT"
+          # The template archive is ~1 GB; keep only the two release templates we use.
+          curl -sSL -o /tmp/templates.tpz "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz"
+          dir=~/.local/share/godot/export_templates/${GODOT_VERSION/-/.}
+          mkdir -p "$dir"
+          unzip -q -j /tmp/templates.tpz templates/version.txt templates/linux_release.x86_64 templates/windows_release_x86_64.exe -d "$dir"
+          rm /tmp/templates.tpz
+
+      - name: Import assets
+        run: $GODOT --headless --path godot --import
+
+      - name: Export
+        run: |
+          mkdir -p build/windows build/linux
+          $GODOT --headless --path godot --export-release "Windows Desktop" ../build/windows/HighFantasySandboxRPG.exe
+          $GODOT --headless --path godot --export-release "Linux" ../build/linux/HighFantasySandboxRPG.x86_64
+          test -s build/windows/HighFantasySandboxRPG.exe && test -s build/linux/HighFantasySandboxRPG.x86_64
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-build-${{ github.sha }}
+          path: build/windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-build-${{ github.sha }}
+          path: build/linux
