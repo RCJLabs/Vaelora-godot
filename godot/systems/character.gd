@@ -23,6 +23,10 @@ const FILES := {
 ## Hardcore v0: the world hits harder and you heal slowly (more in ROADMAP Phase 2-3).
 const HARDCORE_MODIFIERS := {"damage_taken": 1.5, "damage_dealt": 1.2, "health_regen": 0.25}
 const STARTING_PERK_POINTS := 1
+## Character creation rules (drafts).
+const CREATION_ATTRIBUTE_POINTS := 4
+const MAX_POSITIVE_TRAITS := 2        # +1 more for each flaw taken
+const MAX_NEGATIVE_TRAITS := 1
 
 var backgrounds: Dictionary = {}
 var trait_list: Dictionary = {}
@@ -108,6 +112,32 @@ func create(race: RaceData, new_name: String, background_id: String, trait_ids: 
 	Inventory.changed.emit()
 	QuestLog.reset_baseline()
 	changed.emit()
+
+
+## Why this trait selection isn't allowed, or "" if it is.
+func traits_blocker(trait_ids: Array) -> String:
+	var positive := trait_ids.filter(func(id): return trait_list[id]["positive"]).size()
+	var negative := trait_ids.size() - positive
+	if negative > MAX_NEGATIVE_TRAITS:
+		return "At most %d flaw." % MAX_NEGATIVE_TRAITS
+	if positive > MAX_POSITIVE_TRAITS + negative:
+		return "At most %d strengths (+1 for taking a flaw)." % MAX_POSITIVE_TRAITS
+	return ""
+
+
+## The attributes create() would give, without changing anything.
+func preview_attributes(race: RaceData, background_id: String, trait_ids: Array,
+		attribute_spend: Dictionary) -> Dictionary:
+	var result := {}
+	for id in Attributes.ATTRIBUTES:
+		result[id] = Attributes.BASE + int(race.attribute_bonuses.get(id, 0))
+	var sources: Array = [backgrounds.get(background_id, {}).get("attributes", {}), attribute_spend]
+	for id in trait_ids:
+		sources.append(trait_list[id].get("attributes", {}))
+	for bonuses in sources:
+		for id in bonuses:
+			result[id] += int(bonuses[id])
+	return result
 
 
 func _add_attributes(bonuses: Dictionary) -> void:
