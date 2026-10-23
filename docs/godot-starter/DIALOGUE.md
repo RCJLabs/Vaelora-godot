@@ -60,7 +60,8 @@ They're listed in **Project → Project Settings → Globals → Autoload** (alr
   means all of them: `"requires_not_flag": ["wolf_quest_accepted", "wolves_cleared"]`.
 - **More conditions:** `requires_item` (`"wolf_pelt"` or `{"id": "wolf_pelt", "count": 3}`),
   `requires_gold` (a number), `requires_reputation` / `requires_reputation_below`
-  (`{"riverwatch": 10}`).
+  (`{"riverwatch": 10}`), `requires_background` (`"soldier"` or a list: any of them) and
+  `requires_trait` (`"charming"` or a list: all of them). See CHARACTER.md.
 - **Actions**, on a node (run when the line is shown) or a choice (run when picked):
   `set_flag` (one name or a list), `give_gold`, `take_gold`, `give_item`, `take_item`,
   `add_reputation` (`{"riverwatch": 10}`). The item ones take the same

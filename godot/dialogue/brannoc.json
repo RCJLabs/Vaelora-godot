@@ -64,6 +64,16 @@
 					"next": "alone"
 				},
 				{
+					"text": "(Keep your hood low.) Just passing through.",
+					"next": "outlaw_line",
+					"requires_background": "outlaw"
+				},
+				{
+					"text": "The stones are resonating. I've read about circles like this.",
+					"next": "scholar_line",
+					"requires_background": "scholar"
+				},
+				{
 					"text": "Not my concern.",
 					"next": "end"
 				}
@@ -374,6 +384,32 @@
 				},
 				{
 					"text": "Not now.",
+					"next": "end"
+				}
+			]
+		},
+		"outlaw_line": {
+			"text": "Hm. You've a face I've seen on a notice board in Riverwatch. Or one like it. I can't be sure, and I've bigger problems than a poster. Help me with these stones and I'll stop trying to remember where I saw you.",
+			"choices": [
+				{
+					"text": "I'll look into it.",
+					"next": "accept"
+				},
+				{
+					"text": "Not my concern.",
+					"next": "end"
+				}
+			]
+		},
+		"scholar_line": {
+			"text": "Read about them? Then you already know more than me, the captain and the last three they sent. Look at the circle for me. Whatever you find, I want it in plain words.",
+			"choices": [
+				{
+					"text": "I'll look into it.",
+					"next": "accept"
+				},
+				{
+					"text": "Another time.",
 					"next": "end"
 				}
 			]

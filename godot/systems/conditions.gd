@@ -6,6 +6,8 @@ class_name Conditions
 #   "requires_flag": "name" or ["a", "b"]       all of these flags are set
 #   "requires_not_flag": "name" or ["a", "b"]   none of these flags are set
 #   "requires_race": "Orc"
+#   "requires_background": "soldier" or ["soldier", "hunter"]   any of these
+#   "requires_trait": "charming" or ["a", "b"]                   all of these
 #   "requires_item": "id" or {"id": "id", "count": 3}
 #   "requires_gold": 50
 #   "requires_reputation": {"riverwatch": 10}        at least this much
@@ -22,6 +24,11 @@ static func met(entry: Dictionary) -> bool:
 			return false
 	if entry.has("requires_race") and entry["requires_race"] != GameState.race:
 		return false
+	if entry.has("requires_background") and not Character.background in as_list(entry["requires_background"]):
+		return false
+	for id in as_list(entry.get("requires_trait", [])):
+		if not id in Character.traits:
+			return false
 	if entry.has("requires_item"):
 		var need := item_and_count(entry["requires_item"])
 		if Inventory.count(need[0]) < need[1]:

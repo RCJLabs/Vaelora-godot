@@ -36,10 +36,10 @@ $Stats.died.connect(_on_died)
 | **Esc → Load Game** | Every save, newest first, with **Delete** (asks "Sure?") |
 | **Title: Continue** | Loads the most recent save |
 | **Title: Load Game** | Same list as Esc → Load Game |
-| **Title: Begin new journey** | Starts fresh (story, skills, items, spells, reputation, play time). Saves stay |
+| **Title: create a character → Begin journey** | Starts fresh (story, skills, items, spells, reputation, play time). Saves stay |
 
-Each slot shows race, character level, location, play time and when it was saved, e.g.
-"Slot 2 - Orc, level 3 - Test Level - 0h 42m played - 2026-10-23 16:31". Play time only
+Each slot shows name, race and background, character level, location, play time and when it was saved, e.g.
+"Slot 2 - Grukka (Orc Soldier), level 3 - Test Level - 0h 42m played - 2026-10-23 16:31". Play time only
 counts while you're in a level and not paused.
 
 You can't save while talking or dead. Dying loads your most recent save (or respawns you if

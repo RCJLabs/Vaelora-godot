@@ -38,6 +38,16 @@
 					"requires_race": "Elf"
 				},
 				{
+					"text": "I served in a levy. A waystation this far out must see trouble.",
+					"next": "soldier_line",
+					"requires_background": "soldier"
+				},
+				{
+					"text": "Those were Greyfang tracks on the road.",
+					"next": "hunter_line",
+					"requires_background": "hunter"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -169,6 +179,34 @@
 				},
 				{
 					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"soldier_line": {
+			"text": "Trouble's all we see. The garrison sends a patrol when it remembers we exist. You've the look of someone who finishes a job, and there's a wolf pack out there that needs finishing.",
+			"choices": [
+				{
+					"text": "Tell me about the wolves.",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"hunter_line": {
+			"text": "You know your tracks. Aye, the Greyfang pack - bold enough to take a mule off the road last week. Bring me their pelts and I'll buy every one.",
+			"choices": [
+				{
+					"text": "Tell me about the wolves.",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				},
+				{
+					"text": "Goodbye.",
 					"next": "end"
 				}
 			]

@@ -94,18 +94,20 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
 - [x] **Region/interior transitions:** doors that load interiors and return you to where you
       left, keeping saves and quests consistent.
 
-### 1b. Character creation depth (mechanics now, visuals later)
-- [ ] **Backgrounds** (draft: Soldier, Scholar, Outlaw, Hunter, Acolyte, Merchant): starting
+### 1b. Character creation depth (mechanics now, visuals later) (mostly done with draft content, see `docs/godot-starter/CHARACTER.md`)
+- [x] **Backgrounds** (draft: Soldier, Scholar, Outlaw, Hunter, Acolyte, Merchant): starting
       gear, skill bonuses, starting reputation, unique dialogue options.
-- [ ] **Traits:** pick 2 positive, and optionally take a negative one for a third positive
-      (Fallout-style). Mechanical, and visible in dialogue.
-- [ ] **Unique abilities:** race signatures become real active powers with cooldowns
+- [x] **Traits:** pick 2 positive, and optionally take a negative one for a third positive
+      (Fallout-style). Mechanical, and visible in dialogue. (The `requires_trait` condition
+      exists, but no trait-specific lines are written yet.)
+- [x] **Unique abilities:** race signatures become real active powers with cooldowns
       (Adaptable, Innate Focus, Battle Fury); one per background.
-- [ ] **Perks on level-up:** small perk trees per skill (Skyrim-style), chosen in the Tab menu.
+- [x] **Perks on level-up:** small perk trees per skill (Skyrim-style), chosen in the Tab menu.
 - [ ] **More skills**, each added with its feature: Two-Handed, Archery, Block, Light/Heavy
       Armour, Sneak, Speech, Alchemy, Survival, Acrobatics.
-- [ ] **Character creator flow:** name → race → background → traits → attributes → summary,
-      plus a **Survival** and **Hardcore** toggle.
+- [x] **Character creator flow:** name → race → background → traits → attributes → summary,
+      plus a **Survival** and **Hardcore** toggle. (Built as race → background → traits →
+      attributes → name & mode. Survival is saved but does nothing until survival needs exist.)
 
 ### 1c. Avowed-style combat (first-person)
 - [ ] Light attacks with **combos**, charged **heavy** attacks, **block**, timed **parry**,

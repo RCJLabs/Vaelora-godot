@@ -21,7 +21,8 @@ harmful, green = helpful).
   (refresh / stack / ignore), health/stamina/magicka per second, and **modifiers**.
 - **Modifiers** are named multipliers other systems ask for: `move_speed`, `damage_taken`,
   `damage_dealt`, `health_regen`, `stamina_regen`, `magicka_regen`. Battle Fury (Phase 1b)
-  will be `{"damage_dealt": 1.25, "damage_taken": 0.8}`, with no new code.
+  is `{"damage_dealt": 1.25, "damage_taken": 0.8}`, with no new code. More names (from traits
+  and perks) are listed in CHARACTER.md.
 - **Damage over time ignores armour**; hits don't.
 - **Code:** `$StatusEffects.apply("bleeding")`, `.has("burning")`, `.remove(...)`,
   `.modifier("move_speed")`. A new effect: duplicate a `.tres`, edit it, add it to
@@ -47,8 +48,8 @@ With the race's own base pools, that makes Human 100/100/100, Elf 75/94/140, and
 140/121/60 for Health/Stamina/Magicka.
 
 - Shown on the race screen and at the top of **Tab → Skills** (hover for details).
-- Attributes only come from race for now. **Character creation and level-ups hand out
-  points in Phase 1b.**
+- Race sets the starting values; backgrounds, traits, 4 creation points and 1 point per
+  level-up add to them (see CHARACTER.md).
 - Saved; older saves get their race's values.
 
 ## Equipment
