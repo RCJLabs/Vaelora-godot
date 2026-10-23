@@ -1,0 +1,131 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://enemies/wolf.gd" id="1_wolf"]
+[ext_resource type="Script" path="res://systems/stats.gd" id="2_stats"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_fur"]
+albedo_color = Color(0.3, 0.3, 0.32, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_eyes"]
+albedo_color = Color(0.1, 0.08, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.75, 0.2, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="BoxShape3D" id="Shape_body"]
+size = Vector3(0.6, 0.85, 1.3)
+
+[sub_resource type="BoxMesh" id="Mesh_Body"]
+material = SubResource("Mat_fur")
+size = Vector3(0.5, 0.5, 1.1)
+
+[sub_resource type="BoxMesh" id="Mesh_Neck"]
+material = SubResource("Mat_fur")
+size = Vector3(0.36, 0.4, 0.4)
+
+[sub_resource type="BoxMesh" id="Mesh_Head"]
+material = SubResource("Mat_fur")
+size = Vector3(0.34, 0.32, 0.38)
+
+[sub_resource type="BoxMesh" id="Mesh_Snout"]
+material = SubResource("Mat_fur")
+size = Vector3(0.18, 0.16, 0.26)
+
+[sub_resource type="BoxMesh" id="Mesh_EarL"]
+material = SubResource("Mat_fur")
+size = Vector3(0.08, 0.16, 0.06)
+
+[sub_resource type="BoxMesh" id="Mesh_EarR"]
+material = SubResource("Mat_fur")
+size = Vector3(0.08, 0.16, 0.06)
+
+[sub_resource type="BoxMesh" id="Mesh_LegFL"]
+material = SubResource("Mat_fur")
+size = Vector3(0.12, 0.45, 0.12)
+
+[sub_resource type="BoxMesh" id="Mesh_LegFR"]
+material = SubResource("Mat_fur")
+size = Vector3(0.12, 0.45, 0.12)
+
+[sub_resource type="BoxMesh" id="Mesh_LegBL"]
+material = SubResource("Mat_fur")
+size = Vector3(0.12, 0.45, 0.12)
+
+[sub_resource type="BoxMesh" id="Mesh_LegBR"]
+material = SubResource("Mat_fur")
+size = Vector3(0.12, 0.45, 0.12)
+
+[sub_resource type="BoxMesh" id="Mesh_Tail"]
+material = SubResource("Mat_fur")
+size = Vector3(0.1, 0.1, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_Eyes"]
+material = SubResource("Mat_eyes")
+size = Vector3(0.26, 0.05, 0.02)
+
+[node name="Wolf" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_wolf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -0.1)
+shape = SubResource("Shape_body")
+
+[node name="Stats" type="Node" parent="."]
+script = ExtResource("2_stats")
+max_health = 35.0
+max_stamina = 50.0
+max_magicka = 0.0
+health_regen = 0.0
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1.00000, -0.00000, 0, 0.00000, 1.00000, 0, 0.65, 0)
+mesh = SubResource("Mesh_Body")
+
+[node name="Neck" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 0.86603, 0.50000, 0, -0.50000, 0.86603, 0, 0.8, -0.55)
+mesh = SubResource("Mesh_Neck")
+
+[node name="Head" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1.00000, -0.00000, 0, 0.00000, 1.00000, 0, 0.95, -0.78)
+mesh = SubResource("Mesh_Head")
+
+[node name="Snout" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1.00000, -0.00000, 0, 0.00000, 1.00000, 0, 0.89, -1.05)
+mesh = SubResource("Mesh_Snout")
+
+[node name="EarL" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1.00000, -0.00000, 0, 0.00000, 1.00000, -0.1, 1.15, -0.72)
+mesh = SubResource("Mesh_EarL")
+
+[node name="EarR" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1.00000, -0.00000, 0, 0.00000, 1.00000, 0.1, 1.15, -0.72)
+mesh = SubResource("Mesh_EarR")
+
+[node name="LegFL" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1.00000, -0.00000, 0, 0.00000, 1.00000, -0.16, 0.22, -0.4)
+mesh = SubResource("Mesh_LegFL")
+
+[node name="LegFR" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1.00000, -0.00000, 0, 0.00000, 1.00000, 0.16, 0.22, -0.4)
+mesh = SubResource("Mesh_LegFR")
+
+[node name="LegBL" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1.00000, -0.00000, 0, 0.00000, 1.00000, -0.16, 0.22, 0.4)
+mesh = SubResource("Mesh_LegBL")
+
+[node name="LegBR" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1.00000, -0.00000, 0, 0.00000, 1.00000, 0.16, 0.22, 0.4)
+mesh = SubResource("Mesh_LegBR")
+
+[node name="Tail" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 0.90631, 0.42262, 0, -0.42262, 0.90631, 0, 0.72, 0.75)
+mesh = SubResource("Mesh_Tail")
+
+[node name="Eyes" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, -0.975)
+mesh = SubResource("Mesh_Eyes")

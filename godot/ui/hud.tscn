@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_hud"]
 
@@ -28,8 +28,36 @@ font_size = 20
 shadow_size = 2
 shadow_color = Color(0, 0, 0, 0.8)
 
+[sub_resource type="StyleBoxFlat" id="Fill_enemy"]
+bg_color = Color(0.6, 0.1, 0.08, 1)
+
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
+
+[node name="DamageFlash" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.7, 0, 0, 0)
+
+[node name="EnemyBar" type="ProgressBar" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 30.0
+offset_right = 160.0
+offset_bottom = 42.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("Bar_bg")
+theme_override_styles/fill = SubResource("Fill_enemy")
+value = 100.0
+show_percentage = false
 
 [node name="Crosshair" type="Label" parent="."]
 anchors_preset = 8

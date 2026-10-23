@@ -56,7 +56,8 @@ They're listed in **Project → Project Settings → Globals → Autoload** (alr
 - **Choice**: `text`, `next` (a node name, or `"end"` to close), an optional `set_flag` (set
   when picked), and optional conditions.
 - **Conditions** (on choices or `start` entries): `requires_flag`, `requires_not_flag`,
-  `requires_race` (`"Human"`, `"Elf"`, `"Orc"`).
+  `requires_race` (`"Human"`, `"Elf"`, `"Orc"`). The flag ones take one name or a list, which
+  means all of them: `"requires_not_flag": ["wolf_quest_accepted", "wolves_cleared"]`.
 - A node with no choices that pass gets an automatic **(Leave)** button.
 
 Put flags you want to keep even if the player presses Esc (quest accepted, secret learned) on

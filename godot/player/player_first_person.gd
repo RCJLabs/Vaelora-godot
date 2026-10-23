@@ -8,12 +8,14 @@ extends CharacterBody3D
 #   ├── CollisionShape3D            CapsuleShape3D r=0.4 h=1.8, position y=0.9
 #   ├── Head (Node3D)               position y=1.6, rotates up/down
 #   │   └── Camera3D                Current = ON
-#   │       └── InteractRay (RayCast3D)  Target Position (0, 0, -2.5)
+#   │       ├── InteractRay (RayCast3D)  Target Position (0, 0, -2.5), Mask: layer 1 "world"
+#   │       ├── AttackCast (ShapeCast3D) sphere r=0.45, Target (0, 0, -1.8), Mask: layer 3 "enemies"
+#   │       └── Weapon (Node3D)          placeholder sword, swung by _swing_weapon()
 #   ├── Stats (systems/stats.gd)    Health / Stamina / Magicka
 #   └── HUD (instance of ui/hud.tscn)
 #
 # Controls: WASD move, Shift sprint, Space jump, mouse look, E interact,
-# F5 quicksave, F9 quickload, Esc releases the mouse, left-click recaptures it.
+# left-click attack, F5 quicksave, F9 quickload, Esc releases the mouse, left-click recaptures it.
 
 @export var walk_speed: float = 5.0
 @export var sprint_speed: float = 8.0
@@ -24,6 +26,11 @@ extends CharacterBody3D
 ## If the player falls below this height they get put back at the spawn point
 ## (and a warning is printed, because it means collision isn't working).
 @export var kill_y: float = -50.0
+
+@export_group("Melee")
+@export var attack_damage: float = 15.0      # multiplied by the race's melee_damage_mult
+@export var attack_stamina_cost: float = 10.0
+@export var attack_cooldown: float = 0.55
 
 @export_group("Stamina & falling")
 @export var sprint_stamina_per_second: float = 12.0
@@ -38,11 +45,15 @@ extends CharacterBody3D
 @onready var interact_ray: RayCast3D = $Head/Camera3D/InteractRay
 @onready var hud: CanvasLayer = $HUD
 @onready var stats: Stats = $Stats
+@onready var attack_cast: ShapeCast3D = $Head/Camera3D/AttackCast
+@onready var weapon: Node3D = $Head/Camera3D/Weapon
+@onready var weapon_rest_rotation: Vector3 = weapon.rotation
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var spawn_position: Vector3
 var is_dead := false
 var _exhausted := false   # ran out of stamina; no sprinting until it recovers
+var _attack_cooldown_left := 0.0
 
 
 func _ready() -> void:
@@ -51,6 +62,7 @@ func _ready() -> void:
 	_apply_race(GameState.race_data)
 	hud.track_stats(stats)
 	stats.died.connect(_on_died)
+	stats.damaged.connect(func(_amount): hud.flash_damage())
 	_ensure_input_actions()
 	_check_collision_setup()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -72,10 +84,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	elif event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED   # this click only grabs the mouse
+	elif event.is_action_pressed("attack"):
+		_try_attack()
 
 
 func _physics_process(delta: float) -> void:
+	_attack_cooldown_left -= delta
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
@@ -121,6 +136,30 @@ func _physics_process(delta: float) -> void:
 		push_warning("Player fell below kill_y. Collision is not working - turn on Debug > Visible Collision Shapes.")
 		global_position = spawn_position
 		velocity = Vector3.ZERO
+
+
+func _try_attack() -> void:
+	if _attack_cooldown_left > 0.0 or not stats.try_use_stamina(attack_stamina_cost):
+		return
+	_attack_cooldown_left = attack_cooldown
+	_swing_weapon()
+	attack_cast.force_shapecast_update()
+	for i in attack_cast.get_collision_count():
+		var target := attack_cast.get_collider(i)
+		if target and target.has_method("take_hit"):
+			target.take_hit(attack_damage * GameState.race_data.melee_damage_mult, global_position)
+			hud.flash_hit()
+			var target_stats = target.get("stats")
+			if target_stats is Stats:
+				hud.show_enemy_health(target_stats)
+			return   # one target per swing
+
+
+func _swing_weapon() -> void:
+	# Chop: from raised (rest pose) down and across, then back.
+	var tween := create_tween()
+	tween.tween_property(weapon, "rotation", weapon_rest_rotation + Vector3(deg_to_rad(-80), deg_to_rad(30), 0), 0.08)
+	tween.tween_property(weapon, "rotation", weapon_rest_rotation, 0.25)
 
 
 func _on_died() -> void:
@@ -218,3 +257,8 @@ func _ensure_input_actions() -> void:
 			var key_event := InputEventKey.new()
 			key_event.physical_keycode = defaults[action]
 			InputMap.action_add_event(action, key_event)
+	if not InputMap.has_action("attack"):
+		InputMap.add_action("attack")
+		var click := InputEventMouseButton.new()
+		click.button_index = MOUSE_BUTTON_LEFT
+		InputMap.action_add_event("attack", click)

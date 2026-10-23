@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3]
+[gd_scene load_steps=32 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://interactables/npc.gd" id="4_npc"]
 [ext_resource type="Environment" path="res://levels/atmosphere.tres" id="5_env"]
 [ext_resource type="PackedScene" path="res://props/stone_circle.tscn" id="6_circle"]
+[ext_resource type="Script" path="res://enemies/wolf_pack.gd" id="7_pack"]
+[ext_resource type="PackedScene" path="res://enemies/wolf.tscn" id="8_wolf"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -201,6 +203,19 @@ shape = SubResource("CapsuleShape_npc")
 
 [node name="StoneCircle" parent="." instance=ExtResource("6_circle")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -9)
+
+[node name="GreyfangPack" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -30)
+script = ExtResource("7_pack")
+
+[node name="Wolf1" parent="GreyfangPack" instance=ExtResource("8_wolf")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+
+[node name="Wolf2" parent="GreyfangPack" instance=ExtResource("8_wolf")]
+transform = Transform3D(-0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, -0.866025, 2.5, 0, -1.5)
+
+[node name="Wolf3" parent="GreyfangPack" instance=ExtResource("8_wolf")]
+transform = Transform3D(-0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, -2, 0, -2.5)
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)

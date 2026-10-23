@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://player/player_first_person.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://ui/hud.tscn" id="2_hud"]
@@ -8,9 +8,33 @@
 radius = 0.4
 height = 1.8
 
+[sub_resource type="SphereShape3D" id="Shape_attack"]
+radius = 0.45
+
+[sub_resource type="StandardMaterial3D" id="Mat_steel"]
+albedo_color = Color(0.62, 0.64, 0.68, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_grip"]
+albedo_color = Color(0.2, 0.12, 0.07, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="Mesh_blade"]
+material = SubResource("Mat_steel")
+size = Vector3(0.05, 0.015, 0.75)
+
+[sub_resource type="BoxMesh" id="Mesh_guard"]
+material = SubResource("Mat_steel")
+size = Vector3(0.2, 0.03, 0.03)
+
+[sub_resource type="BoxMesh" id="Mesh_grip"]
+material = SubResource("Mat_grip")
+size = Vector3(0.035, 0.035, 0.16)
+
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
-collision_mask = 1
+collision_mask = 5
 script = ExtResource("1_script")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -27,6 +51,29 @@ fov = 75.0
 [node name="InteractRay" type="RayCast3D" parent="Head/Camera3D"]
 target_position = Vector3(0, 0, -2.5)
 collision_mask = 1
+
+[node name="AttackCast" type="ShapeCast3D" parent="Head/Camera3D"]
+shape = SubResource("Shape_attack")
+target_position = Vector3(0, 0, -1.8)
+collision_mask = 4
+
+[node name="Weapon" type="Node3D" parent="Head/Camera3D"]
+transform = Transform3D(0.98604, 0.09932, -0.13364, -0.16637, 0.62089, -0.76604, 0.00689, 0.77758, 0.62874, 0.3, -0.38, -0.55)
+
+[node name="Blade" type="MeshInstance3D" parent="Head/Camera3D/Weapon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.42)
+cast_shadow = 0
+mesh = SubResource("Mesh_blade")
+
+[node name="Guard" type="MeshInstance3D" parent="Head/Camera3D/Weapon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0)
+cast_shadow = 0
+mesh = SubResource("Mesh_guard")
+
+[node name="Grip" type="MeshInstance3D" parent="Head/Camera3D/Weapon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.09)
+cast_shadow = 0
+mesh = SubResource("Mesh_grip")
 
 [node name="Stats" type="Node" parent="."]
 script = ExtResource("3_stats")

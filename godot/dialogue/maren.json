@@ -1,53 +1,145 @@
 {
 	"start": [
-		{ "node": "greet_again", "requires_flag": "met_maren" },
-		{ "node": "greet" }
+		{
+			"node": "greet_hero",
+			"requires_flag": "wolf_quest_done"
+		},
+		{
+			"node": "greet_again",
+			"requires_flag": "met_maren"
+		},
+		{
+			"node": "greet"
+		}
 	],
 	"nodes": {
 		"greet": {
 			"text": "A traveller! Not many come up the north road these days. I'm Maren - I keep this waystation.",
 			"set_flag": "met_maren",
 			"choices": [
-				{ "text": "Why don't people come this way?", "next": "wolves" },
-				{ "text": "You're not afraid of an orc on your doorstep?", "next": "orc_line", "requires_race": "Orc" },
-				{ "text": "My people still sing of these hills.", "next": "elf_line", "requires_race": "Elf" },
-				{ "text": "Goodbye.", "next": "end" }
+				{
+					"text": "I killed the wolves north of here. All of them.",
+					"next": "reward",
+					"requires_flag": "wolves_cleared"
+				},
+				{
+					"text": "Why don't people come this way?",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				},
+				{
+					"text": "You're not afraid of an orc on your doorstep?",
+					"next": "orc_line",
+					"requires_race": "Orc"
+				},
+				{
+					"text": "My people still sing of these hills.",
+					"next": "elf_line",
+					"requires_race": "Elf"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
 			]
 		},
 		"greet_again": {
 			"text": "Back again? The kettle's still warm.",
 			"choices": [
-				{ "text": "Tell me about the wolves again.", "next": "wolves" },
-				{ "text": "I'll deal with the Greyfang pack.", "next": "accept", "requires_flag": "heard_about_wolves", "requires_not_flag": "wolf_quest_accepted" },
-				{ "text": "Goodbye.", "next": "end" }
+				{
+					"text": "The Greyfang pack is dead.",
+					"next": "reward",
+					"requires_flag": "wolves_cleared",
+					"requires_not_flag": "wolf_quest_done"
+				},
+				{
+					"text": "Tell me about the wolves again.",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				},
+				{
+					"text": "I'll deal with the Greyfang pack.",
+					"next": "accept",
+					"requires_flag": "heard_about_wolves",
+					"requires_not_flag": [
+						"wolf_quest_accepted",
+						"wolves_cleared"
+					]
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
 			]
 		},
 		"wolves": {
-			"text": "The Greyfang pack. They took two carts last month. Riverwatch won't send guards past the old bridge.",
+			"text": "The Greyfang pack. They took two carts last month, and they den past the stone wall, to the north-east. Riverwatch won't send guards past the old bridge.",
 			"set_flag": "heard_about_wolves",
 			"choices": [
-				{ "text": "I'll deal with them.", "next": "accept", "requires_not_flag": "wolf_quest_accepted" },
-				{ "text": "Sounds like someone else's problem.", "next": "end", "set_flag": "refused_maren" }
+				{
+					"text": "I'll deal with them.",
+					"next": "accept",
+					"requires_not_flag": [
+						"wolf_quest_accepted",
+						"wolves_cleared"
+					]
+				},
+				{
+					"text": "Sounds like someone else's problem.",
+					"next": "end",
+					"set_flag": "refused_maren"
+				}
 			]
 		},
 		"accept": {
-			"text": "Truly? Then may the road be kind to you. Their den is past the stone wall, north.",
+			"text": "Truly? Then may the road be kind to you. Three of them, maybe more. Mind their teeth - and don't let them circle you.",
 			"set_flag": "wolf_quest_accepted",
 			"choices": [
-				{ "text": "Goodbye.", "next": "end" }
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
 			]
 		},
 		"orc_line": {
 			"text": "Orcs pay in coin like anyone else. And you'd be handy against what's out there.",
 			"choices": [
-				{ "text": "Why don't people come this way?", "next": "wolves" },
-				{ "text": "Goodbye.", "next": "end" }
+				{
+					"text": "Why don't people come this way?",
+					"next": "wolves"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
 			]
 		},
 		"elf_line": {
 			"text": "Then you'll know the old songs warn of wolves. They weren't wrong.",
 			"choices": [
-				{ "text": "Tell me more.", "next": "wolves" }
+				{
+					"text": "Tell me more.",
+					"next": "wolves"
+				}
+			]
+		},
+		"reward": {
+			"text": "All of them? Then the north road is open again. I've little coin, but my door is always open to you - and I'll tell Riverwatch who to thank.",
+			"set_flag": "wolf_quest_done",
+			"choices": [
+				{
+					"text": "Glad to help.",
+					"next": "end"
+				}
+			]
+		},
+		"greet_hero": {
+			"text": "The one who cleared the north road! Sit, rest your feet.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
 			]
 		}
 	}

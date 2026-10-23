@@ -106,14 +106,21 @@ func _pick_start(start) -> String:
 	return ""
 
 
+# requires_flag / requires_not_flag take one flag name or a list of them.
 func _conditions_met(entry: Dictionary) -> bool:
-	if entry.has("requires_flag") and not GameState.has_flag(entry["requires_flag"]):
-		return false
-	if entry.has("requires_not_flag") and GameState.has_flag(entry["requires_not_flag"]):
-		return false
+	for flag in _as_list(entry.get("requires_flag", [])):
+		if not GameState.has_flag(flag):
+			return false
+	for flag in _as_list(entry.get("requires_not_flag", [])):
+		if GameState.has_flag(flag):
+			return false
 	if entry.has("requires_race") and entry["requires_race"] != GameState.race:
 		return false
 	return true
+
+
+func _as_list(value) -> Array:
+	return value if value is Array else [value]
 
 
 func _load_dialogue(file_path: String):
