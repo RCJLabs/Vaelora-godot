@@ -26,6 +26,7 @@ const ITEM_FILES := [
 	"res://items/marked_coin.tres",
 	"res://items/supply_crate.tres",
 	"res://items/cult_notes.tres",
+	"res://items/cult_letter.tres",
 	"res://items/iron_sword.tres",
 	"res://items/hunting_dagger.tres",
 	"res://items/leather_cuirass.tres",

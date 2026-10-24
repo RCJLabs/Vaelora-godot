@@ -50,6 +50,25 @@ Heavy and hard to stagger: its poise (150) breaks only after many hits, then it 
 3 s. Weapons and spells hurt it the same. It crumbles when killed, drops a **Guardian Heart**
 (worth 150), and stays dead (WorldState).
 
+## The First (`enemies/the_first.gd`, main quest 5)
+
+The demo's final boss, at the Hollow Oak in the Thornwood (north-east of the outlaw camp in
+the test level). It's the Stone Guardian's body and moves (slam, sweep, phase 2) with
+`the_first.gd` swapped in:
+- pale, swollen (the model is scaled 1.25×; the collision shape isn't) and glowing, pulsing
+  faster as it weakens;
+- it **leaks**: every 7 s (4 s in phase 2) a ring of stolen light rolls out from it along the
+  ground (10 damage): jump it;
+- it comes apart into light when killed (no heart), sets `first_slain`, and a stream of light
+  (a DrainLine) rises from it towards the north.
+
+The **RitualSite** (`props/ritual_site.gd`) runs the scene around it. By day the clearing is
+empty: the boss, the three hooded cultists and the ritual light are hidden, frozen and
+untouchable, and the first visit says to come back after dark. At night, the first time you
+come within 20 m, the ritual is under way: everything appears, the cultists wake, and the
+BossArena around the oak arms itself (stepping in wakes The First). The **RitualAltar**
+(`props/ritual_altar.gd`) offers the cult's sealed letter once it's dead.
+
 To make another boss: copy `stone_guardian.gd`'s structure. The arena only needs the boss to
 have `wake(player)`, `is_defeated()`, `display_name`, `stats` and a `died` signal.
 

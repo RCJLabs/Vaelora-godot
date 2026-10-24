@@ -30,6 +30,9 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
 - [ ] Main quest 4, **The Barrow**: after the Guardian, can you find the way on from the vault
       without help (look at the floor)? Free the wisp or take its essence: does either feel
       like a real choice?
+- [ ] Main quest 5, **What They Made**: go to the Hollow Oak by day first (it should tell you to
+      come back at night), then at night. The First: are the leaking rings readable? After it
+      dies, can you see its light streaming north? Does the ending land?
 - [ ] First view of the level: note the **FPS** in the corner, on **High**.
 - [ ] The compass at the top: can you tell where the wolves quest points once Maren gives it?
       Press **M**: is the map readable?

@@ -1,6 +1,11 @@
 {
 	"start": [
 		{
+			"node": "end_intro",
+			"requires_flag": "read_letter",
+			"requires_not_flag": "demo_finished"
+		},
+		{
 			"node": "heard_essence",
 			"requires_flag": "took_wisp_essence",
 			"requires_not_flag": "mirela_heard_essence"
@@ -336,6 +341,76 @@
 			"choices": [
 				{
 					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"end_intro": {
+			"text": "The light's gone out over the oak. My scouts came back running and laughing, which they haven't done since spring. Was that you?",
+			"choices": [
+				{
+					"text": "(Show her the letter and the map.)",
+					"next": "end_letter"
+				}
+			]
+		},
+		"end_letter": {
+			"text": "She spreads the map on a log by the fire, and the Free crowd round it. Someone counts the marks out loud. Twelve. Nobody laughs any more.",
+			"choices": [
+				{
+					"text": "Dunya?",
+					"next": "end_dunya",
+					"requires_flag": "saw_dunya"
+				},
+				{
+					"text": "What will the Free do?",
+					"next": "end_mirela",
+					"requires_not_flag": "took_wisp_essence"
+				},
+				{
+					"text": "What will the Free do?",
+					"next": "end_mirela_cold",
+					"requires_flag": "took_wisp_essence"
+				}
+			]
+		},
+		"end_dunya": {
+			"text": "She looked up this evening. Only for a moment, when the light went out. She hasn't spoken. But she looked up.",
+			"choices": [
+				{
+					"text": "What will the Free do?",
+					"next": "end_mirela",
+					"requires_not_flag": "took_wisp_essence"
+				},
+				{
+					"text": "What will the Free do?",
+					"next": "end_mirela_cold",
+					"requires_flag": "took_wisp_essence"
+				}
+			]
+		},
+		"end_mirela": {
+			"text": "What we always do: watch the roads, and tell the right people what we see. You're one of the right people now, whatever the garrison says.",
+			"set_flag": [
+				"told_mirela_end",
+				"demo_finished"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"end_mirela_cold": {
+			"text": "What we always do: watch the roads. And watch you. You did what they do, once. Don't make it twice.",
+			"set_flag": [
+				"told_mirela_end",
+				"demo_finished"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
 					"next": "end"
 				}
 			]

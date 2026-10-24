@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "cult_letter"
+display_name = "Sealed Letter"
+description = "Sealed with a circle split by three lines, and opened by you.
+
+\"V. - The first is a failure: too much, too fast, it will not hold. No matter. The others are ready. Send the harvest north to the Pale Gate by the next dark of the Wanderer, and tell no one at the Collegium what you have seen. - A.\"
+
+Folded inside: a map of all Vaelora, with a dozen places marked in the same careful hand. The Greywater Vale is only one of them."
+weight = 0.1

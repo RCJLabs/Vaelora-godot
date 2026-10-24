@@ -1,6 +1,11 @@
 {
 	"start": [
 		{
+			"node": "end_intro",
+			"requires_flag": "read_letter",
+			"requires_not_flag": "demo_finished"
+		},
+		{
 			"node": "greet_hero",
 			"requires_flag": "wolf_quest_done"
 		},
@@ -807,6 +812,51 @@
 			"choices": [
 				{
 					"text": "I'll find him.",
+					"next": "end"
+				}
+			]
+		},
+		"end_intro": {
+			"text": "You look like you've been through a hedge backwards and then through something worse. Sit. What happened out there?",
+			"choices": [
+				{
+					"text": "(Show her the letter and the map.)",
+					"next": "end_letter"
+				}
+			]
+		},
+		"end_letter": {
+			"text": "She reads it twice, then puts her finger on the map, on this valley, and then on the eleven other marks. \"Twelve. Twelve places like the stones. And you killed the first thing they made.\" She folds it carefully and gives it back.",
+			"choices": [
+				{
+					"text": "It followed me out of the barrow. The wisp.",
+					"next": "end_wisp",
+					"requires_flag": "freed_wisp"
+				},
+				{
+					"text": "What do I do now?",
+					"next": "end_maren"
+				}
+			]
+		},
+		"end_wisp": {
+			"text": "She watches the wisp settle by the lamp. \"The ones at the stones used to do that, before. Then not everything's gone.\"",
+			"choices": [
+				{
+					"text": "What do I do now?",
+					"next": "end_maren"
+				}
+			]
+		},
+		"end_maren": {
+			"text": "Now? Now you eat something, and sleep, and in the morning you go and find the second one. The road north goes further than Riverwatch. It always has.",
+			"set_flag": [
+				"told_maren_end",
+				"demo_finished"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
 					"next": "end"
 				}
 			]

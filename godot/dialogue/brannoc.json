@@ -1,6 +1,11 @@
 {
 	"start": [
 		{
+			"node": "end_intro",
+			"requires_flag": "read_letter",
+			"requires_not_flag": "demo_finished"
+		},
+		{
 			"node": "gift",
 			"requires_reputation": {
 				"riverwatch": 25
@@ -745,6 +750,57 @@
 			"choices": [
 				{
 					"text": "Thank you, Brannoc.",
+					"next": "end"
+				}
+			]
+		},
+		"end_intro": {
+			"text": "You're alive. The light over the forest went out an hour ago, and I've been standing here wondering which of us that was bad news for.",
+			"choices": [
+				{
+					"text": "(Show him the letter and the map.)",
+					"next": "end_letter"
+				}
+			]
+		},
+		"end_letter": {
+			"text": "He reads it with his lips moving, the way he reads orders. \"The Pale Gate. I've heard the name. Old stories, the kind the captain doesn't let us tell on watch.\" He looks at the map for a long time.",
+			"choices": [
+				{
+					"text": "You kept your distance from the crystal. Smart.",
+					"next": "end_brannoc",
+					"requires_not_flag": "shards_kept"
+				},
+				{
+					"text": "You still think I should have handed over the shards?",
+					"next": "end_kept",
+					"requires_flag": "shards_kept"
+				},
+				{
+					"text": "What happens now?",
+					"next": "end_brannoc",
+					"requires_not_flag": "shards_kept"
+				}
+			]
+		},
+		"end_kept": {
+			"text": "I still think you're a thief. I also think you're the only one who went into that forest. The garrison can hold both thoughts. Barely.",
+			"choices": [
+				{
+					"text": "What happens now?",
+					"next": "end_brannoc"
+				}
+			]
+		},
+		"end_brannoc": {
+			"text": "Now I take this to the captain, and she asks Riverwatch for soldiers it doesn't have, and the town says no. Then she asks me who did this, and I tell her. Don't be surprised if someone comes looking for you with a better offer than mine.",
+			"set_flag": [
+				"told_brannoc_end",
+				"demo_finished"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
 					"next": "end"
 				}
 			]

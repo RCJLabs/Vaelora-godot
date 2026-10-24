@@ -97,8 +97,16 @@ func close() -> void:
 ## Is anything hunting the player (a wolf or bandit chasing, fighting...) close by?
 func enemies_nearby(position: Vector3) -> bool:
 	for enemy in get_tree().get_nodes_in_group("enemy"):
-		var calm: bool = enemy.state in [enemy.State.IDLE, enemy.State.DEAD, enemy.State.RETURN]
-		if not calm and enemy.global_position.distance_to(position) < ENEMY_RADIUS:
+		if not _calm(enemy) and enemy.global_position.distance_to(position) < ENEMY_RADIUS:
+			return true
+	return false
+
+
+# Idle, dead, heading home or (bosses) dormant. Not every enemy has every state.
+func _calm(enemy: Node) -> bool:
+	var states: Dictionary = enemy.State
+	for calm_state in ["IDLE", "DEAD", "RETURN", "DORMANT"]:
+		if states.has(calm_state) and enemy.state == states[calm_state]:
 			return true
 	return false
 

@@ -36,6 +36,7 @@ VARIANTS = {
     "test_ask_forest": [["bandits"], ["supplies"], ["outlaw"]],
     "test_bandit_fight": [["skilled"]],   # "naive" (never defends) is a balance check: run it by hand
     "test_combat": [["human"]],
+    "test_first": [["maren"], ["brannoc"], ["mirela"]],
     "test_floor": [["res://levels/test_level.tscn"], ["res://levels/waystation_cellar.tscn"]],
     "test_nav": [["nav_kill"]],
     "test_quest": [["riverwatch"], ["stones"]],

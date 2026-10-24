@@ -36,6 +36,7 @@ PauseMenu="*res://ui/pause_menu.tscn"
 RestMenu="*res://ui/rest_menu.gd"
 Defeat="*res://systems/defeat.gd"
 Openings="*res://systems/openings.gd"
+Epilogue="*res://systems/epilogue.gd"
 
 [editor_plugins]
 

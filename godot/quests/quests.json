@@ -316,5 +316,71 @@
 				"text": "Behind the barrow's vault the hooded folk had a workshop: empty cages, jars of stolen light, and notes about feeding \"the first of them\" at the Hollow Oak. I took the last wisp's light for myself. It was easy. The outlaws heard."
 			}
 		]
+	},
+	"what_they_made": {
+		"title": "What They Made",
+		"giver": "The cultist's notes",
+		"main": true,
+		"description": "The notes from the barrow talk about feeding \"the first of them\" in the dark of the Wanderer, at the Hollow Oak, deep in the Thornwood north-east of the outlaws' fire.",
+		"started_when": {
+			"requires_flag": "taken:test_dungeon/CultNotes"
+		},
+		"completed_when": {
+			"requires_flag": "demo_finished"
+		},
+		"objectives": [
+			{
+				"text": "Find the Hollow Oak, north-east of the outlaw camp. Go at night.",
+				"done_when": {
+					"requires_flag": "ritual_started"
+				},
+				"marker": "HollowOak"
+			},
+			{
+				"text": "Stop what they're making.",
+				"done_when": {
+					"requires_flag": "first_slain"
+				},
+				"marker": "TheFirst"
+			},
+			{
+				"text": "Search the stone slab by the oak.",
+				"done_when": {
+					"requires_flag": "read_letter"
+				},
+				"marker": "RitualAltar"
+			},
+			{
+				"text": "Tell someone what you found: Maren, Brannoc or Mirela.",
+				"done_when": {
+					"requires_flag": "demo_finished"
+				},
+				"marker": [
+					"Maren",
+					"Brannoc",
+					"Mirela"
+				]
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "told_maren_end"
+				},
+				"text": "I killed the first thing they made, at the Hollow Oak. Its stolen light streamed away north. The letter on the altar names the Pale Gate, and its map marks a dozen places across Vaelora. Maren says: eat, sleep, and go and find the second one."
+			},
+			{
+				"when": {
+					"requires_flag": "told_brannoc_end"
+				},
+				"text": "I killed the first thing they made, at the Hollow Oak. Its stolen light streamed away north. The letter on the altar names the Pale Gate, and its map marks a dozen places across Vaelora. Brannoc is taking it to the captain, and the captain will want to know who I am."
+			},
+			{
+				"when": {
+					"requires_flag": "told_mirela_end"
+				},
+				"text": "I killed the first thing they made, at the Hollow Oak. Its stolen light streamed away north. The letter on the altar names the Pale Gate, and its map marks a dozen places across Vaelora. The Thornwood Free will be watching the roads."
+			}
+		]
 	}
 }
