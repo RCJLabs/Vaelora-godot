@@ -31,6 +31,7 @@ func _setup() -> void:
 	var level = load("res://levels/test_level.tscn").instantiate()
 	root.add_child(level); current_scene = level
 	pack = level.get_node("GreyfangPack")
+	pack.can_break = false   # a fight to the last wolf; driving them off is test_morale
 	level_before = autoload("Skills").levels["one_handed"]
 	xp_before = autoload("Skills").xp["one_handed"]
 

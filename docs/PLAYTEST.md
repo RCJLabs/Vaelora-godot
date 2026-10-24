@@ -66,6 +66,9 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
       or too tight? (Window: 0.2 s.)
 - [ ] Dodge (Alt): does it get you out of a bite? Too long / too short?
 - [ ] The pack of three: fair, too easy, or overwhelming at the start?
+- [ ] Did the pack **break and run** (after you killed one and hit another, or burned them)?
+      Did you notice, and did it feel earned or like they cheated you out of the fight?
+      Could you tell they weren't coming back? (Maren hints at this when she gives the quest.)
 
 ## 4. The bandit camp (4 min) — south-west of the stone circle
 

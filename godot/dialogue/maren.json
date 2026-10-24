@@ -73,7 +73,13 @@
 				{
 					"text": "I killed the wolves north of here. All of them.",
 					"next": "reward",
-					"requires_flag": "wolves_cleared"
+					"requires_flag": "wolves_cleared",
+					"requires_not_flag": "wolves_driven_off"
+				},
+				{
+					"text": "I drove off the wolves north of here.",
+					"next": "reward_driven",
+					"requires_flag": "wolves_driven_off"
 				},
 				{
 					"text": "Why don't people come this way?",
@@ -128,6 +134,15 @@
 					"text": "The Greyfang pack is dead.",
 					"next": "reward",
 					"requires_flag": "wolves_cleared",
+					"requires_not_flag": [
+						"wolf_quest_done",
+						"wolves_driven_off"
+					]
+				},
+				{
+					"text": "The Greyfang pack ran. They won't be back on this road.",
+					"next": "reward_driven",
+					"requires_flag": "wolves_driven_off",
 					"requires_not_flag": "wolf_quest_done"
 				},
 				{
@@ -184,7 +199,7 @@
 			]
 		},
 		"accept": {
-			"text": "Truly? Then may the road be kind to you. Three of them, maybe more. Mind their teeth - and don't let them circle you.",
+			"text": "Truly? Then may the road be kind to you. Three of them, maybe more. Mind their teeth - and don't let them circle you. They needn't all die, mind: a pack knows when it's beaten. Kill one and hurt another and the rest may run. And they hate fire.",
 			"set_flag": "wolf_quest_accepted",
 			"choices": [
 				{
@@ -905,6 +920,21 @@
 					"next": "end"
 				}
 			]
+		},
+		"reward_driven": {
+			"text": "Ran? Then they're someone else's worry, and hungry ones at that. But they'll think twice before they come down to this road again. Here - it's the same coin either way, and take this, in case they forget.",
+			"set_flag": "wolf_quest_done",
+			"choices": [
+				{
+					"text": "Glad to help.",
+					"next": "end"
+				}
+			],
+			"give_gold": 50,
+			"give_item": "minor_healing_potion",
+			"add_reputation": {
+				"riverwatch": 10
+			}
 		}
 	}
 }

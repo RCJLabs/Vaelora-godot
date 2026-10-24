@@ -591,6 +591,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -9)
 [node name="GreyfangPack" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -30)
 script = ExtResource("7_pack")
+can_break = true
 
 [node name="Wolf1" parent="GreyfangPack" instance=ExtResource("8_wolf")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
