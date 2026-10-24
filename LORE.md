@@ -1,9 +1,21 @@
-# Vaelora: lore bible (draft v3)
+# Vaelora: lore bible (draft v4)
 
 Built from your questionnaire answers of 24 October 2026 (kept verbatim in
 `docs/lore/questionnaire-answers-2026-10-24.txt`), the brainstorm on the Draining, the Vael,
-the sage and the races (24 October 2026, in chat), and the round-two answers (kept verbatim in
-`docs/lore/questionnaire-2-answers-2026-10-24.txt`).
+the sage and the races (24 October 2026, in chat), and the round-two and round-three answers
+(kept verbatim in `docs/lore/questionnaire-2-answers-2026-10-24.txt` and
+`questionnaire-3-answers-2026-10-24.txt`).
+
+**The bible in parts.** This file is the core: the world in brief, the truth, the threat and
+Aeviro. The detail lives in `docs/lore/`:
+
+| File | What's in it |
+|---|---|
+| [`HISTORY.md`](docs/lore/HISTORY.md) | Nine hundred years, year by year; the legend everyone knows; who knows what |
+| [`WORLD.md`](docs/lore/WORLD.md) | Continents and rulers, Orveth's regions (Ilunhall, Ithmarren, Karrowdeep…), the twelve sites, the Pale Gate, everyday life, Lanternfast, creatures and dragons |
+| [`PEOPLES.md`](docs/lore/PEOPLES.md) | All seven peoples: home, leaders, values, their own Arrival story, what others say, the dead, wisps |
+| [`MAGIC.md`](docs/lore/MAGIC.md) | The nine schools and how each carries a whole playthrough, the eight colleges |
+| [`FACTIONS.md`](docs/lore/FACTIONS.md) | The eight powers, the seven joinable guilds (two of them evil) |
 
 - **Plain text** is what you decided.
 - ***(suggested)*** marks what I filled in to make it hang together. Draft v1 was **approved as
@@ -107,9 +119,10 @@ here. Everything changed after that.
   the Vael want to **leave this world, as a people, for another one**.
 - **A single wisp can be released** to its afterlife instead of being swallowed. That gives it
   rest, and it's an ending.
-- *(suggested)* **So rest and survival pull against each other.** A released wisp is at peace,
-  and lost to its people for good. Left in the world, it suffers, but can still leave with the
-  others one day. Mercy now, or a future later: that's the choice every essence offers.
+- **Every essence is a three-way choice:** **absorb** it for more power (and corruption),
+  **release** it to its rest, or **leave** it to be gathered with its people. A released wisp
+  is at peace, and lost to its people for good. Left in the world, it suffers, but can still
+  leave with the others one day. Power, mercy now, or a future later.
 - **Talking to them:** **at Hollowing you start to hear them**, and the cleansing vigil takes
   that away again. The more of them you've eaten, the better you hear them.
 - **Why night wisps attack:** **they go for anyone carrying stolen light, so the more corrupted
@@ -162,14 +175,16 @@ enchanted locks, healing colleges instead of barber-surgeons, and no gunpowder a
 - **The gods are dead or absent, their followers still argue, and each race believes
   differently. Nobody knows the truth.**
 - **Something answers prayers, but nobody knows what.** Magic is real; the gods are unknown.
-- *(suggested)* The shrines in the demo (the Acolyte background's "old rites") honour gods
-  who never answer in words, yet healing prayers really do work. Is it the gods, the magic,
-  or the Vael? Another mystery for the full game. *(suggested)* 🔒 If it's the Vael, the
-  murdered are still healing their murderers' grandchildren.
+- The shrines in the demo (the Acolyte background's "old rites") honour gods who never answer
+  in words, yet healing prayers really do work. **Who answers stays a mystery for good**: not
+  even the 🔒 sections say.
 
 ---
 
 ## The peoples
+
+*The full stories of all seven peoples are in [`docs/lore/PEOPLES.md`](docs/lore/PEOPLES.md);
+the table below is the short version.*
 
 **At least seven races in the full game.** Every race has its twisted and its dignified
 sorts. There's racial tension, as everywhere, but for the most part anyone can be anything.
@@ -243,14 +258,14 @@ unknown army. There are legends, but no one thought it could be real.
 - **It's people, and it's new.** Behind the legend is a circle of corrupt mages, the cult,
   who drain wisps, wolves and even a hedge-witch (Dunya) through stones marked with a circle
   split by three lines. (All in the demo.)
-- **The cult:** *(suggested name)* **the Ferry**; its members are ferriers.
+- **The cult:** **the Vaerd**, a name for the cult and its members alike.
   - **What its members want:** **a cure for their own Hollowing, and a cause: releasing the
     Vael to their afterlife.** They're mages who swallowed too many wisps and are hollowing.
-  - *(suggested)* So the ferriers know wisps are Vael souls in need of release (Aeviro told them
+  - *(suggested)* So the Vaerd know wisps are Vael souls in need of release (Aeviro told them
     that much). They don't know about the hunt, or the Collegium's founders, or what Aeviro
     really means to do. "The army" is the outside world's rumour.
-  - **"V."** is *(suggested)* **Magister Vessa**, a licensed Collegium healer who is hollowing,
-    and the Ferry's organiser in the Greywater Vale. Off-screen in the demo.
+  - **"V." is Magister Vessa**, a licensed healer of the Lamp College who is hollowing, and the
+    Vaerd's organiser in the Greywater Vale. Off-screen in the demo.
 - **The letter:** "A." tells V. to send the harvest "north to the Pale Gate by the next dark
   of the Wanderer" and to tell no one at the Collegium.
 - **What the player sees first:** wisps fading at the stones, a Greyfang wolf found hollow and
@@ -262,14 +277,17 @@ unknown army. There are legends, but no one thought it could be real.
 
 ### 🔒 What's really happening
 
-- **"A." is Aeviro.** The Ferry thinks it's giving the Vael rest. Aeviro wants them to
+- **"A." is Aeviro.** The Vaerd think they're giving the Vael rest. Aeviro wants them to
   **survive**: to leave this world together, which needs them gathered, not released.
-- **Aeviro is the last vessel.** *(suggested)* The First and "the others" were attempts to build
+- **Aeviro is the last vessel.** The First and "the others" were attempts to build
   bodies that could hold the gathered Vael. The First was filled "too much, too fast" and
   "will not hold". In the end Aeviro means to take every Vael into their own body, carry them
   through the Pale Gate and up to the Wanderer, and die there, emptied, as the Vael leave.
-- *(suggested)* **The Pale Gate** is where the Wanderer's light touches the ground at its dark:
-  the way back up to the ship. Aeviro's hut is near it.
+- **The Pale Gate** is where the Wanderer's light touches the world at its dark: the way back
+  up to the ship. It's **out at sea, on an island that's never on the same map twice**,
+  somewhere in the northern seas. Aeviro's hut is on its shore.
+- **The twelve sites** are **where the Vael first set down from the Wanderer**, and **where the
+  residue pools deepest: magic's wells.**
 - **The gathering tortures the people it's saving.** Wisps feel the draining. Aeviro has
   decided that's the price.
 - *(suggested)* **Why Dunya "gave more than all the wisps together":** she had swallowed many
@@ -368,17 +386,17 @@ All as drafted, except the Draining, which the brainstorm replaced (above).
 7. **Death:** Hardcore first; Normal keeps reload (as built).
 8. **Elves:** the people most changed by the Arrival, and most prone to corruption.
 
-Round two's 29 answers are folded in above.
+Round two's 29 answers and round three's 33 are folded in above and in `docs/lore/`.
 
 ## Still open
 
-Round three (`docs/LORE_QUESTIONNAIRE_3.md`) asks about these, and about the world beyond the
-valley: nine hundred years of history, the map, magic, belief, everyday life, creatures,
-factions, and a story for each of the seven peoples.
-
-- **My suggestions to confirm or change:** the cult's name (the Ferry), "V." as Magister
-  Vessa, the Pale Gate as the way up to the Wanderer, Aeviro as the last vessel, the
-  rest-versus-survival choice, and the one-line cultures for the Ashen, small folk and Deepfolk.
+- **Round three's suggestions to confirm:** nearly everything in `docs/lore/` that's marked
+  *(suggested)*, since you said "you decide" for all seven peoples, the legend, the festival,
+  the schools' names and the guilds.
+- **The cult's name:** "Vaerd" is close to "Vael" and "Vaelora". Keep it if that's deliberate
+  (the cult named after those it serves); otherwise a more distinct name would read better.
+- **Names** for the Passengers, the Ashen, small folk and Deepfolk (their people's naming
+  styles).
 - **Hard limits** on horror: what's never shown.
 - **The order** the four new peoples become playable.
 - **The artifact** in the truth scene: what it is, and who took it.
