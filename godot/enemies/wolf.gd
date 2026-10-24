@@ -14,7 +14,7 @@ signal died
 var prompt: String = ""
 var _skinned := false
 
-enum State { IDLE, CHASE, ATTACK, RETURN, STAGGER, DEAD }
+enum State { IDLE, CHASE, ATTACK, RETURN, STAGGER, DEAD, FLEE }
 
 @export var run_speed: float = 6.0          # player walks 5, sprints 8: you can outrun it
 @export var wander_speed: float = 1.5
@@ -55,6 +55,10 @@ var _stagger_left := 0.0
 var _eyes: StandardMaterial3D
 var _eye_glow := 3.0
 var _pose_tween: Tween      # crouch, stagger or flinch: stopped when it dies
+var _flee_left := 0.0
+## A fleeing wolf is gone once it's this far from the player (or after FLEE_SECONDS).
+const FLEE_GONE_DISTANCE := 30.0
+const FLEE_SECONDS := 12.0
 
 
 func _ready() -> void:
@@ -143,6 +147,15 @@ func _think(player: Node3D, delta: float) -> void:
 			if _stagger_left <= 0.0:
 				model.rotation = Vector3.ZERO
 				state = State.CHASE
+		State.FLEE:
+			_flee_left -= delta
+			if dist > FLEE_GONE_DISTANCE or _flee_left <= 0.0:
+				if get_parent().has_method("member_gone"):
+					get_parent().member_gone(self)
+				queue_free()
+				return
+			var away := -to_player.normalized() if dist > 0.1 else Vector3.FORWARD
+			_move_toward(global_position + away * 4.0, run_speed * 1.15, delta)
 		State.RETURN:
 			if from_home < 1.0:
 				state = State.IDLE
@@ -263,9 +276,21 @@ func _bite(player: Node) -> String:
 	return result
 
 
+## Its pack has broken: run from the player, and don't come back.
+func flee() -> void:
+	if state == State.DEAD:
+		return
+	state = State.FLEE
+	_flee_left = FLEE_SECONDS
+	_windup_left = 0.0
+	_close_in = false
+	model.position.z = 0.0
+	model.rotation = Vector3.ZERO
+
+
 ## Reels for `seconds`: no biting, and a bite that was coming is cancelled.
 func stagger(seconds: float) -> void:
-	if state == State.DEAD:
+	if state == State.DEAD or state == State.FLEE:
 		return
 	state = State.STAGGER
 	_stagger_left = seconds

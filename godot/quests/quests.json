@@ -60,7 +60,7 @@
 		},
 		"objectives": [
 			{
-				"text": "Kill the Greyfang wolves north-east of the waystation.",
+				"text": "Kill the Greyfang wolves north-east of the waystation, or drive them off.",
 				"done_when": {
 					"requires_flag": "wolves_cleared"
 				},
@@ -75,6 +75,15 @@
 			}
 		],
 		"outcomes": [
+			{
+				"when": {
+					"requires_flag": [
+						"wolf_quest_done",
+						"wolves_driven_off"
+					]
+				},
+				"text": "I drove the Greyfang pack off the north road instead of killing them all. Maren paid me anyway; hungry wolves are someone else's worry now."
+			},
 			{
 				"when": {
 					"requires_flag": "wolf_quest_done"

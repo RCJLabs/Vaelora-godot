@@ -22,8 +22,13 @@ hedge-witch). The supplies come from Brannoc's cache, not from Riverwatch itself
 isn't in the game yet).
 
 Changes against the outline: in The Lost Wagon the driver is alive (in the bandits' cage),
-so the choice is about the strongbox and his pay rather than the killers; in The Greyfang
-Pack you can still only kill the wolves (driving them off needs a fear/morale mechanic).
+so the choice is about the strongbox and his pay rather than the killers. In The Greyfang
+Pack you can kill the wolves or drive them off: damage and deaths build the pack's fear
+(fire counts double), and at 100 the living run and don't come back. With three wolves
+that's "kill one and land one more hit", or "burn them". Run the fleeing ones down and it
+still counts as a kill. Maren hints at it when she gives you the quest, and has her own
+reply if they ran (same reward). Built in `enemies/wolf_pack.gd` (`can_break`, on for the
+Greyfang pack only; bandits fight to the end).
 
 Simplifications against the outline, so far: every opening's first step is "Talk to Maren"
 (the Scholar and Acolyte don't have to visit the stones or the shrine first), and the
