@@ -133,6 +133,9 @@ func _ready() -> void:
 	arrive_at_marker(SaveSystem.take_pending_marker())
 	Openings.play(self)   # a new game: the background's first scene
 	WispCompanion.ensure(self)   # the wisp freed in the barrow follows you
+	var note := SaveSystem.take_pending_message()   # e.g. an old save brought up to date
+	if note != "":
+		show_message(note)
 
 
 func _unhandled_input(event: InputEvent) -> void:

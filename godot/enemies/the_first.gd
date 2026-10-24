@@ -15,6 +15,8 @@ extends "res://enemies/stone_guardian.gd"
 @export var leak_interval: float = 7.0
 @export var leak_interval_phase_two: float = 4.0
 @export var leak_damage: float = 10.0
+## More than the Guardian's 400: it's the last fight (tuned with tests/test_first_fight.gd).
+@export var boss_health: float = 550.0
 
 const SKIN := Color(0.62, 0.64, 0.6)
 const GLOW := Color(0.6, 1.0, 0.8)
@@ -27,11 +29,14 @@ func _ready() -> void:
 	super()
 	if state == State.DEAD:
 		return
+	stats.max_health = boss_health
+	stats.refill()
 	_stone_material.albedo_color = SKIN
 	_stone_material.emission_enabled = true
 	_stone_material.emission = GLOW
 	_stone_material.emission_energy_multiplier = 0.3
 	model.scale = Vector3.ONE * 1.25   # swollen; the collision shape stays the guardian's
+	shockwave_color = GLOW
 	_eye_material.albedo_color = GLOW
 	eye_light.light_color = GLOW
 	eye_light.light_energy = 1.0

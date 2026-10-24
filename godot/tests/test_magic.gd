@@ -64,6 +64,9 @@ func _physics_process(_d: float) -> bool:
 			SB.select("flames"); p.stats.magicka = p.stats.max_magicka
 			var w = current_scene.get_node("GreyfangPack/Wolf1")
 			for other in current_scene.get_node("GreyfangPack").get_children(): other.aggro_range = 0.0
+			# Hold it still: an idle wolf wanders to random spots, and could walk out of the
+			# stream before the first hit (it did with seed 14: 0 damage).
+			w.wander_speed = 0.0
 			p.global_position = w.global_position + Vector3(0, 0, 4.5); p.rotation.y = 0; p.get_node("Head").rotation.x = deg_to_rad(-12)
 			p.velocity = Vector3.ZERO
 		245:

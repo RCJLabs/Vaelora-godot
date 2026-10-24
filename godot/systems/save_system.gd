@@ -16,15 +16,18 @@ extends Node
 
 const SAVE_DIR := "user://saves/"
 const OLD_SAVE_PATH := "user://savegame.json"   # before slots existed
-const SAVE_VERSION := 9   # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time,
+const SAVE_VERSION := 10  # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time,
                           # 7: attributes, equipment, status effects, 8: character (background, traits, perks, modes),
-                          # 9: world clock and survival needs
+                          # 9: world clock and survival needs, 10: the main questline (see _migrate_story)
 const QUICKSAVE := "quicksave"
 const AUTOSAVE := "autosave"
 const MANUAL_SLOTS := ["slot_1", "slot_2", "slot_3", "slot_4", "slot_5"]
 
 var _pending_player_state: Dictionary = {}
 var _pending_marker := ""   # where to put the player after travelling
+
+
+var _pending_message := ""
 
 
 func _ready() -> void:
@@ -161,6 +164,7 @@ func load_game(slot: String = "") -> bool:
 	QuestLog.silent = true   # restoring flags/items isn't "progress" - don't announce it
 	GameState.set_race(load(data["race"]))
 	GameState.flags = data["flags"]
+	_pending_message = _migrate_story(int(data["version"]))
 	GameState.play_time = float(data.get("play_time", 0.0))
 	if data.has("attributes"):
 		Attributes.from_dict(data["attributes"])
@@ -195,6 +199,32 @@ func load_game(slot: String = "") -> bool:
 	_pending_marker = ""
 	_change_scene_at_end_of_frame(data["level"])
 	return true
+
+
+## Saves from before the main questline (version 9 and older): start it, so the
+## character isn't locked out of the story, and keep a finished Waking Stones
+## finished (it gained a last step, the drain-line, which these saves never saw).
+## Returns a note for the player about what changed, or "".
+func _migrate_story(version: int) -> String:
+	if version >= 10:
+		return ""
+	var changes := []
+	if not GameState.has_flag("wrong_things_started"):
+		GameState.set_flag("wrong_things_started")
+		changes.append("Maren at the waystation has news.")
+	if GameState.has_flag("stones_quest_done") and not GameState.has_flag("saw_drain_line"):
+		GameState.set_flag("saw_drain_line")
+		changes.append("A thread of light now runs north from the stone circle.")
+	if changes.is_empty():
+		return ""
+	return "This save is from an older version of the game. " + " ".join(changes)
+
+
+## Called by the player when it spawns: a one-off message after loading, or "".
+func take_pending_message() -> String:
+	var message := _pending_message
+	_pending_message = ""
+	return message
 
 
 # change_scene_to_file() takes the current level out of the tree immediately.

@@ -37,7 +37,26 @@ Things that trip tests up:
 - Pressed keys (`Input.action_press`) take effect on the next frame.
 - Hit-stop slows the game for a moment after a heavy hit or parry, so count on wider timing.
 - Wolves wander randomly and AI fights vary: check ranges, not exact numbers. Call `seed(n)`
-  in `_initialize` when a test needs the same random rolls every time.
+  in `_initialize` when a test needs the same random rolls every time. An **idle wolf
+  still wanders** (even with `aggro_range = 0`): if a test aims at one, also set
+  `wander_speed = 0.0`. (`test_magic` once missed its wolf completely because it had
+  wandered out of the Flames stream: reproducible with `seed(14)`.)
+- Even with a seed, a long AI fight doesn't repeat exactly, so balance tests
+  (`test_bandit_fight`, `test_first_fight`) guard against big changes rather than hit exact
+  numbers.
+
+## Whole-game and balance tests
+
+- **`test_playthrough`** (variants `normal`, `hardcore`) plays the entire demo in one run:
+  the Hunter's opening, all five main quests (into the barrow and back), every side quest
+  and the ending, saving and loading four times (once inside the dungeon), then checks
+  every quest in `quests.json` is complete and stays so after one more load. In Hardcore
+  the bandits also capture you before quest 3, so you wake in their cage next to Jory.
+  It drives the game through the same calls a key press makes and kills by dealing damage
+  directly, so it tests that the quests fit together, not the fights. **When you add a
+  quest, add it here too**: the final check fails for any quest it doesn't finish.
+- **`test_first_fight`** (`naive`, `skilled`): bots fight The First. See DUNGEONS.md.
+- **`test_migration`**: an old (version 9) save brought up to date. See STATS_AND_SAVING.md.
 
 ## CI (GitHub Actions)
 

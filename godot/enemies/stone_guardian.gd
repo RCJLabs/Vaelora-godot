@@ -30,6 +30,7 @@ enum State { DORMANT, CHASE, WINDUP, STRIKE, RECOVER, STAGGER, DEAD }
 @export var shockwave_range: float = 10.0
 @export var punish_mult: float = 1.5
 @export var stagger_time: float = 3.0
+@export var shockwave_color: Color = Color(1.0, 0.55, 0.3)
 
 @onready var stats: Stats = $Stats
 @onready var effects: StatusEffects = $StatusEffects
@@ -204,6 +205,7 @@ func _shockwave(center: Vector3) -> void:
 	ring.set("damage", shockwave_damage)
 	ring.set("max_radius", shockwave_range)
 	ring.set("source", self)
+	ring.set("color", shockwave_color)
 	_world().add_child(ring)
 	ring.global_position = center
 
