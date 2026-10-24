@@ -18,6 +18,12 @@ func wall(wall_name: String, pos: Vector3, size: Vector3) -> void:
 func wolves() -> Array: return level.get_node("GreyfangPack").get_children()
 
 func states() -> Array: return wolves().map(func(w): return w.State.keys()[w.state])
+# For failure messages: where each wolf is and how far from the player (these checks
+# failed once in a full parallel run and haven't reproduced with 12 seeds or under load).
+func detail() -> Array:
+	var player = level.get_node("Player")
+	return wolves().map(func(w): return "%s %s at (%.1f, %.1f), %.1f m" % [w.name, w.State.keys()[w.state],
+			w.global_position.x, w.global_position.z, w.global_position.distance_to(player.global_position)])
 
 func _physics_process(_d: float) -> bool:
 	if not started:
@@ -43,7 +49,7 @@ func _physics_process(_d: float) -> bool:
 		ok(wolves().all(func(w): return w.state == w.State.CHASE), "all three wolves give chase", states())
 	if f == 600:
 		var attacking := wolves().filter(func(w): return w.state == w.State.ATTACK).size()
-		ok(attacking >= 2, "at least two wolves got around the wall and attack within 10 s", states())
+		ok(attacking >= 2, "at least two wolves got around the wall and attack within 10 s", detail())
 		between(9999 - p.stats.health, 10.0, 120.0, "player health lost in 10 s")
 	if f == 610 and mode == "nav_kill":
 		for w in wolves():
@@ -53,7 +59,7 @@ func _physics_process(_d: float) -> bool:
 		if mode == "nav_kill":
 			var alive := wolves().filter(func(w): return w.state != w.State.DEAD)
 			ok(alive.size() == 2, "one wolf killed (%s), two left" % killed, states())
-			ok(alive.all(func(w): return w.state == w.State.ATTACK), "both remaining wolves attack 2 s later", states())
+			ok(alive.all(func(w): return w.state == w.State.ATTACK), "both remaining wolves attack 2 s later", detail())
 			ok(alive.all(func(w): return Vector2(w.global_position.x - p.global_position.x, w.global_position.z - p.global_position.z).length() < 2.0), "remaining wolves are next to the player")
 		return done()
 	return false

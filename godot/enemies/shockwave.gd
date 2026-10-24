@@ -8,6 +8,7 @@ var damage := 15.0
 var max_radius := 10.0
 var speed := 6.5
 var source: Node3D
+var color := Color(1.0, 0.55, 0.3)
 var _radius := 0.4
 var _hit := false
 var _ring: MeshInstance3D
@@ -23,7 +24,7 @@ func _ready() -> void:
 	_material = StandardMaterial3D.new()
 	_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_material.albedo_color = Color(1.0, 0.55, 0.3, 0.8)
+	_material.albedo_color = Color(color.r, color.g, color.b, 0.8)
 	_ring.material_override = _material
 	_ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_ring)

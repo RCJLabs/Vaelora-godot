@@ -50,7 +50,11 @@ func _physics_process(_d: float) -> bool:
 			var w = current_scene.get_node("GreyfangPack/Wolf1")
 			look(w.global_position + Vector3(0, 0, 1.8), 0, -38)
 		124:
-			ok(p.hud.prompt_label.text == "[E] Skin wolf", "corpse prompt", p.hud.prompt_label.text)
+			# (On failure, say what the player was looking at: this failed once in a full
+			# parallel run and hasn't reproduced since, with 14 seeds or under CPU load.)
+			var ray = p.interact_ray
+			var seen = ray.get_collider() if ray.is_colliding() else null
+			ok(p.hud.prompt_label.text == "[E] Skin wolf", "corpse prompt", [p.hud.prompt_label.text, "player", p.global_position, "corpse", current_scene.get_node("GreyfangPack/Wolf1").global_position, "ray hits", seen.name if seen else "nothing", "wolves", current_scene.get_node("GreyfangPack").get_children().map(func(w): return [w.name, w.State.keys()[w.state], w.global_position])])
 			Input.action_press("interact")
 		125: Input.action_release("interact")
 		128:

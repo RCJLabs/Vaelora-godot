@@ -55,10 +55,15 @@ Heavy and hard to stagger: its poise (150) breaks only after many hits, then it 
 The demo's final boss, at the Hollow Oak in the Thornwood (north-east of the outlaw camp in
 the test level). It's the Stone Guardian's body and moves (slam, sweep, phase 2) with
 `the_first.gd` swapped in:
+- **550 Health** (the Guardian has 400), tuned with `tests/test_first_fight.gd`: with starting
+  gear and no potions, a bot that backs out of every slam and sweep and jumps every ring wins
+  about 9 fights in 10, in about 40 s, on 21–78 Health; a bot that just stands and swings dies
+  in about 15 s with The First at roughly half Health. A real player at quest 5 has better gear
+  and potions but slower reactions;
 - pale, swollen (the model is scaled 1.25×; the collision shape isn't) and glowing, pulsing
   faster as it weakens;
-- it **leaks**: every 7 s (4 s in phase 2) a ring of stolen light rolls out from it along the
-  ground (10 damage): jump it;
+- it **leaks**: every 7 s (4 s in phase 2) a green ring of stolen light rolls out from it along
+  the ground (10 damage): jump it;
 - it comes apart into light when killed (no heart), sets `first_slain`, and a stream of light
   (a DrainLine) rises from it towards the north.
 

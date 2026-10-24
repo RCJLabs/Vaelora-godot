@@ -55,6 +55,12 @@ folder with **Project → Open User Data Folder** in the editor. A save from bef
 existed (`user://savegame.json`) is moved to the quicksave automatically. Older save
 versions still load.
 
+**Version 10 (the main questline):** loading an older save starts the main quest if the
+character never had it (Maren has news), and a save that had finished The Waking Stones
+before it gained its last step (the drain-line) gets the drain-line, so the quest stays
+finished and Ask the Forest begins. A one-off message on arrival says what changed
+(`SaveSystem._migrate_story`). A version-9 save that already had the main story is left alone.
+
 ## Title screen, pause menu & settings
 
 The game opens on the **title screen** (`ui/title_screen.tscn`, the project's main scene): the

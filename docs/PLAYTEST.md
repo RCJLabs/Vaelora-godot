@@ -35,7 +35,9 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
       (ask Brannoc for work), **Readings Under the Wanderer** (Magister Aurel at the
       waystation). Were they easy to find? Too long, too short?
 - [ ] Main quest 5, **What They Made**: go to the Hollow Oak by day first (it should tell you to
-      come back at night), then at night. The First: are the leaking rings readable? After it
+      come back at night), then at night. The First: are the leaking rings readable? How many
+      tries did it take (the bot tuning aims for "hard but fair": a careful player wins with
+      a third or more of their Health left)? After it
       dies, can you see its light streaming north? Does the ending land?
 - [ ] First view of the level: note the **FPS** in the corner, on **High**.
 - [ ] The compass at the top: can you tell where the wolves quest points once Maren gives it?
@@ -122,7 +124,7 @@ Bandits:
 Magic:
 Wisps:
 Plates spotted? Blades fun? Riddle solved without help?
-Guardian tries to win: ___   Slam/sweep readable? ___   Noticed shockwaves needed jumping? ___
+Guardian tries to win: ___   The First tries to win: ___   Slam/sweep readable? ___   Noticed shockwaves needed jumping? ___
 Gamepad (look speed, menus, layout):
 Anything broken:
 Anything that made you smile:
