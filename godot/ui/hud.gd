@@ -30,6 +30,20 @@ var compass: Compass
 func _ready() -> void:
 	compass = Compass.new()
 	add_child(compass)
+	get_viewport().size_changed.connect(_fit_bars)
+	_fit_bars()
+
+
+## The bar row is 940 px wide; on a narrow screen (or a big Interface size) shrink it
+## to fit rather than cut the ends off.
+const BARS_WIDTH := 960.0
+
+func _fit_bars() -> void:
+	var bars: Control = $Bars
+	var width := get_viewport().get_visible_rect().size.x
+	var fit := minf(1.0, (width - 24.0) / BARS_WIDTH)
+	bars.pivot_offset = Vector2(bars.size.x / 2.0, bars.size.y)
+	bars.scale = Vector2(fit, fit)
 
 
 func _process(delta: float) -> void:

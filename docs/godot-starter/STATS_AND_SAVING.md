@@ -81,6 +81,7 @@ they apply to every character:
 | Tutorial hints | on/off |
 | **Graphics...** | see below |
 | **Controls...** | rebinding (CONTROLS.md) |
+| **Accessibility...** | toggle sprint, toggle block, camera shake, interface size (below) |
 
 ### Graphics
 
@@ -112,6 +113,18 @@ DirectionalLight3D as it enters the game.
 **Not measured yet:** these are standard Godot settings with typical costs, but nobody has
 profiled this game on real hardware. Run the benchmark below on your PC, and on a low-end
 laptop if you can, before trusting the presets.
+
+### Accessibility
+
+| Setting | What it does |
+|---|---|
+| Toggle sprint | Tap the sprint key **while moving** to run; tap again to walk. Stopping, or running out of Stamina, ends it |
+| Toggle block | Tap the left-hand button to raise your guard (weapon or shield), tap again to lower it. Parrying still works: the parry window starts when the guard goes up. Doesn't affect spells or bows, which stay hold-to-use |
+| Camera shake | 0–100%: how much hits, swings, dodges and landings jolt the view. 0% turns it off. (Hit-stop, the brief freeze on a heavy hit, isn't affected) |
+| Interface size | 100 / 115 / 130 / 150%: menus, HUD and text. The 3D view isn't affected. On narrow screens the bottom bars shrink to fit |
+
+Not there yet: subtitles (there's no speech), colour-blind modes (health, stamina and magicka
+are red, green and blue), and remapping the menu buttons.
 
 ### Benchmark
 

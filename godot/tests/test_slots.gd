@@ -79,7 +79,7 @@ func _build() -> void:
 	add(always, func(): ok(buttons()[0].begins_with("Slot 1  -  Traveller (Human), level 1"), "empty slot saves in one click", buttons()[0]); press("Back"))
 	add(always, func(): press("Settings"))
 	add(always, func():
-		ok(PM.content.get_child_count() == 8, "settings rows", PM.content.get_child_count())
+		ok(PM.content.get_child_count() == 9, "settings rows (incl. Graphics, Controls, Accessibility)", PM.content.get_child_count())
 		near(player().camera.fov, 75.0, 0.5, "camera fov before")
 		var fov_slider: HSlider = PM.content.get_child(2).get_child(1)
 		fov_slider.value = 90.0

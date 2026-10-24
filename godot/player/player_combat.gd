@@ -98,6 +98,7 @@ var _hit_this_swing: Array = []
 var _dodge_velocity := Vector3.ZERO
 var _dodge_cooldown_left := 0.0
 var _iframes_left := 0.0
+var _block_toggled := false   # Settings.toggle_block: guard latched up
 var _stagger_left := 0.0
 var _riposte_left := 0.0
 var _hit_stops := 0
@@ -215,6 +216,8 @@ func dodge_pressed(input_dir: Vector2) -> void:
 # --- every physics frame ------------------------------------------------------------
 
 func _physics_process(delta: float) -> void:
+	if Settings.toggle_block and Input.is_action_just_pressed("cast") and player.can_fight():
+		_block_toggled = not _block_toggled   # Settings → Accessibility → Toggle block
 	_state_time += delta
 	_dodge_cooldown_left -= delta
 	_iframes_left -= delta
@@ -515,7 +518,12 @@ func _on_arrow_hit(target: Node, _damage: float) -> void:
 # --- defending ------------------------------------------------------------------------
 
 func _wants_block() -> bool:
-	return Input.is_action_pressed("cast") and left_hand() in [Hand.BLOCK, Hand.SHIELD, Hand.TWO_HANDED]
+	if not left_hand() in [Hand.BLOCK, Hand.SHIELD, Hand.TWO_HANDED]:
+		_block_toggled = false
+		return false
+	if Settings.toggle_block:
+		return _block_toggled
+	return Input.is_action_pressed("cast")
 
 
 func _update_block() -> void:
