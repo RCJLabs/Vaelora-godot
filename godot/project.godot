@@ -34,6 +34,7 @@ SaveSystem="*res://systems/save_system.gd"
 CharacterMenu="*res://ui/character_menu.tscn"
 PauseMenu="*res://ui/pause_menu.tscn"
 RestMenu="*res://ui/rest_menu.gd"
+Defeat="*res://systems/defeat.gd"
 
 [editor_plugins]
 

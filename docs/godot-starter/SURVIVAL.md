@@ -1,4 +1,4 @@
-# Time, Survival, Resting & Hardcore Saves
+# Time, Survival, Resting & Hardcore
 
 ## Day and night
 - **WorldClock** (`systems/world_clock.gd`): one in-game day lasts **72 real minutes**
@@ -56,8 +56,37 @@ penalties in `effects/survival_*.tres`.
 
 ## Hardcore saves
 Hardcore characters can **only save by resting**. F5 and the pause menu's Save Game say
-so instead of saving. Loading works as normal. Whether Hardcore death should be permanent is
-still an open question (ROADMAP).
+so instead of saving. Loading works as normal.
+
+## Hardcore defeat: you wake up wounded
+
+In Hardcore, falling in a fight doesn't load a save (Normal mode still does). You wake up
+hours later, **Wounded**, in one of three ways (`systems/defeat.gd`, the `Defeat` autoload):
+
+| Outcome | When | What happens |
+|---|---|---|
+| **Captured** | Beaten by people who take prisoners (bandits; the group `captors`), in a level with a cell | You wake in their cage, 6 hours later, at 30% Health. Your gear and gold are in the **bandits' stash** outside it. Press E on the cage door a few times to work the lock, then get your things back (re-equip them yourself). The cage sits just outside the bandits' sight, and its door faces away from their camp |
+| **Found** | Otherwise, 60% of the time when the level has a refuge | Someone brings you to safety (in the test level, Maren and the waystation; in the barrow, its entrance hall). 8 hours pass, you're at 40% Health, and it costs a fifth of your gold |
+| **Left for dead** | Otherwise | You wake where you fell, 5 hours later, at 25% Health |
+
+Every time:
+- **Wounded** until you sleep 8 hours: Health recovers at half speed, you tire faster, you
+  move 10% slower, and hits do 15% more.
+- **Enemies reset:** they go back to where they were, healed and calm. A boss goes back to
+  its statue and its arena's gates to how they were, so you can try again.
+- **Autosave:** the game saves, so a defeat can't be undone by loading.
+- **Who beat you:** the last thing that hit you within 10 seconds. Falls, hunger and cold
+  count as the wild.
+
+**Adding it to a level:**
+- **A refuge:** a Marker3D with `props/refuge.gd`, and **Found Text** saying who found you.
+- **A captors' cell:** a Marker3D named `CaptiveCell` (where you wake), a door with
+  `props/puzzle/cage_door.gd` (its collision shape named `Shape`), and a loot container named
+  `CaptorStash`. Copy `BanditCage` in the test level.
+- **Other captors:** add an enemy to the group `captors`.
+
+Not yet: anything that *rescues* you from a capture, or companions who find you. Those wait
+for the companion system.
 
 ## Making your own
 - **A campfire:** a StaticBody3D with `props/campfire.gd` (Heat Radius) and a small collision

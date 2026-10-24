@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=3]
+[gd_scene load_steps=91 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/location_door.gd" id="2_location_door"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://props/puzzle/boss_arena.gd" id="12_boss_arena"]
 [ext_resource type="PackedScene" path="res://enemies/stone_guardian.tscn" id="13_stone_guardian"]
 [ext_resource type="Script" path="res://levels/level_map.gd" id="97_levelmap"]
+[ext_resource type="Script" path="res://props/refuge.gd" id="96_refuge"]
 
 [sub_resource type="Environment" id="Env"]
 background_mode = 1
@@ -1183,3 +1184,8 @@ script = ExtResource("97_levelmap")
 map_name = "The Old Barrow"
 area = Rect2(-10, -73, 20, 74)
 camera_height = 3.6
+
+[node name="Refuge" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0.05, -2.5)
+script = ExtResource("96_refuge")
+found_text = "You come to in the barrow's entrance hall. Someone dragged you this far and left you by the door."

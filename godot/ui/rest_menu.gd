@@ -177,6 +177,7 @@ func _pass_time(hours: float) -> void:
 	player.stats.refill()
 	if hours >= WELL_RESTED_HOURS:
 		effects.apply("well_rested")
+		effects.remove("wounded")   # a full night's sleep heals a defeat's wounds
 	get_tree().paused = false   # saving reads the live game
 	SaveSystem.save_game(SaveSystem.AUTOSAVE, true)
 	get_tree().paused = true

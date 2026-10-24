@@ -34,6 +34,7 @@ const EFFECT_FILES := [
 	"res://effects/survival_cold.tres",
 	"res://effects/survival_freezing.tres",
 	"res://effects/well_rested.tres",
+	"res://effects/wounded.tres",
 ]
 
 var _catalog: Dictionary = {}

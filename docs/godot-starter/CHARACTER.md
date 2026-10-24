@@ -91,8 +91,8 @@ say why ("needs One-Handed 35", "needs Armsman").
 ## Modes
 
 - **Hardcore:** you take 50% more damage, deal 20% more, and Health regenerates at a quarter
-  of the speed. You can only save by resting at a bed or campfire. Still open: permadeath,
-  or ordinary reloads?
+  of the speed. You can only save by resting at a bed or campfire. Defeat doesn't reload:
+  you wake up wounded, captured or rescued (SURVIVAL.md).
 - **Survival:** hunger, thirst, fatigue and cold (see SURVIVAL.md).
 
 Modes can't be changed after creation (no in-game toggle yet).
