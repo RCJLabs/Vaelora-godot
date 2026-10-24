@@ -86,7 +86,7 @@ func _build_steps() -> void:
 	add("third talk", talking, func():
 		if path == "human_give":
 			ok(DM.line_label.text.begins_with("The scholars are beside themselves."), "scholars line", DM.line_label.text)
-			ok(choices().size() == 3, "potion / news / goodbye", choices())
+			ok(choices().size() == 4, "potion / news / work / goodbye", choices())
 			pick("Can the garrison")
 		else:
 			ok(DM.line_label.text.begins_with("You. I've nothing to say"), "still cold", DM.line_label.text)

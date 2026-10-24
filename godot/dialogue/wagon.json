@@ -1,0 +1,75 @@
+{
+	"start": [
+		{
+			"node": "again",
+			"requires_flag": "found_wagon"
+		},
+		{
+			"node": "merchant",
+			"requires_background": "merchant"
+		},
+		{
+			"node": "look"
+		}
+	],
+	"nodes": {
+		"merchant": {
+			"text": "It's yours. The yellow canopy, torn, the wagon on its side in the ditch. The wool is slashed and trampled, the oil casks are gone, and the strongbox bracket is empty. The mules are gone. Jory isn't here, living or dead.",
+			"set_flag": [
+				"lost_wagon_started",
+				"found_wagon"
+			],
+			"choices": [
+				{
+					"text": "Look for tracks.",
+					"next": "tracks"
+				}
+			]
+		},
+		"look": {
+			"text": "A merchant's wagon on its side in the ditch, under a torn yellow canopy. Dyed wool, slashed and trampled. An empty bracket where a strongbox was bolted. No mules, and no driver.",
+			"set_flag": [
+				"lost_wagon_started",
+				"found_wagon"
+			],
+			"choices": [
+				{
+					"text": "Look for tracks.",
+					"next": "tracks"
+				}
+			]
+		},
+		"tracks": {
+			"text": "Bootprints, a lot of them, and drag marks between two sets: someone was hauled away alive, kicking. They lead south-west, towards the smoke of the bandit camp.",
+			"choices": [
+				{
+					"text": "(Hunter) Read them properly.",
+					"next": "tracks_hunter",
+					"requires_background": "hunter"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"tracks_hunter": {
+			"text": "Four of them, one limping. They took the driver past their fire to the far side of the camp, where the ground's been worn flat by something heavy standing a long time. A cage, maybe.",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "The wagon lies where it fell. The tracks still lead south-west, towards the bandit camp.",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

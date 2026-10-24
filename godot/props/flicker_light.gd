@@ -12,3 +12,8 @@ var _t := randf() * 100.0
 func _process(delta: float) -> void:
 	_t += delta * speed
 	light_energy = _base * (1.0 + amount * (sin(_t) * 0.6 + sin(_t * 2.7) * 0.4))
+
+
+## Change the brightness it flickers around (a rekindled candle, a lamp turned up).
+func set_base_energy(energy: float) -> void:
+	_base = energy

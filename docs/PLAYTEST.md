@@ -30,6 +30,10 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
 - [ ] Main quest 4, **The Barrow**: after the Guardian, can you find the way on from the vault
       without help (look at the floor)? Free the wisp or take its essence: does either feel
       like a real choice?
+- [ ] Side quests (pick one or two): **Silent Shrine** (the roadside shrine south of spawn),
+      **The Lost Wagon** (a yellow wagon north-east of the bandit camp), **Licence to Burn**
+      (ask Brannoc for work), **Readings Under the Wanderer** (Magister Aurel at the
+      waystation). Were they easy to find? Too long, too short?
 - [ ] Main quest 5, **What They Made**: go to the Hollow Oak by day first (it should tell you to
       come back at night), then at night. The First: are the leaking rings readable? After it
       dies, can you see its light streaming north? Does the ending land?
@@ -106,6 +110,8 @@ Stutter anywhere?:
 
 Look (dark/bright/OK):
 Opening card / Wrong Things (clear? eerie? too short?):
+Main quests 2-5 (which was best? which dragged?):
+Side quests tried (and how they felt):
 Compass / map (useful? cluttered?):
 Worst sound:
 Melee feel (floaty/weighty, windup, heavy charge):

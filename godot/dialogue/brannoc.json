@@ -6,6 +6,11 @@
 			"requires_not_flag": "demo_finished"
 		},
 		{
+			"node": "zora_report",
+			"requires_flag": "zora_decided",
+			"requires_not_flag": "brannoc_told_zora"
+		},
+		{
 			"node": "gift",
 			"requires_reputation": {
 				"riverwatch": 25
@@ -155,6 +160,15 @@
 					]
 				},
 				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
+					]
+				},
+				{
 					"text": "Not yet.",
 					"next": "end"
 				}
@@ -256,6 +270,15 @@
 					"requires_not_flag": [
 						"got_supply_crate",
 						"outlaws_trust"
+					]
+				},
+				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
 					]
 				},
 				{
@@ -371,6 +394,15 @@
 					]
 				},
 				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -417,6 +449,15 @@
 					]
 				},
 				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -460,6 +501,15 @@
 					"requires_not_flag": [
 						"got_supply_crate",
 						"outlaws_trust"
+					]
+				},
+				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
 					]
 				},
 				{
@@ -798,6 +848,73 @@
 				"told_brannoc_end",
 				"demo_finished"
 			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"licence": {
+			"text": "There's a hedge-mage living in the Thornwood, west of the outlaws' fire. No licence, no Collegium seal, and the captain's had complaints: lights at night, goats going missing. Bring her in. Fifty gold, and I don't have to go into those trees.",
+			"set_flag": "licence_started",
+			"choices": [
+				{
+					"text": "I'll find her.",
+					"next": "end"
+				},
+				{
+					"text": "What if she won't come?",
+					"next": "licence_force"
+				}
+			]
+		},
+		"licence_force": {
+			"text": "Then she won't, and you come back and tell me so. I'm not paying you to kill an old woman over goats.",
+			"choices": [
+				{
+					"text": "I'll find her.",
+					"next": "end"
+				}
+			]
+		},
+		"zora_report": {
+			"text": "Well? The hedge-mage?",
+			"choices": [
+				{
+					"text": "She came quietly. She says the goats were never her.",
+					"next": "zora_paid",
+					"requires_flag": "zora_arrested"
+				},
+				{
+					"text": "She was gone when I got there.",
+					"next": "zora_gone",
+					"requires_not_flag": "zora_arrested"
+				},
+				{
+					"text": "I never found her.",
+					"next": "zora_gone",
+					"requires_flag": "zora_taught"
+				}
+			]
+		},
+		"zora_paid": {
+			"text": "Quietly. Good. Fifty, as promised, and I'll tell the captain about the goats. Wolves, probably. It's always wolves.",
+			"give_gold": 50,
+			"add_reputation": {
+				"riverwatch": 10
+			},
+			"set_flag": "brannoc_told_zora",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"zora_gone": {
+			"text": "Gone. Convenient. ...I'll write \"gone\" in the report, then. No fifty for \"gone\", mind.",
+			"set_flag": "brannoc_told_zora",
 			"choices": [
 				{
 					"text": "(Leave)",

@@ -51,7 +51,7 @@
 	"greyfang": {
 		"title": "The Greyfang Pack",
 		"giver": "Maren, keeper of the north road waystation",
-		"description": "Wolves of the Greyfang pack have been taking carts on the north road. Maren asked me to deal with them.",
+		"description": "Wolves of the Greyfang pack have been taking carts on the north road. Maren asked me to deal with them. Hunger drives them: the drain has left their prey thin and grey.",
 		"started_when": {
 			"requires_flag": "wolf_quest_accepted"
 		},
@@ -380,6 +380,238 @@
 					"requires_flag": "told_mirela_end"
 				},
 				"text": "I killed the first thing they made, at the Hollow Oak. Its stolen light streamed away north. The letter on the altar names the Pale Gate, and its map marks a dozen places across Vaelora. The Thornwood Free will be watching the roads."
+			}
+		]
+	},
+	"silent_shrine": {
+		"title": "Silent Shrine",
+		"giver": "The roadside shrine on the north road",
+		"description": "The roadside shrine's healing prayers have stopped working. Folk have stopped leaving candles. Something that used to answer there has gone quiet, or been drawn away.",
+		"started_when": {
+			"requires_flag": "silent_shrine_started"
+		},
+		"completed_when": {
+			"requires_flag": "shrine_answered"
+		},
+		"objectives": [
+			{
+				"text": "Pray at the roadside shrine, and read its inscription.",
+				"done_when": {
+					"requires_flag": "read_shrine_inscription"
+				},
+				"marker": "RoadsideShrine"
+			},
+			{
+				"text": "Find light given freely: Wisp Essence (wisps come out at the stone circle by night).",
+				"done_when": {
+					"requires_item": "wisp_essence"
+				},
+				"marker": "MapStoneCircle"
+			},
+			{
+				"text": "Offer the essence at the shrine.",
+				"done_when": {
+					"requires_flag": "shrine_rekindled"
+				},
+				"marker": "RoadsideShrine"
+			},
+			{
+				"text": "Pray at the rekindled shrine after dark.",
+				"done_when": {
+					"requires_flag": "shrine_answered"
+				},
+				"marker": "RoadsideShrine"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "shrine_answered"
+				},
+				"text": "The shrine burns again, and heals those who pray there once a day. When I prayed in the dark, something answered: not a voice, a pull, from above and to the north. Whatever answers prayers, it's still out there."
+			}
+		]
+	},
+	"lost_wagon": {
+		"title": "The Lost Wagon",
+		"giver": "The north road",
+		"description": "A merchant's wagon with a yellow canopy never reached Riverwatch. Someone ran it off the north road.",
+		"started_when": {
+			"requires_flag": "lost_wagon_started"
+		},
+		"completed_when": {
+			"requires_flag": "jory_settled"
+		},
+		"objectives": [
+			{
+				"text": "Find the yellow wagon, off the road north-east of the bandit camp.",
+				"done_when": {
+					"requires_flag": "found_wagon"
+				},
+				"marker": "LostWagon"
+			},
+			{
+				"text": "Follow the tracks: someone dragged the driver off alive.",
+				"done_when": {
+					"requires_flag": "jory_found"
+				},
+				"marker": "JoryCaged"
+			},
+			{
+				"text": "Get the driver, Jory, out of the bandits' cage.",
+				"done_when": {
+					"requires_flag": "jory_freed"
+				},
+				"marker": "JoryCaged"
+			},
+			{
+				"text": "Find the strongbox the bandits took.",
+				"done_when": {
+					"requires_item": "strongbox"
+				},
+				"marker": "BanditChest"
+			},
+			{
+				"text": "Settle up with Jory at the waystation.",
+				"done_when": {
+					"requires_flag": "jory_settled"
+				},
+				"marker": "JoryWaystation"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "jory_paid_bonus"
+				},
+				"text": "I got Jory out of the bandits' cage and my strongbox out of their chest, and paid him double. He says he'll drive for me anywhere. Even north."
+			},
+			{
+				"when": {
+					"requires_flag": "jory_paid"
+				},
+				"text": "I got Jory out of the bandits' cage and my strongbox out of their chest, and paid him his wages, as agreed."
+			},
+			{
+				"when": {
+					"requires_flag": "jory_cheated"
+				},
+				"text": "I got Jory out of the bandits' cage and my strongbox back, and paid him nothing. He's walking to Riverwatch to tell every driver there about me."
+			},
+			{
+				"when": {
+					"requires_flag": "strongbox_returned"
+				},
+				"text": "I freed a driver called Jory from the bandits' cage and gave him back his master's strongbox. Fifty gold, and a merchant on the coast who owes me a favour."
+			},
+			{
+				"when": {
+					"requires_flag": "strongbox_kept"
+				},
+				"text": "I freed a driver called Jory from the bandits' cage, then kept his master's strongbox for myself. A hundred and fifty gold. He called me a bandit with better manners."
+			}
+		]
+	},
+	"licence_to_burn": {
+		"title": "Licence to Burn",
+		"giver": "Brannoc, a scout of the Riverwatch garrison",
+		"description": "An unlicensed hedge-mage lives in the Thornwood, west of the outlaws' fire. The garrison wants her brought in: lights at night, and goats going missing.",
+		"started_when": {
+			"requires_flag": "licence_started"
+		},
+		"completed_when": {
+			"requires_flag": "brannoc_told_zora"
+		},
+		"objectives": [
+			{
+				"text": "Find the hedge-mage in the Thornwood, west of the outlaw camp.",
+				"done_when": {
+					"requires_flag": "met_zora"
+				},
+				"marker": "Zora"
+			},
+			{
+				"text": "Arrest her, warn her off, or learn from her.",
+				"done_when": {
+					"requires_flag": "zora_decided"
+				},
+				"marker": "Zora"
+			},
+			{
+				"text": "Report to Brannoc.",
+				"done_when": {
+					"requires_flag": "brannoc_told_zora"
+				},
+				"marker": "Brannoc"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "zora_arrested"
+				},
+				"text": "I brought Zora, the hedge-mage, in for the garrison. She came quietly. Brannoc paid fifty, and the outlaws won't forget it."
+			},
+			{
+				"when": {
+					"requires_flag": "zora_warned"
+				},
+				"text": "I warned Zora, the hedge-mage, and she vanished into the Thornwood. Brannoc wrote \"gone\" in his report. The outlaws heard."
+			},
+			{
+				"when": {
+					"requires_flag": "zora_taught"
+				},
+				"text": "Zora, the hedge-mage, taught me a frost spell, and I told Brannoc I never found her. She's still out there, keeping her fire."
+			}
+		]
+	},
+	"readings": {
+		"title": "Readings Under the Wanderer",
+		"giver": "Magister Aurel of the Collegium, lodging at the waystation",
+		"description": "A Collegium magister wants the stone circle measured by night: whether its power is sitting still, as it should, or moving.",
+		"started_when": {
+			"requires_flag": "readings_started"
+		},
+		"completed_when": {
+			"requires_flag": "readings_delivered"
+		},
+		"objectives": [
+			{
+				"text": "Take a reading with the rune-glass at the stone circle, at night (1 of 3).",
+				"done_when": {
+					"requires_flag": "readings_1"
+				},
+				"marker": "ReadingStone"
+			},
+			{
+				"text": "Take a second reading, on another night (2 of 3).",
+				"done_when": {
+					"requires_flag": "readings_2"
+				},
+				"marker": "ReadingStone"
+			},
+			{
+				"text": "Take a third reading, on a third night (3 of 3).",
+				"done_when": {
+					"requires_flag": "readings_3"
+				},
+				"marker": "ReadingStone"
+			},
+			{
+				"text": "Bring the readings to Magister Aurel at the waystation.",
+				"done_when": {
+					"requires_flag": "readings_delivered"
+				},
+				"marker": "Aurel"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "readings_delivered"
+				},
+				"text": "Three nights of readings: the stones' power is being drawn north, steadily, like a river. Aurel paid eighty and says someone at the Collegium will want it buried. He'd like to know who."
 			}
 		]
 	}

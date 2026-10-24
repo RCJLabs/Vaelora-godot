@@ -44,6 +44,7 @@ VARIANTS = {
     "test_rep": [["human_give"], ["keep"]],
     # Broken collision setups from FIRST_PERSON_SETUP.md: the first five fall, the rest stand.
     "test_wrong_things": [["mercy"], ["spare"], ["weapon"]],
+    "test_side_quests": [["shrine"], ["wagon_merchant"], ["wagon_keep"], ["licence_arrest"], ["licence_teach"], ["readings"], ["greyfang"]],
     "test_variants": [["human"], ["empty_ground_shape"], ["shape_under_mesh"], ["default_box_size_offcenter"],
                       ["player_mask_zero"], ["player_shape_empty"], ["ground_layer_not_in_mask"],
                       ["ground_scaled_body"], ["centered_capsule_at_y0"], ["centered_capsule_at_y_minus_0_3"]],

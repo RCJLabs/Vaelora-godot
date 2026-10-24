@@ -1,0 +1,218 @@
+{
+	"start": [
+		{
+			"node": "taught",
+			"requires_flag": "zora_taught"
+		},
+		{
+			"node": "again",
+			"requires_flag": "met_zora"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Another one. The garrison sends a new face every spring. Sit if you're staying, stand if you're arresting me; I'm too old to care which. Zora. I keep the old fires out here, and nobody's licence says I can.",
+			"set_flag": "met_zora",
+			"choices": [
+				{
+					"text": "What do you know about what's draining the valley?",
+					"next": "drain",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "zora_drain_hint"
+				},
+				{
+					"text": "The garrison wants you arrested.",
+					"next": "arrest",
+					"requires_flag": "licence_started",
+					"requires_not_flag": "zora_decided"
+				},
+				{
+					"text": "(Scholar) You trained at the Collegium. I can tell from your hands.",
+					"next": "scholar",
+					"requires_background": "scholar",
+					"requires_not_flag": "zora_scholar"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "Back again. The kettle's on. It's always on.",
+			"choices": [
+				{
+					"text": "What do you know about what's draining the valley?",
+					"next": "drain",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "zora_drain_hint"
+				},
+				{
+					"text": "The garrison wants you arrested.",
+					"next": "arrest",
+					"requires_flag": "licence_started",
+					"requires_not_flag": "zora_decided"
+				},
+				{
+					"text": "(Scholar) You trained at the Collegium. I can tell from your hands.",
+					"next": "scholar",
+					"requires_background": "scholar",
+					"requires_not_flag": "zora_scholar"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"drain": {
+			"text": "I know the shape of it. Someone's drawing the way the Collegium teaches you never to draw: through a vessel, from the living, slowly, so it doesn't kill at once. That takes training. Somebody learned at a college, and then left it. Or didn't leave.",
+			"set_flag": "zora_drain_hint",
+			"choices": [
+				{
+					"text": "What do you know about what's draining the valley?",
+					"next": "drain",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "zora_drain_hint"
+				},
+				{
+					"text": "The garrison wants you arrested.",
+					"next": "arrest",
+					"requires_flag": "licence_started",
+					"requires_not_flag": "zora_decided"
+				},
+				{
+					"text": "(Scholar) You trained at the Collegium. I can tell from your hands.",
+					"next": "scholar",
+					"requires_background": "scholar",
+					"requires_not_flag": "zora_scholar"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"scholar": {
+			"text": "She turns her hands over and laughs. \"Thirty years ago. They wanted me to sign the Accords; I wanted to keep my fire. Watch who you trust in those halls, child. Not everyone in a robe is a scholar.\"",
+			"set_flag": "zora_scholar",
+			"choices": [
+				{
+					"text": "What do you know about what's draining the valley?",
+					"next": "drain",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "zora_drain_hint"
+				},
+				{
+					"text": "The garrison wants you arrested.",
+					"next": "arrest",
+					"requires_flag": "licence_started",
+					"requires_not_flag": "zora_decided"
+				},
+				{
+					"text": "(Scholar) You trained at the Collegium. I can tell from your hands.",
+					"next": "scholar",
+					"requires_background": "scholar",
+					"requires_not_flag": "zora_scholar"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"arrest": {
+			"text": "Then do it. I'll walk. I won't fight a child of the garrison; it never ends well for anyone. But you could also not.",
+			"choices": [
+				{
+					"text": "Come with me. You'll get a fair hearing in Riverwatch.",
+					"next": "arrested"
+				},
+				{
+					"text": "Go. Get deeper into the forest before they send someone else.",
+					"next": "warned"
+				},
+				{
+					"text": "Teach me something, and I'll say I never found you.",
+					"next": "taught_now"
+				},
+				{
+					"text": "Let me think.",
+					"next": "end"
+				}
+			]
+		},
+		"arrested": {
+			"text": "\"Fair,\" she says, as if tasting the word. She banks her fire, takes her stick, and walks ahead of you without being asked. At the edge of the trees she says: \"Tell your scout the goats were never me.\"",
+			"set_flag": [
+				"zora_arrested",
+				"zora_decided",
+				"zora_left"
+			],
+			"add_reputation": {
+				"thornwood_free": -10
+			},
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"warned": {
+			"text": "She looks at you for a long moment. \"Then the forest owes you one, and so do I.\" By the time you've turned round, the fire's out and she's gone.",
+			"set_flag": [
+				"zora_warned",
+				"zora_decided",
+				"zora_left"
+			],
+			"add_reputation": {
+				"thornwood_free": 10
+			},
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"taught_now": {
+			"text": "A bargain! The garrison would be horrified. Here: frost, not fire. Fire is easy and everyone learns it; cold is patient. Read it somewhere quiet.",
+			"give_item": "tome_frost_burst",
+			"set_flag": [
+				"zora_taught",
+				"zora_decided"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"taught": {
+			"text": "Practising? Badly, I hope; that's how it starts. Mind you tell your scout you never found me.",
+			"choices": [
+				{
+					"text": "What do you know about what's draining the valley?",
+					"next": "drain",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "zora_drain_hint"
+				},
+				{
+					"text": "(Scholar) You trained at the Collegium. I can tell from your hands.",
+					"next": "scholar",
+					"requires_background": "scholar",
+					"requires_not_flag": "zora_scholar"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

@@ -155,7 +155,8 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       (Outline approved: docs/QUESTLINE.md, five main quests and six side quests. Built so far:
       the six background openings and the whole main questline, quests 1–5: Wrong Things,
       The Waking Stones (reframed), Ask the Forest, The Barrow and What They Made, with an
-      ending, the outlaws as a second faction, and The First as the final boss. Side quests next.)
+      ending, the outlaws as a second faction, and The First as the final boss; and all six
+      side quests. All greybox: the real region, models and a playtest are what's left.)
 - [~] **3–5 enemy types:** wolves (existing), bandits (human, uses the combat system),
       something magical, a boss. (Wolves, bandits and night-time wisps done; a boss waits for
       the dungeon it belongs in.)

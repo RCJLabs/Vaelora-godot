@@ -1,0 +1,147 @@
+{
+	"start": [
+		{
+			"node": "done",
+			"requires_flag": "readings_delivered"
+		},
+		{
+			"node": "report",
+			"requires_flag": "readings_3"
+		},
+		{
+			"node": "waiting",
+			"requires_flag": "readings_started"
+		},
+		{
+			"node": "greet_scholar",
+			"requires_background": "scholar"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Ah, a pair of legs. Magister Aurel, of the Collegium, temporarily of Maren's back room. I'm supposed to be measuring the stones by night, and my knees have voted against it. Would you take some readings for me? Three nights, at the circle. I pay.",
+			"choices": [
+				{
+					"text": "I'll do it.",
+					"next": "give"
+				},
+				{
+					"text": "What are you measuring?",
+					"next": "what"
+				},
+				{
+					"text": "Not now.",
+					"next": "end"
+				}
+			]
+		},
+		"greet_scholar": {
+			"text": "You'll be the one they sent with the letter. Good. Magister Aurel; I've been here a week and my knees have resigned. Three readings at the stones, three separate nights. Then we write it up and the Collegium ignores it, as is traditional.",
+			"choices": [
+				{
+					"text": "Give me the glass.",
+					"next": "give"
+				},
+				{
+					"text": "What are you measuring?",
+					"next": "what"
+				}
+			]
+		},
+		"what": {
+			"text": "Whether the stones' power is moving. It shouldn't be. Old circles hold their power like a well holds water: still. If the needle in this glass points anywhere, something is drawing on them.",
+			"choices": [
+				{
+					"text": "I'll do it.",
+					"next": "give"
+				},
+				{
+					"text": "Not now.",
+					"next": "end"
+				}
+			]
+		},
+		"give": {
+			"text": "Splendid. Hold it up near the stones after dark, once a night. Don't drop it; it's older than both of us put together.",
+			"give_item": "rune_glass",
+			"set_flag": "readings_started",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"waiting": {
+			"text": "Any luck with the readings? Three nights, remember; the stones don't care how impatient we are.",
+			"choices": [
+				{
+					"text": "I lost the glass.",
+					"next": "lost",
+					"requires_not_item": "rune_glass"
+				},
+				{
+					"text": "Still working on it.",
+					"next": "end"
+				}
+			]
+		},
+		"lost": {
+			"text": "Lost the... Fine. I have a spare, because I know myself. Try not to lose this one.",
+			"give_item": "rune_glass",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"report": {
+			"text": "Well? What did the needle say?",
+			"choices": [
+				{
+					"text": "North. Every night, steadier. On the last night it didn't move at all.",
+					"next": "report_north"
+				}
+			]
+		},
+		"report_north": {
+			"text": "He goes very quiet. \"Drawn north, steadily. Like a river.\" He writes for a long time. \"The Collegium will want this. Or rather, someone at the Collegium will want it buried, and I'd very much like to know who.\" He counts out your pay.",
+			"take_item": "rune_glass",
+			"give_gold": 80,
+			"set_flag": "readings_delivered",
+			"choices": [
+				{
+					"text": "(Scholar) Send it to the Collegium anyway.",
+					"next": "report_scholar",
+					"requires_background": "scholar"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"report_scholar": {
+			"text": "Oh, I will. Under both our names. If someone buries it, at least we'll know whose shovel it was.",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"done": {
+			"text": "I've written to three people at the Collegium. Two haven't answered. Interesting, isn't it?",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

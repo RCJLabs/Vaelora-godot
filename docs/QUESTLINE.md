@@ -14,11 +14,15 @@ demo).
 | 3. Ask the Forest | ✅ Built (greybox): an outlaw camp at the north edge where the drain-line ends (Mirela, a lookout, and Dunya, their hollowed hedge-witch) inside a band of placeholder Thornwood trees; trust by bandits, supply crate, or the Outlaw's wanted notice; the Thornwood Free faction |
 | 4. The Barrow | ✅ Built (greybox): a secret wall in the vault, the hidden chamber (cages, jars, two hooded cultists, the notes and map), and the caged wisp's choice. "Corrupting" is only the outlaws' reaction for now; there's no corruption mechanic yet |
 | 5. What They Made | ✅ Built (greybox): the Hollow Oak ritual site (empty by day, the ritual at night), three cultists, **The First** (a Stone Guardian variant: pale, glowing, leaking rings of light), the letter and map, and an ending with Maren, Brannoc or Mirela and a closing card. The creature is still the Guardian's box body, scaled up; it needs a real model |
-| Side quests | Not started (the Greyfang pack and Thieves by the Fire already exist) |
+| Side quests | ✅ All six: The Greyfang Pack (now with the drain as the reason), Thieves by the Fire (existing), and four new ones: Silent Shrine, The Lost Wagon, Licence to Burn, Readings Under the Wanderer. Names picked: Jory Vell (the driver), Zora (the hedge-mage), Magister Aurel (the Collegium scholar) |
 
 Names picked: Mirela (the outlaws' leader), Ostap (her lookout), Dunya (the hollowed
 hedge-witch). The supplies come from Brannoc's cache, not from Riverwatch itself (the town
 isn't in the game yet).
+
+Changes against the outline: in The Lost Wagon the driver is alive (in the bandits' cage),
+so the choice is about the strongbox and his pay rather than the killers; in The Greyfang
+Pack you can still only kill the wolves (driving them off needs a fear/morale mechanic).
 
 Simplifications against the outline, so far: every opening's first step is "Talk to Maren"
 (the Scholar and Acolyte don't have to visit the stones or the shrine first), and the

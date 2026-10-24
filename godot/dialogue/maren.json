@@ -158,6 +158,11 @@
 			"set_flag": "heard_about_wolves",
 			"choices": [
 				{
+					"text": "Why are they raiding the road at all?",
+					"next": "wolves_why",
+					"requires_flag": "wrong_things_started"
+				},
+				{
 					"text": "I'll deal with them.",
 					"next": "accept",
 					"requires_not_flag": [
@@ -720,7 +725,7 @@
 			]
 		},
 		"report_scholar": {
-			"text": "Odd? Everything's been odd since the new moon. The stones hum at night, and that's the least of it.",
+			"text": "Odd? Everything's been odd since the new moon. The stones hum at night, and that's the least of it. And there's a Collegium man in my back room who's been asking for help with the stones.",
 			"choices": [
 				{
 					"text": "Go on.",
@@ -753,7 +758,8 @@
 					"text": "What else?",
 					"next": "wrong_things"
 				}
-			]
+			],
+			"set_flag": "silent_shrine_started"
 		},
 		"report_merchant": {
 			"text": "Yellow canopy, driver who talked to his mules? It went north eleven days ago, slow and heavy. It never came back down, and Riverwatch never saw it. I'm sorry. It's not the only thing gone missing on this road.",
@@ -762,7 +768,8 @@
 					"text": "What else is missing?",
 					"next": "wrong_things"
 				}
-			]
+			],
+			"set_flag": "lost_wagon_started"
 		},
 		"wrong_things": {
 			"text": "Small wrong things. The wisps at the old stones are fading. I used to watch them from my door every night, and now there's barely a glimmer. And Old Tam, who hunts out past the hollow, came in two days ago white as milk. He'd found a Greyfang wolf that wouldn't run from him. Alive, he said, but grey all through, with eyes like a dead fire. He couldn't bring himself to put it down.",
@@ -858,6 +865,25 @@
 				{
 					"text": "(Leave)",
 					"next": "end"
+				}
+			]
+		},
+		"wolves_why": {
+			"text": "Hunger. Tam says the deer up in the hollow have gone thin and grey, same as that wolf of his. Nothing's left out there worth eating except what's on the road.",
+			"set_flag": "heard_greyfang_reason",
+			"choices": [
+				{
+					"text": "I'll deal with them.",
+					"next": "accept",
+					"requires_not_flag": [
+						"wolf_quest_accepted",
+						"wolves_cleared"
+					]
+				},
+				{
+					"text": "Sounds like someone else's problem.",
+					"next": "end",
+					"set_flag": "refused_maren"
 				}
 			]
 		}
