@@ -1,6 +1,14 @@
 {
 	"start": [
 		{
+			"node": "betrayed",
+			"requires_flag": [
+				"inquisitor_told_zora",
+				"met_zora"
+			],
+			"requires_not_flag": "zora_knows_betrayed"
+		},
+		{
 			"node": "sees_stain",
 			"requires_corruption": 1,
 			"requires_flag": "met_zora",
@@ -9,6 +17,14 @@
 		{
 			"node": "taught",
 			"requires_flag": "zora_taught"
+		},
+		{
+			"node": "lanternfast",
+			"requires_flag": "lanternfast_now",
+			"requires_not_flag": [
+				"lanternfast_zora",
+				"inquisitor_told_zora"
+			]
 		},
 		{
 			"node": "again",
@@ -67,6 +83,32 @@
 					"next": "scholar",
 					"requires_background": "scholar",
 					"requires_not_flag": "zora_scholar"
+				},
+				{
+					"text": "Would you ever leave this place?",
+					"next": "leave_here",
+					"requires_not_flag": [
+						"zora_would_travel",
+						"inquisitor_told_zora"
+					]
+				},
+				{
+					"text": "Come with me.",
+					"next": "join",
+					"requires_flag": "zora_would_travel",
+					"requires_not_flag": [
+						"companion_zora",
+						"companion_brannoc",
+						"inquisitor_told_zora"
+					]
+				},
+				{
+					"text": "What do you really do? Not the fire.",
+					"next": "glamour",
+					"requires_not_flag": [
+						"zora_taught_glamour",
+						"inquisitor_told_zora"
+					]
 				},
 				{
 					"text": "Goodbye.",
@@ -215,6 +257,32 @@
 					"requires_not_flag": "zora_scholar"
 				},
 				{
+					"text": "Would you ever leave this place?",
+					"next": "leave_here",
+					"requires_not_flag": [
+						"zora_would_travel",
+						"inquisitor_told_zora"
+					]
+				},
+				{
+					"text": "Come with me.",
+					"next": "join",
+					"requires_flag": "zora_would_travel",
+					"requires_not_flag": [
+						"companion_zora",
+						"companion_brannoc",
+						"inquisitor_told_zora"
+					]
+				},
+				{
+					"text": "What do you really do? Not the fire.",
+					"next": "glamour",
+					"requires_not_flag": [
+						"zora_taught_glamour",
+						"inquisitor_told_zora"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -236,6 +304,81 @@
 		},
 		"sees_stain_how": {
 			"text": "Because I was offered it, thirty years ago, in a quiet room at the Collegium. I said no. Some of the people in that room didn't.",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"leave_here": {
+			"text": "\"If the Lantern Order comes up the road, I'll have to.\" She shrugs. \"Somewhere with company would be nice. Somewhere with you, maybe. You're less boring than the trees, and the trees have opinions.\"",
+			"set_flag": "zora_would_travel",
+			"choices": [
+				{
+					"text": "I'll remember that.",
+					"next": "end"
+				}
+			]
+		},
+		"betrayed": {
+			"text": "She doesn't let you past the door. \"A man in a white coat came up the path this morning with my directions written in his little book. In your words, he said.\" She shuts the door to a crack. \"Go away. And don't come back with him.\"",
+			"set_flag": "zora_knows_betrayed",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"join": {
+			"text": "\"Now? Well. The trees will cope.\" She takes a bag that was clearly packed long ago. \"Don't walk too fast. I'm old, and I'm carrying all the interesting things.\"",
+			"set_flag": "companion_zora",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"glamour": {
+			"text": "She smiles, and for a moment there are two of her, and one of them is still smiling when the other stops. \"Glamour. What people see, and what they believe. The Order hates it more than fire: you can see fire.\" She hands you a slim book. \"Start with yourself. A copy that draws the teeth.\"",
+			"give_item": "tome_mirror_image",
+			"set_flag": "zora_taught_glamour",
+			"choices": [
+				{
+					"text": "And?",
+					"next": "glamour_fear"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"glamour_fear": {
+			"text": "\"And fear. Every mind already has it; you only remind it.\" Another book. \"Then the hard one: a mind that thinks it's on your side. Use it on wolves and fools. Never on a friend; they never forgive it.\"",
+			"give_item": "tome_fear",
+			"choices": [
+				{
+					"text": "I won't.",
+					"next": "glamour_charm"
+				}
+			]
+		},
+		"glamour_charm": {
+			"text": "\"Everyone says that.\" She gives you the third book anyway. \"One more thing. The wisps see straight through all of it. Don't ask me how I know.\"",
+			"give_item": "tome_charm",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"lanternfast": {
+			"text": "Zora has one lantern, in the window facing north. \"Everyone in the valley says they're to keep the lights out. My gran said they're for finding: so the lost ones know the way home.\" She doesn't look away from the window. \"I know which one I'd rather be true.\"",
+			"set_flag": "lanternfast_zora",
 			"choices": [
 				{
 					"text": "(Leave)",

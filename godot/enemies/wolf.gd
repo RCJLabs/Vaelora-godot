@@ -56,6 +56,7 @@ var _eyes: StandardMaterial3D
 var _eye_glow := 3.0
 var _pose_tween: Tween      # crouch, stagger or flinch: stopped when it dies
 var _flee_left := 0.0
+var _afraid := false   # fleeing from Fear (comes back), not from a broken pack (doesn't)
 ## A fleeing wolf is gone once it's this far from the player (or after FLEE_SECONDS).
 const FLEE_GONE_DISTANCE := 30.0
 const FLEE_SECONDS := 12.0
@@ -92,10 +93,12 @@ func _physics_process(delta: float) -> void:
 
 	var player := get_tree().get_first_node_in_group("player")
 	var paused: bool = player == null or player.is_dead or DialogueManager.is_active
-	if paused:
+	# Who it's after: the player, unless Glamour says otherwise (a decoy, or a charm).
+	var foe: Node3D = null if paused else Glamour.target_for(self, player)
+	if foe == null:
 		_move_toward(global_position, 0.0, delta)   # stand still
 	else:
-		_think(player, delta)
+		_think(foe, delta)
 
 	var push := _knockback
 	velocity += push
@@ -149,7 +152,12 @@ func _think(player: Node3D, delta: float) -> void:
 				state = State.CHASE
 		State.FLEE:
 			_flee_left -= delta
-			if dist > FLEE_GONE_DISTANCE or _flee_left <= 0.0:
+			if _afraid:
+				if _flee_left <= 0.0:
+					_afraid = false
+					state = State.CHASE   # the fear wears off
+					return
+			elif dist > FLEE_GONE_DISTANCE or _flee_left <= 0.0:
 				if get_parent().has_method("member_gone"):
 					get_parent().member_gone(self)
 				queue_free()
@@ -262,6 +270,8 @@ func _bite(player: Node) -> String:
 	var result := "hit"
 	if player.has_method("receive_attack"):
 		result = player.receive_attack(bite_damage, self, bite_poise_damage)
+	elif player.has_method("take_hit"):   # another enemy (one of them is charmed)
+		result = player.take_hit(bite_damage, global_position, 3.0, bite_poise_damage)
 	else:
 		player.stats.take_damage(bite_damage)
 	if result == "hit":
@@ -286,6 +296,15 @@ func flee() -> void:
 	_close_in = false
 	model.position.z = 0.0
 	model.rotation = Vector3.ZERO
+
+
+## Fear (Glamour): runs from you for `seconds`, then comes back.
+func frighten(seconds: float) -> void:
+	if state == State.DEAD:
+		return
+	flee()
+	_flee_left = seconds
+	_afraid = true
 
 
 ## Reels for `seconds`: no biting, and a bite that was coming is cancelled.

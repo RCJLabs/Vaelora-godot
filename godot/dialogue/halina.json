@@ -1,0 +1,195 @@
+{
+	"start": [
+		{
+			"node": "after",
+			"requires_flag": "mercy_cell_done",
+			"requires_not_flag": "mercy_cell_left"
+		},
+		{
+			"node": "again",
+			"requires_flag": "met_halina"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A woman in grey-violet robes, hood down. Her fingertips are grey to the second knuckle. Behind her, two hooded figures stand by a stone marked with a circle split by three lines, and don't move. \"Please stay where you are. We're not here for you. We're here for them.\" She glances up, at the sky where the wisps come out at night.",
+			"set_flag": [
+				"met_halina",
+				"heard_about_mercy"
+			],
+			"choices": [
+				{
+					"text": "Who are you?",
+					"next": "who"
+				},
+				{
+					"text": "What are you doing to the wisps?",
+					"next": "wisps"
+				},
+				{
+					"text": "You've got grey fingers. So do I.",
+					"next": "same",
+					"requires_corruption": 2
+				},
+				{
+					"text": "Leave this valley. Now.",
+					"next": "leave"
+				},
+				{
+					"text": "I'm stopping you.",
+					"next": "fight"
+				}
+			]
+		},
+		"again": {
+			"text": "\"Still deciding? So are we, most days.\"",
+			"choices": [
+				{
+					"text": "What are you doing to the wisps?",
+					"next": "wisps"
+				},
+				{
+					"text": "You've got grey fingers. So do I.",
+					"next": "same",
+					"requires_corruption": 2,
+					"requires_not_flag": "mercy_offered_cure"
+				},
+				{
+					"text": "Leave this valley. Now.",
+					"next": "leave"
+				},
+				{
+					"text": "I'm stopping you.",
+					"next": "fight"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"who": {
+			"text": "\"Sister Halina, of the Mercy. We're the merciful.\" She says it without irony. \"The lights you see at night aren't lights, stranger. They're souls, and they hurt. We give them rest.\"",
+			"choices": [
+				{
+					"text": "Souls? Of what?",
+					"next": "souls"
+				},
+				{
+					"text": "What are you doing to the wisps?",
+					"next": "wisps"
+				},
+				{
+					"text": "Leave this valley. Now.",
+					"next": "leave"
+				},
+				{
+					"text": "I'm stopping you.",
+					"next": "fight"
+				}
+			]
+		},
+		"souls": {
+			"text": "\"Of something that was here before the lanterns. That's all we're told, and all we need.\" She rubs her grey fingertips together, as if they're cold. \"Some of us drank them, before we knew. That's why our hands look like this.\"",
+			"choices": [
+				{
+					"text": "What are you doing to the wisps?",
+					"next": "wisps"
+				},
+				{
+					"text": "Leave this valley. Now.",
+					"next": "leave"
+				},
+				{
+					"text": "I'm stopping you.",
+					"next": "fight"
+				}
+			]
+		},
+		"wisps": {
+			"text": "\"Gathering them, so they can go where they're going. It hurts them for a moment.\" She meets your eyes. \"Staying hurts them forever. Ask yourself which you'd choose.\"",
+			"choices": [
+				{
+					"text": "Leave this valley. Now.",
+					"next": "leave"
+				},
+				{
+					"text": "Go in peace.",
+					"next": "peace"
+				},
+				{
+					"text": "I'm stopping you.",
+					"next": "fight"
+				}
+			]
+		},
+		"same": {
+			"text": "She takes your hand and turns it to the light, gently, like a healer. \"Then you know. It gets worse. Come and find us when it does. We'll have a cure by then.\" She lets go. \"We're told.\"",
+			"set_flag": "mercy_offered_cure",
+			"choices": [
+				{
+					"text": "Leave this valley. Now.",
+					"next": "leave"
+				},
+				{
+					"text": "Go in peace.",
+					"next": "peace"
+				},
+				{
+					"text": "I'm stopping you.",
+					"next": "fight"
+				}
+			]
+		},
+		"leave": {
+			"text": "She looks at you for a long moment, then at the two by the stone. \"Not tonight, then.\" They gather their things without a word, and by the time you look back, the stone is just a stone.",
+			"set_flag": [
+				"mercy_cell_left",
+				"mercy_cell_done"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"peace": {
+			"text": "\"Peace,\" she says, as if it's a word she's trying out. \"We'll go. There are other stones.\" They gather their things, and by the time you look back, they're gone.",
+			"set_flag": [
+				"mercy_cell_left",
+				"mercy_cell_done",
+				"mercy_let_go"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"fight": {
+			"text": "\"I'm sorry,\" Halina says, and steps back. The two by the stone draw knives. When you look for her again, she's gone.",
+			"set_flag": "mercy_cell_fight",
+			"choices": [
+				{
+					"text": "(Fight.)",
+					"next": "end"
+				}
+			]
+		},
+		"after": {
+			"text": "She's kneeling between the two bodies, and doesn't look up. \"They were going to be cured. That was the whole point of them.\" When she stands, she doesn't look at you either. \"There are other stones.\"",
+			"set_flag": "mercy_cell_fight",
+			"choices": [
+				{
+					"text": "(Let her go.)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

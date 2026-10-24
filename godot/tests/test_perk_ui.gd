@@ -25,7 +25,7 @@ func _physics_process(_d: float) -> bool:
 		ok(row[0] == "2 points:" and row[1] == "Strength  14" and row.count("+") == 6, "attribute row with 2 points and six + buttons", row)
 		ok(M.get_node("%PerksLabel").text == "Perks  -  1 point to spend", "perk points label", M.get_node("%PerksLabel").text)
 		var rows := _perk_rows(M)
-		ok(rows.size() == 8, "eight perk trees listed", rows.size())
+		ok(rows.size() == 9, "nine perk trees listed", rows.size())
 		ok(rows[0] == ["One-Handed", "Take: Armsman", "Take: Fighting Rhythm", "Armsman II (needs One-Handed 35) [off]"],
 				"one-handed row: two takeable, one locked", rows[0])
 		ok(rows[3][0] == "Block" and rows[3].slice(1).all(func(t): return t.ends_with("[off]")), "block perks all locked", rows[3])

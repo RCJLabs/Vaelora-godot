@@ -12,6 +12,11 @@
 			"requires_not_flag": "demo_finished"
 		},
 		{
+			"node": "lanternfast",
+			"requires_flag": "lanternfast_now",
+			"requires_not_flag": "lanternfast_maren"
+		},
+		{
 			"node": "greet_hero",
 			"requires_flag": "wolf_quest_done"
 		},
@@ -951,6 +956,29 @@
 				},
 				{
 					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"lanternfast": {
+			"text": "Maren has a lantern on every sill and one on the well. \"Lanternfast! So the lights can't get in, my gran said, and she'd say it every year like it was news.\" She hands you a cup of something hot. \"Stay up till midnight. Bad luck otherwise, and worse company.\"",
+			"set_flag": "lanternfast_maren",
+			"choices": [
+				{
+					"text": "What are the lights?",
+					"next": "lanternfast_lights"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"lanternfast_lights": {
+			"text": "\"The ones in the song. Hallam and his hundred.\" She looks up, where the Wanderer should be and isn't. \"Gran's card player used to say it the other way round. That the lanterns were so they'd find us. Small folk. They'll say anything for a laugh.\"",
+			"choices": [
+				{
+					"text": "(Leave)",
 					"next": "end"
 				}
 			]

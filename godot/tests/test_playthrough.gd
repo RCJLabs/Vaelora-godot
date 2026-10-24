@@ -209,6 +209,10 @@ func _plan() -> void:
 		say("zora"); pick("What do you know"); pick("The garrison wants you arrested."); pick("Teach me something")
 		say("brannoc"); pick("I never found her.")
 		ok(state("licence_to_burn") == "completed", "Licence to Burn done")
+		# The Merciful (Brannoc's lead, with the bandits): let them go.
+		say("halina"); pick("What are you doing to the wisps?"); pick("Go in peace.")
+		DM.end()
+		ok(state("the_merciful") == "completed", "The Merciful done")
 		# Readings: get the glass; Silent Shrine: start it.
 		say("aurel"); pick("I'll do it.")
 		DM.end()

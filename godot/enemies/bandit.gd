@@ -17,7 +17,7 @@ extends CharacterBody3D
 
 signal died
 
-enum State { IDLE, CHASE, ENGAGE, ATTACK, GUARD, STAGGER, RETURN, DEAD }
+enum State { IDLE, CHASE, ENGAGE, ATTACK, GUARD, STAGGER, RETURN, DEAD, FLEE }
 
 ## How many members of a group may swing at the player at once. The rest
 ## circle and guard, so a fight against three stays readable (and fair).
@@ -70,6 +70,7 @@ var _hit_done := false
 var _think_left := 0.5
 var _guard_left := 0.0
 var _stagger_left := 0.0
+var _flee_left := 0.0
 var _strafe := 1.0
 var _knockback := Vector3.ZERO
 var _searched := false
@@ -119,10 +120,13 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	var player := get_tree().get_first_node_in_group("player")
-	if player == null or player.is_dead or DialogueManager.is_active:
+	var paused: bool = player == null or player.is_dead or DialogueManager.is_active
+	# Who it's after: the player, unless Glamour says otherwise (a decoy, or a charm).
+	var foe: Node3D = null if paused else Glamour.target_for(self, player)
+	if foe == null:
 		_move(Vector3.ZERO, 0.0, delta)
 	else:
-		_think(player, delta)
+		_think(foe, delta)
 	var push := _knockback
 	velocity += push
 	move_and_slide()
@@ -183,6 +187,13 @@ func _think(player: Node3D, delta: float) -> void:
 			if _stagger_left <= 0.0:
 				_pose("rest", 0.25)
 				state = State.ENGAGE
+		State.FLEE:
+			_flee_left -= delta
+			if _flee_left <= 0.0:
+				state = State.CHASE   # the fear wears off
+			else:
+				var away := -to_player.normalized() if dist > 0.1 else global_transform.basis.z
+				_move(global_position + away * 4.0, run_speed, delta)
 
 
 # In range: circle a little, keep its distance, and pick the next move.
@@ -299,7 +310,11 @@ func _try_hit(player: Node3D) -> void:
 		return
 	_hit_done = true
 	var damage := attack_damage * _attack.damage_mult
-	var result: String = player.receive_attack(damage, self, _attack.poise_damage) if player.has_method("receive_attack") else "hit"
+	var result := "hit"
+	if player.has_method("receive_attack"):
+		result = player.receive_attack(damage, self, _attack.poise_damage)
+	elif player.has_method("take_hit"):   # another enemy (one of them is charmed)
+		result = player.take_hit(damage, global_position, 3.0, _attack.poise_damage, _is_heavy)
 	match result:
 		"hit":
 			Sfx.play_at("hit_heavy" if _is_heavy else "hit_flesh", player.global_position, -2.0)
@@ -368,6 +383,15 @@ func _facing(from_position: Vector3) -> bool:
 
 
 ## Reels for `seconds`: can't attack or guard. Cancels a swing in progress.
+## Fear (Glamour): runs from you for `seconds`, then comes back.
+func frighten(seconds: float) -> void:
+	if state == State.DEAD:
+		return
+	state = State.FLEE
+	_flee_left = seconds
+	_pose("rest", 0.2)
+
+
 func stagger(seconds: float) -> void:
 	if state == State.DEAD:
 		return

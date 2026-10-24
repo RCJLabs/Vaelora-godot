@@ -7,7 +7,7 @@ Each quest's state is worked out from flags (and items) every time the journal l
 ## Contents
 
 - Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made)
-- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings)
+- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful)
 - [Flag index](#flag-index)
 
 ## Main quests
@@ -358,6 +358,31 @@ flowchart TD
 | Take a third reading, on a third night (3 of 3). | readings_3 | ReadingStone |
 | Bring the readings to Magister Aurel at the waystation. | readings_delivered | Aurel |
 
+<a id="the-merciful"></a>
+
+### The Merciful (`the_merciful`)
+
+Given by: Brannoc, a scout of the Riverwatch garrison, or the merciful themselves. Starts when: heard_about_mercy. Done when: mercy_cell_done.
+
+```mermaid
+flowchart TD
+  start(["The Merciful<br/><i>starts: heard_about_mercy</i>"])
+  o0["Find the hooded camp south-east of the waystation, and decide what to do about it."]
+  start --> o0
+  done(["Done<br/><i>mercy_cell_done</i>"])
+  o0 --> done
+  r0["Sister Halina of the Mercy says the wisps are souls in pain, and that her people give them…"]
+  done -. "mercy_let_go" .-> r0
+  r1["I told the Mercy to leave the valley, and they went. Sister Halina said the wisps are soul…"]
+  done -. "mercy_cell_left" .-> r1
+  r2["I fought the Mercy at their stone. Sister Halina slipped away before the end."]
+  done -. "mercy_cell_done" .-> r2
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Find the hooded camp south-east of the waystation, and decide what to do about it. | mercy_cell_done | MercyCell |
+
 ## Flag index
 
 Every flag, where it's set, and where it's checked. **⚠ never set** means nothing in the game sets it: a typo or a missing step. *(never checked)* is usually fine: a record for later, or for the tests.
@@ -375,6 +400,12 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `bought_tome_stoneflesh` | maren: arrows, "Tome: Stoneflesh (60 gold)"<br>maren: bought_tome, "Tome: Stoneflesh (60 gold)"<br>maren: bow, "Tome: Stoneflesh (60 gold)"<br>maren: shop, "Tome: Stoneflesh (60 gold)"<br>maren: shop_arrows, "Tome: Stoneflesh (60 gold)"<br>maren: shop_food, "Tome: Stoneflesh (60 gold)" | maren: arrows, "Tome: Stoneflesh (60 gold)"<br>maren: bought_tome, "Tome: Stoneflesh (60 gold)"<br>maren: bow, "Tome: Stoneflesh (60 gold)"<br>maren: shop, "Tome: Stoneflesh (60 gold)"<br>maren: shop_arrows, "Tome: Stoneflesh (60 gold)"<br>maren: shop_food, "Tome: Stoneflesh (60 gold)" |
 | `brannoc_saw_mark` | brannoc: mark | brannoc (start → mark)<br>quest wrong_things |
 | `brannoc_told_zora` | brannoc: zora_gone<br>brannoc: zora_paid | brannoc (start → zora_report)<br>quest licence_to_burn |
+| `brannoc_would_travel` | brannoc: after_all | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_given, "What will you do, after all this?"<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_kept, "What will you do, after all this?"<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: after_restored, "What will you do, after all this?"<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: greet_again, "What will you do, after all this?"<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: progress, "What will you do, after all this?"<br>brannoc: waiting_on_stones, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "What will you do, after all this?" |
+| `companion_brannoc` | brannoc: join | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "Come with me. Now, not later."<br>levels/test_level.tscn (BrannocAtPost)<br>zora: again, "Come with me."<br>zora: taught, "Come with me." |
+| `companion_cmd_dismiss` (never checked) | companion_brannoc: home<br>companion_zora: home | – |
+| `companion_cmd_follow` (never checked) | companion_brannoc: follow<br>companion_zora: follow | – |
+| `companion_cmd_wait` (never checked) | companion_brannoc: wait<br>companion_zora: wait | – |
+| `companion_zora` | zora: join | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "Come with me. Now, not later."<br>levels/test_level.tscn (ZoraAtHome)<br>zora: again, "Come with me."<br>zora: taught, "Come with me." |
 | `cultists_cleared` (never checked) | levels/test_dungeon.tscn (Cultists) | – |
 | `demo_finished` | brannoc: end_brannoc<br>brannoc: end_hollow<br>maren: end_hollow<br>maren: end_maren<br>mirela: end_hollow<br>mirela: end_mirela<br>mirela: end_mirela_cold | brannoc (start → end_hollow)<br>brannoc (start → end_intro)<br>maren (start → end_hollow)<br>maren (start → end_intro)<br>mirela (start → end_hollow)<br>mirela (start → end_intro)<br>quest what_they_made |
 | `first_recognised_you` (never checked) | enemies/the_first.gd:50 | – |
@@ -385,15 +416,19 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `got_riverwatch_gift` | brannoc: gift | brannoc (start → gift) |
 | `got_supply_crate` | brannoc: crate | brannoc: after_given, "I need a crate of the garrison's supp..."<br>brannoc: after_restored, "I need a crate of the garrison's supp..."<br>brannoc: greet, "I need a crate of the garrison's supp..."<br>brannoc: greet_again, "I need a crate of the garrison's supp..."<br>brannoc: progress, "I need a crate of the garrison's supp..."<br>brannoc: waiting_on_stones, "I need a crate of the garrison's supp..." |
 | `heard_about_bandits` | brannoc: bandits_info | brannoc: after_given, "Anything else I should know about out..."<br>brannoc: after_restored, "Anything else I should know about out..."<br>brannoc: greet, "Anything else I should know about out..."<br>brannoc: greet_again, "Anything else I should know about out..."<br>brannoc: progress, "Anything else I should know about out..."<br>brannoc: waiting_on_stones, "Anything else I should know about out..."<br>quest bandit_camp |
+| `heard_about_mercy` | brannoc: bandits_info<br>halina: greet | quest the_merciful |
 | `heard_about_wolves` | maren: wolves | maren: greet_again, "I'll deal with the Greyfang pack." |
 | `heard_card_player` | maren: road_folk | maren: greet_again, "Who else comes up this road?" |
 | `heard_greyfang_reason` (never checked) | maren: wolves_why | – |
 | `heard_hallam` (never checked) | ostap: song | – |
 | `heard_of_thornwood` (never checked) | brannoc: mark_hunter | – |
 | `hint_climb` | Hints.show_once(id) sets hint_<id> (systems/hints.gd) | player/player_traversal.gd:44 |
-| `hollow_wolf_killed` | enemies/hollow_wolf.gd:65<br>hollow_wolf: mercy | enemies/hollow_wolf.gd:30<br>quest wrong_things |
+| `hollow_wolf_killed` | enemies/hollow_wolf.gd:66<br>hollow_wolf: mercy | enemies/hollow_wolf.gd:31<br>quest wrong_things |
 | `hollow_wolf_spared` (never checked) | hollow_wolf: leave | – |
 | `hunter_read_tracks` | hollow_wolf: tracks | brannoc: drain_line, "(Hunter) Same way the hollow wolf's t..."<br>brannoc: mark, "(Hunter) Its tracks came out of the f..." |
+| `inquisitor_hostile` | inquisitor: marked | levels/test_level.tscn (InquisitorDrawn)<br>levels/test_level.tscn (InquisitorOnRoad) |
+| `inquisitor_told_zora` | inquisitor: told | zora (start → betrayed)<br>zora (start → lanternfast)<br>zora: again, "Come with me."<br>zora: again, "What do you really do? Not the fire."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "What do you really do? Not the fire."<br>zora: taught, "Would you ever leave this place?" |
+| `inquisitor_warned` | inquisitor: suspicious | inquisitor (start → suspicious) |
 | `jory_cheated` | jory: merchant_cheat | quest lost_wagon |
 | `jory_found` | jory_caged: freed<br>jory_caged: locked | quest lost_wagon |
 | `jory_freed` | jory_caged: freed | levels/test_level.tscn (JoryAtWaystation)<br>levels/test_level.tscn (JoryInCage)<br>quest lost_wagon |
@@ -402,13 +437,24 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `jory_settled` | jory: keep_box<br>jory: merchant_bonus<br>jory: merchant_cheat<br>jory: merchant_wages<br>jory: return_box | jory (start → settled)<br>quest lost_wagon |
 | `kept_vigil` (never checked) | props/shrine.gd:66 | – |
 | `knows_marked_coin` (never checked) | mirela: coin | – |
+| `lanternfast_maren` | maren: lanternfast | maren (start → lanternfast) |
+| `lanternfast_now` | systems/lanternfast.gd:21 | enemies/wisp.gd:231<br>levels/test_level.tscn (Lanternfast)<br>maren (start → lanternfast)<br>ostap (start → lanternfast)<br>systems/lanternfast.gd:17<br>zora (start → lanternfast) |
+| `lanternfast_ostap` | ostap: lanternfast | ostap (start → lanternfast) |
+| `lanternfast_zora` | zora: lanternfast | zora (start → lanternfast) |
 | `licence_started` | brannoc: licence | brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?"<br>quest licence_to_burn<br>zora: again, "The garrison wants you arrested."<br>zora: drain, "The garrison wants you arrested."<br>zora: greet, "The garrison wants you arrested."<br>zora: scholar, "The garrison wants you arrested." |
 | `lost_wagon_started` | jory_caged: freed<br>jory_caged: locked<br>maren: report_merchant<br>wagon: look<br>wagon: merchant | quest lost_wagon |
 | `maren_wrong_things` | maren: wrong_things | maren: greet, "I'm tracking a Greyfang that walks wr..."<br>maren: greet, "I've come to tend the roadside shrine..."<br>maren: greet, "My wagon never reached Riverwatch. Ye..."<br>maren: greet, "Sergeant Holt sent me from Riverwatch..."<br>maren: greet, "The Collegium sent me to study the st..."<br>maren: greet, "You saw me sleeping behind your wayst..."<br>maren: greet_again, "Anything strange around here lately?"<br>maren: greet_hero, "Anything strange around here lately?"<br>quest wrong_things |
+| `mercy_cell_done` | halina: leave<br>halina: peace | halina (start → after)<br>levels/test_level.tscn (Merciful)<br>quest the_merciful |
+| `mercy_cell_fight` | halina: after<br>halina: fight | levels/test_level.tscn (HalinaHere)<br>props/mercy_cell.gd:10 |
+| `mercy_cell_left` | halina: leave<br>halina: peace | halina (start → after)<br>levels/test_level.tscn (MercyCell)<br>quest the_merciful |
+| `mercy_let_go` | halina: peace | quest the_merciful |
+| `mercy_offered_cure` | halina: same | halina: again, "You've got grey fingers. So do I." |
 | `met_brannoc` | brannoc: gift<br>brannoc: greet<br>brannoc: mark | brannoc (start → greet_again)<br>brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?" |
+| `met_halina` | halina: greet | halina (start → again) |
+| `met_inquisitor` | inquisitor: greet<br>inquisitor: marked<br>inquisitor: suspicious | inquisitor (start → again) |
 | `met_maren` | maren: greet | maren (start → greet_again) |
 | `met_mirela` | mirela: greet | mirela (start → bandits_done)<br>mirela (start → greet_again)<br>mirela (start → sees_hollowing)<br>mirela (start → trusted)<br>quest ask_forest |
-| `met_zora` | zora: greet | quest licence_to_burn<br>zora (start → again)<br>zora (start → sees_stain) |
+| `met_zora` | zora: greet | inquisitor: greet, "Her hut is west of the outlaw camp."<br>inquisitor: greet, "She's harmless."<br>quest licence_to_burn<br>zora (start → again)<br>zora (start → betrayed)<br>zora (start → sees_stain) |
 | `mirela_heard_essence` | mirela: heard_essence | mirela (start → heard_essence) |
 | `mirela_heard_freed` | mirela: heard_freed | mirela (start → heard_freed) |
 | `mirela_saw_hollowing` | mirela: sees_hollowing | mirela (start → sees_hollowing) |
@@ -433,7 +479,8 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `ritual_started` | props/ritual_site.gd:16 | levels/test_level.tscn (Cultist1)<br>levels/test_level.tscn (Cultist2)<br>levels/test_level.tscn (Cultist3)<br>quest what_they_made |
 | `saw_drain_line` | props/floating_crystal.gd:72<br>props/floating_crystal.gd:77<br>systems/save_system.gd:221 | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..."<br>props/drain_line.gd:9<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:76<br>quest ask_forest<br>quest waking_stones<br>systems/save_system.gd:220 |
 | `saw_dunya` | dunya: look | mirela: end_letter, "Dunya?" |
-| `saw_hollow_wolf` | enemies/hollow_wolf.gd:54<br>hollow_wolf: look | brannoc (start → mark)<br>enemies/hollow_wolf.gd:52<br>enemies/hollow_wolf.gd:72<br>hollow_wolf (start → again)<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>mirela: drain, "A wolf by Greyfang Hollow looked the ..."<br>quest wrong_things |
+| `saw_hollow_wolf` | enemies/hollow_wolf.gd:55<br>hollow_wolf: look | brannoc (start → mark)<br>enemies/hollow_wolf.gd:53<br>enemies/hollow_wolf.gd:73<br>hollow_wolf (start → again)<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>mirela: drain, "A wolf by Greyfang Hollow looked the ..."<br>quest wrong_things |
+| `saw_lanternfast` | systems/lanternfast.gd:22 | systems/lanternfast.gd:20 |
 | `saw_wisp_drained` | enemies/wisp_spawner.gd:61 | enemies/wisp_spawner.gd:60 |
 | `scholar_read_mark` | hollow_wolf: mark_scholar | brannoc: mark, "(Scholar) It isn't a brand. Something..." |
 | `shards_chose_stones` | brannoc: chose_stones | brannoc (start → waiting_on_stones)<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:66<br>props/floating_crystal.gd:75 |
@@ -465,13 +512,16 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `wolf_quest_done` | maren: reward<br>maren: reward_driven | brannoc: greet, "Maren says she told Riverwatch about ..."<br>maren (start → greet_hero)<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
 | `wolves_cleared` | enemies/wolf_pack.gd:18 | maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet, "Why don't people come this way?"<br>maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: greet_again, "Tell me about the wolves again."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: hunter_line, "Tell me about the wolves."<br>maren: soldier_line, "Tell me about the wolves."<br>maren: wolf_sick, "Tell me about the rest of the pack."<br>maren: wolf_where, "Tell me about the rest of the pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
 | `wolves_driven_off` | enemies/wolf_pack.gd:23 | maren: greet, "I drove off the wolves north of here."<br>maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
-| `wrong_things_done` | brannoc: mark | maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>quest wrong_things |
+| `wrong_things_done` | brannoc: mark | brannoc: after_given, "What will you do, after all this?"<br>brannoc: after_kept, "What will you do, after all this?"<br>brannoc: after_restored, "What will you do, after all this?"<br>brannoc: greet_again, "What will you do, after all this?"<br>brannoc: progress, "What will you do, after all this?"<br>brannoc: waiting_on_stones, "What will you do, after all this?"<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>quest wrong_things |
 | `wrong_things_started` | systems/save_system.gd:218 | enemies/wisp_spawner.gd:17<br>maren: greet, "I'm tracking a Greyfang that walks wr..."<br>maren: greet, "I've come to tend the roadside shrine..."<br>maren: greet, "My wagon never reached Riverwatch. Ye..."<br>maren: greet, "Sergeant Holt sent me from Riverwatch..."<br>maren: greet, "The Collegium sent me to study the st..."<br>maren: greet, "You saw me sleeping behind your wayst..."<br>maren: greet_again, "Anything strange around here lately?"<br>maren: greet_hero, "Anything strange around here lately?"<br>maren: wolves, "Why are they raiding the road at all?"<br>quest wrong_things<br>systems/save_system.gd:217<br>zora: again, "What do you know about what's drainin..."<br>zora: drain, "What do you know about what's drainin..."<br>zora: greet, "What do you know about what's drainin..."<br>zora: scholar, "What do you know about what's drainin..."<br>zora: taught, "What do you know about what's drainin..." |
 | `zora_arrested` | zora: arrested | brannoc: zora_report, "She came quietly. She says the goats ..."<br>brannoc: zora_report, "She was gone when I got there."<br>quest licence_to_burn |
 | `zora_decided` | zora: arrested<br>zora: taught_now<br>zora: warned | brannoc (start → zora_report)<br>quest licence_to_burn<br>zora: again, "The garrison wants you arrested."<br>zora: drain, "The garrison wants you arrested."<br>zora: greet, "The garrison wants you arrested."<br>zora: scholar, "The garrison wants you arrested." |
 | `zora_drain_hint` | zora: drain | zora: again, "What do you know about what's drainin..."<br>zora: drain, "What do you know about what's drainin..."<br>zora: greet, "What do you know about what's drainin..."<br>zora: scholar, "What do you know about what's drainin..."<br>zora: taught, "What do you know about what's drainin..." |
+| `zora_knows_betrayed` | zora: betrayed | zora (start → betrayed) |
 | `zora_left` | zora: arrested<br>zora: warned | levels/test_level.tscn (ZoraHere) |
 | `zora_saw_stain` | zora: sees_stain | zora (start → sees_stain) |
 | `zora_scholar` | zora: scholar | zora: again, "(Scholar) You trained at the Collegiu..."<br>zora: drain, "(Scholar) You trained at the Collegiu..."<br>zora: greet, "(Scholar) You trained at the Collegiu..."<br>zora: scholar, "(Scholar) You trained at the Collegiu..."<br>zora: taught, "(Scholar) You trained at the Collegiu..." |
 | `zora_taught` | zora: taught_now | brannoc: zora_report, "I never found her."<br>quest licence_to_burn<br>zora (start → taught) |
+| `zora_taught_glamour` | zora: glamour | zora: again, "What do you really do? Not the fire."<br>zora: taught, "What do you really do? Not the fire." |
 | `zora_warned` | zora: warned | quest licence_to_burn |
+| `zora_would_travel` | zora: leave_here | zora: again, "Come with me."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "Would you ever leave this place?" |

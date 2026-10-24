@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "charm"
+display_name = "Charm"
+description = "Charge, then release on a wolf or bandit (up to 20 m): it fights for you for 15 seconds, going for the nearest of its own kind, and its pack turns on it. When it wears off, it remembers whose side it's on."
+style = 2
+skill = "glamour"
+color = Color(0.95, 0.45, 0.9, 1)
+can_dual_cast = true
+charge_time = 1.0
+magicka_cost = 45.0
+max_distance = 20.0
+radius = 2.0
+glamour = "charm"
+duration = 15.0

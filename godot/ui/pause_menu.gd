@@ -27,6 +27,8 @@ func _input(event: InputEvent) -> void:
 	if not _capturing.is_empty():
 		_capture(event)
 		return
+	if BookReader.is_open:
+		return   # Esc closes the book first
 	# "pause" is Esc / the gamepad's Menu button. In the menu, "ui_cancel"
 	# (Esc / gamepad B) goes back too. B alone doesn't open it: in the game B dodges.
 	var pause := event.is_action_pressed("pause")

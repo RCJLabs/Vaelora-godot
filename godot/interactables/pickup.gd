@@ -24,12 +24,15 @@ func _ready() -> void:
 	var shown := label
 	if shown == "" and item_id != "":
 		shown = Inventory.get_item(item_id).display_name
-	prompt = "Take %s" % shown
+	var verb := "Take and read" if item_id != "" and Inventory.get_item(item_id).is_readable() else "Take"
+	prompt = "%s %s" % [verb, shown]
 
 
 func interact(_player: Node) -> void:
 	if item_id != "":
 		Inventory.add(item_id, item_count)
+		if Inventory.get_item(item_id).is_readable():
+			BookReader.open(item_id)   # read it on the spot; it stays in your pack
 	if gold > 0:
 		Inventory.add_gold(gold)
 	if remember:

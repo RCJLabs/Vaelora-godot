@@ -12,6 +12,7 @@ var flags: Dictionary = {}        # story memory, e.g. flags["met_maren"] = true
 var play_time := 0.0              # seconds spent in levels (not menus), shown on save slots
 
 signal flag_set(flag_name: String)
+signal flag_cleared(flag_name: String)
 
 
 func _ready() -> void:
@@ -38,3 +39,9 @@ func set_flag(flag_name: String) -> void:
 	if not flags.get(flag_name, false):
 		flags[flag_name] = true
 		flag_set.emit(flag_name)
+
+
+## For the few flags that are a state, not a memory (a companion following you).
+func clear_flag(flag_name: String) -> void:
+	if flags.erase(flag_name):
+		flag_cleared.emit(flag_name)

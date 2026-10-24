@@ -1,0 +1,147 @@
+{
+	"start": [
+		{
+			"node": "marked",
+			"requires_corruption": 2
+		},
+		{
+			"node": "suspicious",
+			"requires_corruption": 1,
+			"requires_not_flag": "inquisitor_warned"
+		},
+		{
+			"node": "again",
+			"requires_flag": "met_inquisitor"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A tall man in a white coat with a gold lantern hung from his belt, lit in broad daylight. \"Lantern Order. Inquisitor Hale. I'm after an unlicensed hedge-mage. Word is she lives in the woods north of here, past the outlaws. Seen her?\"",
+			"set_flag": "met_inquisitor",
+			"choices": [
+				{
+					"text": "No.",
+					"next": "no"
+				},
+				{
+					"text": "She's harmless.",
+					"next": "harmless",
+					"requires_flag": "met_zora"
+				},
+				{
+					"text": "Her hut is west of the outlaw camp.",
+					"next": "told",
+					"requires_flag": "met_zora"
+				},
+				{
+					"text": "What does the Lantern Order do, exactly?",
+					"next": "order"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "\"Still here? Keep your lantern lit, friend.\"",
+			"choices": [
+				{
+					"text": "What does the Lantern Order do, exactly?",
+					"next": "order"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"no": {
+			"text": "\"No. Nobody ever has. They live in the woods for years, and nobody's ever seen them.\" He smiles without much in it. \"I'll find her.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"harmless": {
+			"text": "\"Harmless is how it starts. They help a sick child, then a sick cow, then one night the wisps stop coming to the stones and nobody asks why.\" He taps the lantern. \"I ask why.\"",
+			"choices": [
+				{
+					"text": "What does the Lantern Order do, exactly?",
+					"next": "order"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"told": {
+			"text": "\"West of the outlaws. Good.\" He writes it down in a small book with a lantern stamped on the cover. \"The Order remembers its friends.\"",
+			"set_flag": "inquisitor_told_zora",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"order": {
+			"text": "\"We keep the lights from getting in. Every child knows the song: Hallam and his hundred nights. His son founded the Order, so there'd always be someone to keep watch after him. Corrupt mages drink the lights, friend. We find them, and we put them out.\"",
+			"choices": [
+				{
+					"text": "Put them out?",
+					"next": "put_out"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"put_out": {
+			"text": "\"Gently, when we can. Quickly, always.\" He doesn't elaborate.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"suspicious": {
+			"text": "He lifts his lantern to your face, though it's not dark. He looks for a long time. \"There's a coldness about the eyes. I've seen that look before.\" He lowers the lantern. \"Whatever you've been drinking, stop. Next time I see you, I'll look closer.\"",
+			"set_flag": [
+				"met_inquisitor",
+				"inquisitor_warned"
+			],
+			"choices": [
+				{
+					"text": "I don't know what you mean.",
+					"next": "end"
+				},
+				{
+					"text": "(Say nothing.)",
+					"next": "end"
+				}
+			]
+		},
+		"marked": {
+			"text": "He lifts his lantern to your face, and his other hand goes to his sword. In the lantern-light, your veins show green. \"Ah, friend.\" He sounds sorry. \"The Order is merciful, and it's quick.\"",
+			"set_flag": [
+				"met_inquisitor",
+				"inquisitor_hostile"
+			],
+			"choices": [
+				{
+					"text": "(Fight.)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

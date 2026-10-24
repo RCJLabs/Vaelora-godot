@@ -630,5 +630,45 @@
 				"text": "Three nights of readings: the stones' power is being drawn north, steadily, like a river. Aurel paid eighty and says someone at the Collegium will want it buried. He'd like to know who."
 			}
 		]
+	},
+	"the_merciful": {
+		"title": "The Merciful",
+		"giver": "Brannoc, a scout of the Riverwatch garrison, or the merciful themselves",
+		"description": "Hooded people have camped in a hollow south-east of the waystation, by a stone marked with a circle split by three lines: the same mark as on the hollow wolf.",
+		"started_when": {
+			"requires_flag": "heard_about_mercy"
+		},
+		"completed_when": {
+			"requires_flag": "mercy_cell_done"
+		},
+		"objectives": [
+			{
+				"text": "Find the hooded camp south-east of the waystation, and decide what to do about it.",
+				"done_when": {
+					"requires_flag": "mercy_cell_done"
+				},
+				"marker": "MercyCell"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "mercy_let_go"
+				},
+				"text": "Sister Halina of the Mercy says the wisps are souls in pain, and that her people give them rest. I let them go in peace. There are other stones, she said."
+			},
+			{
+				"when": {
+					"requires_flag": "mercy_cell_left"
+				},
+				"text": "I told the Mercy to leave the valley, and they went. Sister Halina said the wisps are souls in pain. There are other stones."
+			},
+			{
+				"when": {
+					"requires_flag": "mercy_cell_done"
+				},
+				"text": "I fought the Mercy at their stone. Sister Halina slipped away before the end."
+			}
+		]
 	}
 }

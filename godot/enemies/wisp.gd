@@ -225,8 +225,11 @@ func _world() -> Node:
 	return level if level else get_parent()
 
 
-# Released an essence tonight: the wisps let you be (effects/wisp_grace.tres).
+# Released an essence tonight (effects/wisp_grace.tres), or it's Lanternfast: the
+# wisps let you be.
 func _graced(player: Node3D) -> bool:
+	if GameState.has_flag("lanternfast_now"):
+		return true
 	return player.get("effects") != null and player.effects.has("wisp_grace")
 
 

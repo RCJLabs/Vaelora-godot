@@ -17,6 +17,7 @@ func _ready() -> void:
 	for body in _bodies():
 		_layers[body] = body.collision_layer
 	GameState.flag_set.connect(func(_flag): _update())
+	GameState.flag_cleared.connect(func(_flag): _update())
 	_update()
 
 

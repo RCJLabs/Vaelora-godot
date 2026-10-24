@@ -177,7 +177,11 @@ func _release() -> void:
 		SpellData.Style.BOLT:
 			_fire_bolt(spell.damage * power * player.stats.modifier("damage_dealt"))
 		SpellData.Style.AREA:
-			_burst(spell.damage * power * player.stats.modifier("damage_dealt"))
+			if spell.glamour != "":
+				Glamour.cast(spell, _aim_point(), power, player)
+				Skills.add_xp(spell.skill, cost / 5.0)
+			else:
+				_burst(spell.damage * power * player.stats.modifier("damage_dealt"))
 		SpellData.Style.SELF:
 			player.effects.apply(spell.self_effect)
 			Skills.add_xp(spell.skill, cost / 6.0)
@@ -203,16 +207,22 @@ func _fire_bolt(damage: float) -> void:
 			spell.projectile_speed, 1.5 if dual else 1.0)
 
 
-# Where you're aiming (up to max_distance): everything in the radius is hit,
-# full damage at the centre down to half at the edge.
-func _burst(damage: float) -> void:
+# Where you're aiming: the first thing (ground, wall, enemy) the view hits, up
+# to the spell's max_distance.
+func _aim_point() -> Vector3:
 	var camera: Camera3D = player.camera
 	var from := camera.global_position
 	var to := from - camera.global_transform.basis.z * spell.max_distance
 	var query := PhysicsRayQueryParameters3D.create(from, to, 1 | 4)
 	query.exclude = [player.get_rid()]
 	var result := player.get_world_3d().direct_space_state.intersect_ray(query)
-	var center: Vector3 = result["position"] if not result.is_empty() else to
+	return result["position"] if not result.is_empty() else to
+
+
+# Where you're aiming: everything in the radius is hit, full damage at the
+# centre down to half at the edge.
+func _burst(damage: float) -> void:
+	var center := _aim_point()
 	var radius := spell.radius * (1.3 if dual else 1.0)
 	var sphere := SphereShape3D.new()
 	sphere.radius = radius

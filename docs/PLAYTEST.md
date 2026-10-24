@@ -38,6 +38,12 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
       "Release a Wisp Essence" a choice you'd make over swallowing it? Did Wisp's Grace (the
       wisps letting you be that night) feel like enough of a reward?
 - [ ] **Wisps and corruption:** once corrupted, do night wisps feel more aggressive? Too much?
+- [ ] **The Lantern Order and the Mercy:** talk to Inquisitor Hale on the south road, clean,
+      then again once you're Touched and Stained. Find the Mercy's camp in the south-east hollow
+      (Brannoc mentions it with the bandits). Is Sister Halina sympathetic, or obviously a villain?
+- [ ] **Books:** five lie around the valley (by the waystation fire, beside Magister Aurel, at the
+      stone circle, at the shrine, at the outlaw camp). Did you find any without looking? Did you
+      read them? Too long, too short?
 - [ ] Side quests (pick one or two): **Silent Shrine** (the roadside shrine south of spawn),
       **The Lost Wagon** (a yellow wagon north-east of the bandit camp), **Licence to Burn**
       (ask Brannoc for work), **Readings Under the Wanderer** (Magister Aurel at the
@@ -89,6 +95,12 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 - [ ] Dual-cast (both buttons with nothing in the right hand): does it feel worth the Magicka?
 - [ ] Night (rest at a fire until 21:00, or wait): **wisps** at the stone circle. Can you read
       their charge-up and parry a bolt back at them?
+- [ ] **Glamour** (Zora teaches it: "What do you really do?"): a **Mirror Image** in front of the
+      wolves, then **Fear**, then **Charm** one wolf of the pack. Readable? Fun, or fiddly?
+- [ ] **A companion** (Brannoc after Wrong Things, or Zora): "Come with me." Do they keep up,
+      get stuck, or get in your way in a fight? Try Wait here / Follow me / Go home.
+- [ ] **Lanternfast** (rest until 18:00 on day 7; the rest menu says how many days are left):
+      do the lanterns read as a festival? Talk to Maren and Zora. Do the wisps leave you be?
 
 ## 6. The dungeon (8 min) — the wooden door in a stone mound, about 35 m south-west of spawn
 

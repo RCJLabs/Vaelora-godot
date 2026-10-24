@@ -37,6 +37,10 @@ enum WeaponKind { MELEE, BOW }
 ## Spell tomes: the spell id it teaches (the tome is used up).
 @export var teaches_spell: String = ""
 
+@export_group("Book")
+## Books and notes: the text you read (BookReader). A book isn't used up by reading.
+@export_multiline var book_text: String = ""
+
 @export_group("Weapon")
 @export var weapon_kind: WeaponKind = WeaponKind.MELEE
 ## Needs both hands: unequips the off hand (shield), and no spells while it's out.
@@ -74,6 +78,10 @@ enum WeaponKind { MELEE, BOW }
 @export_group("Armor")
 @export var slot: Slot = Slot.NONE
 @export var armor: float = 0.0
+
+
+func is_readable() -> bool:
+	return book_text != ""
 
 
 func is_equipment() -> bool:

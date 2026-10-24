@@ -26,6 +26,11 @@ const ITEM_FILES := [
 	"res://items/marked_coin.tres",
 	"res://items/supply_crate.tres",
 	"res://items/cult_notes.tres",
+	"res://items/book_hallam.tres",
+	"res://items/book_charter.tres",
+	"res://items/book_dimming.tres",
+	"res://items/book_lantern.tres",
+	"res://items/book_lullaby.tres",
 	"res://items/cult_letter.tres",
 	"res://items/strongbox.tres",
 	"res://items/rune_glass.tres",
@@ -46,6 +51,9 @@ const ITEM_FILES := [
 	"res://items/tome_mending.tres",
 	"res://items/tome_stoneflesh.tres",
 	"res://items/tome_candlelight.tres",
+	"res://items/tome_mirror_image.tres",
+	"res://items/tome_fear.tres",
+	"res://items/tome_charm.tres",
 	"res://items/bread.tres",
 	"res://items/apple.tres",
 	"res://items/water_flask.tres",
@@ -115,6 +123,9 @@ func add_gold(amount: int) -> void:
 func use(id: String) -> bool:
 	var item := get_item(id)
 	var player := get_tree().get_first_node_in_group("player")
+	if item != null and item.is_readable() and count(id) > 0:
+		BookReader.open(id)   # books are read, not used up
+		return true
 	if item == null or item.type != ItemData.Type.CONSUMABLE or player == null or count(id) == 0:
 		return false
 	if item.teaches_spell != "":

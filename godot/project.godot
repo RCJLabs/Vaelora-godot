@@ -38,6 +38,10 @@ Defeat="*res://systems/defeat.gd"
 Openings="*res://systems/openings.gd"
 Epilogue="*res://systems/epilogue.gd"
 Corruption="*res://systems/corruption.gd"
+BookReader="*res://ui/book_reader.gd"
+Companions="*res://systems/companions.gd"
+Glamour="*res://systems/glamour.gd"
+Lanternfast="*res://systems/lanternfast.gd"
 
 [editor_plugins]
 

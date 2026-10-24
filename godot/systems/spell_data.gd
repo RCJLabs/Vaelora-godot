@@ -10,6 +10,8 @@ extends Resource
 #   AREA    hold to charge, release: a burst where you're aiming (Frost Burst)
 #   WARD    hold: a barrier that stops most of a hit from the front (Healing Ward)
 #   SELF    hold to charge, release: a status effect on yourself (Stoneflesh)
+# Glamour spells are areas with a `glamour` instead of damage (systems/glamour.gd):
+# a decoy of you where you aim, fear in the radius, or charm on whoever's nearest.
 # Charged spells only go off when fully charged; releasing early fizzles (free).
 # With nothing in your right hand, both hands cast: hold both buttons to
 # dual-cast for more power at a higher cost (can_dual_cast).
@@ -24,7 +26,7 @@ enum Effect { DAMAGE_STREAM, HEAL_SELF }
 @export_multiline var description: String = ""
 @export var style: Style = Style.STREAM
 @export var effect: Effect = Effect.DAMAGE_STREAM
-## Skill that powers it and improves with use: "destruction", "restoration", "alteration".
+## Skill that powers it and improves with use: "destruction", "restoration", "alteration", "glamour".
 @export var skill: String = "destruction"
 ## Colour of the hand glow, projectiles and bursts.
 @export var color: Color = Color(1, 0.5, 0.15)
@@ -54,6 +56,12 @@ enum Effect { DAMAGE_STREAM, HEAL_SELF }
 @export var radius: float = 3.0
 ## Self spells: the status effect it gives you (effects/*.tres).
 @export var self_effect: String = ""
+
+@export_group("Glamour")
+## "decoy", "fear" or "charm": an area spell that does this instead of damage.
+@export var glamour: String = ""
+## Seconds it lasts, before the skill bonus.
+@export var duration: float = 10.0
 
 
 func is_charged() -> bool:

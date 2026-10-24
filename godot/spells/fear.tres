@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "fear"
+display_name = "Fear"
+description = "Charge, then release where you're aiming (up to 15 m): wolves and bandits within 5 m run from you for 8 seconds, then come back."
+style = 2
+skill = "glamour"
+color = Color(0.95, 0.45, 0.9, 1)
+can_dual_cast = true
+charge_time = 0.9
+magicka_cost = 40.0
+max_distance = 15.0
+radius = 5.0
+glamour = "fear"
+duration = 8.0

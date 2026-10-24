@@ -26,5 +26,8 @@
 	"efficient_alteration": { "name": "Efficient Shaping", "skill": "alteration", "level": 20, "description": "Shaping spells cost 25% less.", "modifiers": { "spell_cost_alteration": 0.75 } },
 	"arcane_reserve": { "name": "Arcane Reserve", "skill": "alteration", "level": 25, "description": "+25 max Magicka.", "stat_bonus": { "magicka": 25 } },
 	"focused_mind": { "name": "Focused Mind", "skill": "alteration", "level": 35, "requires": "arcane_reserve", "description": "Magicka recovers 25% faster.", "modifiers": { "magicka_regen": 1.25 } },
-	"ward_mastery": { "name": "Ward Mastery", "skill": "restoration", "level": 30, "requires": "recovery", "description": "Wards stop 20% more of a hit and cost less to hold.", "modifiers": { "ward_strength": 1.2, "spell_cost_restoration": 0.9 } }
+	"ward_mastery": { "name": "Ward Mastery", "skill": "restoration", "level": 30, "requires": "recovery", "description": "Wards stop 20% more of a hit and cost less to hold.", "modifiers": { "ward_strength": 1.2, "spell_cost_restoration": 0.9 } },
+
+	"efficient_glamour": { "name": "Efficient Glamour", "skill": "glamour", "level": 20, "description": "Glamour spells cost 25% less.", "modifiers": { "spell_cost_glamour": 0.75 } },
+	"long_shadows": { "name": "Long Shadows", "skill": "glamour", "level": 35, "requires": "efficient_glamour", "description": "Glamour spells last 30% longer.", "modifiers": { "spell_power_glamour": 1.3 } }
 }
