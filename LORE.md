@@ -372,6 +372,10 @@ Round two's 29 answers are folded in above.
 
 ## Still open
 
+Round three (`docs/LORE_QUESTIONNAIRE_3.md`) asks about these, and about the world beyond the
+valley: nine hundred years of history, the map, magic, belief, everyday life, creatures,
+factions, and a story for each of the seven peoples.
+
 - **My suggestions to confirm or change:** the cult's name (the Ferry), "V." as Magister
   Vessa, the Pale Gate as the way up to the Wanderer, Aeviro as the last vessel, the
   rest-versus-survival choice, and the one-line cultures for the Ashen, small folk and Deepfolk.
