@@ -13,6 +13,11 @@ signal advanced(hours: float)            # skipped ahead (sleep)
 
 const TIME_SCALE := 20.0
 const START_HOUR := 8.0
+## The Wanderer, the small green moon, wanes to dark and back every this many
+## days. It's dark on days 7, 14, 21...; that night is Lanternfast.
+const WANDERER_DAYS := 7
+const LANTERNFAST_FROM := 18.0
+const LANTERNFAST_UNTIL := 2.0   # the next morning
 
 var day := 1
 var hour := START_HOUR
@@ -52,6 +57,32 @@ func is_night() -> bool:
 ## 0 at midnight, 1 at noon: how bright and warm the day is.
 func daylight() -> float:
 	return clampf(sin((hour - 6.0) / 12.0 * PI) * 1.3, 0.0, 1.0)
+
+
+## Is the Wanderer dark today?
+func wanderer_dark() -> bool:
+	return day % WANDERER_DAYS == 0
+
+
+## Days until the Wanderer is next dark (0: today).
+func days_until_dark() -> int:
+	return posmod(-day, WANDERER_DAYS)
+
+
+## The festival: from 18:00 on a dark day until 2:00 the next morning.
+func is_lanternfast() -> bool:
+	if wanderer_dark():
+		return hour >= LANTERNFAST_FROM
+	return day > 1 and (day - 1) % WANDERER_DAYS == 0 and hour < LANTERNFAST_UNTIL
+
+
+## "The Wanderer is waxing. Lanternfast in 3 days."
+func wanderer_text() -> String:
+	var left := days_until_dark()
+	if left == 0:
+		return "The Wanderer is dark. Lanternfast tonight."
+	var look := "waxing" if left >= 5 else ("full" if left >= 3 else "waning")
+	return "The Wanderer is %s. Lanternfast in %d day%s." % [look, left, "" if left == 1 else "s"]
 
 
 ## "Day 3, 14:05"

@@ -116,7 +116,7 @@ func _build() -> void:
 		_buttons.remove_child(child)
 		child.queue_free()
 	_title.text = "Campfire" if _is_fire else "Bed"
-	var lines := [WorldClock.text()]
+	var lines := [WorldClock.text(), WorldClock.wanderer_text()]
 	if Survival.active():
 		lines.append(Survival.text())
 	if SaveSystem.hardcore_saves_locked():

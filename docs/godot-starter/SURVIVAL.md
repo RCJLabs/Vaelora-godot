@@ -14,6 +14,23 @@
 - Interiors (like the cellar) have no DayNight node, so they never change, and they count as
   **indoors** for survival.
 
+### The Wanderer and Lanternfast
+- The **Wanderer**, the small green moon, is **dark every 7th day** (days 7, 14, 21...):
+  `WorldClock.wanderer_dark()`, `days_until_dark()`, and `wanderer_text()` ("The Wanderer is
+  waxing. Lanternfast in 6 days.", shown in the rest menu). Not drawn in the sky yet.
+- **Lanternfast** is that night, from **18:00 until 2:00** (`WorldClock.is_lanternfast()`).
+  `systems/lanternfast.gd` (autoload **Lanternfast**) keeps the flag `lanternfast_now` set for
+  exactly that long (and sets `saw_lanternfast` the first time, with a message). Everything
+  else hangs off the flag:
+  - **Lanterns**: the `Lanternfast` StoryPresence in the test level (`show_flag
+    lanternfast_now`) holds ten `props/festival_lantern.gd` lanterns around the waystation.
+  - **People**: Maren, Ostap and Zora each have a `lanternfast` start node (once each,
+    `lanternfast_<name>`), with their people's idea of what the lanterns are for.
+  - **Wisps** leave you be for the night (`wisp.gd` `_graced`).
+- To wait for it: rest until 18:00 on a dark day. For testing, set `WorldClock.day = 7` and
+  `hour = 18`.
+- Greybox: no crowd, singing or food yet; the moon in the sky is the same every night.
+
 ## Survival mode (optional, chosen in the character creator)
 Four needs run from **0% (fine) to 100% (dire)**. Each passes through three stages at 25%,
 50% and 75%. The stages are status effects, so they show in the effect row above the bars,

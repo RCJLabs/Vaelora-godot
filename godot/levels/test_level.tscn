@@ -1,4 +1,4 @@
-[gd_scene load_steps=98 format=3]
+[gd_scene load_steps=99 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -37,6 +37,7 @@
 [ext_resource type="Script" path="res://props/story_presence.gd" id="85_presence"]
 [ext_resource type="Script" path="res://enemies/inquisitor.gd" id="200_inquisitor"]
 [ext_resource type="Script" path="res://props/mercy_cell.gd" id="201_mercy_cell"]
+[ext_resource type="Script" path="res://props/festival_lantern.gd" id="202_lantern"]
 [ext_resource type="Script" path="res://interactables/examine.gd" id="84_examine"]
 [ext_resource type="Script" path="res://props/reading_stone.gd" id="83_reading"]
 
@@ -1887,3 +1888,47 @@ mesh = SubResource("Mesh_reading_stone")
 
 [node name="Shape" type="CollisionShape3D" parent="ReadingStone"]
 shape = SubResource("Shape_reading_stone")
+
+[node name="Lanternfast" type="Node3D" parent="."]
+script = ExtResource("85_presence")
+show_flag = "lanternfast_now"
+
+[node name="LanternPost1" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -6.5)
+script = ExtResource("202_lantern")
+
+[node name="LanternPost2" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -6.5)
+script = ExtResource("202_lantern")
+
+[node name="LanternPost3" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -1.0)
+script = ExtResource("202_lantern")
+
+[node name="LanternPost4" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0, 0, -1.0)
+script = ExtResource("202_lantern")
+
+[node name="LanternFire1" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 3.5)
+script = ExtResource("202_lantern")
+
+[node name="LanternFire2" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 0, 5.5)
+script = ExtResource("202_lantern")
+
+[node name="LanternShrine" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 0, 7.6)
+script = ExtResource("202_lantern")
+
+[node name="LanternRoad1" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 12.0)
+script = ExtResource("202_lantern")
+
+[node name="LanternRoad2" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0, 22.0)
+script = ExtResource("202_lantern")
+
+[node name="LanternPost5" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 0, -4.0)
+script = ExtResource("202_lantern")

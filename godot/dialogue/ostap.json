@@ -1,5 +1,14 @@
 {
-	"start": "greet",
+	"start": [
+		{
+			"node": "lanternfast",
+			"requires_flag": "lanternfast_now",
+			"requires_not_flag": "lanternfast_ostap"
+		},
+		{
+			"node": "greet"
+		}
+	],
 	"nodes": {
 		"greet": {
 			"text": "(He breaks off humming as you come closer.) Far enough. Hands where I can see them. ...You're the one who's been following the light. Mirela's by the fire. Walk slow.",
@@ -51,6 +60,16 @@
 				},
 				{
 					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"lanternfast": {
+			"text": "(He's humming the Hallam song, very quietly.) Lanternfast. I'd light one, but the garrison would see it from the road, and then we'd have a different sort of festival. (He nods at the dark sky.) Funny. It's the one night I feel watched by something that isn't the garrison.",
+			"set_flag": "lanternfast_ostap",
+			"choices": [
+				{
+					"text": "(Leave)",
 					"next": "end"
 				}
 			]

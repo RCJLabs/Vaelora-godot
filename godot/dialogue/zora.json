@@ -19,6 +19,14 @@
 			"requires_flag": "zora_taught"
 		},
 		{
+			"node": "lanternfast",
+			"requires_flag": "lanternfast_now",
+			"requires_not_flag": [
+				"lanternfast_zora",
+				"inquisitor_told_zora"
+			]
+		},
+		{
 			"node": "again",
 			"requires_flag": "met_zora"
 		},
@@ -361,6 +369,16 @@
 		"glamour_charm": {
 			"text": "\"Everyone says that.\" She gives you the third book anyway. \"One more thing. The wisps see straight through all of it. Don't ask me how I know.\"",
 			"give_item": "tome_charm",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"lanternfast": {
+			"text": "Zora has one lantern, in the window facing north. \"Everyone in the valley says they're to keep the lights out. My gran said they're for finding: so the lost ones know the way home.\" She doesn't look away from the window. \"I know which one I'd rather be true.\"",
+			"set_flag": "lanternfast_zora",
 			"choices": [
 				{
 					"text": "(Leave)",

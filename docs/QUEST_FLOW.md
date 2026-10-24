@@ -427,7 +427,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `hollow_wolf_spared` (never checked) | hollow_wolf: leave | – |
 | `hunter_read_tracks` | hollow_wolf: tracks | brannoc: drain_line, "(Hunter) Same way the hollow wolf's t..."<br>brannoc: mark, "(Hunter) Its tracks came out of the f..." |
 | `inquisitor_hostile` | inquisitor: marked | levels/test_level.tscn (InquisitorDrawn)<br>levels/test_level.tscn (InquisitorOnRoad) |
-| `inquisitor_told_zora` | inquisitor: told | zora (start → betrayed)<br>zora: again, "Come with me."<br>zora: again, "What do you really do? Not the fire."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "What do you really do? Not the fire."<br>zora: taught, "Would you ever leave this place?" |
+| `inquisitor_told_zora` | inquisitor: told | zora (start → betrayed)<br>zora (start → lanternfast)<br>zora: again, "Come with me."<br>zora: again, "What do you really do? Not the fire."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "What do you really do? Not the fire."<br>zora: taught, "Would you ever leave this place?" |
 | `inquisitor_warned` | inquisitor: suspicious | inquisitor (start → suspicious) |
 | `jory_cheated` | jory: merchant_cheat | quest lost_wagon |
 | `jory_found` | jory_caged: freed<br>jory_caged: locked | quest lost_wagon |
@@ -437,6 +437,10 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `jory_settled` | jory: keep_box<br>jory: merchant_bonus<br>jory: merchant_cheat<br>jory: merchant_wages<br>jory: return_box | jory (start → settled)<br>quest lost_wagon |
 | `kept_vigil` (never checked) | props/shrine.gd:66 | – |
 | `knows_marked_coin` (never checked) | mirela: coin | – |
+| `lanternfast_maren` | maren: lanternfast | maren (start → lanternfast) |
+| `lanternfast_now` | systems/lanternfast.gd:25 | enemies/wisp.gd:231<br>levels/test_level.tscn (Lanternfast)<br>maren (start → lanternfast)<br>ostap (start → lanternfast)<br>systems/lanternfast.gd:21<br>zora (start → lanternfast) |
+| `lanternfast_ostap` | ostap: lanternfast | ostap (start → lanternfast) |
+| `lanternfast_zora` | zora: lanternfast | zora (start → lanternfast) |
 | `licence_started` | brannoc: licence | brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?"<br>quest licence_to_burn<br>zora: again, "The garrison wants you arrested."<br>zora: drain, "The garrison wants you arrested."<br>zora: greet, "The garrison wants you arrested."<br>zora: scholar, "The garrison wants you arrested." |
 | `lost_wagon_started` | jory_caged: freed<br>jory_caged: locked<br>maren: report_merchant<br>wagon: look<br>wagon: merchant | quest lost_wagon |
 | `maren_wrong_things` | maren: wrong_things | maren: greet, "I'm tracking a Greyfang that walks wr..."<br>maren: greet, "I've come to tend the roadside shrine..."<br>maren: greet, "My wagon never reached Riverwatch. Ye..."<br>maren: greet, "Sergeant Holt sent me from Riverwatch..."<br>maren: greet, "The Collegium sent me to study the st..."<br>maren: greet, "You saw me sleeping behind your wayst..."<br>maren: greet_again, "Anything strange around here lately?"<br>maren: greet_hero, "Anything strange around here lately?"<br>quest wrong_things |
@@ -476,6 +480,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `saw_drain_line` | props/floating_crystal.gd:72<br>props/floating_crystal.gd:77<br>systems/save_system.gd:221 | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..."<br>props/drain_line.gd:9<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:76<br>quest ask_forest<br>quest waking_stones<br>systems/save_system.gd:220 |
 | `saw_dunya` | dunya: look | mirela: end_letter, "Dunya?" |
 | `saw_hollow_wolf` | enemies/hollow_wolf.gd:55<br>hollow_wolf: look | brannoc (start → mark)<br>enemies/hollow_wolf.gd:53<br>enemies/hollow_wolf.gd:73<br>hollow_wolf (start → again)<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>mirela: drain, "A wolf by Greyfang Hollow looked the ..."<br>quest wrong_things |
+| `saw_lanternfast` | systems/lanternfast.gd:26 | systems/lanternfast.gd:24 |
 | `saw_wisp_drained` | enemies/wisp_spawner.gd:61 | enemies/wisp_spawner.gd:60 |
 | `scholar_read_mark` | hollow_wolf: mark_scholar | brannoc: mark, "(Scholar) It isn't a brand. Something..." |
 | `shards_chose_stones` | brannoc: chose_stones | brannoc (start → waiting_on_stones)<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:66<br>props/floating_crystal.gd:75 |
