@@ -54,6 +54,7 @@ func play(player: Node3D) -> void:
 func show_card(title: String, text: String, seconds: float = CARD_SECONDS) -> void:
 	if _card:
 		_card.queue_free()
+	Sfx.play("story_card")
 	_card = CanvasLayer.new()
 	_card.layer = 20
 	_card.name = "OpeningCard"

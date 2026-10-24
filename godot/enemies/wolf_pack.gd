@@ -73,9 +73,13 @@ func _add_fear(amount: float) -> void:
 # The living run (wolf.gd flee()); each one that gets away calls member_gone().
 func _break() -> void:
 	broken = true
+	var yelped := false
 	for member in get_children():
 		if member.has_method("flee") and member.get("state") != member.State.DEAD:
 			member.flee()
+			if not yelped:
+				Sfx.play_at("wolf_yelp", member.global_position)
+				yelped = true
 	var player := get_tree().get_first_node_in_group("player")
 	if player:
 		player.show_message(driven_off_message)

@@ -199,6 +199,7 @@ def main():
     footsteps()
     ambience()
     dungeon()
+    story()   # last: each section draws from the shared rng, so new ones go at the end
 
 
 def footsteps():
@@ -333,6 +334,67 @@ def dungeon():
     thumps = sum(np.sin(2 * np.pi * 80 * np.maximum(t - d, 0)) * envelope(np.maximum(t - d, 0), 0.003, 0.08) * (t > d)
                  for d in [0.05, 0.4, 0.75, 1.1])
     save("guardian_crumble", clatter * 2.5 + thumps, 0.85)
+
+
+def story():
+    """The main questline's moments: wisps, the shrine, The First, the cards."""
+    # Wisp drained into the line: a pitch falling away and thinning out.
+    t = seconds(1.6)
+    phase = np.cumsum(880 * np.exp(-t / 0.6) + 90) / RATE
+    tone = np.sin(2 * np.pi * phase) + 0.3 * np.sin(6 * np.pi * phase)
+    air = highpass(rng.standard_normal(len(t)), 3000.0) * 0.15
+    save("wisp_drain", (tone + air) * envelope(t, 0.05, 0.6) * (0.8 + 0.2 * np.sin(2 * np.pi * 9 * t)), 0.45)
+
+    # Caged wisp freed: a bright rising arpeggio, like ward_hit but going up.
+    t = seconds(1.4)
+    out = np.zeros_like(t)
+    for i, f in enumerate([660, 880, 1100, 1320]):
+        d = i * 0.12
+        u = np.maximum(t - d, 0)
+        out += ring(u, [(f, 1.0), (f * 2.01, 0.3)], 0.8) * envelope(u, 0.002, 0.4) * (t > d)
+    save("wisp_freed", out, 0.6)
+
+    # Taking its light: an inward swell (rising, then cut off) under a low throb.
+    t = seconds(1.2)
+    swell = lowpass(rng.standard_normal(len(t)), 300 + 2500 * (t / 1.2) ** 2) * (t / 1.2) ** 2
+    throb = np.sin(2 * np.pi * 55 * t) * (t / 1.2) * (0.6 + 0.4 * np.sin(2 * np.pi * 5 * t))
+    save("wisp_taken", (swell * 2.0 + throb) * np.exp(-np.maximum(t - 1.1, 0) / 0.02), 0.65)
+
+    # Shrine: one soft bell (rekindled, a blessing, the end of a vigil).
+    t = seconds(2.5)
+    save("shrine_chime", ring(t, [(523, 1.0), (1047, 0.35), (1410, 0.2), (2093, 0.12)], 1.6) * envelope(t, 0.004, 0.9), 0.55)
+
+    # Corruption rising: two close low tones beating against each other, swelling.
+    t = seconds(1.8)
+    beat = np.sin(2 * np.pi * 98 * t) + np.sin(2 * np.pi * 103.5 * t) + 0.5 * np.sin(2 * np.pi * 147 * t)
+    hiss = lowpass(rng.standard_normal(len(t)), 600.0) * 0.6
+    save("corruption_rise", (beat + hiss) * envelope(t, 0.6, 0.5), 0.6)
+
+    # The First leaking a ring of light: a hollow boom with a glassy shimmer on top.
+    t = seconds(1.3)
+    boom = np.sin(2 * np.pi * (90 * t - 50 * t ** 2)) * envelope(t, 0.005, 0.3)
+    glass = ring(t, [(1240, 0.5), (1873, 0.4), (2610, 0.3)], 0.9) * envelope(t, 0.02, 0.5)
+    save("first_leak", boom * 1.4 + glass, 0.8)
+
+    # The ritual starting: a low choir-like drone that rises in.
+    t = seconds(3.0)
+    drone = sum(np.sin(2 * np.pi * f * t + 0.3 * np.sin(2 * np.pi * 0.5 * t)) * a for f, a in [(73, 1.0), (110, 0.6), (146, 0.4), (220, 0.2)])
+    breath = lowpass(rng.standard_normal(len(t)), 500.0) * 0.8
+    save("ritual_drone", (drone + breath) * envelope(t, 1.2, 1.2), 0.6)
+
+    # Story cards (the opening and the ending): a soft low chord.
+    t = seconds(3.5)
+    chord = sum(ring(t, [(f, 1.0), (f * 2.0, 0.25)], 2.5) for f in [110, 165, 220, 277])
+    save("story_card", chord * envelope(t, 0.3, 1.4), 0.5)
+
+    # A pack breaking: a couple of yelps, high and falling.
+    t = seconds(0.9)
+    out = np.zeros_like(t)
+    for d, f in [(0.0, 900), (0.35, 780)]:
+        u = np.maximum(t - d, 0)
+        phase = np.cumsum((f * np.exp(-u / 0.12) + 350) * (t > d)) / RATE
+        out += lowpass(2.0 * (phase % 1.0) - 1.0, 2500.0) * envelope(u, 0.005, 0.08) * (t > d)
+    save("wolf_yelp", out, 0.6)
 
 
 if __name__ == "__main__":

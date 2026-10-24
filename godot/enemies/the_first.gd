@@ -72,6 +72,7 @@ func leak() -> void:
 	shockwave_damage = leak_damage
 	_shockwave(global_position)
 	shockwave_damage = damage
+	Sfx.play_at("first_leak", global_position)
 	SpellBurst.spawn(_world(), global_position + Vector3.UP * 0.1, 1.8, GLOW)
 
 

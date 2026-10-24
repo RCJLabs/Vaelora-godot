@@ -58,6 +58,7 @@ func start(player: Node3D) -> void:
 	for path in hidden_until_start:
 		_set_hidden(get_node_or_null(path), false)
 	GameState.set_flag(started_flag)
+	Sfx.play_at("ritual_drone", global_position)
 	player.show_message(night_message)
 	var arena_node: Area3D = get_node_or_null(arena)
 	if arena_node:
