@@ -39,16 +39,16 @@ const SKILLS := {
 		"description": "-0.5% sprint stamina cost per level. Improves as you sprint.",
 	},
 	"destruction": {
-		"name": "Destruction",
-		"description": "+1% damage from Destruction spells per level. Improves with spell damage dealt.",
+		"name": "Ruin",
+		"description": "+1% damage from Ruin spells (fire, frost, storm) per level. Improves with spell damage dealt.",
 	},
 	"alteration": {
-		"name": "Alteration",
-		"description": "+1% to Alteration spells per level (and cheaper with perks). Improves as you cast them.",
+		"name": "Shaping",
+		"description": "+1% to Shaping spells (stone, light, force) per level, and cheaper with perks. Improves as you cast them.",
 	},
 	"restoration": {
-		"name": "Restoration",
-		"description": "+1% healing from Restoration spells per level. Improves with health restored.",
+		"name": "Mending",
+		"description": "+1% healing from Mending spells per level. Improves with health restored.",
 	},
 }
 const START_LEVEL := 15

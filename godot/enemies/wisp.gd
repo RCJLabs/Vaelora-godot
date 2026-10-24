@@ -111,8 +111,10 @@ func _think(player: Node3D, delta: float) -> Vector3:
 	var from_home := Vector2(global_position.x - home.x, global_position.z - home.z).length()
 	match state:
 		State.IDLE:
-			if dist < aggro_range and _sees(player):
+			if dist < aggro_range * Corruption.wisp_aggro_scale() and _sees(player) and not _graced(player):
 				_start_fight()
+				if Corruption.tier() > 0:
+					Hints.show_once("wisps_corruption", "Wisps go for anyone carrying stolen light. The more corrupted you are, the further away they notice you, and the more of them come out at night.")
 			return _wander()
 		State.RETURN:
 			if from_home < 1.5:
@@ -221,6 +223,11 @@ func _wander() -> Vector3:
 func _world() -> Node:
 	var level := get_tree().current_scene
 	return level if level else get_parent()
+
+
+# Released an essence tonight: the wisps let you be (effects/wisp_grace.tres).
+func _graced(player: Node3D) -> bool:
+	return player.get("effects") != null and player.effects.has("wisp_grace")
 
 
 func _sees(player: Node3D) -> bool:

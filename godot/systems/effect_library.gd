@@ -15,6 +15,8 @@ const EFFECT_FILES := [
 	"res://effects/hunters_focus.tres",
 	"res://effects/blessing.tres",
 	"res://effects/steady_nerves.tres",
+	# the stone circle: releasing a Wisp Essence (props/floating_crystal.gd)
+	"res://effects/wisp_grace.tres",
 	# spells
 	"res://effects/chilled.tres",
 	"res://effects/mending.tres",

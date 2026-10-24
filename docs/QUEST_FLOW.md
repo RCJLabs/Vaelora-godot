@@ -386,7 +386,9 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `got_supply_crate` | brannoc: crate | brannoc: after_given, "I need a crate of the garrison's supp..."<br>brannoc: after_restored, "I need a crate of the garrison's supp..."<br>brannoc: greet, "I need a crate of the garrison's supp..."<br>brannoc: greet_again, "I need a crate of the garrison's supp..."<br>brannoc: progress, "I need a crate of the garrison's supp..."<br>brannoc: waiting_on_stones, "I need a crate of the garrison's supp..." |
 | `heard_about_bandits` | brannoc: bandits_info | brannoc: after_given, "Anything else I should know about out..."<br>brannoc: after_restored, "Anything else I should know about out..."<br>brannoc: greet, "Anything else I should know about out..."<br>brannoc: greet_again, "Anything else I should know about out..."<br>brannoc: progress, "Anything else I should know about out..."<br>brannoc: waiting_on_stones, "Anything else I should know about out..."<br>quest bandit_camp |
 | `heard_about_wolves` | maren: wolves | maren: greet_again, "I'll deal with the Greyfang pack." |
+| `heard_card_player` | maren: road_folk | maren: greet_again, "Who else comes up this road?" |
 | `heard_greyfang_reason` (never checked) | maren: wolves_why | – |
+| `heard_hallam` (never checked) | ostap: song | – |
 | `heard_of_thornwood` (never checked) | brannoc: mark_hunter | – |
 | `hint_climb` | Hints.show_once(id) sets hint_<id> (systems/hints.gd) | player/player_traversal.gd:44 |
 | `hollow_wolf_killed` | enemies/hollow_wolf.gd:65<br>hollow_wolf: mercy | enemies/hollow_wolf.gd:30<br>quest wrong_things |
@@ -416,7 +418,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `outlaws_trust_supplies` | mirela: supplies_done | quest ask_forest |
 | `outlaws_trust_vouched` (never checked) | mirela: outlaw_vouch | – |
 | `prayed_for_dunya` (never checked) | dunya: acolyte | – |
-| `reached_hollowing` | systems/corruption.gd:103 | systems/corruption.gd:102 |
+| `reached_hollowing` | systems/corruption.gd:116 | systems/corruption.gd:115 |
 | `read_letter` | props/ritual_altar.gd:8 | brannoc (start → end_hollow)<br>brannoc (start → end_intro)<br>maren (start → end_hollow)<br>maren (start → end_intro)<br>mirela (start → end_hollow)<br>mirela (start → end_intro)<br>quest what_they_made |
 | `read_shrine_inscription` | shrine: acolyte<br>shrine: inscription | quest silent_shrine<br>shrine: look, "Offer the Wisp Essence." |
 | `readings_1` | props/reading_stone.gd sets readings_1..3 | quest readings |
@@ -425,25 +427,26 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `readings_delivered` | aurel: report_north | aurel (start → done)<br>quest readings |
 | `readings_started` | aurel: give | aurel (start → waiting)<br>quest readings |
 | `refused_maren` (never checked) | maren: wolves, "Sounds like someone else's problem."<br>maren: wolves_why, "Sounds like someone else's problem." | – |
+| `released_wisp` (never checked) | props/floating_crystal.gd:58 | – |
 | `ritual_cultists_cleared` (never checked) | levels/test_level.tscn (RitualCultists) | – |
 | `ritual_site_seen_by_day` | props/ritual_site.gd:47 | props/ritual_site.gd:46 |
 | `ritual_started` | props/ritual_site.gd:16 | levels/test_level.tscn (Cultist1)<br>levels/test_level.tscn (Cultist2)<br>levels/test_level.tscn (Cultist3)<br>quest what_they_made |
-| `saw_drain_line` | props/floating_crystal.gd:46<br>props/floating_crystal.gd:51<br>systems/save_system.gd:221 | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..."<br>props/drain_line.gd:9<br>props/floating_crystal.gd:50<br>quest ask_forest<br>quest waking_stones<br>systems/save_system.gd:220 |
+| `saw_drain_line` | props/floating_crystal.gd:72<br>props/floating_crystal.gd:77<br>systems/save_system.gd:221 | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..."<br>props/drain_line.gd:9<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:76<br>quest ask_forest<br>quest waking_stones<br>systems/save_system.gd:220 |
 | `saw_dunya` | dunya: look | mirela: end_letter, "Dunya?" |
 | `saw_hollow_wolf` | enemies/hollow_wolf.gd:54<br>hollow_wolf: look | brannoc (start → mark)<br>enemies/hollow_wolf.gd:52<br>enemies/hollow_wolf.gd:72<br>hollow_wolf (start → again)<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>mirela: drain, "A wolf by Greyfang Hollow looked the ..."<br>quest wrong_things |
 | `saw_wisp_drained` | enemies/wisp_spawner.gd:61 | enemies/wisp_spawner.gd:60 |
 | `scholar_read_mark` | hollow_wolf: mark_scholar | brannoc: mark, "(Scholar) It isn't a brand. Something..." |
-| `shards_chose_stones` | brannoc: chose_stones | brannoc (start → waiting_on_stones)<br>props/floating_crystal.gd:40<br>props/floating_crystal.gd:49 |
-| `shards_decided` | brannoc: chose_stones<br>brannoc: given<br>brannoc: kept | props/floating_crystal.gd:49<br>quest waking_stones |
+| `shards_chose_stones` | brannoc: chose_stones | brannoc (start → waiting_on_stones)<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:66<br>props/floating_crystal.gd:75 |
+| `shards_decided` | brannoc: chose_stones<br>brannoc: given<br>brannoc: kept | props/floating_crystal.gd:52<br>props/floating_crystal.gd:75<br>quest waking_stones |
 | `shards_given` | brannoc: given | brannoc (start → after_given)<br>quest waking_stones |
 | `shards_kept` | brannoc: kept | brannoc (start → after_kept)<br>brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: end_letter, "What happens now?"<br>brannoc: end_letter, "You kept your distance from the cryst..."<br>brannoc: end_letter, "You still think I should have handed ..."<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?"<br>quest waking_stones |
 | `shrine_answered` | props/shrine.gd:34 | props/shrine.gd:33<br>props/shrine.gd:55<br>quest silent_shrine |
 | `shrine_prayed` (never checked) | shrine: pray | – |
 | `shrine_rekindled` | shrine: offer | props/shrine.gd:24<br>props/shrine.gd:30<br>props/shrine.gd:55<br>quest silent_shrine |
 | `silent_shrine_started` | maren: report_acolyte<br>shrine: look | quest silent_shrine |
-| `stones_quest_done` | brannoc: given<br>brannoc: kept<br>props/floating_crystal.gd:47 | brannoc: mark, "I'm already looking into the stones."<br>brannoc: mark_hunter, "I'm already looking into the stones."<br>brannoc: mark_scholar, "I'm already looking into the stones."<br>quest waking_stones<br>systems/save_system.gd:220 |
+| `stones_quest_done` | brannoc: given<br>brannoc: kept<br>props/floating_crystal.gd:73 | brannoc: mark, "I'm already looking into the stones."<br>brannoc: mark_hunter, "I'm already looking into the stones."<br>brannoc: mark_scholar, "I'm already looking into the stones."<br>quest waking_stones<br>systems/save_system.gd:220 |
 | `stones_quest_started` | brannoc: accept | brannoc (start → progress)<br>brannoc: lore, "I'll look into it."<br>brannoc: mark, "I'm already looking into the stones."<br>brannoc: mark, "Then I'll look at the stones."<br>brannoc: mark_hunter, "I'm already looking into the stones."<br>brannoc: mark_hunter, "Then I'll look at the stones."<br>brannoc: mark_scholar, "I'm already looking into the stones."<br>brannoc: mark_scholar, "Then I'll look at the stones."<br>quest waking_stones |
-| `stones_restored` | props/floating_crystal.gd:45 | brannoc (start → after_restored)<br>props/floating_crystal.gd:24<br>props/floating_crystal.gd:40<br>quest waking_stones |
+| `stones_restored` | props/floating_crystal.gd:71 | brannoc (start → after_restored)<br>props/floating_crystal.gd:30<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:66<br>quest waking_stones |
 | `strongbox_kept` | jory: keep_box | quest lost_wagon |
 | `strongbox_returned` | jory: return_box | quest lost_wagon |
 | `taken:test_dungeon/CultNotes` | interactables/pickup.gd sets taken:<level>/<node> when picked up | quest what_they_made |
@@ -456,7 +459,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `told_mirela_end` | mirela: end_hollow<br>mirela: end_mirela<br>mirela: end_mirela_cold | quest what_they_made |
 | `told_mirela_wolf` | mirela: wolf_too | mirela: drain, "A wolf by Greyfang Hollow looked the ..." |
 | `took_wisp_essence` | caged_wisp: take | mirela (start → heard_essence)<br>mirela: end_dunya, "What will the Free do?"<br>mirela: end_letter, "What will the Free do?"<br>quest the_barrow<br>systems/save_system.gd:199 |
-| `touched_crystal` | props/floating_crystal.gd:54<br>props/floating_crystal.gd:59 | brannoc: progress, "The crystal answered when I touched i..."<br>props/floating_crystal.gd:58<br>quest waking_stones |
+| `touched_crystal` | props/floating_crystal.gd:80<br>props/floating_crystal.gd:85 | brannoc: progress, "The crystal answered when I touched i..."<br>props/floating_crystal.gd:48<br>props/floating_crystal.gd:84<br>quest waking_stones |
 | `wisp_choice_made` | caged_wisp: free<br>caged_wisp: take | props/caged_wisp.gd:23<br>props/caged_wisp.gd:29<br>quest the_barrow |
 | `wolf_quest_accepted` | maren: accept | maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
 | `wolf_quest_done` | maren: reward<br>maren: reward_driven | brannoc: greet, "Maren says she told Riverwatch about ..."<br>maren (start → greet_hero)<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |

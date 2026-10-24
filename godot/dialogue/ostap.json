@@ -2,7 +2,7 @@
 	"start": "greet",
 	"nodes": {
 		"greet": {
-			"text": "Far enough. Hands where I can see them. ...You're the one who's been following the light. Mirela's by the fire. Walk slow.",
+			"text": "(He breaks off humming as you come closer.) Far enough. Hands where I can see them. ...You're the one who's been following the light. Mirela's by the fire. Walk slow.",
 			"choices": [
 				{
 					"text": "Who are you people?",
@@ -12,6 +12,10 @@
 					"text": "(Outlaw) Easy. I'm on the same notice board as you.",
 					"next": "outlaw",
 					"requires_background": "outlaw"
+				},
+				{
+					"text": "What was that you were singing?",
+					"next": "song"
 				},
 				{
 					"text": "Goodbye.",
@@ -31,6 +35,20 @@
 		"outlaw": {
 			"text": "Ha. Then you know the rules: don't steal from the pot, and don't bring the garrison home with you.",
 			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"song": {
+			"text": "\"...and Hallam hunted the lights through a hundred nights, and caught one each night, and put it out.\" Hallam and the Hundred Lights. Every child in the Empire knows it. My mam sang it to keep me in bed. It worked: I was scared of wisps till I was twelve. Now I'm only scared of the garrison.",
+			"set_flag": "heard_hallam",
+			"choices": [
+				{
+					"text": "Who are you people?",
+					"next": "who"
+				},
 				{
 					"text": "Goodbye.",
 					"next": "end"

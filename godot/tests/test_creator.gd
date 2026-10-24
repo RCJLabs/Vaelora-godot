@@ -30,7 +30,7 @@ func _process(_d: float) -> bool:
 		12:
 			var d := texts(cc.details)
 			ok(d[0] == "Scholar", "scholar details shown", d[0])
-			ok(d.any(func(t): return t.contains("Intellect +2") and t.contains("Destruction +5")), "scholar bonuses listed")
+			ok(d.any(func(t): return t.contains("Intellect +2") and t.contains("Ruin +5")), "scholar bonuses listed")
 			ok(d.any(func(t): return t.contains("Clarity")), "scholar power listed")
 			cc.next_button.emit_signal("pressed")
 		14:

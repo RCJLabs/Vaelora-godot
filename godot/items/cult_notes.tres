@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = "cult_notes"
 display_name = "Cultist's Notes"
-description = "Pages in a small, careful hand, with a map folded inside.
+description = "Pages in a small, careful hand, headed with the mark (a circle split by three lines) and two words: THE MERCY. A map is folded inside.
 
 \"The stones give less each night. The wolves were a waste: too little in them. The forest witch gave more than all the wisps together. The first of them must be fed in the dark of the Wanderer, at the Hollow Oak. Then we send it north. - V.\"
 
