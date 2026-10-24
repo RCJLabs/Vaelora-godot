@@ -341,6 +341,7 @@ func drain_away(center: Vector3) -> bool:
 	_fading = true
 	state = State.DEAD
 	collision_layer = 0
+	Sfx.play_at("wisp_drain", global_position)
 	var tween := create_tween()
 	tween.set_parallel()
 	tween.tween_property(self, "global_position", center, 2.5).set_trans(Tween.TRANS_SINE)

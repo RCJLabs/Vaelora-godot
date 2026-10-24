@@ -56,6 +56,10 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 - [ ] Walk on grass, then onto the stone block (a few metres north-east of spawn): do steps sound like steps?
 - [ ] Stand still for 20 s: is the wind/bird bed pleasant, annoying, or too loud?
 - [ ] Walk up to the campfire at the waystation: crackle OK?
+- [ ] Story moments now have sounds too: the opening and closing cards (a low chord), the
+      shrine (a bell), a wisp drained into the line (a falling whistle), freeing or taking the
+      caged wisp, corruption rising, the ritual starting, The First's rings, and the wolves
+      breaking. Any that feel wrong for the moment, or too loud?
 - [ ] Rate the worst sound you hear today, so it gets replaced first.
 
 ## 3. Melee feel (5 min) — the wolves, north-east of spawn

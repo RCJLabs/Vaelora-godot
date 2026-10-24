@@ -150,16 +150,16 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       greybox test dungeon: pressure plates, darts, swinging blades, levers and gates, and a
       two-phase Stone Guardian boss. See DUNGEONS.md. The real dungeons wait on the region
       and the lore.)
-- [~] **A short main questline** (3–5 quests) with a real choice that changes the ending,
-      plus **5–8 side quests** and **2–3 factions** that react to you.
-      (Outline approved: docs/QUESTLINE.md, five main quests and six side quests. Built so far:
-      the six background openings and the whole main questline, quests 1–5: Wrong Things,
-      The Waking Stones (reframed), Ask the Forest, The Barrow and What They Made, with an
-      ending, the outlaws as a second faction, and The First as the final boss; and all six
-      side quests. All greybox: the real region, models and a playtest are what's left.)
-- [~] **3–5 enemy types:** wolves (existing), bandits (human, uses the combat system),
-      something magical, a boss. (Wolves, bandits and night-time wisps done; a boss waits for
-      the dungeon it belongs in.)
+- [x] **A short main questline** (3–5 quests) with a real choice that changes the ending,
+      plus **5–8 side quests** and **2–3 factions** that react to you. Built in greybox
+      (docs/QUESTLINE.md; every quest and flag is charted in docs/QUEST_FLOW.md): the six
+      background openings, the five main quests (Wrong Things, The Waking Stones, Ask the
+      Forest, The Barrow, What They Made) with The First as the final boss and an ending, all
+      six side quests, the outlaws as a second faction, corruption (docs/CORRUPTION.md, which
+      changes the ending), and a Greyfang pack you can drive off instead of kill. What's left
+      is outside this item: the real region, models, and a playtest.
+- [x] **3–5 enemy types:** wolves, bandits (human, uses the combat system), night-time
+      wisps (magical), cultists, and two bosses: the Stone Guardian and The First.
 - [x] **Survival v1 (optional mode):** hunger, thirst, sleep, cold, with food, camping and
       inns. (Plus a world clock with day and night. Beds and campfires rest and autosave;
       inns and paid beds come with a town. See SURVIVAL.md.)

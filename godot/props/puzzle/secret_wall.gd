@@ -36,6 +36,7 @@ func _open(animate: bool) -> void:
 	prompt = ""
 	var target := position - Vector3(0, sink_depth, 0)
 	if animate:
+		Sfx.play_at("gate_rumble", global_position)
 		var tween := create_tween()
 		tween.tween_property(self, "position", target, 1.6).set_trans(Tween.TRANS_QUAD)
 		tween.tween_callback(func(): collision_layer = 0)

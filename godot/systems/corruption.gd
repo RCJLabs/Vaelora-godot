@@ -97,6 +97,8 @@ func _set_value(new_value: float, what: String) -> void:
 	var player := get_tree().get_first_node_in_group("player")
 	if player:
 		player.show_message(ARRIVE_MESSAGES[new_tier] if new_tier > 0 else ARRIVE_MESSAGES[0])
+	if new_tier > old_tier:
+		Sfx.play("corruption_rise")   # (going down, the shrine's chime says it)
 	if new_tier == 3 and not GameState.has_flag("reached_hollowing"):
 		GameState.set_flag("reached_hollowing")
 		Reputation.add("thornwood_free", HOLLOWING_REPUTATION)

@@ -35,6 +35,7 @@ func _on_flag_set(flag: String) -> void:
 	match flag:
 		"freed_wisp":
 			prompt = ""
+			Sfx.play_at("wisp_freed", orb.global_position)
 			var tween := create_tween()
 			tween.tween_property(orb, "position", orb.position + Vector3(0, 1.2, 0), 0.8)
 			tween.tween_callback(func():
@@ -43,6 +44,7 @@ func _on_flag_set(flag: String) -> void:
 					WispCompanion.ensure(player))
 		"took_wisp_essence":
 			prompt = ""
+			Sfx.play("wisp_taken")
 			Skills.grant_bonus("magicka", ESSENCE_MAGICKA)
 			Reputation.add("thornwood_free", ESSENCE_REPUTATION)
 			Corruption.add(ESSENCE_CORRUPTION, "the wisp's light")
