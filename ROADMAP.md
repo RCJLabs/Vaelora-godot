@@ -139,6 +139,7 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
 **Rough size:** 400–700 hours (≈ 5–8 months). **Demo target: about 9–14 months from now.**
 
 - [ ] **Lore bible v1** from your ideas: the region, its history, factions, the demo's story.
+      (Questionnaire to fill in: docs/LORE_QUESTIONNAIRE.md.)
 - [ ] **Asset pass:** buy or download a consistent environment set (rocks, trees, buildings)
       plus humanoid NPC models and animations. Terrain3D landscape for the region.
 - [ ] **One outdoor region** (~1 km²), with a small town or village, a road, wilderness,
