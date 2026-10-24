@@ -32,9 +32,11 @@ TIMEOUT = 300
 # tests/test_*.gd runs once with none.
 VARIANTS = {
     "test_attrs": [["orc"]],
+    "test_barrow": [["free"], ["take"]],
     "test_ask_forest": [["bandits"], ["supplies"], ["outlaw"]],
     "test_bandit_fight": [["skilled"]],   # "naive" (never defends) is a balance check: run it by hand
     "test_combat": [["human"]],
+    "test_first": [["maren"], ["brannoc"], ["mirela"]],
     "test_floor": [["res://levels/test_level.tscn"], ["res://levels/waystation_cellar.tscn"]],
     "test_nav": [["nav_kill"]],
     "test_quest": [["riverwatch"], ["stones"]],
@@ -42,6 +44,7 @@ VARIANTS = {
     "test_rep": [["human_give"], ["keep"]],
     # Broken collision setups from FIRST_PERSON_SETUP.md: the first five fall, the rest stand.
     "test_wrong_things": [["mercy"], ["spare"], ["weapon"]],
+    "test_side_quests": [["shrine"], ["wagon_merchant"], ["wagon_keep"], ["licence_arrest"], ["licence_teach"], ["readings"], ["greyfang"]],
     "test_variants": [["human"], ["empty_ground_shape"], ["shape_under_mesh"], ["default_box_size_offcenter"],
                       ["player_mask_zero"], ["player_shape_empty"], ["ground_layer_not_in_mask"],
                       ["ground_scaled_body"], ["centered_capsule_at_y0"], ["centered_capsule_at_y_minus_0_3"]],

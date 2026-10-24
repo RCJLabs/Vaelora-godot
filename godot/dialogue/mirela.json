@@ -1,6 +1,21 @@
 {
 	"start": [
 		{
+			"node": "end_intro",
+			"requires_flag": "read_letter",
+			"requires_not_flag": "demo_finished"
+		},
+		{
+			"node": "heard_essence",
+			"requires_flag": "took_wisp_essence",
+			"requires_not_flag": "mirela_heard_essence"
+		},
+		{
+			"node": "heard_freed",
+			"requires_flag": "freed_wisp",
+			"requires_not_flag": "mirela_heard_freed"
+		},
+		{
 			"node": "after_lead",
 			"requires_flag": "barrow_lead"
 		},
@@ -304,6 +319,99 @@
 				{
 					"text": "Something's drawing magic out of the stone circle. The line runs here.",
 					"next": "drain"
+				}
+			]
+		},
+		"heard_essence": {
+			"text": "Word travels in the Thornwood. They say you went into the barrow and came out brighter than you went in, and the last wisp didn't come out at all. ...You did what they do. Don't tell me why. Just don't do it near my people.",
+			"set_flag": "mirela_heard_essence",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"heard_freed": {
+			"text": "Is that a wisp on your shoulder? ...Dunya used to say they only follow people they trust. She'd have liked you.",
+			"set_flag": "mirela_heard_freed",
+			"add_reputation": {
+				"thornwood_free": 5
+			},
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"end_intro": {
+			"text": "The light's gone out over the oak. My scouts came back running and laughing, which they haven't done since spring. Was that you?",
+			"choices": [
+				{
+					"text": "(Show her the letter and the map.)",
+					"next": "end_letter"
+				}
+			]
+		},
+		"end_letter": {
+			"text": "She spreads the map on a log by the fire, and the Free crowd round it. Someone counts the marks out loud. Twelve. Nobody laughs any more.",
+			"choices": [
+				{
+					"text": "Dunya?",
+					"next": "end_dunya",
+					"requires_flag": "saw_dunya"
+				},
+				{
+					"text": "What will the Free do?",
+					"next": "end_mirela",
+					"requires_not_flag": "took_wisp_essence"
+				},
+				{
+					"text": "What will the Free do?",
+					"next": "end_mirela_cold",
+					"requires_flag": "took_wisp_essence"
+				}
+			]
+		},
+		"end_dunya": {
+			"text": "She looked up this evening. Only for a moment, when the light went out. She hasn't spoken. But she looked up.",
+			"choices": [
+				{
+					"text": "What will the Free do?",
+					"next": "end_mirela",
+					"requires_not_flag": "took_wisp_essence"
+				},
+				{
+					"text": "What will the Free do?",
+					"next": "end_mirela_cold",
+					"requires_flag": "took_wisp_essence"
+				}
+			]
+		},
+		"end_mirela": {
+			"text": "What we always do: watch the roads, and tell the right people what we see. You're one of the right people now, whatever the garrison says.",
+			"set_flag": [
+				"told_mirela_end",
+				"demo_finished"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"end_mirela_cold": {
+			"text": "What we always do: watch the roads. And watch you. You did what they do, once. Don't make it twice.",
+			"set_flag": [
+				"told_mirela_end",
+				"demo_finished"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
 				}
 			]
 		}

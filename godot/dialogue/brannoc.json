@@ -1,6 +1,16 @@
 {
 	"start": [
 		{
+			"node": "end_intro",
+			"requires_flag": "read_letter",
+			"requires_not_flag": "demo_finished"
+		},
+		{
+			"node": "zora_report",
+			"requires_flag": "zora_decided",
+			"requires_not_flag": "brannoc_told_zora"
+		},
+		{
 			"node": "gift",
 			"requires_reputation": {
 				"riverwatch": 25
@@ -150,6 +160,15 @@
 					]
 				},
 				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
+					]
+				},
+				{
 					"text": "Not yet.",
 					"next": "end"
 				}
@@ -251,6 +270,15 @@
 					"requires_not_flag": [
 						"got_supply_crate",
 						"outlaws_trust"
+					]
+				},
+				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
 					]
 				},
 				{
@@ -366,6 +394,15 @@
 					]
 				},
 				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -412,6 +449,15 @@
 					]
 				},
 				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -455,6 +501,15 @@
 					"requires_not_flag": [
 						"got_supply_crate",
 						"outlaws_trust"
+					]
+				},
+				{
+					"text": "Any other work for the garrison?",
+					"next": "licence",
+					"requires_flag": "met_brannoc",
+					"requires_not_flag": [
+						"licence_started",
+						"shards_kept"
 					]
 				},
 				{
@@ -745,6 +800,124 @@
 			"choices": [
 				{
 					"text": "Thank you, Brannoc.",
+					"next": "end"
+				}
+			]
+		},
+		"end_intro": {
+			"text": "You're alive. The light over the forest went out an hour ago, and I've been standing here wondering which of us that was bad news for.",
+			"choices": [
+				{
+					"text": "(Show him the letter and the map.)",
+					"next": "end_letter"
+				}
+			]
+		},
+		"end_letter": {
+			"text": "He reads it with his lips moving, the way he reads orders. \"The Pale Gate. I've heard the name. Old stories, the kind the captain doesn't let us tell on watch.\" He looks at the map for a long time.",
+			"choices": [
+				{
+					"text": "You kept your distance from the crystal. Smart.",
+					"next": "end_brannoc",
+					"requires_not_flag": "shards_kept"
+				},
+				{
+					"text": "You still think I should have handed over the shards?",
+					"next": "end_kept",
+					"requires_flag": "shards_kept"
+				},
+				{
+					"text": "What happens now?",
+					"next": "end_brannoc",
+					"requires_not_flag": "shards_kept"
+				}
+			]
+		},
+		"end_kept": {
+			"text": "I still think you're a thief. I also think you're the only one who went into that forest. The garrison can hold both thoughts. Barely.",
+			"choices": [
+				{
+					"text": "What happens now?",
+					"next": "end_brannoc"
+				}
+			]
+		},
+		"end_brannoc": {
+			"text": "Now I take this to the captain, and she asks Riverwatch for soldiers it doesn't have, and the town says no. Then she asks me who did this, and I tell her. Don't be surprised if someone comes looking for you with a better offer than mine.",
+			"set_flag": [
+				"told_brannoc_end",
+				"demo_finished"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"licence": {
+			"text": "There's a hedge-mage living in the Thornwood, west of the outlaws' fire. No licence, no Collegium seal, and the captain's had complaints: lights at night, goats going missing. Bring her in. Fifty gold, and I don't have to go into those trees.",
+			"set_flag": "licence_started",
+			"choices": [
+				{
+					"text": "I'll find her.",
+					"next": "end"
+				},
+				{
+					"text": "What if she won't come?",
+					"next": "licence_force"
+				}
+			]
+		},
+		"licence_force": {
+			"text": "Then she won't, and you come back and tell me so. I'm not paying you to kill an old woman over goats.",
+			"choices": [
+				{
+					"text": "I'll find her.",
+					"next": "end"
+				}
+			]
+		},
+		"zora_report": {
+			"text": "Well? The hedge-mage?",
+			"choices": [
+				{
+					"text": "She came quietly. She says the goats were never her.",
+					"next": "zora_paid",
+					"requires_flag": "zora_arrested"
+				},
+				{
+					"text": "She was gone when I got there.",
+					"next": "zora_gone",
+					"requires_not_flag": "zora_arrested"
+				},
+				{
+					"text": "I never found her.",
+					"next": "zora_gone",
+					"requires_flag": "zora_taught"
+				}
+			]
+		},
+		"zora_paid": {
+			"text": "Quietly. Good. Fifty, as promised, and I'll tell the captain about the goats. Wolves, probably. It's always wolves.",
+			"give_gold": 50,
+			"add_reputation": {
+				"riverwatch": 10
+			},
+			"set_flag": "brannoc_told_zora",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"zora_gone": {
+			"text": "Gone. Convenient. ...I'll write \"gone\" in the report, then. No fifty for \"gone\", mind.",
+			"set_flag": "brannoc_told_zora",
+			"choices": [
+				{
+					"text": "(Leave)",
 					"next": "end"
 				}
 			]

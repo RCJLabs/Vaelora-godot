@@ -12,8 +12,14 @@ next objective), **Quest completed**.
 | Quest | Giver | Steps | Endings |
 |---|---|---|---|
 | **Wrong Things** (main quest 1) | Started by every background's opening; Maren tells you about it | Talk to Maren → find the hollow wolf east of Greyfang Hollow and copy the mark on it → show the mark to Brannoc | **Put it down** (in its dialogue, or with a weapon) or **leave it standing**; the journal remembers which. +5 Riverwatch reputation. Leads into The Waking Stones |
-| The Greyfang Pack | Maren (waystation) | Kill the wolves NE of spawn → return to Maren | 50 gold + healing potion, +10 Riverwatch reputation |
+| The Greyfang Pack | Maren (waystation) | Kill the wolves NE of spawn → return to Maren | 50 gold + healing potion, +10 Riverwatch reputation. Once the main quest has started, Maren can say why they raid the road: the drain has left their prey thin and grey |
+| **Silent Shrine** (side) | The roadside shrine south of spawn (the Acolyte's start) | Pray (nothing answers) and read the inscription ("light given freely") → bring **Wisp Essence** (wisps drop it at the stones by night) → offer it → pray **after dark** | Something answers: a pull from above and to the north. The rekindled shrine heals you fully and blesses you once a day |
+| **The Lost Wagon** (side) | The wrecked yellow wagon NE of the bandit camp (the Merchant's start, via Maren) | Search the wagon → tracks lead to the bandit camp → **Jory**, the driver, in the bandits' cage → work the lock → the **strongbox** in the bandits' chest → settle up at the waystation | Merchant: pay Jory double, his wages, or nothing (−5 Riverwatch). Anyone else: return the box (50 gold, +5 Riverwatch) or keep it (150 gold, −5 Riverwatch) |
+| **Licence to Burn** (side) | Brannoc ("Any other work for the garrison?") | Find **Zora**, a hedge-mage, at her hut west of the outlaw camp → arrest her, warn her off, or learn from her → report to Brannoc | **Arrest:** she leaves, 50 gold, +10 Riverwatch, −10 Thornwood Free. **Warn:** she leaves, +10 Thornwood Free. **Learn:** a Frost Burst tome, she stays, no pay. She also knows the drain's shape: someone trained at a college |
+| **Readings Under the Wanderer** (side) | **Magister Aurel** of the Collegium, at the waystation (the Scholar's contact) | Take a reading with his rune-glass at the stone circle, at night, on **three separate nights** → report | 80 gold. The needle points north: the stones are being drained. Aurel suspects someone at the Collegium will want it buried |
 | **Ask the Forest** (main quest 3) | Starts when the crystal shows the drain-line | Follow the line north to the outlaw camp in the Thornwood → Mirela's terms: **clear the bandit camp** or **bring a garrison supply crate** (Brannoc gives one, −10 Riverwatch) → her scouts' report | The lead to the Old Barrow: hooded folk carrying cages in and out after dark. +15–20 Thornwood Free reputation. The Outlaw can skip the terms by showing their wanted notice. The bandit leader's **marked coin** gets an extra line |
+| **The Barrow** (main quest 4) | Mirela's scouts' report | Search the Old Barrow → past the Stone Guardian, the vault's scrape marks lead to a **secret wall** → the hidden chamber: two hooded cultists, jars of stolen light, the notes and map → **the last caged wisp** | **Free it:** it follows you as a light from then on (+5 Thornwood Free when Mirela sees it). **Take its essence:** +25 max Magicka, −15 Thornwood Free ("You did what they do") |
+| **What They Made** (main quest 5, the last) | The cultist's notes | Find the Hollow Oak, north-east of the outlaw camp, **at night** → three hooded cultists and **The First**, the creature they made → the sealed letter on the slab → tell Maren, Brannoc or Mirela | The **ending**: each of them reacts to what you did (the freed wisp, the kept shards, the stolen essence, Dunya), then a closing card ("To be continued"). The letter names the Pale Gate, and its map marks a dozen places across Vaelora |
 | Thieves by the Fire | Brannoc ("Anything else I should know about out here?") | Clear the bandit camp south-west of the stone circle → tell Brannoc | 75 gold, +10 Riverwatch reputation |
 | **The Waking Stones** (main quest 2) | Brannoc (Riverwatch scout, between spawn and the stone circle) | Touch the crystal → find 3 rune shards (glowing, scattered around the circle) → bring them to Brannoc → **choose** → look into the crystal again: it shows the **drain-line**, a thread of light running north into the Thornwood | **Riverwatch:** 60 gold, +15 Riverwatch reputation. **The stones:** return the shards to the crystal yourself: +10 max Magicka, the crystal burns brighter (and shows the line straight away). **Keep them:** −15 Riverwatch reputation, Brannoc goes cold. Afterwards, tell Brannoc about the line: he points you at the outlaws in the Thornwood |
 
@@ -43,6 +49,15 @@ first conversation has a line for each background.
 | Merchant | Down the road, south | Up the road |
 
 Loading a save, or running a level on its own (F6), plays no opening.
+
+## Building blocks for quest scenes
+
+- **`props/story_presence.gd`** on a Node3D: everything under it is there only between two
+  story flags (`show_flag`, `hide_flag`): invisible, frozen and untouchable otherwise. Jory
+  is in the cage until `jory_freed`, then at the waystation; Zora leaves on `zora_left`.
+- **`interactables/examine.gd`**: something you look at (E) with a custom prompt ("Search the
+  wagon") that opens a dialogue file, for descriptions with choices.
+- **CageDoor** (`props/puzzle/cage_door.gd`) can set an `opened_flag` when its lock springs.
 
 ## Quest markers
 

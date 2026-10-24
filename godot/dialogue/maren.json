@@ -1,6 +1,11 @@
 {
 	"start": [
 		{
+			"node": "end_intro",
+			"requires_flag": "read_letter",
+			"requires_not_flag": "demo_finished"
+		},
+		{
 			"node": "greet_hero",
 			"requires_flag": "wolf_quest_done"
 		},
@@ -152,6 +157,11 @@
 			"text": "The Greyfang pack. They took two carts last month, and they den past the stone wall, to the north-east. Riverwatch won't send guards past the old bridge.",
 			"set_flag": "heard_about_wolves",
 			"choices": [
+				{
+					"text": "Why are they raiding the road at all?",
+					"next": "wolves_why",
+					"requires_flag": "wrong_things_started"
+				},
 				{
 					"text": "I'll deal with them.",
 					"next": "accept",
@@ -715,7 +725,7 @@
 			]
 		},
 		"report_scholar": {
-			"text": "Odd? Everything's been odd since the new moon. The stones hum at night, and that's the least of it.",
+			"text": "Odd? Everything's been odd since the new moon. The stones hum at night, and that's the least of it. And there's a Collegium man in my back room who's been asking for help with the stones.",
 			"choices": [
 				{
 					"text": "Go on.",
@@ -748,7 +758,8 @@
 					"text": "What else?",
 					"next": "wrong_things"
 				}
-			]
+			],
+			"set_flag": "silent_shrine_started"
 		},
 		"report_merchant": {
 			"text": "Yellow canopy, driver who talked to his mules? It went north eleven days ago, slow and heavy. It never came back down, and Riverwatch never saw it. I'm sorry. It's not the only thing gone missing on this road.",
@@ -757,7 +768,8 @@
 					"text": "What else is missing?",
 					"next": "wrong_things"
 				}
-			]
+			],
+			"set_flag": "lost_wagon_started"
 		},
 		"wrong_things": {
 			"text": "Small wrong things. The wisps at the old stones are fading. I used to watch them from my door every night, and now there's barely a glimmer. And Old Tam, who hunts out past the hollow, came in two days ago white as milk. He'd found a Greyfang wolf that wouldn't run from him. Alive, he said, but grey all through, with eyes like a dead fire. He couldn't bring himself to put it down.",
@@ -808,6 +820,70 @@
 				{
 					"text": "I'll find him.",
 					"next": "end"
+				}
+			]
+		},
+		"end_intro": {
+			"text": "You look like you've been through a hedge backwards and then through something worse. Sit. What happened out there?",
+			"choices": [
+				{
+					"text": "(Show her the letter and the map.)",
+					"next": "end_letter"
+				}
+			]
+		},
+		"end_letter": {
+			"text": "She reads it twice, then puts her finger on the map, on this valley, and then on the eleven other marks. \"Twelve. Twelve places like the stones. And you killed the first thing they made.\" She folds it carefully and gives it back.",
+			"choices": [
+				{
+					"text": "It followed me out of the barrow. The wisp.",
+					"next": "end_wisp",
+					"requires_flag": "freed_wisp"
+				},
+				{
+					"text": "What do I do now?",
+					"next": "end_maren"
+				}
+			]
+		},
+		"end_wisp": {
+			"text": "She watches the wisp settle by the lamp. \"The ones at the stones used to do that, before. Then not everything's gone.\"",
+			"choices": [
+				{
+					"text": "What do I do now?",
+					"next": "end_maren"
+				}
+			]
+		},
+		"end_maren": {
+			"text": "Now? Now you eat something, and sleep, and in the morning you go and find the second one. The road north goes further than Riverwatch. It always has.",
+			"set_flag": [
+				"told_maren_end",
+				"demo_finished"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"wolves_why": {
+			"text": "Hunger. Tam says the deer up in the hollow have gone thin and grey, same as that wolf of his. Nothing's left out there worth eating except what's on the road.",
+			"set_flag": "heard_greyfang_reason",
+			"choices": [
+				{
+					"text": "I'll deal with them.",
+					"next": "accept",
+					"requires_not_flag": [
+						"wolf_quest_accepted",
+						"wolves_cleared"
+					]
+				},
+				{
+					"text": "Sounds like someone else's problem.",
+					"next": "end",
+					"set_flag": "refused_maren"
 				}
 			]
 		}

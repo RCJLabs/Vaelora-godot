@@ -1,0 +1,154 @@
+{
+	"start": [
+		{
+			"node": "settled",
+			"requires_flag": "jory_settled"
+		},
+		{
+			"node": "box_merchant",
+			"requires_item": "strongbox",
+			"requires_background": "merchant"
+		},
+		{
+			"node": "box",
+			"requires_item": "strongbox"
+		},
+		{
+			"node": "waiting"
+		}
+	],
+	"nodes": {
+		"waiting": {
+			"text": "Still in one piece, thanks to you. If you find that strongbox, I'll be here. Maren's soup is the best thing that's happened to me all month.",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"box_merchant": {
+			"text": "You got it back! The whole box. Your money's all there, and my wages are in it too: forty, as agreed, before all this.",
+			"choices": [
+				{
+					"text": "Your forty, and forty more. You earned it in that cage.",
+					"next": "merchant_bonus"
+				},
+				{
+					"text": "Your forty, as agreed.",
+					"next": "merchant_wages"
+				},
+				{
+					"text": "The wagon's lost. There's no wage for a lost wagon.",
+					"next": "merchant_cheat"
+				}
+			]
+		},
+		"merchant_bonus": {
+			"text": "He stares at the coins, then at you. \"I'll drive for you again. Anywhere. Even north.\"",
+			"take_item": "strongbox",
+			"give_gold": 70,
+			"set_flag": [
+				"jory_paid_bonus",
+				"jory_settled"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"merchant_wages": {
+			"text": "Fair's fair. Thank you. If you need a driver again, ask for Jory at Riverwatch.",
+			"take_item": "strongbox",
+			"give_gold": 110,
+			"set_flag": [
+				"jory_paid",
+				"jory_settled"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"merchant_cheat": {
+			"text": "His face closes like a door. \"Right. Then I'll walk to Riverwatch, and tell every driver there who not to work for.\"",
+			"take_item": "strongbox",
+			"give_gold": 150,
+			"set_flag": [
+				"jory_cheated",
+				"jory_settled"
+			],
+			"add_reputation": {
+				"riverwatch": -5
+			},
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"box": {
+			"text": "The strongbox! My master's on the coast; she'll pay a finder's fee if it reaches her. Give it to me and I'll see it does: fifty, out of my own wages if I have to.",
+			"choices": [
+				{
+					"text": "Take it. Get it home.",
+					"next": "return_box"
+				},
+				{
+					"text": "Finders keepers.",
+					"next": "keep_box"
+				}
+			]
+		},
+		"return_box": {
+			"text": "Fifty, and my thanks, and hers when she hears. You're a strange sort of person to find in a bandit camp.",
+			"take_item": "strongbox",
+			"give_gold": 50,
+			"set_flag": [
+				"strongbox_returned",
+				"jory_settled"
+			],
+			"add_reputation": {
+				"riverwatch": 5
+			},
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"keep_box": {
+			"text": "You pry the lid with your knife while he watches: a hundred and fifty in coin. \"So you're a bandit with better manners,\" he says, and turns away.",
+			"take_item": "strongbox",
+			"give_gold": 150,
+			"set_flag": [
+				"strongbox_kept",
+				"jory_settled"
+			],
+			"add_reputation": {
+				"riverwatch": -5
+			},
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"settled": {
+			"text": "Safe roads to you.",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

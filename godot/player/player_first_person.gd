@@ -132,6 +132,7 @@ func _ready() -> void:
 		apply_save_data(saved)
 	arrive_at_marker(SaveSystem.take_pending_marker())
 	Openings.play(self)   # a new game: the background's first scene
+	WispCompanion.ensure(self)   # the wisp freed in the barrow follows you
 
 
 func _unhandled_input(event: InputEvent) -> void:

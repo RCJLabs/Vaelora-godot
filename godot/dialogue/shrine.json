@@ -1,0 +1,93 @@
+{
+	"start": "look",
+	"nodes": {
+		"look": {
+			"text": "A weathered stone shrine with a basin and a single candle stub. Folk used to leave candles here for the sick; there's only one now, and it's guttering.",
+			"set_flag": "silent_shrine_started",
+			"choices": [
+				{
+					"text": "Pray.",
+					"next": "pray"
+				},
+				{
+					"text": "Read the inscription on the basin.",
+					"next": "inscription"
+				},
+				{
+					"text": "Offer the Wisp Essence.",
+					"next": "offer",
+					"requires_item": "wisp_essence",
+					"requires_flag": "read_shrine_inscription"
+				},
+				{
+					"text": "Leave.",
+					"next": "end"
+				}
+			]
+		},
+		"pray": {
+			"text": "You say the old words. Nothing answers: no warmth, no stillness, nothing. Whatever used to listen here has stopped, or has been drawn away.",
+			"set_flag": "shrine_prayed",
+			"choices": [
+				{
+					"text": "Read the inscription on the basin.",
+					"next": "inscription"
+				},
+				{
+					"text": "(Acolyte) Say the rite for a silent shrine.",
+					"next": "acolyte",
+					"requires_background": "acolyte"
+				},
+				{
+					"text": "Leave.",
+					"next": "end"
+				}
+			]
+		},
+		"acolyte": {
+			"text": "You know this one: when a shrine goes quiet, it has given more light than it was given. It must be fed. The rite says: \"light given freely\". Not oil. Something living, that shines.",
+			"set_flag": "read_shrine_inscription",
+			"choices": [
+				{
+					"text": "Offer the Wisp Essence.",
+					"next": "offer",
+					"requires_item": "wisp_essence"
+				},
+				{
+					"text": "Leave.",
+					"next": "end"
+				}
+			]
+		},
+		"inscription": {
+			"text": "Worn letters around the basin: \"LIGHT GIVEN FREELY KEEPS THE LIGHT\". Someone has scratched a little picture under it: a wisp, drifting into the basin.",
+			"set_flag": "read_shrine_inscription",
+			"choices": [
+				{
+					"text": "Offer the Wisp Essence.",
+					"next": "offer",
+					"requires_item": "wisp_essence"
+				},
+				{
+					"text": "Pray.",
+					"next": "pray"
+				},
+				{
+					"text": "Leave.",
+					"next": "end"
+				}
+			]
+		},
+		"offer": {
+			"text": "You tip the essence into the basin. It doesn't spill: it rises, and settles into the candle, and the flame stands up straight and bright for the first time in weeks.",
+			"take_item": "wisp_essence",
+			"set_flag": "shrine_rekindled",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

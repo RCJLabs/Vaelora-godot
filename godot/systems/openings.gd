@@ -51,7 +51,7 @@ func play(player: Node3D) -> void:
 
 ## A dark band across the middle of the screen with a title and a few lines.
 ## It doesn't pause the game or take the mouse: you can start moving straight away.
-func show_card(title: String, text: String) -> void:
+func show_card(title: String, text: String, seconds: float = CARD_SECONDS) -> void:
 	if _card:
 		_card.queue_free()
 	_card = CanvasLayer.new()
@@ -85,7 +85,7 @@ func show_card(title: String, text: String) -> void:
 	band.modulate.a = 0.0
 	var tween := band.create_tween()
 	tween.tween_property(band, "modulate:a", 1.0, 0.6)
-	tween.tween_interval(CARD_SECONDS)
+	tween.tween_interval(seconds)
 	tween.tween_property(band, "modulate:a", 0.0, 1.5)
 	tween.tween_callback(hide_card)
 

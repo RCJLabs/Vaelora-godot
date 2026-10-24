@@ -1,0 +1,67 @@
+{
+	"start": [
+		{
+			"node": "freed",
+			"requires_flag": "bandit_cage_opened"
+		},
+		{
+			"node": "locked"
+		}
+	],
+	"nodes": {
+		"locked": {
+			"text": "You! You're not one of them. Get me out of here! The lock's on the west side; they've the key, but it's a cheap lock. Work it. Quickly, before the big one comes back.",
+			"set_flag": [
+				"lost_wagon_started",
+				"jory_found"
+			],
+			"choices": [
+				{
+					"text": "(Merchant) Jory! It's me. Where's the strongbox?",
+					"next": "locked_merchant",
+					"requires_background": "merchant"
+				},
+				{
+					"text": "Who are you?",
+					"next": "locked_who"
+				},
+				{
+					"text": "Hold on.",
+					"next": "end"
+				}
+			]
+		},
+		"locked_merchant": {
+			"text": "You came back for me? Gods. They took the box to their chest, by the tents. They couldn't open it. Get me out first, please.",
+			"choices": [
+				{
+					"text": "Hold on.",
+					"next": "end"
+				}
+			]
+		},
+		"locked_who": {
+			"text": "Jory Vell. I drive for a merchant off the coast. They ran us into the ditch on the north road, took the mules, and dragged me here to wait for a ransom nobody's going to pay.",
+			"choices": [
+				{
+					"text": "Hold on.",
+					"next": "end"
+				}
+			]
+		},
+		"freed": {
+			"text": "The door's open. Thank the road. I'm not stopping to thank you properly; I'll be at the waystation, Maren knows me. They put the strongbox in their chest by the tents, if you're feeling brave.",
+			"set_flag": [
+				"lost_wagon_started",
+				"jory_found",
+				"jory_freed"
+			],
+			"choices": [
+				{
+					"text": "Go. I'll find you.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}
