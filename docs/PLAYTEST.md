@@ -19,6 +19,8 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
 - [ ] Title screen: does the slow orbit over the stone circle look OK? Any stutter?
 - [ ] New Game → make any character (try **Soldier** for the shield, or **Scholar** for spells).
 - [ ] First view of the level: note the **FPS** in the corner, on **High**.
+- [ ] The compass at the top: can you tell where the wolves quest points once Maren gives it?
+      Press **M**: is the map readable?
 - [ ] Is it too dark / too bright / washed out? (Screenshots so far were all from the simpler
       renderer; this is the first look in the real one.)
 
@@ -86,6 +88,7 @@ PC: (GPU / CPU, or paste the Report a Bug text)
 FPS on High: open level ___  dungeon fight ___  night ___   |  on Low: ___
 
 Look (dark/bright/OK):
+Compass / map (useful? cluttered?):
 Worst sound:
 Melee feel (floaty/weighty, windup, heavy charge):
 Parry window (easy / right / tight):

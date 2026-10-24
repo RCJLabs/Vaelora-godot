@@ -2,7 +2,8 @@ extends CanvasLayer
 
 # Tab menu: Skills tab (levels, level-up bonuses), Inventory tab (items,
 # gold, using potions), Magic tab (known spells), Quests tab (the journal,
-# also opened directly with J) and Factions tab (reputation). Pauses the game.
+# also opened directly with J), Factions tab (reputation) and Map tab (also
+# opened directly with M; ui/map_view.gd). Pauses the game.
 # Autoloaded as "CharacterMenu" (process mode Always, so it runs while paused).
 
 @onready var root_control: Control = $Root
@@ -16,6 +17,8 @@ extends CanvasLayer
 @onready var tabs: TabContainer = %Tabs
 
 const QUESTS_TAB := 3
+const MAP_TAB := 5
+var map_view: MapView
 var _quest_ids: Array = []   # quest id for each row of quest_list
 
 var _item_ids: Array = []   # item id for each row of item_list
@@ -29,6 +32,8 @@ var is_open := false
 
 func _ready() -> void:
 	root_control.hide()
+	map_view = MapView.new()
+	tabs.add_child(map_view)
 	%HealthButton.pressed.connect(Skills.spend_level_up.bind("health"))
 	%StaminaButton.pressed.connect(Skills.spend_level_up.bind("stamina"))
 	%MagickaButton.pressed.connect(Skills.spend_level_up.bind("magicka"))
@@ -63,6 +68,15 @@ func _input(event: InputEvent) -> void:
 				open()
 			tabs.current_tab = QUESTS_TAB
 		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("map"):
+		if is_open and tabs.current_tab == MAP_TAB:
+			close()
+		else:
+			if not is_open:
+				open()
+			tabs.current_tab = MAP_TAB
+			_focus_tab.call_deferred()
+		get_viewport().set_input_as_handled()
 	elif is_open and event.is_action_pressed("ui_cancel"):
 		close()
 		get_viewport().set_input_as_handled()
@@ -95,6 +109,9 @@ func open() -> void:
 func _focus_tab() -> void:
 	var page := tabs.get_current_tab_control()
 	if page == null:
+		return
+	if page.focus_mode == Control.FOCUS_ALL:   # the map page itself takes focus (zoom)
+		page.grab_focus()
 		return
 	for control in page.find_children("*", "Control", true, false):
 		if control.focus_mode == Control.FOCUS_ALL and control.is_visible_in_tree():

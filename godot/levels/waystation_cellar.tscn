@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3]
+[gd_scene load_steps=35 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/loot_container.gd" id="2_container"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://levels/nav_region.gd" id="5_nav"]
 [ext_resource type="Script" path="res://interactables/bed.gd" id="9_bed"]
 [ext_resource type="Script" path="res://levels/ambience.gd" id="99_ambience"]
+[ext_resource type="Script" path="res://levels/level_map.gd" id="97_levelmap"]
 
 [sub_resource type="Environment" id="Env"]
 background_mode = 1
@@ -359,3 +360,9 @@ shape = SubResource("Shape_bed")
 [node name="Ambience" type="Node" parent="."]
 script = ExtResource("99_ambience")
 indoor = true
+
+[node name="LevelMap" type="Node" parent="."]
+script = ExtResource("97_levelmap")
+map_name = "Waystation Cellar"
+area = Rect2(-5, -6, 10, 12)
+camera_height = 2.6

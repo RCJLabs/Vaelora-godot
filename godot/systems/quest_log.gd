@@ -35,7 +35,7 @@ func _ready() -> void:
 
 ## What the journal shows for one quest:
 ## {"state": "hidden"/"active"/"completed",
-##  "objectives": [{"text", "done"}],   only the visible ones
+##  "objectives": [{"text", "done", "marker"}],   only the visible ones
 ##  "outcome": text or ""}
 func status(id: String) -> Dictionary:
 	var quest: Dictionary = quests[id]
@@ -51,7 +51,7 @@ func status(id: String) -> Dictionary:
 		var o: Dictionary = visible[i]
 		var done: bool = later_done or Conditions.met(o.get("done_when", {"requires_flag": "__never__"}))
 		later_done = done
-		objectives.push_front({"text": o["text"], "done": done})
+		objectives.push_front({"text": o["text"], "done": done, "marker": o.get("marker", [])})
 
 	var outcome := ""
 	for o in quest.get("outcomes", []):
