@@ -19,6 +19,11 @@ Brannoc has extra lines for Elves, and both quests remember what you did. Kill t
 *before* Maren asks and you can still report it. Touch the crystal before meeting Brannoc
 and that objective is already ticked when he gives you the quest.
 
+## Quest markers
+
+An objective can name what it's about (`"marker": "Maren"`); the compass and the map then
+point there while it's the quest's next objective. See MAP.md.
+
 ## How quests work (no quest save data)
 
 A quest doesn't store a state of its own. Everything is **worked out from story flags and

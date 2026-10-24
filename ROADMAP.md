@@ -143,6 +143,8 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       plus humanoid NPC models and animations. Terrain3D landscape for the region.
 - [ ] **One outdoor region** (~1 km²), with a small town or village, a road, wilderness,
       landmarks and secrets.
+      (Groundwork done: compass with quest markers, discoverable places and a top-down map.
+      See MAP.md.)
 - [~] **One or two dungeons** (interiors): traps, a puzzle, a boss. (Toolkit done with a
       greybox test dungeon: pressure plates, darts, swinging blades, levers and gates, and a
       two-phase Stone Guardian boss. See DUNGEONS.md. The real dungeons wait on the region

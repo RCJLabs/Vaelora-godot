@@ -1,0 +1,105 @@
+# Playtest checklist (about 30 minutes)
+
+Everything here works in automated tests. What the tests can't tell us is whether it **feels**
+right, **looks** right in the full renderer, or **sounds** right. These are the numbers and
+choices that were guessed and need your verdict. Go in order; skip anything you run out of
+time for.
+
+**Setup:** open `godot/` in Godot 4.3, press **F5** (starts at the title screen). Or download
+a build from the latest CI run on `main` (Actions → CI → Artifacts). Turn on **Settings →
+Graphics → Show FPS** first. If you have a gamepad, keep it nearby for section 7.
+
+At the end, copy the **feedback block** at the bottom into a message, fill in what you
+noticed, and send it back. Short answers are fine ("too easy", "parry window feels tight").
+
+---
+
+## 1. Title, creation, first look (3 min)
+
+- [ ] Title screen: does the slow orbit over the stone circle look OK? Any stutter?
+- [ ] New Game → make any character (try **Soldier** for the shield, or **Scholar** for spells).
+- [ ] First view of the level: note the **FPS** in the corner, on **High**.
+- [ ] The compass at the top: can you tell where the wolves quest points once Maren gives it?
+      Press **M**: is the map readable?
+- [ ] Is it too dark / too bright / washed out? (Screenshots so far were all from the simpler
+      renderer; this is the first look in the real one.)
+
+## 2. Sound (2 min, with headphones if you can)
+
+Every sound is a synthesised placeholder, and nobody has listened to them yet.
+
+- [ ] Walk on grass, then onto the stone block (a few metres north-east of spawn): do steps sound like steps?
+- [ ] Stand still for 20 s: is the wind/bird bed pleasant, annoying, or too loud?
+- [ ] Walk up to the campfire at the waystation: crackle OK?
+- [ ] Rate the worst sound you hear today, so it gets replaced first.
+
+## 3. Melee feel (5 min) — the wolves, north-east of spawn
+
+- [ ] Light attacks: do swings feel weighty or floaty? Is the windup too slow?
+- [ ] Hold for a heavy: is the charge time OK?
+- [ ] **Parry** (right-click just as a bite lands, when its eyes flare): too easy, about right,
+      or too tight? (Window: 0.2 s.)
+- [ ] Dodge (Alt): does it get you out of a bite? Too long / too short?
+- [ ] The pack of three: fair, too easy, or overwhelming at the start?
+
+## 4. The bandit camp (4 min) — south-west of the stone circle
+
+- [ ] One bandit at a time attacks: does it feel like a duel or like they're waiting their turn?
+- [ ] Do you notice them blocking and parrying you? Readable or frustrating?
+
+## 5. Magic (3 min)
+
+- [ ] Flames on a wolf, then a **Firebolt** (hold to charge, release): satisfying?
+- [ ] Dual-cast (both buttons with nothing in the right hand): does it feel worth the Magicka?
+- [ ] Night (rest at a fire until 21:00, or wait): **wisps** at the stone circle. Can you read
+      their charge-up and parry a bolt back at them?
+
+## 6. The dungeon (8 min) — the wooden door in a stone mound, about 35 m south-west of spawn
+
+- [ ] Corridor 1: did you **spot the pressure plates** before stepping on one? Try disarming one (E).
+- [ ] Corridor 2: the swinging blades — fun to time, or annoying? Too fast?
+- [ ] Lever room: the riddle on the east wall — solvable without reading DUNGEONS.md?
+- [ ] **Stone Guardian:** can you read the slam (arms up) vs the sweep (arm out)?
+  - [ ] How many tries did it take? (Target: a first-time player should usually win in 1–3.)
+  - [ ] Did the 1.5x hit after a slam feel like a reward you noticed?
+  - [ ] Phase 2 shockwaves: did you realise you had to jump?
+  - [ ] Is the arena **lit well enough** to see its arms?
+- [ ] Vault chest and the way out work?
+
+## 7. Gamepad (3 min, if you have one)
+
+- [ ] Stick look speed: too slow / OK / too fast?
+- [ ] Menus with the D-pad (pause, Tab menu, a conversation): anything you couldn't reach?
+- [ ] Any button that felt wrong where it is? (Rebind it in Settings → Controls, then tell me
+      the new layout.)
+
+## 8. Performance (2 min)
+
+- [ ] FPS on **High** in the open level, in the dungeon arena during the fight, and at night.
+- [ ] Switch to **Low**: how much FPS did that buy? Does Low still look acceptable?
+- [ ] Your GPU / CPU (or: Pause → **Report a Bug** copies them to the clipboard).
+
+---
+
+## Feedback block (copy, fill in, send back)
+
+```
+PC: (GPU / CPU, or paste the Report a Bug text)
+FPS on High: open level ___  dungeon fight ___  night ___   |  on Low: ___
+
+Look (dark/bright/OK):
+Compass / map (useful? cluttered?):
+Worst sound:
+Melee feel (floaty/weighty, windup, heavy charge):
+Parry window (easy / right / tight):
+Dodge:
+Wolf pack (easy / fair / too hard):
+Bandits:
+Magic:
+Wisps:
+Plates spotted? Blades fun? Riddle solved without help?
+Guardian tries to win: ___   Slam/sweep readable? ___   Noticed shockwaves needed jumping? ___
+Gamepad (look speed, menus, layout):
+Anything broken:
+Anything that made you smile:
+```

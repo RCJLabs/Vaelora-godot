@@ -18,7 +18,7 @@ layout; PlayStation and Switch pads map to the same positions.
 | Dodge | Alt | B |
 | Switch spell / Block | Q | Y |
 | Race power / background power | Z / X | LB / RB |
-| Character menu (skills, inventory, magic, journal...) | Tab (J opens the journal) | View |
+| Character menu (skills, inventory, magic, journal, map...) | Tab (J opens the journal, M the map) | View |
 | Switch menu tabs | Click the tab, or Z / X | LB / RB |
 | Pause menu | Esc | Menu |
 | In menus: move / pick / back | Mouse, arrow keys, Enter, Esc | D-pad or left stick, A, B |

@@ -21,7 +21,7 @@ const ACTIONS := [
 	["attack", "Attack (right hand)"], ["cast", "Left hand (cast / block / aim)"],
 	["switch_spell", "Switch spell"], ["interact", "Use / talk"],
 	["power_race", "Race power"], ["power_background", "Background power"],
-	["character_menu", "Character menu"], ["journal", "Journal"],
+	["character_menu", "Character menu"], ["journal", "Journal"], ["map", "Map"],
 	["quicksave", "Quicksave"], ["quickload", "Load latest save"],
 ]
 

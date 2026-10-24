@@ -24,6 +24,13 @@ var _effects: StatusEffects
 var _boss_stats: Stats
 var _boss_bar: ProgressBar
 
+var compass: Compass
+
+
+func _ready() -> void:
+	compass = Compass.new()
+	add_child(compass)
+
 
 func _process(delta: float) -> void:
 	_update_powers()
@@ -249,8 +256,8 @@ func show_boss(boss_name: String, stats: Stats) -> void:
 		_boss_bar = enemy_bar.duplicate()
 		_boss_bar.offset_left = -300.0
 		_boss_bar.offset_right = 300.0
-		_boss_bar.offset_top = 40.0
-		_boss_bar.offset_bottom = 54.0
+		_boss_bar.offset_top = 76.0   # under the compass
+		_boss_bar.offset_bottom = 90.0
 		add_child(_boss_bar)
 		var label := Label.new()
 		label.name = "BossName"

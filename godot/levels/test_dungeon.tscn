@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=3]
+[gd_scene load_steps=90 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/location_door.gd" id="2_location_door"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://props/puzzle/puzzle_gate.gd" id="11_puzzle_gate"]
 [ext_resource type="Script" path="res://props/puzzle/boss_arena.gd" id="12_boss_arena"]
 [ext_resource type="PackedScene" path="res://enemies/stone_guardian.tscn" id="13_stone_guardian"]
+[ext_resource type="Script" path="res://levels/level_map.gd" id="97_levelmap"]
 
 [sub_resource type="Environment" id="Env"]
 background_mode = 1
@@ -1176,3 +1177,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0.05, -1.6)
 [node name="Ambience" type="Node" parent="."]
 script = ExtResource("5_ambience")
 indoor = true
+
+[node name="LevelMap" type="Node" parent="."]
+script = ExtResource("97_levelmap")
+map_name = "The Old Barrow"
+area = Rect2(-10, -73, 20, 74)
+camera_height = 3.6

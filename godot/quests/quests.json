@@ -14,13 +14,15 @@
 				"text": "Kill the Greyfang wolves north-east of the waystation.",
 				"done_when": {
 					"requires_flag": "wolves_cleared"
-				}
+				},
+				"marker": "GreyfangPack"
 			},
 			{
 				"text": "Return to Maren.",
 				"done_when": {
 					"requires_flag": "wolf_quest_done"
-				}
+				},
+				"marker": "Maren"
 			}
 		],
 		"outcomes": [
@@ -47,7 +49,8 @@
 				"text": "Investigate the glowing crystal in the stone circle.",
 				"done_when": {
 					"requires_flag": "touched_crystal"
-				}
+				},
+				"marker": "StoneCircle"
 			},
 			{
 				"text": "Find three rune shards scattered around the stone circle.",
@@ -56,13 +59,19 @@
 						"id": "rune_shard",
 						"count": 3
 					}
-				}
+				},
+				"marker": [
+					"RuneShard1",
+					"RuneShard2",
+					"RuneShard3"
+				]
 			},
 			{
 				"text": "Bring the rune shards to Brannoc.",
 				"done_when": {
 					"requires_flag": "shards_decided"
-				}
+				},
+				"marker": "Brannoc"
 			},
 			{
 				"text": "Return the rune shards to the crystal.",
@@ -71,7 +80,8 @@
 				},
 				"done_when": {
 					"requires_flag": "stones_restored"
-				}
+				},
+				"marker": "StoneCircle"
 			}
 		],
 		"outcomes": [
@@ -110,13 +120,15 @@
 				"text": "Clear the bandit camp south-west of the stone circle.",
 				"done_when": {
 					"requires_flag": "bandits_cleared"
-				}
+				},
+				"marker": "MapBanditCamp"
 			},
 			{
 				"text": "Tell Brannoc.",
 				"done_when": {
 					"requires_flag": "bandit_bounty_paid"
-				}
+				},
+				"marker": "Brannoc"
 			}
 		],
 		"outcomes": [
