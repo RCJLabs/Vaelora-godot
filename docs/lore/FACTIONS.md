@@ -9,7 +9,7 @@ what I filled in; **🔒** is what almost nobody in the world knows.
 |---|---|
 | **The Ilunar Empire** | The crown, its legions and its nobles. Empress Corvina rules from Ilunhall. Its far edges, like the Greywater Vale, see little of it but the taxes. 🔒 Founded by the pact's kings |
 | **The Collegium** | The eight colleges (see `MAGIC.md`). They license mages, and compete for students, wells and the Empress's ear |
-| **The Vaerd** | The cult (decided name; cult and members alike are "the Vaerd"). Hollowing mages promised a cure and a cause. Run in the Greywater Vale by Magister Vessa ("V."), and secretly by Aeviro ("A.") |
+| **The Mercy** | The cult *(suggested name, replacing "the Vaerd"; its members are "the merciful")*. Hollowing mages promised a cure and a cause. Run in the Greywater Vale by Magister Vessa ("V."), and secretly by Aeviro ("A.") |
 | **The Thornwood Free**, and outlaws like them | The forest outlaws, and others like them across the Empire who say the law is the problem |
 | **The River Compact** | The merchant league that runs the roads and rivers: tolls, barges, caravans, and the Riverlands' real government |
 | **The Deep Guilds** | The Deepfolk mining guilds under guild-law, rich and frightened |
@@ -31,7 +31,7 @@ what I filled in; **🔒** is what almost nobody in the world knows.
 | **The Hush** *(evil)* | Assassins | A contract is a whisper left at a grave. Nobody has ever seen a member of the Hush speak. Murder for hire, and a ladder that ends at the Hall of Spears |
 
 **Plus the eight college questlines** (decided: each college has its own, and they lead to
-similar endings). The **Vaerd** can be joined, or infiltrated, in the main quest. *(suggested)*
+similar endings). **The Mercy** can be joined, or infiltrated, in the main quest. *(suggested)*
 It isn't a guild, because it belongs to the main story.
 
 Scope note: seven guilds and eight college lines is about fifteen questlines, roughly

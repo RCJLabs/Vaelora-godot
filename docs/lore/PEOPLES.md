@@ -55,7 +55,7 @@ and 🔒 **they drank the most Vael**, which is why they live so long.
 | **What they value** | Oaths, work, and memory |
 | **Their story of the Arrival** | **"The Taking."** Their old songs say something was taken, and that orcs stood by while it happened, and some helped. They swore never again. That's why they distrust easy magic |
 | **What others say** | Brutes (they aren't), stubborn, and holders of grudges older than the Empire |
-| **Dignified / twisted** | Oath-keepers / oath-breakers who sell their axes to whoever pays, the Vaerd included |
+| **Dignified / twisted** | Oath-keepers / oath-breakers who sell their axes to whoever pays, the Mercy included |
 | **The dead** | Burned on a forge-pyre, and the ashes worked into iron, so nothing can drink from them |
 | **Wisps** | Left alone. Children are taught never to touch one. An orc who drinks essence is an oath-breaker |
 | **Mages** | Rare and formidable. *(suggested)* Orc mages swear an oath for each spell they learn |

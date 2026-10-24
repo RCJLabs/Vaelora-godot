@@ -97,7 +97,7 @@ Taking life and power from living things.
   the only one that corrupts you.
 - **Spells:** draw (a life-drain beam), siphon magic, the Hollowing Touch, and at mastery
   drawing from every living thing nearby.
-- **No college teaches it.** The Collegium bans it. The **Vaerd** practise it. You learn it
+- **No college teaches it.** The Collegium bans it. **The Mercy** practise it. You learn it
   from them, from forbidden books, or by drinking enough wisps that it comes to you on its own.
 - 🔒 It's how the Hunt was done.
 - (This is corruption option D, "the Draw spell", from the corruption draft, returning as a

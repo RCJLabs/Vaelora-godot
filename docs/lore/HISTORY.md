@@ -22,7 +22,7 @@ ordinary speech, **rulers' reigns**: "the ninth year of Empress Corvina", or "90
 | **c. 610** *(suggested)* | **The Mage War.** Two colleges fight over the deepest of the twelve wells. The land between them burns, and the scar never heals: **the Glass Coast**, where the sand ran to glass | A war of pride, the reason licences are strict |
 | **c. 700–760** | **The Dimming.** The stones give less, and magic thins everywhere. *(suggested)* Flight fails. **Caelmere falls out of the sky** (**the fall of a great city**, 731 AA), killing tens of thousands. Today **only a handful of living masters can fly** | A famine of magic, cause unknown. 🔒 The residue is running out: you can only spend the dead once |
 | **760–900** *(suggested)* | **The long thinning.** The Empire holds together, but its edges fray. The colleges compete over what magic is left. Hollowing outbreaks come and go, and **the Passengers are blamed**. Mage-hunters grow bold | Hard times, and someone to blame |
-| **c. 880** *(suggested)* | 🔒 **Aeviro begins the gathering.** The **Vaerd** cult is founded among hollowing mages, promised a cure and a cause: releasing the Vael to their rest | — |
+| **c. 880** *(suggested)* | 🔒 **Aeviro begins the gathering.** **The Mercy** is founded among hollowing mages, promised a cure and a cause: releasing the Vael to their rest | — |
 | **901–902** | **The game.** The stones of the Greywater Vale wake early, wisps fade, a hollow wolf walks out of the north, and The First is made | Small wrong things |
 
 ## The legend everyone knows *(suggested)*
@@ -45,7 +45,7 @@ song are people. *(suggested)* Aeviro can sing every verse, and knew the man.
 | | The Hunt | Wisps are Vael | The Draining's real aim |
 |---|---|---|---|
 | Aeviro | ✅ was there | ✅ | ✅ |
-| The Vaerd | ❌ | ✅ (told by Aeviro) | ❌ (think: release them to rest) |
+| The Mercy | ❌ | ✅ (told by Aeviro) | ❌ (think: release them to rest) |
 | The Passengers' song-keepers | ⚠️ fragments in the old songs, which they're afraid to sing | ⚠️ suspect | ❌ |
 | The Ashen | ❌ | ⚠️ they hear the wisps, and feel it | ❌ |
 | The Collegium | ❌ (only rules nobody can explain) | ❌ | ❌ |

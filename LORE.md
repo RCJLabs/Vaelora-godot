@@ -258,14 +258,15 @@ unknown army. There are legends, but no one thought it could be real.
 - **It's people, and it's new.** Behind the legend is a circle of corrupt mages, the cult,
   who drain wisps, wolves and even a hedge-witch (Dunya) through stones marked with a circle
   split by three lines. (All in the demo.)
-- **The cult:** **the Vaerd**, a name for the cult and its members alike.
+- **The cult:** *(suggested; replaces "the Vaerd")* **the Mercy**. Its members call themselves
+  **the merciful**: they believe they're giving the Vael rest.
   - **What its members want:** **a cure for their own Hollowing, and a cause: releasing the
     Vael to their afterlife.** They're mages who swallowed too many wisps and are hollowing.
-  - *(suggested)* So the Vaerd know wisps are Vael souls in need of release (Aeviro told them
+  - *(suggested)* So the Mercy know wisps are Vael souls in need of release (Aeviro told them
     that much). They don't know about the hunt, or the Collegium's founders, or what Aeviro
     really means to do. "The army" is the outside world's rumour.
   - **"V." is Magister Vessa**, a licensed healer of the Lamp College who is hollowing, and the
-    Vaerd's organiser in the Greywater Vale. Off-screen in the demo.
+    Mercy's organiser in the Greywater Vale. Off-screen in the demo.
 - **The letter:** "A." tells V. to send the harvest "north to the Pale Gate by the next dark
   of the Wanderer" and to tell no one at the Collegium.
 - **What the player sees first:** wisps fading at the stones, a Greyfang wolf found hollow and
@@ -277,7 +278,7 @@ unknown army. There are legends, but no one thought it could be real.
 
 ### 🔒 What's really happening
 
-- **"A." is Aeviro.** The Vaerd think they're giving the Vael rest. Aeviro wants them to
+- **"A." is Aeviro.** The Mercy think they're giving the Vael rest. Aeviro wants them to
   **survive**: to leave this world together, which needs them gathered, not released.
 - **Aeviro is the last vessel.** The First and "the others" were attempts to build
   bodies that could hold the gathered Vael. The First was filled "too much, too fast" and
@@ -390,11 +391,14 @@ Round two's 29 answers and round three's 33 are folded in above and in `docs/lor
 
 ## Still open
 
+Round four (`docs/LORE_QUESTIONNAIRE_4.md`) asks about these, and ties the lore to the game:
+the full game's shape, the player in the story, the main quest and endings, companions, and
+which demo changes to build.
+
 - **Round three's suggestions to confirm:** nearly everything in `docs/lore/` that's marked
   *(suggested)*, since you said "you decide" for all seven peoples, the legend, the festival,
   the schools' names and the guilds.
-- **The cult's name:** "Vaerd" is close to "Vael" and "Vaelora". Keep it if that's deliberate
-  (the cult named after those it serves); otherwise a more distinct name would read better.
+- **The cult's name:** the Mercy, replacing "the Vaerd" (too close to "Vael").
 - **Names** for the Passengers, the Ashen, small folk and Deepfolk (their people's naming
   styles).
 - **Hard limits** on horror: what's never shown.
