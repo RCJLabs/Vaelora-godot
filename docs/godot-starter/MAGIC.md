@@ -66,7 +66,8 @@ perks, and ×2.2 dual-cast). `systems/glamour.gd` (autoload **Glamour**) does th
   `glamour_proof` is true (the hollow wolf). Wisps, the stone guardian and The First aren't
   touched: the wisps are Vael and this was their magic first.
 - **When a charm wears off**, the enemy is still in the fight, and now it's after you.
-- Companions leave charmed enemies alone.
+- Companions leave charmed enemies alone. Enemies choose between you and a companion
+  after Glamour has had its say (`systems/targeting.gd`).
 
 ## Skills
 

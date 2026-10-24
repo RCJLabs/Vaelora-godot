@@ -93,8 +93,8 @@ func _physics_process(delta: float) -> void:
 
 	var player := get_tree().get_first_node_in_group("player")
 	var paused: bool = player == null or player.is_dead or DialogueManager.is_active
-	# Who it's after: the player, unless Glamour says otherwise (a decoy, or a charm).
-	var foe: Node3D = null if paused else Glamour.target_for(self, player)
+	# Who it's after: the player or a companion, unless Glamour says otherwise.
+	var foe: Node3D = null if paused else Targeting.foe_for(self, player)
 	if foe == null:
 		_move_toward(global_position, 0.0, delta)   # stand still
 	else:

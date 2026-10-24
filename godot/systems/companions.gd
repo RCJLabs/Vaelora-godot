@@ -15,8 +15,8 @@ extends Node
 #   companion_cmd_dismiss  go home (back to their post)
 
 const DEFS := {
-	"brannoc": {"name": "Brannoc", "dialogue": "res://dialogue/companion_brannoc.json", "damage": 12.0, "reach": 1.9},
-	"zora": {"name": "Zora", "dialogue": "res://dialogue/companion_zora.json", "damage": 9.0, "reach": 6.0, "attack_interval": 1.6},
+	"brannoc": {"name": "Brannoc", "dialogue": "res://dialogue/companion_brannoc.json", "health": 150.0, "damage": 12.0, "reach": 1.9},
+	"zora": {"name": "Zora", "dialogue": "res://dialogue/companion_zora.json", "health": 90.0, "damage": 9.0, "reach": 6.0, "attack_interval": 1.6},
 }
 const COMMANDS := ["companion_cmd_wait", "companion_cmd_follow", "companion_cmd_dismiss"]
 const COMPANION_SCRIPT := preload("res://companions/companion.gd")
@@ -61,10 +61,10 @@ func _on_flag_set(flag: String) -> void:
 	match flag:
 		"companion_cmd_wait":
 			if companion:
-				companion.state = companion.State.WAIT
+				companion.order(companion.State.WAIT)
 		"companion_cmd_follow":
 			if companion:
-				companion.state = companion.State.FOLLOW
+				companion.order(companion.State.FOLLOW)
 		"companion_cmd_dismiss":
 			if companion:
 				companion.queue_free()

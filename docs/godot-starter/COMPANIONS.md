@@ -28,14 +28,28 @@ acts on and clears at once (`GameState.clear_flag`, which StoryPresence also lis
 
 ## Fighting
 
-While following, they fight the nearest enemy within 15 m of you that's after you (not idle,
-heading home, fleeing or charmed). Brannoc hits for 12 in melee every 1.2 s; Zora throws
-fire for 9 from 6 m every 1.6 s. Numbers are in `DEFS` in `systems/companions.gd`.
+While following, they fight the nearest enemy within 15 m of you or them that's in the
+fight (not idle, heading home, fleeing or charmed). Told to wait, they stay put but still hit
+back at whatever is hitting them. Brannoc has 150 health and hits for 12 in melee every 1.2 s;
+Zora has 90 and throws fire for 9 from 6 m every 1.6 s. Numbers are in `DEFS` in
+`systems/companions.gd`.
+
+**Enemies fight them too.** Wolves and bandit-kind ask `Targeting.foe_for()`
+(`systems/targeting.gd`) who to go after: Glamour first (decoys, charm), then the nearer of
+you and a companion who's on their feet. An enemy sticks with whoever it's after unless the
+other is 2.5 m closer, and a companion who hits an enemy draws it. Wisps, the stone guardian
+and The First still only go for you.
+
+**Down, not dead.** At 0 health a companion is down: out of the fight, and enemies leave them
+alone. A notice says so. Help them up (E) for half their health, or they get up on their own
+after 20 s with 30%, and go back to what they were told to do. Out of a fight (not hit for
+6 s) they heal 3 a second. A floating name and health show while they're hurt.
 
 ## Known limits (greybox)
 
-- They're capsules (`companions/companion.gd`), and enemies only ever target you, so
-  companions can't be hurt or killed.
+- They're capsules (`companions/companion.gd`); Zora's fire has no visual.
+- Their health isn't saved: they're back to full after a load.
+- They never block, dodge or retreat, and wisps and bosses ignore them.
 - No companion quests, approval, or banter yet; their dialogue is only orders.
 - Adding one: a `DEFS` entry, a `dialogue/companion_<id>.json`, a recruiting choice that
   sets `companion_<id>`, and a StoryPresence with `hide_flag companion_<id>` around the NPC.

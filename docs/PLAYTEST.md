@@ -99,6 +99,8 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
       wolves, then **Fear**, then **Charm** one wolf of the pack. Readable? Fun, or fiddly?
 - [ ] **A companion** (Brannoc after Wrong Things, or Zora): "Come with me." Do they keep up,
       get stuck, or get in your way in a fight? Try Wait here / Follow me / Go home.
+      Do the wolves split between you and them in a way that reads? Let one go down and help
+      them up (E): is it clear when that happens?
 - [ ] **Lanternfast** (rest until 18:00 on day 7; the rest menu says how many days are left):
       do the lanterns read as a festival? Talk to Maren and Zora. Do the wisps leave you be?
 
