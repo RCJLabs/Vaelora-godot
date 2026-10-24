@@ -1,4 +1,51 @@
-# Corruption: options (draft for your decision)
+# Corruption
+
+**Decided 24 October 2026:** option A (Stain), harshness up to 4 of 5, cleansable, and
+swallowing Wisp Essence corrupts. Corruption changes the ending. No Draw spell (option D)
+for now. Built in `systems/corruption.gd` (autoload `Corruption`).
+
+## How it works
+
+A value from 0 to 100 that only corrupt acts raise and only cleansing lowers. It shows at
+the bottom centre of the HUD ("Corruption: Stained") once you're Touched.
+
+| Tier | From | Gain | Cost | Who notices |
+|---|---|---|---|---|
+| **Touched** | 20 | Spells +10% | Health regen ×0.75 | Zora |
+| **Stained** | 50 | Spells +20%, +20 max Magicka | Health regen ×0.5; the roadside shrine won't bless you | Aurel; **The First recognises you** ("…you smell like us") |
+| **Hollowing** | 80 | Spells +30%, +40 max Magicka | Health regen ×0.5, −20 max Health; −20 with the Thornwood Free (once) | Mirela turns cold; **the ending changes** |
+
+**Sources:**
+- Swallowing **Wisp Essence**: +10 each (it still gives +40 Magicka). Offering it at the
+  shrine isn't swallowing it, so the Silent Shrine quest is unaffected.
+- Taking the **caged wisp's light** in the barrow: +35 (Touched on its own).
+
+So the caged wisp alone makes you Touched; it plus two essences, Stained; it plus five,
+Hollowing.
+
+**Cleansing:** once the roadside shrine is rekindled (Silent Shrine), keep a **vigil** there
+at night: the night passes to dawn, and you drop one tier (Hollowing → Stained → Touched →
+clean). One tier per night, so a long way down takes three nights. The tier's gains go with it.
+
+**The ending at Hollowing:** Maren, Brannoc and Mirela each have a different last scene (they
+keep their distance), the closing card adds "the light you took is still in you; it pulls
+north too", and the journal's outcome for What They Made says The First knew you.
+
+**Harshness, as built (about 4 of 5):** the costs are real (slower healing from Touched on,
+less Health at Hollowing) and people react, but nothing blocks a quest: Mirela is cold at
+Hollowing but still gives you everything the story needs. "Outlaws hostile on sight" from
+the draft became a one-time −20 with the Thornwood Free and a cold welcome, because the
+outlaws are talking NPCs, not fighters, in the demo.
+
+**Saves:** version 11 stores it. An older save that had taken the caged wisp's light starts
+at 35 (Touched).
+
+**Not built:** the Draw spell (option D), drinking from the cult's jars, visible changes to
+your hands (the first-person view has no hands yet), animals reacting.
+
+---
+
+# The original options (24 October 2026)
 
 **From LORE.md (decided):** magic corrupts the user if practised corruptly, physically
 (exhaustion, corruption, madness). *(Suggested, approved with the lore:)* "corrupt" means
