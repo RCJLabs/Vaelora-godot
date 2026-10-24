@@ -1,7 +1,7 @@
 # Dungeon toolkit: traps, puzzles and a boss
 
 Building blocks for dungeons, and a greybox **test dungeon** that uses all of them: walk
-into the **old barrow** west of the waystation (the wooden door in a stone mound), or open
+into the **old barrow** about 35 m south-west of spawn (the wooden door in a stone mound), or open
 `levels/test_dungeon.tscn` and press F6.
 
 Everything here is lore-free placeholder: the riddle text, names and loot are there to be
