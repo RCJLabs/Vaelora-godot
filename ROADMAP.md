@@ -139,7 +139,7 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
 **Rough size:** 400–700 hours (≈ 5–8 months). **Demo target: about 9–14 months from now.**
 
 - [ ] **Lore bible v1** from your ideas: the region, its history, factions, the demo's story.
-      (Questionnaire to fill in: docs/LORE_QUESTIONNAIRE.md.)
+      (v1 drafted from the questionnaire: LORE.md. Your approval of its suggested parts is still needed.)
 - [ ] **Asset pass:** buy or download a consistent environment set (rocks, trees, buildings)
       plus humanoid NPC models and animations. Terrain3D landscape for the region.
 - [ ] **One outdoor region** (~1 km²), with a small town or village, a road, wilderness,
@@ -249,11 +249,12 @@ Pick and order these after the demo, based on feedback:
 
 ## Open questions (to settle as we go)
 
-1. **Your lore:** world name, the region the demo is set in, history, gods, how magic
-   works, the main conflict, what each race's culture is like. *(Needed before Phase 2's
-   questline, sooner is better.)*
-2. **Attributes:** the 6-attribute draft above, or fewer/more?
-3. **Backgrounds and traits:** keep, cut or add to the drafts?
-4. **Death in hardcore:** reload a save, or permadeath?
-5. **Working title:** the engine plan used *Aetherbound* as a placeholder. Keep it?
-6. **Budget** for bought assets, roughly, to choose between packs.
+Answered in the lore questionnaire (24 October 2026); see `LORE.md`:
+1. **Your lore:** drafted as `LORE.md` v1 (world: Vaelora). The *(suggested)* parts and its
+   "Questions for you" are still open.
+2. **Attributes:** decide after the playtest.
+3. **Backgrounds and traits:** decide after the playtest.
+4. **Death:** neither permadeath nor reload. You wake up wounded, sometimes captured by
+   enemies, sometimes found by allies (to design; suggested for Hardcore first).
+5. **Title:** **Vaelora** (also the world's name).
+6. **Budget:** free assets for now; spend what's needed later.

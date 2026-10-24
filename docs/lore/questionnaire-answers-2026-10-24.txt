@@ -1,0 +1,85 @@
+Lore questionnaire answers
+
+1. Which game, book or show worlds do you love?:
+    Skyrim (freedom, choice, dragons, sandbox)
+Fallout (lore, freedom, sandbox)
+Game of Thrones ( fantasy, dragons, character development, story)
+Project Zomboid (survival, zombies)
+Lord of the Rings (fantasy, story, vast world)
+2. What do you not want?:
+    B (A chosen-one prophecy); C (Elves as perfect and wise, orcs as evil brutes); E ("Ancient evil returns" as the only plot)
+3. Tone:
+    Hopeful–Bleak: 3, Earnest–Wry and funny: 4, Grounded, low magic–Wondrous, high magic: 4, Familiar fantasy–Strange and alien: 4
+4. What should players feel most often?:
+    A (Wonder: strange ruins, impossible lights, "what is that?"); D (Power: growing from nobody into a legend)
+    Note: Power and wonder
+5. What happened in the deep past that still shapes things?:
+    D (A great migration: the races came from somewhere else and remember it differently)
+    Note: Aliens came from another world and brought magic and creatures which changed everything.
+6. How old does the world feel, technology-wise?:
+    Note: Magic arrived in medieval times and instead of developing guns the people leaned into magic. So medieval but as if an alternate history created a divergence.
+7. What's in the sky?:
+    B (Two or more moons, with tides of power)
+8. World name:
+    Vaelora. Also the name of the game.
+9. Where does magic come from?:
+    Note: Alien life forms that brought it and now with practice anyone can learn to use it but few can master
+10. How do ordinary people see mages?:
+    A (Respected scholars with colleges); B (Feared: licensed, hunted or watched)
+11. Does magic have a price or a danger?:
+    A (Yes, a physical one: exhaustion, corruption, madness)
+    Note: So you must practice it  not corruptly or it can corrupt you
+12. What are the gods?:
+    D (Dead or absent gods, whose followers still argue); E (Each race believes differently, and none of them knows the truth)
+13. Are the gods real and present?:
+    B (Something answers prayers, but nobody knows what)
+    Note: Magic is real. But God's are unknown.
+14. How classic should they be?:
+    C (Different for each race (say which is classic and which twisted))
+    Note: They're will be at least 7 races. All have their twisted and dignified sorts. Some racial tensions exist like everywhere but for the most part anyone can be anything
+15. How do the three races get along in the demo region?:
+    B (Mixed towns, mostly fine, prejudice under the surface)
+    Note: All races live equally but some underlying tensions
+16. One line about each culture:
+    Humans: - | Elves: - | Orcs: -
+    ? (you decide)
+17. Landscape and season:
+    B (Temperate river valley: forest, farmland, autumn colour); D (Wild borderland forest: deep, old, dangerous)
+18. What's wrong in the region right now?:
+    Note: Unknown force is swapping the lifeforce from the most magical beings. Building an unknown army. There are legends but no one thought it could be real.
+19. Who is the player when the game starts?:
+    D (It depends on their background (soldier, scholar, outlaw...))
+20. How should the demo's main questline end?:
+    B (One ending, but how you got there changes what people say); C (A cliffhanger that sets up the full game)
+21. Who has power in the region?:
+    A (Riverwatch garrison: the law, stretched thin (already in the game)); E (Outlaws or rebels who say the law is the real problem)
+    Note: Riverwatch garrison in the town and outlaws in the forest
+22. Can the player join a faction in the demo?:
+    B (Only reputation for now; joining comes in the full game)
+23. The region's signature threat:
+    E (People: bandits, cults, soldiers. Monsters are rare)
+    Note: One creature boss at the end of the demo that is seaping with magic
+24. How common should monsters be?:
+    B (Present in the wild, uncommon near roads)
+25. What should names sound like?:
+    A (Norse / Germanic (Brannoc, Hrolf, Sigrun)); B (Celtic / Gaelic (Maren, Eilidh, Caradoc)); C (Slavic (Mirela, Radovan)); D (Latin / Imperial (Aurelian, Vessa)); E (Invented and flowing, for elves (Ithariel, Sennaveth)); F (Hard and guttural, for orcs (Grukka, Durzhak))
+    ? (you decide)
+26. Keep, rename or drop the current placeholders?:
+    Aetherbound (the title): rename → Vaelora
+    Riverwatch (town and garrison): keep
+    The Greyfang pack: keep
+    Maren (waystation keeper): keep
+    Brannoc (Riverwatch scout): keep
+    The Waking Stones (quest) and the stone circle: keep
+    Wisps: keep
+    The Stone Guardian / the Old Barrow: keep
+    Greyfang Hollow / Bandit Camp (map names): keep
+27. Hardcore death:
+    C (In between, e.g. wake up wounded with a penalty)
+    Note: Death is waking up wounded. Sometime captured by enemies. Sometimes found by allies. Variety.
+28. Asset budget for bought art and animation:
+    Whatever needs to be done. Free for now.
+29. Attributes and traits:
+    C (Haven't looked; decide after the playtest)
+30. Describe one moment you imagine a player having in this game:
+    Walking over a crest in a hill at dusk and hearing a curling scream. And seeing a monster with red eyes looking up at them. Then a powerful magic user flies past and runs right through it. Killing it instantly.

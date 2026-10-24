@@ -60,8 +60,9 @@ versions still load.
 The game opens on the **title screen** (`ui/title_screen.tscn`, the project's main scene): the
 stone circle at dusk with the camera slowly circling it, and **Continue** (the most recent save;
 only shown if there is one), **New Game**, **Load Game**, **Settings**, **Report a Bug**, **Quit**.
-The name on it is `GAME_TITLE` in `ui/title_screen.gd`, a placeholder until the title is
-decided. The version under it is **Project Settings → Application → Config → Version**.
+The name on it, **Vaelora**, is `GAME_TITLE` in `ui/title_screen.gd`. (The project's own name
+in Project Settings stays "High Fantasy Sandbox RPG" for now: changing it moves the folder
+where saves and settings live, so do it once, before the first public build.) The version under it is **Project Settings → Application → Config → Version**.
 
 ![Title screen](../images/title_screen.png)
 

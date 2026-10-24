@@ -3,9 +3,10 @@ extends Node3D
 # The title screen: the stone circle at dusk with the camera slowly circling it,
 # and the main menu. The first scene the game opens (Project Settings > Run >
 # Main Scene); "Quit to Title" comes back here.
-# GAME_TITLE is a placeholder until the name is decided (ROADMAP open questions).
+# GAME_TITLE is the game's name, Vaelora (LORE.md). The project's own name in Project
+# Settings stays as it is for now: changing it moves the folder saves are kept in.
 
-const GAME_TITLE := "Aetherbound"
+const GAME_TITLE := "Vaelora"
 const SUBTITLE := "a prototype"
 const NEW_GAME_SCENE := "res://ui/character_creation.tscn"
 ## How fast the camera circles (radians per second), how far out and how high.
