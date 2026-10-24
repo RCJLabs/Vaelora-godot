@@ -12,7 +12,8 @@ demo).
 | 1. Wrong Things | ✅ Built: Maren → the hollow wolf (put it down or leave it) → Brannoc |
 | 2. The Waking Stones (reframed) | ✅ Built: the crystal shows the drain-line once the shards are dealt with; one wisp a night is drained into the crystal; Brannoc points you at the outlaws |
 | 3. Ask the Forest | ✅ Built (greybox): an outlaw camp at the north edge where the drain-line ends (Mirela, a lookout, and Dunya, their hollowed hedge-witch) inside a band of placeholder Thornwood trees; trust by bandits, supply crate, or the Outlaw's wanted notice; the Thornwood Free faction |
-| 4–5, side quests | Not started |
+| 4. The Barrow | ✅ Built (greybox): a secret wall in the vault, the hidden chamber (cages, jars, two hooded cultists, the notes and map), and the caged wisp's choice. "Corrupting" is only the outlaws' reaction for now; there's no corruption mechanic yet |
+| 5, side quests | Not started |
 
 Names picked: Mirela (the outlaws' leader), Ostap (her lookout), Dunya (the hollowed
 hedge-witch). The supplies come from Brannoc's cache, not from Riverwatch itself (the town

@@ -264,5 +264,57 @@
 				"text": "The outlaws took me at my word, or at my wanted notice. Mirela of the Thornwood Free told me what her scouts have seen: hooded folk carrying cages in and out of the Old Barrow after dark."
 			}
 		]
+	},
+	"the_barrow": {
+		"title": "The Barrow",
+		"giver": "Mirela of the Thornwood Free",
+		"main": true,
+		"description": "Mirela's scouts have seen hooded folk carrying cages in and out of the Old Barrow after dark. Whatever is draining the valley, they're part of it.",
+		"started_when": {
+			"requires_flag": "barrow_lead"
+		},
+		"completed_when": {
+			"requires_flag": "wisp_choice_made"
+		},
+		"objectives": [
+			{
+				"text": "Search the Old Barrow, south-west of the waystation.",
+				"done_when": {
+					"requires_flag": "found_hidden_chamber"
+				},
+				"marker": [
+					"MapOldBarrow",
+					"SecretWall"
+				]
+			},
+			{
+				"text": "Find out what the hooded folk were doing there.",
+				"done_when": {
+					"requires_item": "cult_notes"
+				},
+				"marker": "CultNotes"
+			},
+			{
+				"text": "Decide what to do with the last caged wisp.",
+				"done_when": {
+					"requires_flag": "wisp_choice_made"
+				},
+				"marker": "CagedWisp"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "freed_wisp"
+				},
+				"text": "Behind the barrow's vault the hooded folk had a workshop: empty cages, jars of stolen light, and notes about feeding \"the first of them\" at the Hollow Oak. I freed the last wisp. It follows me now."
+			},
+			{
+				"when": {
+					"requires_flag": "took_wisp_essence"
+				},
+				"text": "Behind the barrow's vault the hooded folk had a workshop: empty cages, jars of stolen light, and notes about feeding \"the first of them\" at the Hollow Oak. I took the last wisp's light for myself. It was easy. The outlaws heard."
+			}
+		]
 	}
 }

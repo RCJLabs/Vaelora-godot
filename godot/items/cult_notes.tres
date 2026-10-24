@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "cult_notes"
+display_name = "Cultist's Notes"
+description = "Pages in a small, careful hand, with a map folded inside.
+
+\"The stones give less each night. The wolves were a waste: too little in them. The forest witch gave more than all the wisps together. The first of them must be fed in the dark of the Wanderer, at the Hollow Oak. Then we send it north. - V.\"
+
+The map marks a clearing deep in the Thornwood, north-east of the outlaws' fire, beside a drawn oak with a hollow in it."
+weight = 0.2

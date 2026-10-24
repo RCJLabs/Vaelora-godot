@@ -1,6 +1,16 @@
 {
 	"start": [
 		{
+			"node": "heard_essence",
+			"requires_flag": "took_wisp_essence",
+			"requires_not_flag": "mirela_heard_essence"
+		},
+		{
+			"node": "heard_freed",
+			"requires_flag": "freed_wisp",
+			"requires_not_flag": "mirela_heard_freed"
+		},
+		{
 			"node": "after_lead",
 			"requires_flag": "barrow_lead"
 		},
@@ -304,6 +314,29 @@
 				{
 					"text": "Something's drawing magic out of the stone circle. The line runs here.",
 					"next": "drain"
+				}
+			]
+		},
+		"heard_essence": {
+			"text": "Word travels in the Thornwood. They say you went into the barrow and came out brighter than you went in, and the last wisp didn't come out at all. ...You did what they do. Don't tell me why. Just don't do it near my people.",
+			"set_flag": "mirela_heard_essence",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"heard_freed": {
+			"text": "Is that a wisp on your shoulder? ...Dunya used to say they only follow people they trust. She'd have liked you.",
+			"set_flag": "mirela_heard_freed",
+			"add_reputation": {
+				"thornwood_free": 5
+			},
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
 				}
 			]
 		}

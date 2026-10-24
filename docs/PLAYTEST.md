@@ -27,6 +27,9 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
       (but not too near) for a minute: one wisp should drift into the crystal and streak away.
 - [ ] Main quest 3, **Ask the Forest**: follow the line north to the trees and the outlaw camp.
       Is the camp easy to find? Is Mirela's choice (bandits or a garrison crate) clear?
+- [ ] Main quest 4, **The Barrow**: after the Guardian, can you find the way on from the vault
+      without help (look at the floor)? Free the wisp or take its essence: does either feel
+      like a real choice?
 - [ ] First view of the level: note the **FPS** in the corner, on **High**.
 - [ ] The compass at the top: can you tell where the wolves quest points once Maren gives it?
       Press **M**: is the map readable?

@@ -179,6 +179,10 @@ They fight with the same swing system you do (`enemies/bandit.gd`, swings in
 - 60 Health each (the leader 90), slower than your sprint, and they give up 28 m from camp.
 - **Search the bodies** (E) for gold and their weapons. They stay dead and searched.
 
+- **Hooded cultists** (`enemies/cultist.gd`, in the barrow's hidden chamber) fight exactly
+  like bandits, in grey-violet robes. They don't take prisoners in Hardcore, and can wait
+  (frozen) for a story flag before they wake.
+
 Tested with two bots: one that only swings (dies with the leader on about 15 HP, so one
 potion would have turned it) and one that blocks and parries every telegraphed swing
 (clears the camp with 57/100 Health). Real players will land somewhere in between.

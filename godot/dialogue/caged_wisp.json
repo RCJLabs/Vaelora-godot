@@ -1,0 +1,109 @@
+{
+	"start": "look",
+	"nodes": {
+		"look": {
+			"text": "An iron cage no bigger than a lantern, and inside it the last wisp, pressed against the bars, its light thin and flickering. The other cages are empty. A brass funnel on the cage's lid leads to a jar, and the jar is half full of something that glows.",
+			"choices": [
+				{
+					"text": "Open the cage.",
+					"next": "free"
+				},
+				{
+					"text": "Draw its light into yourself.",
+					"next": "take_warn"
+				},
+				{
+					"text": "(Scholar) This is the drawing the books warned about.",
+					"next": "scholar",
+					"requires_background": "scholar"
+				},
+				{
+					"text": "(Acolyte) Say the old words for it.",
+					"next": "acolyte",
+					"requires_background": "acolyte"
+				},
+				{
+					"text": "Leave it for now.",
+					"next": "end"
+				}
+			]
+		},
+		"scholar": {
+			"text": "Drawing power from a living thing, through a vessel, into another. Every book you've read on it ends the same way: the one who draws becomes the thing that takes. And every book admits it works.",
+			"choices": [
+				{
+					"text": "Open the cage.",
+					"next": "free"
+				},
+				{
+					"text": "Draw its light into yourself.",
+					"next": "take_warn"
+				},
+				{
+					"text": "Leave it for now.",
+					"next": "end"
+				}
+			]
+		},
+		"acolyte": {
+			"text": "You say them. The wisp's light steadies, just a little, as if something heard. You still have to choose.",
+			"choices": [
+				{
+					"text": "Open the cage.",
+					"next": "free"
+				},
+				{
+					"text": "Draw its light into yourself.",
+					"next": "take_warn"
+				},
+				{
+					"text": "Leave it for now.",
+					"next": "end"
+				}
+			]
+		},
+		"take_warn": {
+			"text": "You'd only have to hold the funnel and pull, the way they did. It would be easy. It would feel wonderful. That's what frightens you.",
+			"choices": [
+				{
+					"text": "Do it.",
+					"next": "take"
+				},
+				{
+					"text": "Open the cage instead.",
+					"next": "free"
+				},
+				{
+					"text": "Leave it for now.",
+					"next": "end"
+				}
+			]
+		},
+		"free": {
+			"text": "The latch is stiff, then it isn't. The wisp hangs in the doorway of the cage as if it can't believe it, then rises, circles you twice, and settles over your shoulder. It doesn't leave.",
+			"set_flag": [
+				"freed_wisp",
+				"wisp_choice_made"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"take": {
+			"text": "Light pours up your arm like warm water, then like fire, then like nothing at all: it's simply yours. Your head is clear and huge. The cage is dark. Somewhere far north, you think you feel something notice. (+25 max Magicka)",
+			"set_flag": [
+				"took_wisp_essence",
+				"wisp_choice_made"
+			],
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

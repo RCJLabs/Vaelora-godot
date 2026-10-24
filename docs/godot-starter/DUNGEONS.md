@@ -30,6 +30,8 @@ node.
 | **PuzzleGate** (`puzzle_gate.gd`) | A portcullis that slides up when every lever in **Levers** matches **Combination** (on/off), or when `activate()`/`open()` is called (a plate, an arena). **Close When Unsolved** makes it shut again if a lever moves back. **E** on a closed gate shows **Locked Message** — a place for a clue. Remembers being open. |
 | **BossArena** (`boss_arena.gd`) | An Area3D over the arena floor. When the player walks in: shuts **Gates**, wakes the **Boss**, shows its health bar. When the boss dies the gates open. If the boss was beaten before, the gates are simply open. If the player is beaten (Hardcore defeat), the boss goes back to its statue and the gates to how they were. |
 
+| **SecretWall** (`secret_wall.gd`) | A piece of wall with a prompt (**Prompt Text**, "Examine the scrape marks"). **E** shows **Open Message** and sinks it into the floor; remembered with **Opened Flag**. Put the clue next to it (scrape marks, a draught). |
+
 In the test dungeon the riddle on the east wall ("the outer two wake; the one between them
 sleeps") means: pull levers 1 and 3, leave 2.
 
@@ -50,6 +52,20 @@ Heavy and hard to stagger: its poise (150) breaks only after many hits, then it 
 
 To make another boss: copy `stone_guardian.gd`'s structure. The arena only needs the boss to
 have `wake(player)`, `is_defeated()`, `display_name`, `stats` and a `died` signal.
+
+## The hidden chamber (main quest 4, "The Barrow")
+
+West of the vault, behind a `SecretWall` with scrape marks running up to it, is the hooded
+folk's workshop:
+- empty wisp cages and **the last caged wisp** (`props/caged_wisp.gd`). Its dialogue
+  (`dialogue/caged_wisp.json`) lets you **free it**, after which it follows you everywhere as a
+  small light (`props/wisp_companion.gd`), or **take its essence**: +25 max Magicka, and −15
+  with the Thornwood Free;
+- three jars of stolen light on a worktable (readable), and **the cultist's notes and map**
+  (a pickup), which point to the Hollow Oak (quest 5);
+- **two hooded cultists** (`enemies/cultist.gd`: a bandit in robes that doesn't take prisoners).
+  They stand still until the wall opens (`wait_for_flag`), so they don't press against the
+  wall at a player on the other side.
 
 ## Building your own dungeon
 

@@ -15,6 +15,12 @@
 [ext_resource type="PackedScene" path="res://enemies/stone_guardian.tscn" id="13_stone_guardian"]
 [ext_resource type="Script" path="res://levels/level_map.gd" id="97_levelmap"]
 [ext_resource type="Script" path="res://props/refuge.gd" id="96_refuge"]
+[ext_resource type="Script" path="res://props/puzzle/secret_wall.gd" id="95_secret"]
+[ext_resource type="Script" path="res://props/caged_wisp.gd" id="94_caged"]
+[ext_resource type="Script" path="res://interactables/pickup.gd" id="93_pickup"]
+[ext_resource type="PackedScene" path="res://enemies/bandit.tscn" id="92_bandit"]
+[ext_resource type="Script" path="res://enemies/cultist.gd" id="91_cultist"]
+[ext_resource type="Script" path="res://enemies/wolf_pack.gd" id="90_pack"]
 
 [sub_resource type="Environment" id="Env"]
 background_mode = 1
@@ -302,6 +308,115 @@ size = Vector3(1.4, 2.4, 0.2)
 [sub_resource type="BoxShape3D" id="Shape_30"]
 size = Vector3(1.4, 2.4, 0.2)
 
+
+[sub_resource type="StandardMaterial3D" id="Mat_scrape"]
+albedo_color = Color(0.06, 0.06, 0.065, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_jar"]
+transparency = 1
+albedo_color = Color(0.7, 0.95, 0.85, 0.35)
+emission_enabled = true
+emission = Color(0.55, 0.9, 0.75, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_wispcore"]
+shading_mode = 0
+albedo_color = Color(0.85, 0.8, 1, 1)
+
+[sub_resource type="SphereMesh" id="Mesh_wispcore"]
+material = SubResource("Mat_wispcore")
+radius = 0.09
+height = 0.18
+
+[sub_resource type="CylinderMesh" id="Mesh_jar"]
+material = SubResource("Mat_jar")
+top_radius = 0.14
+bottom_radius = 0.16
+height = 0.4
+
+[sub_resource type="BoxShape3D" id="Shape_jar"]
+size = Vector3(0.35, 0.45, 0.35)
+
+[sub_resource type="BoxShape3D" id="Shape_cage"]
+size = Vector3(0.6, 0.8, 0.6)
+
+[sub_resource type="BoxMesh" id="Mesh_hc0"]
+material = SubResource("Mat_stone")
+size = Vector3(0.5, 4, 3)
+
+[sub_resource type="BoxShape3D" id="Shape_hc0"]
+size = Vector3(0.5, 4, 3)
+
+[sub_resource type="BoxMesh" id="Mesh_hc1"]
+material = SubResource("Mat_stone")
+size = Vector3(0.5, 1.4, 2)
+
+[sub_resource type="BoxShape3D" id="Shape_hc1"]
+size = Vector3(0.5, 1.4, 2)
+
+[sub_resource type="BoxMesh" id="Mesh_hc2"]
+material = SubResource("Mat_stone")
+size = Vector3(0.5, 2.6, 2)
+
+[sub_resource type="BoxShape3D" id="Shape_hc2"]
+size = Vector3(0.5, 2.6, 2)
+
+[sub_resource type="BoxMesh" id="Mesh_hc3"]
+material = SubResource("Mat_scrape")
+size = Vector3(2.4, 0.01, 0.12)
+
+[sub_resource type="BoxShape3D" id="Shape_hc3"]
+size = Vector3(2.4, 0.01, 0.12)
+
+[sub_resource type="BoxMesh" id="Mesh_hc4"]
+material = SubResource("Mat_stone")
+size = Vector3(9.5, 0.5, 9)
+
+[sub_resource type="BoxShape3D" id="Shape_hc4"]
+size = Vector3(9.5, 0.5, 9)
+
+[sub_resource type="BoxMesh" id="Mesh_hc5"]
+material = SubResource("Mat_stone")
+size = Vector3(0.5, 3.5, 9)
+
+[sub_resource type="BoxShape3D" id="Shape_hc5"]
+size = Vector3(0.5, 3.5, 9)
+
+[sub_resource type="BoxMesh" id="Mesh_hc6"]
+material = SubResource("Mat_stone")
+size = Vector3(9, 3.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_hc6"]
+size = Vector3(9, 3.5, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_hc7"]
+material = SubResource("Mat_wood")
+size = Vector3(3, 0.9, 0.9)
+
+[sub_resource type="BoxShape3D" id="Shape_hc7"]
+size = Vector3(3, 0.9, 0.9)
+
+[sub_resource type="BoxMesh" id="Mesh_hc8"]
+material = SubResource("Mat_plate")
+size = Vector3(0.5, 0.04, 0.35)
+
+[sub_resource type="BoxShape3D" id="Shape_hc8"]
+size = Vector3(0.5, 0.04, 0.35)
+
+[sub_resource type="BoxMesh" id="Mesh_hc9"]
+material = SubResource("Mat_iron")
+size = Vector3(0.04, 0.8, 0.04)
+
+[sub_resource type="BoxShape3D" id="Shape_hc9"]
+size = Vector3(0.04, 0.8, 0.04)
+
+[sub_resource type="BoxMesh" id="Mesh_hc10"]
+material = SubResource("Mat_iron")
+size = Vector3(0.6, 0.04, 0.6)
+
+[sub_resource type="BoxShape3D" id="Shape_hc10"]
+size = Vector3(0.6, 0.04, 0.6)
 [node name="TestDungeon" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -504,15 +619,6 @@ mesh = SubResource("Mesh_8")
 
 [node name="Shape" type="CollisionShape3D" parent="VaultCeiling"]
 shape = SubResource("Shape_8")
-
-[node name="VaultWallW" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -3.25, 2, -68)
-
-[node name="Mesh" type="MeshInstance3D" parent="VaultWallW"]
-mesh = SubResource("Mesh_1")
-
-[node name="Shape" type="CollisionShape3D" parent="VaultWallW"]
-shape = SubResource("Shape_1")
 
 [node name="VaultWallE" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 3.25, 2, -68)
@@ -1189,3 +1295,434 @@ camera_height = 3.6
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0.05, -2.5)
 script = ExtResource("96_refuge")
 found_text = "You come to in the barrow's entrance hall. Someone dragged you this far and left you by the door."
+
+[node name="VaultWallWSouth" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 2, -65.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="VaultWallWSouth"]
+mesh = SubResource("Mesh_hc0")
+
+[node name="Shape" type="CollisionShape3D" parent="VaultWallWSouth"]
+shape = SubResource("Shape_hc0")
+
+[node name="VaultWallWNorth" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 2, -70.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="VaultWallWNorth"]
+mesh = SubResource("Mesh_hc0")
+
+[node name="Shape" type="CollisionShape3D" parent="VaultWallWNorth"]
+shape = SubResource("Shape_hc0")
+
+[node name="VaultWallWTop" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.3, -68)
+
+[node name="Mesh" type="MeshInstance3D" parent="VaultWallWTop"]
+mesh = SubResource("Mesh_hc1")
+
+[node name="Shape" type="CollisionShape3D" parent="VaultWallWTop"]
+shape = SubResource("Shape_hc1")
+
+[node name="SecretWall" type="StaticBody3D" parent="." groups=["surface_stone"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 1.3, -68)
+script = ExtResource("95_secret")
+
+[node name="Mesh" type="MeshInstance3D" parent="SecretWall"]
+mesh = SubResource("Mesh_hc2")
+
+[node name="Shape" type="CollisionShape3D" parent="SecretWall"]
+shape = SubResource("Shape_hc2")
+
+[node name="Scrape1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 0.006, -67.6)
+mesh = SubResource("Mesh_hc3")
+
+[node name="Scrape2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 0.006, -68.4)
+mesh = SubResource("Mesh_hc3")
+
+[node name="ChamberFloor" type="StaticBody3D" parent="." groups=["surface_stone"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -0.25, -68)
+
+[node name="Mesh" type="MeshInstance3D" parent="ChamberFloor"]
+mesh = SubResource("Mesh_hc4")
+
+[node name="Shape" type="CollisionShape3D" parent="ChamberFloor"]
+shape = SubResource("Shape_hc4")
+
+[node name="ChamberCeiling" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 3.75, -68)
+
+[node name="Mesh" type="MeshInstance3D" parent="ChamberCeiling"]
+mesh = SubResource("Mesh_hc4")
+
+[node name="Shape" type="CollisionShape3D" parent="ChamberCeiling"]
+shape = SubResource("Shape_hc4")
+
+[node name="ChamberWallW" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.75, 1.75, -68)
+
+[node name="Mesh" type="MeshInstance3D" parent="ChamberWallW"]
+mesh = SubResource("Mesh_hc5")
+
+[node name="Shape" type="CollisionShape3D" parent="ChamberWallW"]
+shape = SubResource("Shape_hc5")
+
+[node name="ChamberWallS" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.75, -63.75)
+
+[node name="Mesh" type="MeshInstance3D" parent="ChamberWallS"]
+mesh = SubResource("Mesh_hc6")
+
+[node name="Shape" type="CollisionShape3D" parent="ChamberWallS"]
+shape = SubResource("Shape_hc6")
+
+[node name="ChamberWallN" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.75, -72.25)
+
+[node name="Mesh" type="MeshInstance3D" parent="ChamberWallN"]
+mesh = SubResource("Mesh_hc6")
+
+[node name="Shape" type="CollisionShape3D" parent="ChamberWallN"]
+shape = SubResource("Shape_hc6")
+
+[node name="ChamberFill" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 3, -68)
+light_color = Color(0.6, 0.55, 0.9, 1)
+light_energy = 1.1
+omni_range = 11.0
+
+[node name="Worktable" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0.45, -71.2)
+
+[node name="Mesh" type="MeshInstance3D" parent="Worktable"]
+mesh = SubResource("Mesh_hc7")
+
+[node name="Shape" type="CollisionShape3D" parent="Worktable"]
+shape = SubResource("Shape_hc7")
+
+[node name="Jar1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.6, 1.1, -71.2)
+script = ExtResource("6_sign")
+prompt = "Look at the jar"
+text = "A jar of cloudy glass, warm to the touch. Inside, something small and grey that used to glow lies curled at the bottom."
+
+[node name="Mesh" type="MeshInstance3D" parent="Jar1"]
+mesh = SubResource("Mesh_jar")
+
+[node name="Shape" type="CollisionShape3D" parent="Jar1"]
+shape = SubResource("Shape_jar")
+
+[node name="Jar2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.9, 1.1, -71.2)
+script = ExtResource("6_sign")
+prompt = "Look at the jar"
+text = "This one's fuller: a slow swirl of pale light, pressing at the glass. A label in a careful hand: \"Wisps, stones, 6 nights.\""
+
+[node name="Mesh" type="MeshInstance3D" parent="Jar2"]
+mesh = SubResource("Mesh_jar")
+
+[node name="Shape" type="CollisionShape3D" parent="Jar2"]
+shape = SubResource("Shape_jar")
+
+[node name="Jar3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.2, 1.1, -71.2)
+script = ExtResource("6_sign")
+prompt = "Look at the jar"
+text = "A label: \"The forest witch.\" The light inside is brighter than the others, and it moves like someone pacing."
+
+[node name="Mesh" type="MeshInstance3D" parent="Jar3"]
+mesh = SubResource("Mesh_jar")
+
+[node name="Shape" type="CollisionShape3D" parent="Jar3"]
+shape = SubResource("Shape_jar")
+
+[node name="JarGlow" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.9, 1.6, -70.8)
+light_color = Color(0.55, 0.95, 0.75, 1)
+light_energy = 0.8
+omni_range = 4.0
+script = ExtResource("4_flicker_light")
+amount = 0.15
+speed = 2.0
+
+[node name="CultNotes" type="StaticBody3D" parent="."]
+transform = Transform3D(0.9553, 0, 0.2955, 0, 1, 0, -0.2955, 0, 0.9553, -7.4, 0.92, -71.1)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("93_pickup")
+item_id = "cult_notes"
+label = "the notes and map"
+
+[node name="Mesh" type="MeshInstance3D" parent="CultNotes"]
+mesh = SubResource("Mesh_hc8")
+
+[node name="Shape" type="CollisionShape3D" parent="CultNotes"]
+shape = SubResource("Shape_jar")
+
+[node name="EmptyCage1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9, 0.4, -64.9)
+
+[node name="Bar1" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar2" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar3" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar4" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar5" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar6" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar7" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar8" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Lid" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Base" type="MeshInstance3D" parent="EmptyCage1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.38, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Shape" type="CollisionShape3D" parent="EmptyCage1"]
+shape = SubResource("Shape_cage")
+
+[node name="EmptyCage2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9, 0.4, -66.1)
+
+[node name="Bar1" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar2" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar3" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar4" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar5" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar6" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar7" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar8" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Lid" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Base" type="MeshInstance3D" parent="EmptyCage2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.38, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Shape" type="CollisionShape3D" parent="EmptyCage2"]
+shape = SubResource("Shape_cage")
+
+[node name="EmptyCage3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9, 0.4, -69.9)
+
+[node name="Bar1" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar2" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar3" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar4" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar5" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar6" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar7" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar8" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Lid" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Base" type="MeshInstance3D" parent="EmptyCage3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.38, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Shape" type="CollisionShape3D" parent="EmptyCage3"]
+shape = SubResource("Shape_cage")
+
+[node name="EmptyCage4" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9, 0.4, -71.1)
+
+[node name="Bar1" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar2" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar3" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar4" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar5" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar6" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar7" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar8" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Lid" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Base" type="MeshInstance3D" parent="EmptyCage4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.38, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Shape" type="CollisionShape3D" parent="EmptyCage4"]
+shape = SubResource("Shape_cage")
+
+[node name="CagedWisp" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9, 0.4, -68)
+script = ExtResource("94_caged")
+
+[node name="Bar1" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar2" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar3" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar4" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar5" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar6" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar7" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Bar8" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0)
+mesh = SubResource("Mesh_hc9")
+
+[node name="Lid" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Base" type="MeshInstance3D" parent="CagedWisp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.38, 0)
+mesh = SubResource("Mesh_hc10")
+
+[node name="Shape" type="CollisionShape3D" parent="CagedWisp"]
+shape = SubResource("Shape_cage")
+
+[node name="Orb" type="MeshInstance3D" parent="CagedWisp"]
+mesh = SubResource("Mesh_wispcore")
+
+[node name="Light" type="OmniLight3D" parent="CagedWisp"]
+light_color = Color(0.65, 0.55, 1, 1)
+light_energy = 0.7
+omni_range = 4.0
+script = ExtResource("4_flicker_light")
+amount = 0.5
+speed = 5.0
+
+[node name="Cultists" type="Node3D" parent="."]
+script = ExtResource("90_pack")
+cleared_flag = "cultists_cleared"
+cleared_message = "The chamber is quiet."
+
+[node name="Cultist1" parent="Cultists" instance=ExtResource("92_bandit")]
+transform = Transform3D(0.17, 0, -0.9854, 0, 1, 0, 0.9854, 0, 0.17, -9.5, 0, -66.2)
+script = ExtResource("91_cultist")
+wait_for_flag = "found_hidden_chamber"
+display_name = "Hooded Figure"
+gold = 8
+loot = {
+"marked_coin": 1
+}
+
+[node name="Cultist2" parent="Cultists" instance=ExtResource("92_bandit")]
+transform = Transform3D(-0.1288, 0, -0.9917, 0, 1, 0, 0.9917, 0, -0.1288, -10.2, 0, -69.6)
+script = ExtResource("91_cultist")
+wait_for_flag = "found_hidden_chamber"
+display_name = "Hooded Figure"
+gold = 8
+loot = {
+"marked_coin": 1
+}

@@ -32,6 +32,7 @@ TIMEOUT = 300
 # tests/test_*.gd runs once with none.
 VARIANTS = {
     "test_attrs": [["orc"]],
+    "test_barrow": [["free"], ["take"]],
     "test_ask_forest": [["bandits"], ["supplies"], ["outlaw"]],
     "test_bandit_fight": [["skilled"]],   # "naive" (never defends) is a balance check: run it by hand
     "test_combat": [["human"]],

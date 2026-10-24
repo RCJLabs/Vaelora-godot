@@ -74,6 +74,7 @@ var _strafe := 1.0
 var _knockback := Vector3.ZERO
 var _searched := false
 var _cloth: StandardMaterial3D
+var _cloth_color: Color   # what a hit flash fades back to
 var _glint: StandardMaterial3D   # the blade's material, flashed as the telegraph
 var _pose_tween: Tween
 
@@ -103,6 +104,7 @@ func _ready() -> void:
 	stats.poise_broken.connect(func(): stagger(stagger_time))
 	_cloth = ($Model/Body as MeshInstance3D).mesh.surface_get_material(0).duplicate()
 	$Model/Body.material_override = _cloth
+	_cloth_color = _cloth.albedo_color
 	if weapon_scene:
 		var held := weapon_scene.instantiate()
 		weapon_holder.add_child(held)
@@ -391,7 +393,7 @@ func add_effect(id: String) -> void:
 func _on_damaged(_amount: float) -> void:
 	var tween := create_tween()
 	tween.tween_property(_cloth, "albedo_color", Color(0.8, 0.2, 0.15), 0.05)
-	tween.tween_property(_cloth, "albedo_color", Color(0.33, 0.24, 0.16), 0.25)
+	tween.tween_property(_cloth, "albedo_color", _cloth_color, 0.25)
 
 
 # --- moving -----------------------------------------------------------------------------------
