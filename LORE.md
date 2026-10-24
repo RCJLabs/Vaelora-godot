@@ -1,8 +1,9 @@
-# Vaelora: lore bible (draft v2)
+# Vaelora: lore bible (draft v3)
 
 Built from your questionnaire answers of 24 October 2026 (kept verbatim in
-`docs/lore/questionnaire-answers-2026-10-24.txt`), and the brainstorm on the Draining, the Vael,
-the sage and the races (24 October 2026, in chat).
+`docs/lore/questionnaire-answers-2026-10-24.txt`), the brainstorm on the Draining, the Vael,
+the sage and the races (24 October 2026, in chat), and the round-two answers (kept verbatim in
+`docs/lore/questionnaire-2-answers-2026-10-24.txt`).
 
 - **Plain text** is what you decided.
 - ***(suggested)*** marks what I filled in to make it hang together. Draft v1 was **approved as
@@ -10,7 +11,7 @@ the sage and the races (24 October 2026, in chat).
   Any of it can still be changed.
 - **🔒 Secret** marks the hidden truth: what the player learns slowly, or only in the full game.
   Nobody in the demo knows it except Aeviro.
-- **Still open** is collected at the end, and in the round-two questionnaire.
+- **Still open** is collected at the end.
 
 ---
 
@@ -25,17 +26,22 @@ and legends nobody believed say it's being used to build an army. You arrive as 
 chose to be: a soldier, a scholar, an outlaw. By the end of the demo you've followed the trail
 far enough to see how big it is.
 
-🔒 **What's really going on:** the arrivals, the Vael, were murdered for their magic, and the
-wisps are what's left of them: aware, in pain, remembering, and wanting to go home. Every
-Wisp Essence a mage swallows is one of them, ended. The Draining is being run by the only
-person alive who remembers, **Aeviro**, one of the killers, nine hundred years old on stolen
-life, trying to send the Vael home the only way they know how: by doing it again.
+🔒 **What's really going on:** the arrivals, the Vael, were gentle refugees whose own world had
+been destroyed, and they were hunted to death for their magic. The wisps are what's left of
+them: aware, in pain, remembering, and wanting to leave this world together. Every Wisp Essence
+a mage swallows is one of them, ended. The Draining is being run by the only person alive who
+remembers the hunt, **Aeviro**, one of the hunters, nine hundred years old on stolen life, who
+means to gather every Vael into their own body and carry them away, and die doing it.
 
 ## Tone and pillars
 
 **Horror is the underside of the wonder.** The rest of the game is wondrous and wryly funny;
-the truth about the Vael is where the horror lives. Rarely and quietly: the jokes stop around
-it, the music drops out, nothing jumps at you. The hollow wolf scene is the template.
+the truth about the Vael is where the horror lives. **Level: 3 of 5**, a real part of the game
+but not its main course, in every flavour: body (grey flesh, hollowing, things worn like coats),
+cosmic, folk (friendly villages with old secrets), psychological (voices, guilt, not trusting
+your own power), and dread. Mostly rare and quiet: the jokes stop around it, the music drops
+out, nothing jumps at you. The hollow wolf scene is the template. Hard limits (things never
+shown): not decided yet.
 
 | | Decision |
 |---|---|
@@ -70,16 +76,25 @@ here. Everything changed after that.
 
 ### 🔒 What really happened
 
-- **The Vael arrived as magical beings with bodies.** The peoples of Vaelora saw their magic
-  and wanted it, **so they killed them for it.**
-- **The dead Vael became the wisps.** A wisp is not an animal or a spirit of place: it's what
-  is left of one of the Vael.
-- **Wisps are aware. They feel pain when they're absorbed. They remember. They want to go
-  home.**
+- **Who the Vael were:** **light wearing a body, never quite the same shape twice.** (What
+  people *think* they looked like varies: every people's old songs describe them differently.)
+- **Gentle and curious refugees.** Their own world had been destroyed. They came in peace.
+- **They came down from the Wanderer**, the green moon, which is their ship. It's still up
+  there.
+- **Creatures came with them:** companions and pets, mounts and livestock, guardians, and life
+  that simply followed them like seeds on a coat. Left wild when the Vael died, they're the
+  strange creatures of Vaelora.
+- **The peoples of Vaelora saw their magic and wanted it, so they hunted them for it.** A **slow
+  hunt over a century**, led by **a pact of kings and mages**, and by **the founders of the
+  Collegium**.
+- **Some Vael fought back, and their creatures still remember how.**
+- **The dead Vael became the wisps.** A wisp is what is left of one of the Vael.
+- **Wisps are aware. They feel pain when they're absorbed. They remember.**
 - So **absorbing a wisp's essence ends one of the Vael, so that you can have its power.**
-- *(suggested)* "The Arrival" as everyone tells it is the cover story. Every people tells it
-  differently because every people took part, and nobody wanted to remember that.
-- **Only one person alive knows the truth: Aeviro** (below).
+- **How it was hidden:** the Arrival story was made up to replace the truth, the records were
+  burned, and the witnesses died. *(suggested)* Every people tells the Arrival differently
+  because every people took part.
+- **Only one person alive remembers the hunt: Aeviro** (below).
 
 ### The Vael, then and now *(suggested where marked)*
 
@@ -88,10 +103,18 @@ here. Everything changed after that.
   and it's what ordinary mages draw on, which is why ordinary magic doesn't corrupt. A **wisp**
   is different: a **remnant**, still someone. Ordinary magic is farming a battlefield; drinking
   a wisp is killing the wounded.
-- *(suggested)* **Home** may be the Wanderer, the green moon that came with them, or whatever lies
-  beyond the Pale Gate where they arrived. Still open.
-- **Talking to one:** maybe; undecided. *(suggested)* At high corruption you begin to hear
-  them, and the cleansing vigil takes that away again.
+- **What they want:** their home world is gone. "Home" now means **whole and together again**:
+  the Vael want to **leave this world, as a people, for another one**.
+- **A single wisp can be released** to its afterlife instead of being swallowed. That gives it
+  rest, and it's an ending.
+- *(suggested)* **So rest and survival pull against each other.** A released wisp is at peace,
+  and lost to its people for good. Left in the world, it suffers, but can still leave with the
+  others one day. Mercy now, or a future later: that's the choice every essence offers.
+- **Talking to them:** **at Hollowing you start to hear them**, and the cleansing vigil takes
+  that away again. The more of them you've eaten, the better you hear them.
+- **Why night wisps attack:** **they go for anyone carrying stolen light, so the more corrupted
+  you are, the more come.** *(suggested)* It isn't malice: they're reaching for the pieces of
+  their own people inside you, and the reaching burns.
 
 ### A different road
 
@@ -122,10 +145,14 @@ enchanted locks, healing colleges instead of barber-surgeons, and no gunpowder a
   behind the main threat is doing, at scale.
 - 🔒 **Corruption is carrying the dead.** Every wisp you swallow is one of the Vael inside you.
   The corruption mechanic (docs/CORRUPTION.md: Touched, Stained, Hollowing) is the player
-  becoming what the cult is. *(suggested)* At Hollowing, the Vael in you pull north, toward home;
-  that line is already in the game.
+  becoming what the cult is. *(suggested)* At Hollowing, the Vael in you pull north, toward the
+  Pale Gate and the Wanderer above it; that line is already in the game.
 - **How people see mages:** both respected and feared. *(suggested)* Mages trained in the
-  **colleges** are respected and licensed. An unlicensed mage is watched, and the Riverwatch
+  **colleges** are respected and licensed.
+- 🔒 **The Collegium knows nothing** about the hunt its founders led. *(suggested)* Their guilt
+  survives only as rules nobody can explain: mage licences, and "never drink from a wisp", taught
+  as a danger to the drinker. It's why the cult hides from the Collegium: it would hang a
+  drainer without ever knowing why the law exists. An unlicensed mage is watched, and the Riverwatch
   garrison can arrest one. Hedge-mages in the forest don't care.
 - *(suggested)* At the peak, masters can **fly**, as in your scene. Flight is far beyond the
   demo: something the player sees, and wants.
@@ -155,20 +182,21 @@ animation and voices, so the others appear in the lore, and maybe as rare NPCs, 
 | **Humans** | The most numerous; river-traders, farmers and garrison soldiers, practical and stubborn. Most of the colleges' students are human, because they'll try anything | Celtic/Gaelic in the valley (Maren, Eilidh), Norse/Germanic in the borderland (Brannoc, Sigrun) |
 | **Elves** | Long-lived, and the people most changed by the Arrival. Some say it made them. Brilliant mages, but also the most prone to corruption. Proud families with old debts | Invented and flowing (Ithariel, Sennaveth) |
 | **Orcs** | Clans bound by oaths and work; the best smiths and the steadiest soldiers. Distrust easy magic, so their mages are rare and formidable | Hard and guttural (Grukka, Durzhak) |
-| **The Passengers** *(working name)* | **Came with the Vael** at the Arrival, as companions, servants or cargo, and survived by hiding among the natives. *(suggested)* The only people whose old songs describe the Vael alive; secretive, and ashamed of something. The dignified keep the songs; the twisted sold the Vael out | Open |
-| **The Ashen** *(working name)* | **Descended from people hollowed in the massacre**, and it bred true. *(suggested)* Grey-skinned and quiet; they hear the wisps faintly. What Hollowing becomes over generations | Open |
-| **Small folk** *(working name)* | **Swore off magic after the massacre.** *(suggested)* Wry, practical innkeepers and traders, the humour of the world. "Small folk don't do spells" is an old taboo kept out of habit and pride; only one person alive remembers why it began. Low corruption is cultural, not in the blood: a small-folk mage is possible, and their grandmother would be appalled | Open |
-| **Deepfolk** *(working name)* | **Mine the residue** the Vael left: crystals, stones, rune-ore. *(suggested)* Magic's working class; they noticed first that "the stones give less", and they're scared of what's being dug up | Open |
+| **The Passengers** | **Came with the Vael**, as companions, servants or cargo, and survived by hiding among the natives. **Part of society, but quietly discriminated against, because of a myth that they caused the Hollowing.** *(suggested)* The irony: the only people whose old songs describe the Vael alive are blamed for what the others did | Open |
+| **The Ashen** | **Descended from people hollowed in the hunt**, and it bred true. *(suggested)* Grey-skinned and quiet, living around the old battlefields and the twelve sites. They hear wisps faintly, so people hire them as wisp-finders, and they hate the work | Open |
+| **Small folk** | **Swore off magic after the hunt.** *(suggested)* Innkeepers, couriers and brokers on every road, and the humour of the world. "Small folk don't do spells" is an old taboo kept out of habit and pride, and it makes them trusted as neutral go-betweens. Only one person alive remembers why it began. A small-folk mage is possible; their grandmother would be appalled | Open |
+| **Deepfolk** | **Mine the residue** the Vael left: crystals, stones, rune-ore. *(suggested)* Guild-law mining halls under the hills, rich from rune-ore, and frightened now that the stones give less | Open |
 
 *(suggested)* Where each people stood at the Arrival is what defines them: the killers
 (humans, elves and orcs, in different measure), those who came with the Vael (Passengers),
 those made by the killing (Ashen), those who swore off its fruit (small folk), and those who
 live off what's left (Deepfolk).
 
-*(suggested, open)* Elves were "most changed by the Arrival": maybe because they drank the most,
-which would be why they're long-lived and most prone to corruption. Orcs may distrust easy
-magic because their oral histories remember the killing. Framed as history and guilt, never as
-what a people is by nature.
+🔒 **Elves drank the most Vael**, which is why they're long-lived and most prone to corruption.
+**Orcs remember the killing** in their oral histories, which is why they distrust easy magic.
+*(suggested)* Framed as history and guilt, never as what a people is by nature.
+
+**Playable next:** all four new peoples are wanted; the order is still open.
 
 **More peoples for later** (NPC-only until they can be afforded as playable): the Lumen (born
 with a Vael's light under the skin) and Beastfolk (animals changed by the Arrival's creatures).
@@ -215,9 +243,16 @@ unknown army. There are legends, but no one thought it could be real.
 - **It's people, and it's new.** Behind the legend is a circle of corrupt mages, the cult,
   who drain wisps, wolves and even a hedge-witch (Dunya) through stones marked with a circle
   split by three lines. (All in the demo.)
-- **The cult believes** it's harvesting a resource and building an army, paid in stolen
-  power. It doesn't know what wisps are. The members who sign "V." and "A." send the harvest
-  "north to the Pale Gate by the next dark of the Wanderer", and hide it from the Collegium.
+- **The cult:** *(suggested name)* **the Ferry**; its members are ferriers.
+  - **What its members want:** **a cure for their own Hollowing, and a cause: releasing the
+    Vael to their afterlife.** They're mages who swallowed too many wisps and are hollowing.
+  - *(suggested)* So the ferriers know wisps are Vael souls in need of release (Aeviro told them
+    that much). They don't know about the hunt, or the Collegium's founders, or what Aeviro
+    really means to do. "The army" is the outside world's rumour.
+  - **"V."** is *(suggested)* **Magister Vessa**, a licensed Collegium healer who is hollowing,
+    and the Ferry's organiser in the Greywater Vale. Off-screen in the demo.
+- **The letter:** "A." tells V. to send the harvest "north to the Pale Gate by the next dark
+  of the Wanderer" and to tell no one at the Collegium.
 - **What the player sees first:** wisps fading at the stones, a Greyfang wolf found hollow and
   grey, the stone circle waking early. Small wrong things.
 - **Monsters stay rare** (question 24). Most fights are people: bandits, outlaws, cultists.
@@ -227,35 +262,52 @@ unknown army. There are legends, but no one thought it could be real.
 
 ### 🔒 What's really happening
 
-- **"A." is Aeviro**, and the Draining is a rescue: Aeviro is gathering the Vael to **send them
-  home**. The dead can't travel scattered, so they have to be gathered first, and draining is
-  the only way anyone knows to gather them.
-- **The rescue tortures the people it's rescuing.** Wisps feel the draining. Aeviro has
+- **"A." is Aeviro.** The Ferry thinks it's giving the Vael rest. Aeviro wants them to
+  **survive**: to leave this world together, which needs them gathered, not released.
+- **Aeviro is the last vessel.** *(suggested)* The First and "the others" were attempts to build
+  bodies that could hold the gathered Vael. The First was filled "too much, too fast" and
+  "will not hold". In the end Aeviro means to take every Vael into their own body, carry them
+  through the Pale Gate and up to the Wanderer, and die there, emptied, as the Vael leave.
+- *(suggested)* **The Pale Gate** is where the Wanderer's light touches the ground at its dark:
+  the way back up to the ship. Aeviro's hut is near it.
+- **The gathering tortures the people it's saving.** Wisps feel the draining. Aeviro has
   decided that's the price.
-- **The "army" is Aeviro's cover story**, because greed motivates a cult better than guilt.
-  What the cult is really building are **vessels** to carry the gathered Vael north.
-- **The First** was a vessel filled "too much, too fast": it "will not hold". "The others are
-  ready": eleven more, at the other sites.
 - *(suggested)* **Why Dunya "gave more than all the wisps together":** she had swallowed many
   wisps over the years. Anyone who has absorbed wisps carries Vael, and is worth harvesting.
   That includes the player.
 - *(suggested)* **"You smell like us"** (The First, to a Stained player): it's made of Vael,
   and it recognises the Vael in you.
 
+### 🔒 The moment the player learns the truth (full game)
+
+Your scene: **a quest sends you deep into a dungeon full of the hollowed and worse, to bring back
+an artifact. When you get there it's gone, and something terrible waits in its place. You kill
+it, and it releases wisps, the moment where you'd normally choose to release them or absorb
+them. Instead, "A." walks in and absorbs them all.**
+
+*(suggested)* Two things make it land:
+- "A." is the small-folk card cheat you met at the start, and liked.
+- If you're corrupted enough to hear the wisps, you hear them as it happens.
+
 ## Aeviro, the sage
 
-- **Small folk.** About **900 years old**. **One of the original killers**, kept alive by the
-  Vael they absorbed in the massacre: their long life is made of people who are still in pain.
-- **The only person alive who knows the truth**, because everyone else who was there is dead.
-- **Secretly "A."**, who runs the Draining to send the Vael home.
+- **Small folk. They/them.** About **900 years old**. **One of the original hunters**, kept
+  alive by the Vael they absorbed: their long life is made of people who are still in pain.
+- **The only person alive who remembers the hunt**, because everyone else who was there is dead.
+- **Secretly "A."**, who runs the Draining.
+- **Lives in a hermit's hut near the Pale Gate.**
+- **First meeting: a comic run-in. They cheat you at cards.**
+- **Personality: kind (2 of 5 toward cold) and funny (2 of 5 toward grim), but manipulative
+  (4 of 5): they're funny and kind, and they're using you to get what they want.**
+- **They know the plan will kill them, they've made peace with it, and it's what they want.**
+  Nine hundred years of guilt.
 - *(suggested)* **The perfect cover:** a hermit from the one people famous for never using
-  magic. Wry, cryptic, and far more powerful than they look; perhaps the mage from the picture
-  to aim for, who flies past and kills the monster in one pass.
-- *(suggested)* **In the full game,** the player meets Aeviro as a mentor, and likes them, long
-  before learning they're "A.". **Aeviro does not appear in the demo.** The letter's "A." is
-  the only trace, and stays as it is.
-- *(suggested)* **The endgame kills Aeviro.** Sending every Vael home means emptying
-  themselves too. Whether Aeviro knows, and intends it, is still open.
+  magic, and far more powerful than they look; perhaps the mage from the picture to aim for,
+  who flies past and kills the monster in one pass.
+- *(suggested)* **Aeviro does not appear in the demo.** The letter's "A." is the only trace,
+  and stays as it is.
+- **The full game's final choice** (ideas so far): **help Aeviro finish**, **stop them**, or
+  **take the gathered Vael for yourself**, and all that power.
 
 ## Who you are
 
@@ -307,28 +359,25 @@ chunk of work.
 
 All as drafted, except the Draining, which the brainstorm replaced (above).
 
-1. **The Vael:** the name stays. Talking to one: maybe (still open).
-2. **The moons:** Ilun and the Wanderer, as drafted.
-3. **The four other races:** the Passengers, the Ashen, small folk and Deepfolk (working names).
-4. **The Draining:** the Vael are the wisps; Aeviro's rescue (above).
+1. **The Vael:** the name stays. You hear them at Hollowing.
+2. **The moons:** Ilun and the Wanderer; the Wanderer is the Vael's ship.
+3. **The four other races:** the Passengers, the Ashen, small folk and Deepfolk.
+4. **The Draining:** the Vael are the wisps; Aeviro gathers them (above).
 5. **The region:** the Greywater Vale and the Thornwood.
 6. **The outlaws:** the Thornwood Free.
 7. **Death:** Hardcore first; Normal keeps reload (as built).
 8. **Elves:** the people most changed by the Arrival, and most prone to corruption.
 
+Round two's 29 answers are folded in above.
+
 ## Still open
 
-The round-two questionnaire (`docs/LORE_QUESTIONNAIRE_2.md`) asks about these:
-- **The Vael alive:** what they looked like, how they arrived, what they were like.
-- **Home:** the Wanderer, the Pale Gate, or something else; and how sending them home works.
-- **The massacre:** one night or a long war; who did it; how it was covered up.
-- **Talking to a wisp:** never, the companion learns, or you hear them at Hollowing.
-- **Aeviro:** gender, where they live, how you meet them, whether they know the plan kills them.
-- **The cult:** a name; what members get; who "V." is.
-- **The Collegium:** what it knows.
-- **The four new peoples:** names, homes, cultures, and which become playable.
-- **Elves and orcs:** whether elves drank the most, and whether orcs remember.
-- **How much horror**, and which kinds.
+- **My suggestions to confirm or change:** the cult's name (the Ferry), "V." as Magister
+  Vessa, the Pale Gate as the way up to the Wanderer, Aeviro as the last vessel, the
+  rest-versus-survival choice, and the one-line cultures for the Ashen, small folk and Deepfolk.
+- **Hard limits** on horror: what's never shown.
+- **The order** the four new peoples become playable.
+- **The artifact** in the truth scene: what it is, and who took it.
 
 ## Demo text this would change (proposed, not built)
 
@@ -338,8 +387,10 @@ caged wisp's "something notices", "you smell like us", the pull north, and the l
 - **Taking the caged wisp's light:** one more beat in its text, something small screams and
   then stops.
 - **Swallowing a Wisp Essence:** a faint version of the same, perhaps only once you're Touched.
-- **Releasing an essence:** a new option at the stone circle, sending it home instead of
-  swallowing it (a moral alternative to +40 Magicka and corruption).
+- **Releasing an essence:** a new option at the stone circle. The wisp goes to its rest, you
+  get a small blessing, and wisps treat you differently afterwards. The alternative to +40
+  Magicka and corruption.
+- **Night wisps and corruption:** more wisps come for you the more corrupted you are.
 - **Wisp Essence description:** a hint that it's still warm, and still someone.
-- **Optional foreshadowing of Aeviro:** one line from Maren or Zora about an old one who has
-  been old for as long as anyone remembers.
+- **Optional foreshadowing of Aeviro:** one line from Maren or Zora about an old small-folk
+  card player who has been old for as long as anyone remembers.
