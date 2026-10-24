@@ -45,13 +45,20 @@ func _physics_process(_d: float) -> bool:
 		80:
 			var w = current_scene.get_node("GreyfangPack/Wolf1")
 			w.aggro_range = 0.0
+			# Just this wolf: hitting it alerts its pack, and Wolf2 and Wolf3 used to come for the
+			# player and jostle them off the corpse before the skinning check (the "ray hits
+			# nothing" failure, with Wolf2 attacking and Wolf3 chasing). This test is about loot.
+			for other in current_scene.get_node("GreyfangPack").get_children():
+				if other != w:
+					other.global_position += Vector3(40, 0, 0)
+					other.set_physics_process(false)
 			while w.stats.health > 0: w.take_hit(20, w.global_position + Vector3(0, 0, 1))
 		120:
 			var w = current_scene.get_node("GreyfangPack/Wolf1")
 			look(w.global_position + Vector3(0, 0, 1.8), 0, -38)
 		124:
-			# (On failure, say what the player was looking at: this failed once in a full
-			# parallel run and hasn't reproduced since, with 14 seeds or under CPU load.)
+			# (On failure, say what the player was looking at. These details showed the old
+			# flake's cause: the other wolves, alerted by Wolf1, jostling the player.)
 			var ray = p.interact_ray
 			var seen = ray.get_collider() if ray.is_colliding() else null
 			ok(p.hud.prompt_label.text == "[E] Skin wolf", "corpse prompt", [p.hud.prompt_label.text, "player", p.global_position, "corpse", current_scene.get_node("GreyfangPack/Wolf1").global_position, "ray hits", seen.name if seen else "nothing", "wolves", current_scene.get_node("GreyfangPack").get_children().map(func(w): return [w.name, w.State.keys()[w.state], w.global_position])])

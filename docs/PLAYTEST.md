@@ -38,6 +38,9 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
       "Release a Wisp Essence" a choice you'd make over swallowing it? Did Wisp's Grace (the
       wisps letting you be that night) feel like enough of a reward?
 - [ ] **Wisps and corruption:** once corrupted, do night wisps feel more aggressive? Too much?
+- [ ] **The Lantern Order and the Mercy:** talk to Inquisitor Hale on the south road, clean,
+      then again once you're Touched and Stained. Find the Mercy's camp in the south-east hollow
+      (Brannoc mentions it with the bandits). Is Sister Halina sympathetic, or obviously a villain?
 - [ ] **Books:** five lie around the valley (by the waystation fire, beside Magister Aurel, at the
       stone circle, at the shrine, at the outlaw camp). Did you find any without looking? Did you
       read them? Too long, too short?

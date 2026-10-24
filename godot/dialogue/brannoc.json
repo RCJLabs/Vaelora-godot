@@ -175,6 +175,12 @@
 					]
 				},
 				{
+					"text": "What will you do, after all this?",
+					"next": "after_all",
+					"requires_flag": "wrong_things_done",
+					"requires_not_flag": "brannoc_would_travel"
+				},
+				{
 					"text": "Not yet.",
 					"next": "end"
 				}
@@ -649,8 +655,11 @@
 			]
 		},
 		"bandits_info": {
-			"text": "Bandits. They've a camp south-west of the stones, three of them at least. The one in charge swings a mace and knows how to keep his guard up. The garrison pays a bounty if someone clears them out.",
-			"set_flag": "heard_about_bandits",
+			"text": "Bandits. They've a camp south-west of the stones, three of them at least. The one in charge swings a mace and knows how to keep his guard up. The garrison pays a bounty if someone clears them out. And there's a hooded lot camped in the hollow south-east of the waystation. Quiet, polite, and too far from any road. I don't like it.",
+			"set_flag": [
+				"heard_about_bandits",
+				"heard_about_mercy"
+			],
 			"choices": [
 				{
 					"text": "I'll deal with them.",
@@ -937,6 +946,16 @@
 			"choices": [
 				{
 					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"after_all": {
+			"text": "\"Report to the captain. Write it down so nobody can say I didn't.\" He looks north. \"And if you go after whatever made that wolf, the garrison can spare me less than you'd think. Ask me then.\"",
+			"set_flag": "brannoc_would_travel",
+			"choices": [
+				{
+					"text": "I will.",
 					"next": "end"
 				}
 			]

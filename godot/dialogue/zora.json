@@ -1,6 +1,14 @@
 {
 	"start": [
 		{
+			"node": "betrayed",
+			"requires_flag": [
+				"inquisitor_told_zora",
+				"met_zora"
+			],
+			"requires_not_flag": "zora_knows_betrayed"
+		},
+		{
 			"node": "sees_stain",
 			"requires_corruption": 1,
 			"requires_flag": "met_zora",
@@ -67,6 +75,14 @@
 					"next": "scholar",
 					"requires_background": "scholar",
 					"requires_not_flag": "zora_scholar"
+				},
+				{
+					"text": "Would you ever leave this place?",
+					"next": "leave_here",
+					"requires_not_flag": [
+						"zora_would_travel",
+						"inquisitor_told_zora"
+					]
 				},
 				{
 					"text": "Goodbye.",
@@ -236,6 +252,26 @@
 		},
 		"sees_stain_how": {
 			"text": "Because I was offered it, thirty years ago, in a quiet room at the Collegium. I said no. Some of the people in that room didn't.",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"leave_here": {
+			"text": "\"If the Lantern Order comes up the road, I'll have to.\" She shrugs. \"Somewhere with company would be nice. Somewhere with you, maybe. You're less boring than the trees, and the trees have opinions.\"",
+			"set_flag": "zora_would_travel",
+			"choices": [
+				{
+					"text": "I'll remember that.",
+					"next": "end"
+				}
+			]
+		},
+		"betrayed": {
+			"text": "She doesn't let you past the door. \"A man in a white coat came up the path this morning with my directions written in his little book. In your words, he said.\" She shuts the door to a crack. \"Go away. And don't come back with him.\"",
+			"set_flag": "zora_knows_betrayed",
 			"choices": [
 				{
 					"text": "(Leave)",

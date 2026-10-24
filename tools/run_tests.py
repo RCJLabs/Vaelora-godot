@@ -41,6 +41,7 @@ VARIANTS = {
     "test_floor": [["res://levels/test_level.tscn"], ["res://levels/waystation_cellar.tscn"]],
     "test_nav": [["nav_kill"]],
     "test_morale": [["melee"], ["fire"]],
+    "test_act_one": [["fight"], ["peace"]],
     "test_playthrough": [["normal"], ["hardcore"]],
     "test_quest": [["riverwatch"], ["stones"]],
     "test_race": [["human"], ["elf"], ["orc"]],
