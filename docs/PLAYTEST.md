@@ -34,6 +34,10 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
       "Corruption +10"). Do you notice the HUD line and the messages? Is the trade (stronger
       spells, slower healing) worth taking? Once the shrine is rekindled, keep a vigil there at
       night: is one tier a night too slow? At Hollowing, the ending changes.
+- [ ] **Releasing an essence:** with a Wisp Essence, touch the stone circle's crystal. Is
+      "Release a Wisp Essence" a choice you'd make over swallowing it? Did Wisp's Grace (the
+      wisps letting you be that night) feel like enough of a reward?
+- [ ] **Wisps and corruption:** once corrupted, do night wisps feel more aggressive? Too much?
 - [ ] Side quests (pick one or two): **Silent Shrine** (the roadside shrine south of spawn),
       **The Lost Wagon** (a yellow wagon north-east of the bandit camp), **Licence to Burn**
       (ask Brannoc for work), **Readings Under the Wanderer** (Magister Aurel at the

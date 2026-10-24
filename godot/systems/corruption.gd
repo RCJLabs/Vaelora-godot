@@ -10,7 +10,8 @@ extends Node
 #   2 Stained   (50+)  spells +20%, +20 Magicka     health regen x0.5, the shrine won't bless you
 #   3 Hollowing (80+)  spells +30%, +40 Magicka     health regen x0.5, -20 max Health, outlaws turn cold
 # The gains and costs reach the player through Character.modifier() and
-# Character.stat_bonus(). Cleansing (cleanse_tier) is a night's vigil at the
+# Character.stat_bonus(). Night wisps come for you from further away, and in
+# greater numbers, the higher the tier (wisp_aggro_scale, extra_wisps). Cleansing (cleanse_tier) is a night's vigil at the
 # rekindled roadside shrine: one tier per night.
 # Dialogue and quests can check the tier: "requires_corruption": 2 (at least),
 # "requires_corruption_below": 1 (see systems/conditions.gd).
@@ -42,6 +43,10 @@ const ARRIVE_MESSAGES := [
 ]
 ## Thornwood Free reputation lost the first time you reach Hollowing: they've seen this before.
 const HOLLOWING_REPUTATION := -20
+## Night wisps go for anyone carrying stolen light: how much further they notice you from,
+## and how many more come out, per tier (wisp.gd, wisp_spawner.gd).
+const WISP_AGGRO_SCALE := [1.0, 1.25, 1.5, 2.0]
+const WISP_EXTRA := [0, 0, 1, 2]
 
 var value := 0.0
 
@@ -77,6 +82,14 @@ func cleanse_tier() -> bool:
 		return false
 	_set_value(THRESHOLDS[t - 1], "")
 	return true
+
+
+func wisp_aggro_scale() -> float:
+	return WISP_AGGRO_SCALE[tier()]
+
+
+func extra_wisps() -> int:
+	return WISP_EXTRA[tier()]
 
 
 func modifier(key: String) -> float:

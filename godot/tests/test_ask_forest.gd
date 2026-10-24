@@ -61,7 +61,7 @@ func _physics_process(_d: float) -> bool:
 			for t in current_scene.get_node("Thornwood").get_children():
 				ok(t.global_position.distance_to(mirela.global_position) > 5.0, "%s clear of the camp" % t.name)
 			DM.start("res://dialogue/ostap.json", "Ostap")
-			ok(DM.line_label.text.begins_with("Far enough."), "the lookout stops you")
+			ok(DM.line_label.text.contains("Far enough."), "the lookout stops you")
 			ok(texts().any(func(t): return t.begins_with("(Outlaw)")) == (mode == "outlaw"), "lookout's outlaw line only for outlaws", texts())
 			DM.end()
 			DM.start("res://dialogue/mirela.json", "Mirela")

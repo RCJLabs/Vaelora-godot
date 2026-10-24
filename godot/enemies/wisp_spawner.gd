@@ -1,7 +1,7 @@
 extends Node3D
 
 # Brings wisps out at night: when night falls (WorldClock), `count` wisps
-# appear within `radius` of this node; at dawn the survivors fade away. Killed
+# (more if the player is corrupted: Corruption.extra_wisps) appear within `radius` of this node; at dawn the survivors fade away. Killed
 # ones come back the next night. They fight together (alert()).
 #
 # Once `drain_flag` is set (main quest 1 starts it), something is draining them:
@@ -65,9 +65,10 @@ func drain_one() -> Node:
 
 
 func _spawn() -> void:
-	for i in count:
+	var total := count + Corruption.extra_wisps()   # more come out for a corrupted player
+	for i in total:
 		var wisp := WISP_SCENE.instantiate()
-		var angle := TAU * i / count + randf_range(-0.4, 0.4)
+		var angle := TAU * i / total + randf_range(-0.4, 0.4)
 		wisp.position = Vector3(cos(angle), 0.0, sin(angle)) * randf_range(radius * 0.4, radius) + Vector3.UP * 1.8
 		add_child(wisp)
 

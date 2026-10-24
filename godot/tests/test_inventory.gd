@@ -82,7 +82,7 @@ func _physics_process(_d: float) -> bool:
 			look(Vector3(2, 0, -2), 0, 0)
 		146: key(KEY_E)
 		150:
-			ok(choices() == ["1. The Greyfang pack is dead.", "2. I have a wolf pelt to sell.", "3. Let's trade.", "4. Goodbye."], "Maren's choices with pelts and the quest done", choices())
+			ok(choices() == ["1. The Greyfang pack is dead.", "2. I have a wolf pelt to sell.", "3. Who else comes up this road?", "4. Let's trade.", "5. Goodbye."], "Maren's choices with pelts and the quest done", choices())
 			key(KEY_1)
 		154:
 			ok(I.gold == 70, "quest reward 50 gold", I.gold)

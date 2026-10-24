@@ -165,6 +165,11 @@
 					"requires_item": "wolf_pelt"
 				},
 				{
+					"text": "Who else comes up this road?",
+					"next": "road_folk",
+					"requires_not_flag": "heard_card_player"
+				},
+				{
 					"text": "Let's trade.",
 					"next": "shop"
 				},
@@ -935,6 +940,20 @@
 			"add_reputation": {
 				"riverwatch": 10
 			}
+		},
+		"road_folk": {
+			"text": "Traders, when the wolves let them. Pilgrims for the shrine, once upon a time. And every few years an old small-folk card player, who sits at my table, takes everyone's coin, and is gone by morning. My gran swore the same one cleaned her out when she was a girl. Must run in the family. Same laugh, too.",
+			"set_flag": "heard_card_player",
+			"choices": [
+				{
+					"text": "Anything strange around here lately?",
+					"next": "wrong_things"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
 		}
 	}
 }

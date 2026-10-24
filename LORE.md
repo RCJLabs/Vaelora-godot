@@ -1,4 +1,4 @@
-# Vaelora: lore bible (draft v4)
+# Vaelora: lore bible (draft v5)
 
 Built from your questionnaire answers of 24 October 2026 (kept verbatim in
 `docs/lore/questionnaire-answers-2026-10-24.txt`), the brainstorm on the Draining, the Vael,
@@ -16,6 +16,7 @@ Aeviro. The detail lives in `docs/lore/`:
 | [`PEOPLES.md`](docs/lore/PEOPLES.md) | All seven peoples: home, leaders, values, their own Arrival story, what others say, the dead, wisps |
 | [`MAGIC.md`](docs/lore/MAGIC.md) | The nine schools and how each carries a whole playthrough, the eight colleges |
 | [`FACTIONS.md`](docs/lore/FACTIONS.md) | The eight powers, the seven joinable guilds (two of them evil) |
+| [`STORY.md`](docs/lore/STORY.md) | The game itself: the full game's acts, the player, the truth scene, the four endings and the wisps in each, companions, the demo's characters later, names for the new peoples |
 
 - **Plain text** is what you decided.
 - ***(suggested)*** marks what I filled in to make it hang together. Draft v1 was **approved as
@@ -391,32 +392,17 @@ Round two's 29 answers and round three's 33 are folded in above and in `docs/lor
 
 ## Still open
 
-Round four (`docs/LORE_QUESTIONNAIRE_4.md`) asks about these, and ties the lore to the game:
-the full game's shape, the player in the story, the main quest and endings, companions, and
-which demo changes to build.
+Round four's answers (`docs/lore/questionnaire-4-answers-2026-10-24.txt`) are folded into
+`docs/lore/STORY.md`. Still to settle:
+- **The game's last scene.**
+- **My suggestions in STORY.md:** the hidden fourth ending (Lantern Night), the wisps in each
+  ending, the companions' names (Still, Saelie), the demo characters' later roles, the naming
+  styles, and the playable order.
 
-- **Round three's suggestions to confirm:** nearly everything in `docs/lore/` that's marked
-  *(suggested)*, since you said "you decide" for all seven peoples, the legend, the festival,
-  the schools' names and the guilds.
-- **The cult's name:** the Mercy, replacing "the Vaerd" (too close to "Vael").
-- **Names** for the Passengers, the Ashen, small folk and Deepfolk (their people's naming
-  styles).
-- **Hard limits** on horror: what's never shown.
-- **The order** the four new peoples become playable.
-- **The artifact** in the truth scene: what it is, and who took it.
+## Demo changes from the lore (built, round four)
 
-## Demo text this would change (proposed, not built)
-
-The demo already fits the truth: the hollow wolf's empty eyes and straight-line tracks, the
-caged wisp's "something notices", "you smell like us", the pull north, and the letter from
-"A." can all stay as they are. Small additions, for your approval:
-- **Taking the caged wisp's light:** one more beat in its text, something small screams and
-  then stops.
-- **Swallowing a Wisp Essence:** a faint version of the same, perhaps only once you're Touched.
-- **Releasing an essence:** a new option at the stone circle. The wisp goes to its rest, you
-  get a small blessing, and wisps treat you differently afterwards. The alternative to +40
-  Magicka and corruption.
-- **Night wisps and corruption:** more wisps come for you the more corrupted you are.
-- **Wisp Essence description:** a hint that it's still warm, and still someone.
-- **Optional foreshadowing of Aeviro:** one line from Maren or Zora about an old small-folk
-  card player who has been old for as long as anyone remembers.
+Built: releasing an essence at the stone circle's crystal (Wisp's Grace); more night wisps,
+noticing from further away, for a corrupted player; Maren's old card player; the schools renamed
+Ruin, Mending and Shaping; Ostap's verse of "Hallam and the Hundred Lights"; the Mercy named in
+the cult's notes and letter. Not built (not chosen): the pain beat when absorbing, and a hint in
+the essence's description that it's still someone.

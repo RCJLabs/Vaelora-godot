@@ -74,6 +74,14 @@ func _physics_process(_d: float) -> bool:
 			# Hold it still: an idle wolf wanders to random spots, and could walk out of the
 			# stream before the first hit (it did with seed 14: 0 damage).
 			w.wander_speed = 0.0
+			# Just the one wolf: the others wander too, into the stream in front of it (0 damage
+			# again), and burning several at once can break the pack (wolf_pack.gd), so Wolf1
+			# runs off instead of dying. Driving the pack off is test_morale's.
+			current_scene.get_node("GreyfangPack").can_break = false
+			for other in current_scene.get_node("GreyfangPack").get_children():
+				if other != w:
+					other.global_position += Vector3(40, 0, 0)
+					other.set_physics_process(false)   # (or they'd head home, back beside Wolf1)
 			p.global_position = w.global_position + Vector3(0, 0, 4.5); p.rotation.y = 0; p.get_node("Head").rotation.x = deg_to_rad(-12)
 			p.velocity = Vector3.ZERO
 		245:
