@@ -1,7 +1,7 @@
 # Quests & the Journal
 
 Press **J** (or **Tab → Quests**) for the journal. It lists active quests first, then
-completed ones. For the selected quest it shows who gave it, the description, objectives
+completed ones, with main quests (`"main": true`) at the top of each. For the selected quest it shows who gave it, the description, objectives
 (`[x]` done, `[  ]` to do), and, once finished, how it ended.
 
 Top-left notices announce progress: **Quest started**, **Objective complete** (with the
@@ -11,13 +11,37 @@ next objective), **Quest completed**.
 
 | Quest | Giver | Steps | Endings |
 |---|---|---|---|
+| **Wrong Things** (main quest 1) | Started by every background's opening; Maren tells you about it | Talk to Maren → find the hollow wolf east of Greyfang Hollow and copy the mark on it → show the mark to Brannoc | **Put it down** (in its dialogue, or with a weapon) or **leave it standing**; the journal remembers which. +5 Riverwatch reputation. Leads into The Waking Stones |
 | The Greyfang Pack | Maren (waystation) | Kill the wolves NE of spawn → return to Maren | 50 gold + healing potion, +10 Riverwatch reputation |
 | Thieves by the Fire | Brannoc ("Anything else I should know about out here?") | Clear the bandit camp south-west of the stone circle → tell Brannoc | 75 gold, +10 Riverwatch reputation |
 | The Waking Stones | Brannoc (Riverwatch scout, between spawn and the stone circle) | Touch the crystal → find 3 rune shards (glowing, scattered around the circle) → bring them to Brannoc → **choose** | **Riverwatch:** 60 gold, +15 Riverwatch reputation. **The stones:** return the shards to the crystal yourself: +10 max Magicka, the crystal burns brighter. **Keep them:** −15 Riverwatch reputation, Brannoc goes cold |
 
-Brannoc has extra lines for Elves, and both quests remember what you did. Kill the wolves
+Brannoc has extra lines for Elves, and the quests remember what you did. In Wrong Things the
+Hunter can read the hollow wolf's tracks (they come out of the forest to the north) and the
+Scholar can read its mark (something was drawn *out* through it); each gets a line with
+Brannoc for it. Kill the wolves
 *before* Maren asks and you can still report it. Touch the crystal before meeting Brannoc
 and that objective is already ticked when he gives you the quest.
+
+## Background openings
+
+A new game starts with the background's own first scene (`systems/openings.gd`, data in
+`quests/openings.json`): the player appears at that background's marker in the level
+(`StartSoldier`, `StartScholar`, ...), facing its way, gets its items (posting orders, a
+letter from the Collegium, a wanted notice, a wagon manifest), and a short intro card shows
+for a few seconds (interact, jump or Enter skips it). It also starts Wrong Things, and Maren's
+first conversation has a line for each background.
+
+| Background | Starts | Looking at |
+|---|---|---|
+| Soldier | On the north road, outside the gate | The waystation |
+| Scholar | South-east of the stone circle | The stones |
+| Outlaw | On a bedroll behind the waystation | The fire and Maren |
+| Hunter | East of the waystation, on the wolf's trail | The waystation |
+| Acolyte | At the roadside shrine (its prayers have stopped working) | The shrine |
+| Merchant | Down the road, south | Up the road |
+
+Loading a save, or running a level on its own (F6), plays no opening.
 
 ## Quest markers
 
@@ -78,6 +102,5 @@ Quests live in `quests/quests.json`:
 
 ## Known limits
 
-- No map markers or compass. Directions live in the objective text.
 - No quest-tracking toggle. All active quests are shown.
 - Quest rewards that change reputation are dialogue actions (`add_reputation`). See FACTIONS.md.

@@ -18,6 +18,10 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
 
 - [ ] Title screen: does the slow orbit over the stone circle look OK? Any stutter?
 - [ ] New Game → make any character (try **Soldier** for the shield, or **Scholar** for spells).
+      Each background now starts in its own spot with a short intro card. Is the card readable,
+      and up long enough? Do you know where to go (talk to Maren)?
+- [ ] Main quest 1, **Wrong Things** (5 min): Maren → the hollow wolf east of Greyfang Hollow
+      (press E on it) → Brannoc. Does the hollow wolf feel eerie or just broken?
 - [ ] First view of the level: note the **FPS** in the corner, on **High**.
 - [ ] The compass at the top: can you tell where the wolves quest points once Maren gives it?
       Press **M**: is the map readable?
@@ -90,6 +94,7 @@ Benchmark results: (paste the table)
 Stutter anywhere?:
 
 Look (dark/bright/OK):
+Opening card / Wrong Things (clear? eerie? too short?):
 Compass / map (useful? cluttered?):
 Worst sound:
 Melee feel (floaty/weighty, windup, heavy charge):

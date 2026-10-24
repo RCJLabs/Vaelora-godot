@@ -138,8 +138,8 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
 **Goal:** a polished 1–2 hour slice of *your* world that a stranger can enjoy.
 **Rough size:** 400–700 hours (≈ 5–8 months). **Demo target: about 9–14 months from now.**
 
-- [ ] **Lore bible v1** from your ideas: the region, its history, factions, the demo's story.
-      (v1 drafted from the questionnaire: LORE.md. Your approval of its suggested parts is still needed.)
+- [x] **Lore bible v1** from your ideas: the region, its history, factions, the demo's story.
+      (LORE.md, approved 24 October 2026. Its eight questions are still open, none blocking.)
 - [ ] **Asset pass:** buy or download a consistent environment set (rocks, trees, buildings)
       plus humanoid NPC models and animations. Terrain3D landscape for the region.
 - [ ] **One outdoor region** (~1 km²), with a small town or village, a road, wilderness,
@@ -150,8 +150,10 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       greybox test dungeon: pressure plates, darts, swinging blades, levers and gates, and a
       two-phase Stone Guardian boss. See DUNGEONS.md. The real dungeons wait on the region
       and the lore.)
-- [ ] **A short main questline** (3–5 quests) with a real choice that changes the ending,
+- [~] **A short main questline** (3–5 quests) with a real choice that changes the ending,
       plus **5–8 side quests** and **2–3 factions** that react to you.
+      (Outline approved: docs/QUESTLINE.md, five main quests and six side quests. Built so far:
+      the six background openings and main quest 1, Wrong Things.)
 - [~] **3–5 enemy types:** wolves (existing), bandits (human, uses the combat system),
       something magical, a boss. (Wolves, bandits and night-time wisps done; a boss waits for
       the dungeon it belongs in.)

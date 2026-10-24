@@ -1,4 +1,53 @@
 {
+	"wrong_things": {
+		"title": "Wrong Things",
+		"giver": "Maren, keeper of the north road waystation",
+		"main": true,
+		"description": "Small wrong things on the north road: the wisps at the old stones are fading, and a hunter found a Greyfang wolf alive but hollow, grey all through, with empty eyes.",
+		"started_when": {
+			"requires_flag": "wrong_things_started"
+		},
+		"completed_when": {
+			"requires_flag": "wrong_things_done"
+		},
+		"objectives": [
+			{
+				"text": "Talk to Maren at the waystation.",
+				"done_when": {
+					"requires_flag": "maren_wrong_things"
+				},
+				"marker": "Maren"
+			},
+			{
+				"text": "Find the hollow wolf east of Greyfang Hollow.",
+				"done_when": {
+					"requires_flag": "saw_hollow_wolf"
+				},
+				"marker": "HollowWolf"
+			},
+			{
+				"text": "Show the mark to Brannoc, the scout at the stone circle.",
+				"done_when": {
+					"requires_flag": "brannoc_saw_mark"
+				},
+				"marker": "Brannoc"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "hollow_wolf_killed"
+				},
+				"text": "I put the hollow wolf out of its misery. A thread of pale light left it and drifted north. Brannoc says the mark on it is carved on the tall stone of the circle too."
+			},
+			{
+				"when": {
+					"requires_flag": "wrong_things_done"
+				},
+				"text": "I left the hollow wolf standing where I found it. Brannoc says the mark on it is carved on the tall stone of the circle too."
+			}
+		]
+	},
 	"greyfang": {
 		"title": "The Greyfang Pack",
 		"giver": "Maren, keeper of the north road waystation",

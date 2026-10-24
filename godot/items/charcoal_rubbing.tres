@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "charcoal_rubbing"
+display_name = "Charcoal Rubbing"
+description = "A scrap of hide with a mark copied in charcoal from the hollow wolf's flank: a circle split by three lines. Nobody you've asked knows it yet."
+weight = 0.1

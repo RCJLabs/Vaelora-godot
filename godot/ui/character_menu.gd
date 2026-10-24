@@ -350,9 +350,11 @@ func _refresh_quests() -> void:
 		return
 	quest_list.clear()
 	_quest_ids = []
-	# active quests first, then completed ones
+	# active quests first, then completed ones; main quests ("main": true) first in each
+	var ids: Array = QuestLog.quests.keys().filter(func(id): return QuestLog.quests[id].get("main", false))
+	ids += QuestLog.quests.keys().filter(func(id): return not QuestLog.quests[id].get("main", false))
 	for wanted in ["active", "completed"]:
-		for id in QuestLog.quests:
+		for id in ids:
 			if QuestLog.status(id)["state"] == wanted:
 				_quest_ids.append(id)
 				var title: String = QuestLog.quests[id]["title"]
@@ -374,7 +376,7 @@ func _show_selected_quest() -> void:
 	var quest: Dictionary = QuestLog.quests[id]
 	var status := QuestLog.status(id)
 	%QuestTitle.text = quest["title"]
-	%QuestGiver.text = "From " + quest.get("giver", "")
+	%QuestGiver.text = ("Main quest. From " if quest.get("main", false) else "From ") + quest.get("giver", "")
 	%QuestDescription.text = quest.get("description", "")
 	var lines := []
 	for o in status["objectives"]:

@@ -1,0 +1,99 @@
+{
+	"start": [
+		{
+			"node": "again",
+			"requires_flag": "saw_hollow_wolf"
+		},
+		{
+			"node": "look"
+		}
+	],
+	"nodes": {
+		"look": {
+			"text": "It doesn't run. It doesn't growl. It stands with its head low, fur grey as old ash, and its eyes are empty: no shine in them at all. Burnt into its flank is a mark, a circle split by three lines. You copy it onto a scrap of hide with charcoal from your pack.",
+			"set_flag": "saw_hollow_wolf",
+			"give_item": "charcoal_rubbing",
+			"choices": [
+				{
+					"text": "Put it out of its misery.",
+					"next": "mercy"
+				},
+				{
+					"text": "(Hunter) Read its tracks first.",
+					"next": "tracks",
+					"requires_background": "hunter"
+				},
+				{
+					"text": "(Scholar) Look closer at the mark.",
+					"next": "mark_scholar",
+					"requires_background": "scholar"
+				},
+				{
+					"text": "Leave it be.",
+					"next": "leave"
+				}
+			]
+		},
+		"again": {
+			"text": "It hasn't moved. It might not have moved since you left it.",
+			"choices": [
+				{
+					"text": "Put it out of its misery.",
+					"next": "mercy"
+				},
+				{
+					"text": "Leave it be.",
+					"next": "end"
+				}
+			]
+		},
+		"tracks": {
+			"text": "The same prints you've followed for three days: no stride, no hunting, straight lines through brush a wolf would go round. They don't start at the den. They come from the north, out of the forest, as if something walked it here and let go.",
+			"set_flag": "hunter_read_tracks",
+			"choices": [
+				{
+					"text": "Put it out of its misery.",
+					"next": "mercy"
+				},
+				{
+					"text": "Leave it be.",
+					"next": "leave"
+				}
+			]
+		},
+		"mark_scholar": {
+			"text": "Not a brand. The skin isn't scarred, it's emptied, as if the mark had been drawn by taking something out rather than burning something in. You've read about drawing power from a living thing. Every book you've read about it was a warning.",
+			"set_flag": "scholar_read_mark",
+			"choices": [
+				{
+					"text": "Put it out of its misery.",
+					"next": "mercy"
+				},
+				{
+					"text": "Leave it be.",
+					"next": "leave"
+				}
+			]
+		},
+		"mercy": {
+			"text": "It doesn't fight you. When it falls, a thread of pale light rises from the mark, thin as spider silk, and drifts away north until you lose it against the sky.",
+			"set_flag": "hollow_wolf_killed",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"leave": {
+			"text": "When you look back, it's still standing there, facing nothing.",
+			"set_flag": "hollow_wolf_spared",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}
