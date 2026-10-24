@@ -73,19 +73,20 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 - [ ] Any button that felt wrong where it is? (Rebind it in Settings → Controls, then tell me
       the new layout.)
 
-## 8. Performance (2 min)
+## 8. Performance (4 min)
 
-- [ ] FPS on **High** in the open level, in the dungeon arena during the fight, and at night.
-- [ ] Switch to **Low**: how much FPS did that buy? Does Low still look acceptable?
-- [ ] Your GPU / CPU (or: Pause → **Report a Bug** copies them to the clipboard).
+- [ ] Back on the title screen: **Settings → Graphics → Run benchmark** (about 3 minutes, hands
+      off). It copies a results table to the clipboard: paste it into the feedback block.
+- [ ] While you played: did anything stutter? Where?
+- [ ] Switch to **Low** for a minute: does it still look acceptable?
 
 ---
 
 ## Feedback block (copy, fill in, send back)
 
 ```
-PC: (GPU / CPU, or paste the Report a Bug text)
-FPS on High: open level ___  dungeon fight ___  night ___   |  on Low: ___
+Benchmark results: (paste the table)
+Stutter anywhere?:
 
 Look (dark/bright/OK):
 Compass / map (useful? cluttered?):

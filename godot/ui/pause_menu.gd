@@ -200,6 +200,10 @@ func _build_graphics() -> void:
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	note.custom_minimum_size.x = 560
 	content.add_child(note)
+	if _from_title:   # it changes scenes, so never in the middle of a game
+		_button("Run benchmark (about 3 minutes)", func():
+			close()
+			Benchmark.start(get_tree()))
 	_button("Back", _show.bind("settings"))
 
 

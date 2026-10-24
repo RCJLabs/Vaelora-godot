@@ -110,8 +110,22 @@ scenes need nothing: `Settings` applies the preset to every WorldEnvironment and
 DirectionalLight3D as it enters the game.
 
 **Not measured yet:** these are standard Godot settings with typical costs, but nobody has
-profiled this game on real hardware. Check the FPS counter on your PC, and on a low-end
+profiled this game on real hardware. Run the benchmark below on your PC, and on a low-end
 laptop if you can, before trusting the presets.
+
+### Benchmark
+
+**Title screen → Settings → Graphics → Run benchmark** (about 3 minutes; or start the game
+with `-- --benchmark`, e.g. `HighFantasySandboxRPG.exe -- --benchmark`). A camera circles
+three scenes (the open level by day, the stone circle at night with wisps, the barrow arena)
+at each preset, Low to Ultra, with VSync off. For each it records the average FPS, the
+**1% low** (the FPS of the slowest 1% of frames: what stutter feels like) and the worst frame.
+
+Your settings are put back afterwards. The results show on screen, are copied to the
+clipboard, and saved to `user://benchmark.txt` (on Windows:
+`%APPDATA%\Godot\app_userdata\High Fantasy Sandbox RPG\benchmark.txt`). Paste them back
+and the presets can be tuned from real numbers. It only runs from the title screen, because
+it loads levels.
 
 ### Report a Bug
 
