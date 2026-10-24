@@ -332,6 +332,27 @@ func _drop_essence() -> void:
 	drop.global_position = Vector3(global_position.x, _ground_height() + 0.6, global_position.z)
 
 
+## Something is drawing the life out of the stones' wisps (main quest, "The Draining").
+## The spawner calls this on a calm wisp: it drifts into the crystal at `center`,
+## dims, and leaves as a thin streak heading north (-Z). Only while it isn't fighting.
+func drain_away(center: Vector3) -> bool:
+	if _fading or state != State.IDLE:
+		return false
+	_fading = true
+	state = State.DEAD
+	collision_layer = 0
+	var tween := create_tween()
+	tween.set_parallel()
+	tween.tween_property(self, "global_position", center, 2.5).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(light, "light_energy", light.light_energy * 0.3, 2.5)
+	tween.tween_property(_halo_material, "albedo_color:a", 0.05, 2.5)
+	tween.chain().tween_property(self, "global_position", center + Vector3(0, 0.6, -6.0), 0.8)
+	tween.tween_property(model, "scale", Vector3(0.15, 0.15, 2.5), 0.8)
+	tween.tween_property(light, "light_energy", 0.0, 0.8)
+	tween.chain().tween_callback(queue_free)
+	return true
+
+
 ## Dawn: the spawner calls this; the wisp fades away.
 func fade_out() -> void:
 	if _fading or state == State.DEAD:

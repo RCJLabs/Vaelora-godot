@@ -26,6 +26,7 @@
 [ext_resource type="Script" path="res://props/refuge.gd" id="96_refuge"]
 [ext_resource type="Script" path="res://props/puzzle/cage_door.gd" id="95_cagedoor"]
 [ext_resource type="Script" path="res://enemies/hollow_wolf.gd" id="94_hollow"]
+[ext_resource type="Script" path="res://props/drain_line.gd" id="93_drain"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -965,3 +966,7 @@ kind = 0
 [node name="Bedroll" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.8064, 0, 0.59136, 0, 1, 0, -0.59136, 0, 0.8064, 8.5, 0.04, 5.5)
 mesh = SubResource("Mesh_bedroll")
+
+[node name="DrainLine" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1.55, -9)
+script = ExtResource("93_drain")

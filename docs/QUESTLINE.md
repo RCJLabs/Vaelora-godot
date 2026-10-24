@@ -10,7 +10,7 @@ demo).
 |---|---|
 | Six background openings | ✅ Built (greybox): start marker, items, intro card, Maren's first line. See QUESTS.md |
 | 1. Wrong Things | ✅ Built: Maren → the hollow wolf (put it down or leave it) → Brannoc |
-| 2. The Waking Stones (reframed) | Existing quest; the drain-line and the fading wisps are next |
+| 2. The Waking Stones (reframed) | ✅ Built: the crystal shows the drain-line once the shards are dealt with; one wisp a night is drained into the crystal; Brannoc points you at the outlaws |
 | 3–5, side quests | Not started |
 
 Simplifications against the outline, so far: every opening's first step is "Talk to Maren"

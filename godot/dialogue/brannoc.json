@@ -264,7 +264,7 @@
 			]
 		},
 		"given": {
-			"text": "Sixty gold from the garrison purse, and the captain will hear your name. I hope we're not making a mistake.",
+			"text": "Sixty gold from the garrison purse, and the captain will hear your name. I hope we're not making a mistake. Before you go - look at the crystal again. It's been flickering since you took those.",
 			"take_item": {
 				"id": "rune_shard",
 				"count": 3
@@ -302,6 +302,12 @@
 			"text": "Still carrying those shards? The crystal's that way. I'll be here, at a respectful distance.",
 			"choices": [
 				{
+					"text": "The crystal showed me a thread of light, running north.",
+					"next": "drain_line",
+					"requires_flag": "saw_drain_line",
+					"requires_not_flag": "told_brannoc_drain"
+				},
+				{
 					"text": "Can the garrison spare a healing potion? (30 gold)",
 					"next": "buy_potion",
 					"requires_reputation": {
@@ -332,6 +338,12 @@
 		"after_given": {
 			"text": "The scholars are beside themselves. Riverwatch owes you - I'll make sure the captain remembers it.",
 			"choices": [
+				{
+					"text": "The crystal showed me a thread of light, running north.",
+					"next": "drain_line",
+					"requires_flag": "saw_drain_line",
+					"requires_not_flag": "told_brannoc_drain"
+				},
 				{
 					"text": "Can the garrison spare a healing potion? (30 gold)",
 					"next": "buy_potion",
@@ -364,6 +376,12 @@
 			"text": "The circle's light is steadier now. Calmer. Whatever you did, the humming's stopped keeping me up at night.",
 			"choices": [
 				{
+					"text": "The crystal showed me a thread of light, running north.",
+					"next": "drain_line",
+					"requires_flag": "saw_drain_line",
+					"requires_not_flag": "told_brannoc_drain"
+				},
+				{
 					"text": "Can the garrison spare a healing potion? (30 gold)",
 					"next": "buy_potion",
 					"requires_reputation": {
@@ -392,7 +410,7 @@
 			]
 		},
 		"kept": {
-			"text": "...Keep them, then. But don't expect the garrison to look kindly on someone who pockets what belongs to the stones - or to Riverwatch.",
+			"text": "...Keep them, then. But don't expect the garrison to look kindly on someone who pockets what belongs to the stones - or to Riverwatch. And look at the crystal. It's been flickering since you took them.",
 			"add_reputation": {
 				"riverwatch": -15
 			},
@@ -411,6 +429,12 @@
 		"after_kept": {
 			"text": "You. I've nothing to say to you, and nothing to sell. The garrison remembers.",
 			"choices": [
+				{
+					"text": "The crystal showed me a thread of light, running north.",
+					"next": "drain_line",
+					"requires_flag": "saw_drain_line",
+					"requires_not_flag": "told_brannoc_drain"
+				},
 				{
 					"text": "The bandit camp south-west of here is cleared.",
 					"next": "bandit_bounty",
@@ -625,6 +649,34 @@
 				},
 				{
 					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"drain_line": {
+			"text": "North. Into the Thornwood. Something's drawing on that crystal like a straw in a cup, and whatever's drinking is out in those trees. The captain won't send anyone in after a light in the sky. The outlaws live in there; if anyone's seen who's doing this, it's them. And they'd sooner put an arrow in a garrison coat than talk to one.",
+			"set_flag": "told_brannoc_drain",
+			"choices": [
+				{
+					"text": "Then I'll talk to them. I'm not wearing a garrison coat.",
+					"next": "end"
+				},
+				{
+					"text": "(Hunter) Same way the hollow wolf's tracks came from.",
+					"next": "drain_hunter",
+					"requires_flag": "hunter_read_tracks"
+				},
+				{
+					"text": "Not today.",
+					"next": "end"
+				}
+			]
+		},
+		"drain_hunter": {
+			"text": "Then whatever emptied your wolf and whatever's drinking from the stones live at the same end of the same forest. I'll put that in my report, and the captain will ignore it. You won't, I think.",
+			"choices": [
+				{
+					"text": "(Leave)",
 					"next": "end"
 				}
 			]

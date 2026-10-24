@@ -86,12 +86,15 @@
 	"waking_stones": {
 		"title": "The Waking Stones",
 		"giver": "Brannoc, a scout of the Riverwatch garrison",
-		"description": "The old stone circle west of the waystation has been glowing since the new moon. Brannoc wants to know why, but won't go near it himself.",
+		"description": "The old stone circle west of the waystation has been glowing since the new moon, out of season. Brannoc wants to know why, but won't go near it himself. The mark on the hollow wolf is carved on its tallest stone.",
 		"started_when": {
 			"requires_flag": "stones_quest_started"
 		},
 		"completed_when": {
-			"requires_flag": "stones_quest_done"
+			"requires_flag": [
+				"stones_quest_done",
+				"saw_drain_line"
+			]
 		},
 		"objectives": [
 			{
@@ -131,6 +134,17 @@
 					"requires_flag": "stones_restored"
 				},
 				"marker": "StoneCircle"
+			},
+			{
+				"text": "Look into the crystal again.",
+				"show_when": {
+					"requires_flag": "shards_decided",
+					"requires_not_flag": "shards_chose_stones"
+				},
+				"done_when": {
+					"requires_flag": "saw_drain_line"
+				},
+				"marker": "StoneCircle"
 			}
 		],
 		"outcomes": [
@@ -138,21 +152,22 @@
 				"when": {
 					"requires_flag": "shards_given"
 				},
-				"text": "I gave the shards to Brannoc for the scholars of Riverwatch. The garrison paid well, and the captain knows my name."
+				"text": "I gave the shards to Brannoc for the scholars of Riverwatch. The garrison paid well, and the captain knows my name. And the crystal showed me a thread of light running north into the Thornwood: something is drawing on it."
 			},
 			{
 				"when": {
 					"requires_flag": "stones_restored"
 				},
-				"text": "I returned the shards to the stones. The crystal burns brighter now, and some of its light stayed with me."
+				"text": "I returned the shards to the stones. The crystal burns brighter now, and some of its light stayed with me. And the crystal showed me a thread of light running north into the Thornwood: something is drawing on it."
 			},
 			{
 				"when": {
 					"requires_flag": "shards_kept"
 				},
-				"text": "I kept the shards for myself. Brannoc won't forget it, and neither will the garrison."
+				"text": "I kept the shards for myself. Brannoc won't forget it, and neither will the garrison. And the crystal showed me a thread of light running north into the Thornwood: something is drawing on it."
 			}
-		]
+		],
+		"main": true
 	},
 	"bandit_camp": {
 		"title": "Thieves by the Fire",
