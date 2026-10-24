@@ -59,6 +59,7 @@ They're listed in **Project → Project Settings → Globals → Autoload** (alr
   `requires_race` (`"Human"`, `"Elf"`, `"Orc"`). The flag ones take one name or a list, which
   means all of them: `"requires_not_flag": ["wolf_quest_accepted", "wolves_cleared"]`.
 - **More conditions:** `requires_item` (`"wolf_pelt"` or `{"id": "wolf_pelt", "count": 3}`),
+  `requires_not_item` (`"wanted_notice"`: you carry none),
   `requires_gold` (a number), `requires_reputation` / `requires_reputation_below`
   (`{"riverwatch": 10}`), `requires_background` (`"soldier"` or a list: any of them) and
   `requires_trait` (`"charming"` or a list: all of them). See CHARACTER.md.

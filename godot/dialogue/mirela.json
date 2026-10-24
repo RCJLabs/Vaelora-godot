@@ -1,0 +1,311 @@
+{
+	"start": [
+		{
+			"node": "after_lead",
+			"requires_flag": "barrow_lead"
+		},
+		{
+			"node": "bandits_done",
+			"requires_flag": [
+				"met_mirela",
+				"bandits_cleared",
+				"outlaws_terms"
+			],
+			"requires_not_flag": "outlaws_trust"
+		},
+		{
+			"node": "trusted",
+			"requires_flag": [
+				"met_mirela",
+				"outlaws_trust"
+			]
+		},
+		{
+			"node": "waiting",
+			"requires_flag": "outlaws_terms"
+		},
+		{
+			"node": "greet_again",
+			"requires_flag": "met_mirela"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "So you're the one who's been following the light. Don't look surprised: my lookouts have watched you since the stones. I'm Mirela. I speak for the Thornwood Free, when they let me.",
+			"set_flag": "met_mirela",
+			"choices": [
+				{
+					"text": "Something's drawing magic out of the stone circle. The line runs here.",
+					"next": "drain"
+				},
+				{
+					"text": "(Outlaw) There's a price on my head in Riverwatch too. Here's the notice.",
+					"next": "outlaw_vouch",
+					"requires_background": "outlaw",
+					"requires_item": "wanted_notice"
+				},
+				{
+					"text": "(Outlaw) There's a price on my head in Riverwatch too.",
+					"next": "outlaw_no_notice",
+					"requires_background": "outlaw",
+					"requires_not_item": "wanted_notice"
+				},
+				{
+					"text": "(Soldier) I'm not here for the garrison.",
+					"next": "soldier_line",
+					"requires_background": "soldier"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"greet_again": {
+			"text": "Back again. Sit, if you're staying.",
+			"choices": [
+				{
+					"text": "(Outlaw) There's a price on my head in Riverwatch too. Here's the notice.",
+					"next": "outlaw_vouch",
+					"requires_background": "outlaw",
+					"requires_item": "wanted_notice",
+					"requires_not_flag": "outlaws_trust"
+				},
+				{
+					"text": "Tell me about the light again.",
+					"next": "drain"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"soldier_line": {
+			"text": "A garrison coat that says it isn't here for the garrison. That's new. You'll still have to prove it.",
+			"choices": [
+				{
+					"text": "Something's drawing magic out of the stone circle. The line runs here.",
+					"next": "drain"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"drain": {
+			"text": "Here, and past here. It's been taking from us too. Dunya, our hedge-witch, went out to the old oaks to listen for it. She came back three days later walking in straight lines, with eyes like a dead fire. She sits by the fire now. She doesn't eat.",
+			"choices": [
+				{
+					"text": "A wolf by Greyfang Hollow looked the same. It had a mark burnt into it.",
+					"next": "wolf_too",
+					"requires_flag": "saw_hollow_wolf",
+					"requires_not_flag": "told_mirela_wolf"
+				},
+				{
+					"text": "Then help me find who's doing it.",
+					"next": "terms",
+					"requires_not_flag": [
+						"outlaws_trust",
+						"outlaws_terms"
+					]
+				},
+				{
+					"text": "Then help me find who's doing it.",
+					"next": "lead",
+					"requires_flag": "outlaws_trust"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"wolf_too": {
+			"text": "Dunya has the same mark, on her wrist. So it isn't just us, and it isn't just the magic-touched. Good. I mean, terrible. But it means the garrison can't call it an outlaw problem.",
+			"set_flag": "told_mirela_wolf",
+			"choices": [
+				{
+					"text": "Then help me find who's doing it.",
+					"next": "terms",
+					"requires_not_flag": [
+						"outlaws_trust",
+						"outlaws_terms"
+					]
+				},
+				{
+					"text": "Then help me find who's doing it.",
+					"next": "lead",
+					"requires_flag": "outlaws_trust"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"terms": {
+			"text": "Help? We've heard that from Riverwatch before, usually right before a hanging. You want my scouts' eyes, show me you're worth them. There's a nest of thieves south-west of the stones that robs us as happily as anyone else. Clear it. Or bring us a crate of what the garrison eats while we starve. Either will do.",
+			"set_flag": "outlaws_terms",
+			"choices": [
+				{
+					"text": "That camp's already ash.",
+					"next": "bandits_done",
+					"requires_flag": "bandits_cleared"
+				},
+				{
+					"text": "I'll deal with the bandits.",
+					"next": "end",
+					"requires_not_flag": "bandits_cleared"
+				},
+				{
+					"text": "Where would I get garrison supplies?",
+					"next": "where_supplies"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"where_supplies": {
+			"text": "Your friend the scout by the stones keeps a cache. Ask him nicely. He'll say no, then he'll say yes. Garrison men always do, for the right story.",
+			"choices": [
+				{
+					"text": "I'll be back.",
+					"next": "end"
+				}
+			]
+		},
+		"waiting": {
+			"text": "Well? The thieves, or the crate.",
+			"choices": [
+				{
+					"text": "Here. A crate of garrison supplies.",
+					"next": "supplies_done",
+					"requires_item": "supply_crate"
+				},
+				{
+					"text": "Where would I get garrison supplies again?",
+					"next": "where_supplies"
+				},
+				{
+					"text": "Still working on it.",
+					"next": "end"
+				}
+			]
+		},
+		"outlaw_vouch": {
+			"text": "She looks from the notice to you and back. \"The drawing's terrible. That's how I know it's really you.\" She hands it back. \"Anyone the garrison wants that badly has done something right. Sit. Ask.\"",
+			"set_flag": [
+				"outlaws_trust_vouched",
+				"outlaws_trust"
+			],
+			"add_reputation": {
+				"thornwood_free": 5
+			},
+			"choices": [
+				{
+					"text": "Something's drawing magic out of the stone circle. The line runs here.",
+					"next": "drain"
+				}
+			]
+		},
+		"bandits_done": {
+			"text": "The camp by the stones is ash; my scouts saw the smoke. That lot robbed our charcoal-burners last month and laughed about it. All right. You've earned an answer.",
+			"set_flag": [
+				"outlaws_trust_bandits",
+				"outlaws_trust"
+			],
+			"add_reputation": {
+				"thornwood_free": 15
+			},
+			"choices": [
+				{
+					"text": "Their leader carried coins with the same mark on them.",
+					"next": "coin",
+					"requires_item": "marked_coin"
+				},
+				{
+					"text": "So. What have your scouts seen?",
+					"next": "lead"
+				}
+			]
+		},
+		"coin": {
+			"text": "She turns the coin over and doesn't give it back right away. \"No mint I know. Someone's paying thieves in this, which means they're buying more than silence. Keep it. You'll want to show it to someone cleverer than me.\"",
+			"set_flag": "knows_marked_coin",
+			"choices": [
+				{
+					"text": "So. What have your scouts seen?",
+					"next": "lead"
+				}
+			]
+		},
+		"supplies_done": {
+			"text": "Bread, salt pork, bandages, and the garrison's seal on the lid. You're either very brave or very stupid, and I've decided I don't care which.",
+			"take_item": "supply_crate",
+			"set_flag": [
+				"outlaws_trust_supplies",
+				"outlaws_trust"
+			],
+			"add_reputation": {
+				"thornwood_free": 15
+			},
+			"choices": [
+				{
+					"text": "So. What have your scouts seen?",
+					"next": "lead"
+				}
+			]
+		},
+		"trusted": {
+			"text": "You're welcome at this fire. Mostly.",
+			"choices": [
+				{
+					"text": "What have your scouts seen?",
+					"next": "lead"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"lead": {
+			"text": "Hooded folk, three or four, going in and out of the Old Barrow after dark. Carrying cages in, carrying them out empty. They don't talk to anyone and they don't rob anyone, which out here is the strangest thing of all. The barrow's south-west of the waystation. Go at night if you want to see them. Go in daylight if you want to live.",
+			"set_flag": "barrow_lead",
+			"add_reputation": {
+				"thornwood_free": 5
+			},
+			"choices": [
+				{
+					"text": "I'll look into the barrow.",
+					"next": "end"
+				}
+			]
+		},
+		"after_lead": {
+			"text": "Still breathing? Good. The barrow's south-west of the waystation. Dunya's no better.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"outlaw_no_notice": {
+			"text": "Everyone in this forest says that. Some of them even mean it. You'll prove yourself the same way as anyone else.",
+			"choices": [
+				{
+					"text": "Something's drawing magic out of the stone circle. The line runs here.",
+					"next": "drain"
+				}
+			]
+		}
+	}
+}

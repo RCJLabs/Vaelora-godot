@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "marked_coin"
+display_name = "Marked Coin"
+description = "A heavy silver coin from no mint you know. Instead of a king's head, it bears a circle split by three lines: the same mark as on the hollow wolf."
+value = 5
+weight = 0.05

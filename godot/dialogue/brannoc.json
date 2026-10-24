@@ -93,6 +93,15 @@
 					"requires_not_flag": "bandit_bounty_paid"
 				},
 				{
+					"text": "I need a crate of the garrison's supplies.",
+					"next": "crate",
+					"requires_flag": "outlaws_terms",
+					"requires_not_flag": [
+						"got_supply_crate",
+						"outlaws_trust"
+					]
+				},
+				{
 					"text": "Not my concern.",
 					"next": "end"
 				}
@@ -130,6 +139,15 @@
 					"next": "bandit_bounty",
 					"requires_flag": "bandits_cleared",
 					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "I need a crate of the garrison's supplies.",
+					"next": "crate",
+					"requires_flag": "outlaws_terms",
+					"requires_not_flag": [
+						"got_supply_crate",
+						"outlaws_trust"
+					]
 				},
 				{
 					"text": "Not yet.",
@@ -225,6 +243,15 @@
 					"next": "bandit_bounty",
 					"requires_flag": "bandits_cleared",
 					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "I need a crate of the garrison's supplies.",
+					"next": "crate",
+					"requires_flag": "outlaws_terms",
+					"requires_not_flag": [
+						"got_supply_crate",
+						"outlaws_trust"
+					]
 				},
 				{
 					"text": "Still looking.",
@@ -330,6 +357,15 @@
 					"requires_not_flag": "bandit_bounty_paid"
 				},
 				{
+					"text": "I need a crate of the garrison's supplies.",
+					"next": "crate",
+					"requires_flag": "outlaws_terms",
+					"requires_not_flag": [
+						"got_supply_crate",
+						"outlaws_trust"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -367,6 +403,15 @@
 					"requires_not_flag": "bandit_bounty_paid"
 				},
 				{
+					"text": "I need a crate of the garrison's supplies.",
+					"next": "crate",
+					"requires_flag": "outlaws_terms",
+					"requires_not_flag": [
+						"got_supply_crate",
+						"outlaws_trust"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -402,6 +447,15 @@
 					"next": "bandit_bounty",
 					"requires_flag": "bandits_cleared",
 					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "I need a crate of the garrison's supplies.",
+					"next": "crate",
+					"requires_flag": "outlaws_terms",
+					"requires_not_flag": [
+						"got_supply_crate",
+						"outlaws_trust"
+					]
 				},
 				{
 					"text": "Goodbye.",
@@ -677,6 +731,20 @@
 			"choices": [
 				{
 					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"crate": {
+			"text": "For the outlaws? Don't answer that. ...There's a cache under the oilcloth by my bedroll. Take one crate. I never saw you, and when the quartermaster counts crates, he'll blame me, and I'll blame wolves.",
+			"give_item": "supply_crate",
+			"set_flag": "got_supply_crate",
+			"add_reputation": {
+				"riverwatch": -10
+			},
+			"choices": [
+				{
+					"text": "Thank you, Brannoc.",
 					"next": "end"
 				}
 			]

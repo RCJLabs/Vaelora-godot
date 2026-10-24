@@ -1,0 +1,30 @@
+{
+	"start": "look",
+	"nodes": {
+		"look": {
+			"text": "She doesn't look up. She doesn't look at anything. Her hands lie open in her lap, and on the inside of one wrist, burnt into the skin, is a circle split by three lines. The fire is warm. She doesn't seem to know.",
+			"set_flag": "saw_dunya",
+			"choices": [
+				{
+					"text": "(Acolyte) Say the old words over her.",
+					"next": "acolyte",
+					"requires_background": "acolyte"
+				},
+				{
+					"text": "(Leave her be.)",
+					"next": "end"
+				}
+			]
+		},
+		"acolyte": {
+			"text": "You say them. For a moment her fingers twitch, as if something far away heard. Then nothing. Whatever answers prayers, it can't reach where she's gone. Not yet.",
+			"set_flag": "prayed_for_dunya",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

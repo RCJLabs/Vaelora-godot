@@ -26,6 +26,8 @@ in `races/human.tres`, from "mild bonus to reputation gains" in `docs/races.md`.
 | Give the rune shards to Riverwatch | +15 (+18) |
 | Keep the rune shards for yourself (new third ending) | −15 |
 | Return the shards to the stones | 0 (Brannoc covers for you) |
+| Show Brannoc the hollow wolf's mark (Wrong Things) | +5 (+6) |
+| Take a garrison supply crate for the outlaws (Ask the Forest) | −10 |
 
 What it changes, all through Brannoc:
 - **Friendly (10+):** he sells Minor Healing Potions, 30 gold each.
@@ -35,6 +37,21 @@ What it changes, all through Brannoc:
   remembers."
 - First meeting him after the wolf quest, he's heard of you ("The wolf-killer from the
   waystation!").
+
+## The Thornwood Free (the outlaws)
+
+Known once you meet Mirela at the outlaw camp in the Thornwood (north edge of the test level).
+The Outlaw background starts at +10.
+
+| You… | Reputation (Human) |
+|---|---|
+| Show Mirela your wanted notice (Outlaw background) | +5 (+6) |
+| Clear the bandit camp, then tell Mirela | +15 (+18) |
+| Bring Mirela a garrison supply crate | +15 (+18) |
+| Hear her scouts' report (any way) | +5 (+6) |
+
+Nothing reacts to the rank yet beyond Mirela's lines; it's there for quests 4 and 5 (the barrow
+choice) and the side quest Licence to Burn.
 
 ## In dialogue
 

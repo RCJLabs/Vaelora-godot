@@ -28,7 +28,7 @@
 		"skills": { "one_handed": 5, "athletics": 5 },
 		"gear": ["hunting_dagger", "leather_cuirass", "leather_boots"],
 		"gold": 60,
-		"reputation": { "riverwatch": -15 },
+		"reputation": { "riverwatch": -15, "thornwood_free": 10 },
 		"ability": "shadowstep"
 	},
 	"hunter": {

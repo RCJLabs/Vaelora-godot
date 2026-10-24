@@ -13,6 +13,11 @@
 			"description": "The soldiers and scouts who hold the river town of Riverwatch and, in theory, the roads around it. Short of men, long on paperwork, and slow to trust outsiders.",
 			"known_when": { "requires_flag": "met_brannoc" },
 			"also_known_when": { "requires_flag": "wolf_quest_done" }
+		},
+		"thornwood_free": {
+			"name": "The Thornwood Free",
+			"description": "The outlaws of the Thornwood: debtors, deserters, unlicensed mages and people the garrison forgot. They say the law is the real problem. Some of them have a point; some of them are just thieves.",
+			"known_when": { "requires_flag": "met_mirela" }
 		}
 	}
 }
