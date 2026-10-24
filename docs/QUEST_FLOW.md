@@ -438,7 +438,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `kept_vigil` (never checked) | props/shrine.gd:66 | – |
 | `knows_marked_coin` (never checked) | mirela: coin | – |
 | `lanternfast_maren` | maren: lanternfast | maren (start → lanternfast) |
-| `lanternfast_now` | systems/lanternfast.gd:25 | enemies/wisp.gd:231<br>levels/test_level.tscn (Lanternfast)<br>maren (start → lanternfast)<br>ostap (start → lanternfast)<br>systems/lanternfast.gd:21<br>zora (start → lanternfast) |
+| `lanternfast_now` | systems/lanternfast.gd:21 | enemies/wisp.gd:231<br>levels/test_level.tscn (Lanternfast)<br>maren (start → lanternfast)<br>ostap (start → lanternfast)<br>systems/lanternfast.gd:17<br>zora (start → lanternfast) |
 | `lanternfast_ostap` | ostap: lanternfast | ostap (start → lanternfast) |
 | `lanternfast_zora` | zora: lanternfast | zora (start → lanternfast) |
 | `licence_started` | brannoc: licence | brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?"<br>quest licence_to_burn<br>zora: again, "The garrison wants you arrested."<br>zora: drain, "The garrison wants you arrested."<br>zora: greet, "The garrison wants you arrested."<br>zora: scholar, "The garrison wants you arrested." |
@@ -480,7 +480,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `saw_drain_line` | props/floating_crystal.gd:72<br>props/floating_crystal.gd:77<br>systems/save_system.gd:221 | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..."<br>props/drain_line.gd:9<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:76<br>quest ask_forest<br>quest waking_stones<br>systems/save_system.gd:220 |
 | `saw_dunya` | dunya: look | mirela: end_letter, "Dunya?" |
 | `saw_hollow_wolf` | enemies/hollow_wolf.gd:55<br>hollow_wolf: look | brannoc (start → mark)<br>enemies/hollow_wolf.gd:53<br>enemies/hollow_wolf.gd:73<br>hollow_wolf (start → again)<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>mirela: drain, "A wolf by Greyfang Hollow looked the ..."<br>quest wrong_things |
-| `saw_lanternfast` | systems/lanternfast.gd:26 | systems/lanternfast.gd:24 |
+| `saw_lanternfast` | systems/lanternfast.gd:22 | systems/lanternfast.gd:20 |
 | `saw_wisp_drained` | enemies/wisp_spawner.gd:61 | enemies/wisp_spawner.gd:60 |
 | `scholar_read_mark` | hollow_wolf: mark_scholar | brannoc: mark, "(Scholar) It isn't a brand. Something..." |
 | `shards_chose_stones` | brannoc: chose_stones | brannoc (start → waiting_on_stones)<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:66<br>props/floating_crystal.gd:75 |
