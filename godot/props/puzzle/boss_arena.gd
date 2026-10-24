@@ -9,10 +9,12 @@ extends Area3D
 @export var gates: Array[NodePath] = []
 
 var _started := false
+var _gates_were_open := {}   # gate path -> open before the fight (restored after a defeat)
 
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
+	Defeat.defeated.connect(_on_player_defeated)
 	var boss_node := get_node_or_null(boss)
 	if boss_node == null or boss_node.is_queued_for_deletion():
 		_open_gates.call_deferred()   # beaten before (it removed itself on load)
@@ -30,6 +32,7 @@ func _on_body_entered(body: Node) -> void:
 	for path in gates:
 		var gate := get_node_or_null(path)
 		if gate:
+			_gates_were_open[path] = gate.is_open
 			gate.close()
 	boss_node.wake(body)
 	body.hud.show_boss(boss_node.display_name, boss_node.stats)
@@ -47,3 +50,24 @@ func _open_gates() -> void:
 		var gate := get_node_or_null(path)
 		if gate:
 			gate.open()
+
+
+# Beaten in the fight (Hardcore): the boss is a statue again and the gates are as
+# they were, so you can come back for another try.
+func _on_player_defeated(_outcome: String) -> void:
+	if not _started:
+		return
+	var boss_node := get_node_or_null(boss)
+	if boss_node == null or boss_node.is_defeated():
+		return
+	_started = false
+	for path in _gates_were_open:
+		var gate := get_node_or_null(path)
+		if gate:
+			if _gates_were_open[path]:
+				gate.open()
+			else:
+				gate.close()
+	var player := get_tree().get_first_node_in_group("player")
+	if player:
+		player.hud.hide_boss()

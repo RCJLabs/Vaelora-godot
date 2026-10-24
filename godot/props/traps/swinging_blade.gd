@@ -65,6 +65,7 @@ func _hit(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		if body.combat.is_invulnerable() or body.is_dead:
 			return
+		body.note_attacker(self)
 		body.stats.take_damage(damage)
 		body.combat.stagger(0.5)
 		body.velocity += swing_direction.normalized() * knockback + Vector3.UP * 2.0

@@ -76,6 +76,20 @@ func is_defeated() -> bool:
 	return state == State.DEAD
 
 
+## After the player is beaten (Hardcore defeat): a statue again, fully healed.
+func reset_after_defeat() -> void:
+	if state == State.DEAD:
+		return
+	state = State.DORMANT
+	phase = 1
+	_player = null
+	stats.refill()
+	_pose("rest", 0.3)
+	_eye_material.albedo_color = Color(0.2, 0.25, 0.3)
+	eye_light.light_color = Color(0.55, 0.85, 1.0)
+	eye_light.light_energy = 0.0
+
+
 ## The arena calls this when the player walks in.
 func wake(player: Node3D) -> void:
 	if state != State.DORMANT:

@@ -81,6 +81,8 @@ var spawn_position: Vector3
 var is_dead := false
 var _exhausted := false   # ran out of stamina; no sprinting until it recovers
 var _sprint_toggled := false   # Settings.toggle_sprint: sprint is latched on
+var last_attacker: Node        # who last hit you (systems/defeat.gd: who beat you)
+var _last_hit_at := -100000
 var is_casting := false
 var _camera_kick := Vector3.ZERO   # degrees, springs back to zero
 var _lunge_velocity := Vector3.ZERO
@@ -297,7 +299,14 @@ func _stick_look(delta: float) -> void:
 
 ## Enemies call this when their attack reaches you. See PlayerCombat.receive_attack.
 func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) -> String:
+	note_attacker(attacker)
 	return combat.receive_attack(damage, attacker, poise_damage)
+
+
+## Remembers who hit you last (traps and enemies that hurt you directly call this too).
+func note_attacker(attacker: Node) -> void:
+	last_attacker = attacker
+	_last_hit_at = Time.get_ticks_msec()
 
 
 ## False while talking or dead: no attacking, blocking or dodging.
@@ -360,6 +369,12 @@ func _on_died() -> void:
 	is_dead = true
 	Engine.time_scale = 1.0   # in case a hit stop was running
 	hud.set_prompt("")
+	var killer: Node = last_attacker if Time.get_ticks_msec() - _last_hit_at < Defeat.KILLER_MEMORY_MS else null
+	if Defeat.applies():   # Hardcore: wake up wounded instead of reloading
+		show_message("You fall...")
+		await get_tree().create_timer(1.5).timeout
+		Defeat.handle(self, killer)
+		return
 	show_message("You have died.")
 	await get_tree().create_timer(2.5).timeout
 	if SaveSystem.has_save():

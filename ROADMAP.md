@@ -255,6 +255,6 @@ Answered in the lore questionnaire (24 October 2026); see `LORE.md`:
 2. **Attributes:** decide after the playtest.
 3. **Backgrounds and traits:** decide after the playtest.
 4. **Death:** neither permadeath nor reload. You wake up wounded, sometimes captured by
-   enemies, sometimes found by allies (to design; suggested for Hardcore first).
+   enemies, sometimes found by allies. Built for Hardcore (SURVIVAL.md); Normal still reloads.
 5. **Title:** **Vaelora** (also the world's name).
 6. **Budget:** free assets for now; spend what's needed later.

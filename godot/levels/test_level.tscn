@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=3]
+[gd_scene load_steps=95 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -23,6 +23,8 @@
 [ext_resource type="Script" path="res://levels/ambience.gd" id="99_ambience"]
 [ext_resource type="Script" path="res://props/map_marker.gd" id="98_marker"]
 [ext_resource type="Script" path="res://levels/level_map.gd" id="97_levelmap"]
+[ext_resource type="Script" path="res://props/refuge.gd" id="96_refuge"]
+[ext_resource type="Script" path="res://props/puzzle/cage_door.gd" id="95_cagedoor"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -278,6 +280,46 @@ size = Vector3(1.8, 2.4, 0.2)
 
 [sub_resource type="BoxShape3D" id="Shape_barrow_door"]
 size = Vector3(1.8, 2.4, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="Mat_cage"]
+albedo_color = Color(0.22, 0.2, 0.18, 1)
+metallic = 0.6
+roughness = 0.6
+
+[sub_resource type="BoxMesh" id="Mesh_cage_long"]
+material = SubResource("Mat_cage")
+size = Vector3(2.9, 2.5, 0.15)
+
+[sub_resource type="BoxShape3D" id="Shape_cage_long"]
+size = Vector3(2.9, 2.5, 0.15)
+
+[sub_resource type="BoxMesh" id="Mesh_cage_side"]
+material = SubResource("Mat_cage")
+size = Vector3(0.15, 2.5, 0.95)
+
+[sub_resource type="BoxShape3D" id="Shape_cage_side"]
+size = Vector3(0.15, 2.5, 0.95)
+
+[sub_resource type="BoxMesh" id="Mesh_cage_roof"]
+material = SubResource("Mat_cage")
+size = Vector3(2.9, 0.15, 2.9)
+
+[sub_resource type="BoxShape3D" id="Shape_cage_roof"]
+size = Vector3(2.9, 0.15, 2.9)
+
+[sub_resource type="BoxMesh" id="Mesh_cage_door"]
+material = SubResource("Mat_wood")
+size = Vector3(0.12, 2.2, 1.0)
+
+[sub_resource type="BoxShape3D" id="Shape_cage_door"]
+size = Vector3(0.12, 2.2, 1.0)
+
+[sub_resource type="BoxMesh" id="Mesh_stash"]
+material = SubResource("Mat_wood")
+size = Vector3(0.7, 0.6, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_stash"]
+size = Vector3(0.7, 0.6, 0.5)
 
 [node name="TestLevel" type="Node3D" groups=["navmesh_source"]]
 
@@ -743,3 +785,97 @@ script = ExtResource("98_marker")
 location_id = "old_barrow"
 display_name = "The Old Barrow"
 kind = 3
+
+[node name="BanditCage" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -46, 0, -26)
+
+[node name="WallN" type="StaticBody3D" parent="BanditCage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 1.25, -1.375)
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditCage/WallN"]
+mesh = SubResource("Mesh_cage_long")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditCage/WallN"]
+shape = SubResource("Shape_cage_long")
+
+[node name="WallS" type="StaticBody3D" parent="BanditCage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 1.25, 1.375)
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditCage/WallS"]
+mesh = SubResource("Mesh_cage_long")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditCage/WallS"]
+shape = SubResource("Shape_cage_long")
+
+[node name="WallE" type="StaticBody3D" parent="BanditCage"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.375, 1.25, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditCage/WallE"]
+mesh = SubResource("Mesh_cage_long")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditCage/WallE"]
+shape = SubResource("Shape_cage_long")
+
+[node name="WallW1" type="StaticBody3D" parent="BanditCage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -1.375, 1.25, -0.975)
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditCage/WallW1"]
+mesh = SubResource("Mesh_cage_side")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditCage/WallW1"]
+shape = SubResource("Shape_cage_side")
+
+[node name="WallW2" type="StaticBody3D" parent="BanditCage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -1.375, 1.25, 0.975)
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditCage/WallW2"]
+mesh = SubResource("Mesh_cage_side")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditCage/WallW2"]
+shape = SubResource("Shape_cage_side")
+
+[node name="Roof" type="StaticBody3D" parent="BanditCage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 2.575, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditCage/Roof"]
+mesh = SubResource("Mesh_cage_roof")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditCage/Roof"]
+shape = SubResource("Shape_cage_roof")
+
+[node name="CageDoor" type="StaticBody3D" parent="BanditCage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -1.375, 0, -0.5)
+script = ExtResource("95_cagedoor")
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditCage/CageDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 1.1, 0.5)
+mesh = SubResource("Mesh_cage_door")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditCage/CageDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 1.1, 0.5)
+shape = SubResource("Shape_cage_door")
+
+[node name="Lantern" type="OmniLight3D" parent="BanditCage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 2.2, 0.9)
+light_color = Color(1, 0.7, 0.4, 1)
+light_energy = 0.7
+omni_range = 4.0
+
+[node name="CaptiveCell" type="Marker3D" parent="BanditCage"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.4, 0.05, 0)
+
+[node name="CaptorStash" type="StaticBody3D" parent="BanditCage" groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -2.7, 0.3, 1.4)
+script = ExtResource("14_container")
+container_name = "bandits' stash"
+
+[node name="Mesh" type="MeshInstance3D" parent="BanditCage/CaptorStash"]
+mesh = SubResource("Mesh_stash")
+
+[node name="Shape" type="CollisionShape3D" parent="BanditCage/CaptorStash"]
+shape = SubResource("Shape_stash")
+
+[node name="Refuge" type="Marker3D" parent="."]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 5, 0.05, 1)
+script = ExtResource("96_refuge")
+found_text = "Maren found you on the north road and brought you back to the waystation. She patched you up as best she could."

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "wounded"
+display_name = "Wounded"
+description = "Badly hurt from your last defeat. Health recovers at half speed, you tire and move slower, and hits hurt more. Sleep (8 hours) to recover."
+is_harmful = true
+duration = 0.0
+modifiers = {
+"damage_taken": 1.15,
+"health_regen": 0.5,
+"move_speed": 0.9,
+"stamina_regen": 0.7
+}

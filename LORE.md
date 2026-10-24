@@ -4,8 +4,9 @@ Built from your questionnaire answers of 24 October 2026 (kept verbatim in
 `docs/lore/questionnaire-answers-2026-10-24.txt`).
 
 - **Plain text** is what you decided.
-- ***(suggested)*** marks what I filled in to make it hang together. Approve, change or strike
-  each one. Nothing suggested goes into the game until you've said yes.
+- ***(suggested)*** marks what I filled in to make it hang together. **Approved as a whole on
+  24 October 2026** ("All good"); any of it can still be changed, and the questions at the end
+  stay open.
 - **Questions for you** are collected at the end. Short answers are fine.
 
 ---

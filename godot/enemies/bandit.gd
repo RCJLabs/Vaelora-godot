@@ -92,6 +92,7 @@ const ARM_POSES := {
 
 
 func _ready() -> void:
+	add_to_group("captors")   # beaten by bandits in Hardcore, you wake in their cage (systems/defeat.gd)
 	add_to_group("persistent")
 	add_to_group("enemy")
 	home = global_position

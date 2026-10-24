@@ -116,8 +116,8 @@ func show_hint(text: String, seconds: float = 7.0) -> void:
 		_hint_label.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 		_hint_label.offset_left = -380.0
 		_hint_label.offset_right = 380.0
-		_hint_label.offset_top = -200.0
-		_hint_label.offset_bottom = -140.0
+		_hint_label.offset_top = -225.0
+		_hint_label.offset_bottom = -165.0
 		_hint_label.grow_vertical = Control.GROW_DIRECTION_BEGIN
 		_hint_label.modulate = Color(1, 0.9, 0.6)
 		add_child(_hint_label)
