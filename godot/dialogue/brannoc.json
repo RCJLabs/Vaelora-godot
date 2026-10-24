@@ -8,6 +8,11 @@
 			"requires_not_flag": "got_riverwatch_gift"
 		},
 		{
+			"node": "mark",
+			"requires_flag": "saw_hollow_wolf",
+			"requires_not_flag": "brannoc_saw_mark"
+		},
+		{
 			"node": "after_kept",
 			"requires_flag": "shards_kept"
 		},
@@ -541,6 +546,85 @@
 			"choices": [
 				{
 					"text": "Glad to help.",
+					"next": "end"
+				}
+			]
+		},
+		"mark": {
+			"text": "Brannoc turns the scrap over twice. \"No. And I don't like that I don't. Garrison marks, guild marks, bandit scratches - I know them all.\" He looks past you at the circle. \"But see the tall stone, near the top? Three lines through a ring. Same as this. Whatever emptied your wolf, it's got something to do with these stones.\"",
+			"set_flag": [
+				"met_brannoc",
+				"brannoc_saw_mark",
+				"wrong_things_done"
+			],
+			"add_reputation": {
+				"riverwatch": 5
+			},
+			"choices": [
+				{
+					"text": "(Scholar) It isn't a brand. Something was drawn out of that wolf through the mark.",
+					"next": "mark_scholar",
+					"requires_flag": "scholar_read_mark"
+				},
+				{
+					"text": "(Hunter) Its tracks came out of the forest to the north, in straight lines.",
+					"next": "mark_hunter",
+					"requires_flag": "hunter_read_tracks"
+				},
+				{
+					"text": "Then I'll look at the stones.",
+					"next": "accept",
+					"requires_not_flag": "stones_quest_started"
+				},
+				{
+					"text": "I'm already looking into the stones.",
+					"next": "end",
+					"requires_flag": "stones_quest_started",
+					"requires_not_flag": "stones_quest_done"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"mark_scholar": {
+			"text": "Drawn out. Like drawing water. ...Then someone's doing the drawing, and I'd like to know who before the captain asks me. Whatever's wrong at the circle, start there.",
+			"choices": [
+				{
+					"text": "Then I'll look at the stones.",
+					"next": "accept",
+					"requires_not_flag": "stones_quest_started"
+				},
+				{
+					"text": "I'm already looking into the stones.",
+					"next": "end",
+					"requires_flag": "stones_quest_started",
+					"requires_not_flag": "stones_quest_done"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"mark_hunter": {
+			"text": "North. The Thornwood, then. The garrison doesn't go in there, and the outlaws who live there don't come out to talk. If this leads into those trees, we'll need a better reason than a scrap of hide. Start with the stones.",
+			"set_flag": "heard_of_thornwood",
+			"choices": [
+				{
+					"text": "Then I'll look at the stones.",
+					"next": "accept",
+					"requires_not_flag": "stones_quest_started"
+				},
+				{
+					"text": "I'm already looking into the stones.",
+					"next": "end",
+					"requires_flag": "stones_quest_started",
+					"requires_not_flag": "stones_quest_done"
+				},
+				{
+					"text": "Goodbye.",
 					"next": "end"
 				}
 			]

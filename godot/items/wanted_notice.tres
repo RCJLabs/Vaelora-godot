@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "wanted_notice"
+display_name = "Wanted Notice"
+description = "WANTED by the Riverwatch garrison, for crimes against the Crown's peace and the Crown's purse. The drawing could be anyone. That's the only good news."
+weight = 0.1

@@ -1,9 +1,25 @@
-# Demo questline outline (draft for approval)
+# Demo questline outline
+
+**Approved 24 October 2026.** The four questions at the end were answered by "approved":
+keep the size, keep the barrow choice, and I pick the names (the cult stays unnamed in the
+demo).
+
+## Built so far
+
+| Piece | Status |
+|---|---|
+| Six background openings | ✅ Built (greybox): start marker, items, intro card, Maren's first line. See QUESTS.md |
+| 1. Wrong Things | ✅ Built: Maren → the hollow wolf (put it down or leave it) → Brannoc |
+| 2. The Waking Stones (reframed) | Existing quest; the drain-line and the fading wisps are next |
+| 3–5, side quests | Not started |
+
+Simplifications against the outline, so far: every opening's first step is "Talk to Maren"
+(the Scholar and Acolyte don't have to visit the stones or the shrine first), and the
+shrine is only a prop to pray at until Silent Shrine is built.
 
 Built on `LORE.md`. It reuses what's already in the game wherever it can: the Greyfang pack,
 the Waking Stones and its three endings, the bandit camp, the Old Barrow with its traps and
-Stone Guardian, and the wisps. New pieces are marked **new**. Approve, cut or change anything;
-nothing here is built until you say so.
+Stone Guardian, and the wisps. New pieces are marked **new**. Approve, cut or change anything.
 
 **Shape:** five main quests, about 60–90 minutes for a first playthrough, plus six side quests.
 **One ending**, but what you did along the way changes how Riverwatch, the outlaws and the

@@ -1,0 +1,38 @@
+{
+	"soldier": {
+		"marker": "StartSoldier",
+		"title": "Soldier",
+		"text": "Riverwatch is short of soldiers and long on trouble. Sergeant Holt gave you orders, a nod, and the north road. At the end of it: a waystation, and a keeper called Maren who will \"tell you what needs doing\".",
+		"items": { "posting_orders": 1 }
+	},
+	"scholar": {
+		"marker": "StartScholar",
+		"title": "Scholar",
+		"text": "The Collegium sent you a letter, a stipend and no answers. The old stones by the north road waystation have been waking out of season, and someone has to write down why. Apparently it's you.",
+		"items": { "collegium_letter": 1 }
+	},
+	"outlaw": {
+		"marker": "StartOutlaw",
+		"title": "Outlaw",
+		"text": "There's a price on your head in Riverwatch, so you sleep where the garrison doesn't look. Last night that was behind the north road waystation. The keeper, Maren, saw you. She didn't call the guard. Yet.",
+		"items": { "wanted_notice": 1 }
+	},
+	"hunter": {
+		"marker": "StartHunter",
+		"title": "Hunter",
+		"text": "Three days on the trail of a Greyfang wolf that walks wrong: no stride, no hunting, just straight lines, as if something were leading it. The tracks run past the north road waystation.",
+		"items": {}
+	},
+	"acolyte": {
+		"marker": "StartAcolyte",
+		"title": "Acolyte",
+		"text": "The roadside shrine on the north road has tended travellers longer than anyone remembers. This season its prayers stopped working. You were sent to find out why, and to keep the old rites while you do.",
+		"items": {}
+	},
+	"merchant": {
+		"marker": "StartMerchant",
+		"title": "Merchant",
+		"text": "Your wagon left the coast with a full load and an honest driver, and never reached Riverwatch. You've come back up the north road to find it, or what's left of it. The waystation keeper sees everything that passes.",
+		"items": { "wagon_manifest": 1 }
+	}
+}

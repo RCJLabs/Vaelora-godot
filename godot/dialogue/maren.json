@@ -18,6 +18,48 @@
 			"set_flag": "met_maren",
 			"choices": [
 				{
+					"text": "Sergeant Holt sent me from Riverwatch. He said you'd have work.",
+					"next": "report_soldier",
+					"requires_background": "soldier",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "maren_wrong_things"
+				},
+				{
+					"text": "The Collegium sent me to study the stones. Noticed anything odd?",
+					"next": "report_scholar",
+					"requires_background": "scholar",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "maren_wrong_things"
+				},
+				{
+					"text": "You saw me sleeping behind your waystation. You didn't call the guard.",
+					"next": "report_outlaw",
+					"requires_background": "outlaw",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "maren_wrong_things"
+				},
+				{
+					"text": "I'm tracking a Greyfang that walks wrong. Straight lines, no hunting.",
+					"next": "report_hunter",
+					"requires_background": "hunter",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "maren_wrong_things"
+				},
+				{
+					"text": "I've come to tend the roadside shrine. Its prayers have gone quiet.",
+					"next": "report_acolyte",
+					"requires_background": "acolyte",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "maren_wrong_things"
+				},
+				{
+					"text": "My wagon never reached Riverwatch. Yellow canopy. Did it pass this way?",
+					"next": "report_merchant",
+					"requires_background": "merchant",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "maren_wrong_things"
+				},
+				{
 					"text": "I killed the wolves north of here. All of them.",
 					"next": "reward",
 					"requires_flag": "wolves_cleared"
@@ -56,6 +98,21 @@
 		"greet_again": {
 			"text": "Back again? The kettle's still warm.",
 			"choices": [
+				{
+					"text": "Anything strange around here lately?",
+					"next": "wrong_things",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "maren_wrong_things"
+				},
+				{
+					"text": "I found the hollow wolf.",
+					"next": "hollow_found",
+					"requires_flag": "saw_hollow_wolf",
+					"requires_not_flag": [
+						"told_maren_hollow",
+						"wrong_things_done"
+					]
+				},
 				{
 					"text": "The Greyfang pack is dead.",
 					"next": "reward",
@@ -160,6 +217,21 @@
 		"greet_hero": {
 			"text": "The one who cleared the north road! Sit, rest your feet.",
 			"choices": [
+				{
+					"text": "Anything strange around here lately?",
+					"next": "wrong_things",
+					"requires_flag": "wrong_things_started",
+					"requires_not_flag": "maren_wrong_things"
+				},
+				{
+					"text": "I found the hollow wolf.",
+					"next": "hollow_found",
+					"requires_flag": "saw_hollow_wolf",
+					"requires_not_flag": [
+						"told_maren_hollow",
+						"wrong_things_done"
+					]
+				},
 				{
 					"text": "I have a wolf pelt to sell.",
 					"next": "buy_pelt",
@@ -629,6 +701,112 @@
 				},
 				{
 					"text": "That's all.",
+					"next": "end"
+				}
+			]
+		},
+		"report_soldier": {
+			"text": "Holt's idea of help: one soldier and a nod. Well, you're more than I had yesterday. Some of the work's ordinary, wolves on the road. Some of it isn't.",
+			"choices": [
+				{
+					"text": "What isn't?",
+					"next": "wrong_things"
+				}
+			]
+		},
+		"report_scholar": {
+			"text": "Odd? Everything's been odd since the new moon. The stones hum at night, and that's the least of it.",
+			"choices": [
+				{
+					"text": "Go on.",
+					"next": "wrong_things"
+				}
+			]
+		},
+		"report_outlaw": {
+			"text": "Didn't see the point. The garrison's got bigger problems than one more face on a notice, and so have I. Sit down. I could use someone who isn't afraid of the dark.",
+			"choices": [
+				{
+					"text": "What problems?",
+					"next": "wrong_things"
+				}
+			]
+		},
+		"report_hunter": {
+			"text": "Walks wrong. Then Old Tam wasn't drunk after all.",
+			"choices": [
+				{
+					"text": "Old Tam?",
+					"next": "wrong_things"
+				}
+			]
+		},
+		"report_acolyte": {
+			"text": "I wondered. Folk have stopped leaving candles there. And it's not the only thing gone quiet round here.",
+			"choices": [
+				{
+					"text": "What else?",
+					"next": "wrong_things"
+				}
+			]
+		},
+		"report_merchant": {
+			"text": "Yellow canopy, driver who talked to his mules? It went north eleven days ago, slow and heavy. It never came back down, and Riverwatch never saw it. I'm sorry. It's not the only thing gone missing on this road.",
+			"choices": [
+				{
+					"text": "What else is missing?",
+					"next": "wrong_things"
+				}
+			]
+		},
+		"wrong_things": {
+			"text": "Small wrong things. The wisps at the old stones are fading. I used to watch them from my door every night, and now there's barely a glimmer. And Old Tam, who hunts out past the hollow, came in two days ago white as milk. He'd found a Greyfang wolf that wouldn't run from him. Alive, he said, but grey all through, with eyes like a dead fire. He couldn't bring himself to put it down.",
+			"set_flag": "maren_wrong_things",
+			"choices": [
+				{
+					"text": "Where did he see it?",
+					"next": "wolf_where"
+				},
+				{
+					"text": "Probably sick. Wolves get sick.",
+					"next": "wolf_sick"
+				}
+			]
+		},
+		"wolf_where": {
+			"text": "East of Greyfang Hollow, past the old fence. If it's still standing there, it won't be hard to find. Nothing else out there stands still.",
+			"choices": [
+				{
+					"text": "I'll take a look.",
+					"next": "end"
+				},
+				{
+					"text": "Tell me about the rest of the pack.",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				}
+			]
+		},
+		"wolf_sick": {
+			"text": "Tam's skinned a hundred sick wolves. He didn't come in white for a sick one. East of Greyfang Hollow, past the old fence, if you want to see for yourself.",
+			"choices": [
+				{
+					"text": "I'll take a look.",
+					"next": "end"
+				},
+				{
+					"text": "Tell me about the rest of the pack.",
+					"next": "wolves",
+					"requires_not_flag": "wolves_cleared"
+				}
+			]
+		},
+		"hollow_found": {
+			"text": "So Tam wasn't seeing things. A mark? Burnt in? No, I don't know it. Take it to Brannoc, the Riverwatch scout. He's camped by the old stones, west of here. If the garrison knows a mark, he will.",
+			"set_flag": "told_maren_hollow",
+			"choices": [
+				{
+					"text": "I'll find him.",
 					"next": "end"
 				}
 			]

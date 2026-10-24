@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "collegium_letter"
+display_name = "Letter from the Collegium"
+description = "The old stones west of the north road waystation are waking out of season. Observe them, record what you see, and report. Your stipend is enclosed. (It is not enough.)"
+weight = 0.1

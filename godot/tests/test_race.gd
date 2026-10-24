@@ -46,6 +46,7 @@ func _physics_process(_d: float) -> bool:
 	if f == 160:
 		near(max_y, BASE_JUMP_PEAK * race.jump_height_mult, 0.06, "jump peak")
 		p.position = Vector3(2, 0, -2)
+		p.rotation.y = 0.0   # face Maren (the background's opening may have turned you)
 	if f == 170: Input.action_press("interact")
 	if f == 171: Input.action_release("interact")
 	if f == 175:

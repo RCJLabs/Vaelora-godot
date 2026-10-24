@@ -130,7 +130,8 @@ func _ready() -> void:
 	var saved := SaveSystem.take_pending_player_state()
 	if not saved.is_empty():
 		apply_save_data(saved)
-	_arrive_at_marker(SaveSystem.take_pending_marker())
+	arrive_at_marker(SaveSystem.take_pending_marker())
+	Openings.play(self)   # a new game: the background's first scene
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -412,8 +413,8 @@ func apply_save_data(data: Dictionary) -> void:
 	stats.changed.emit()
 
 
-# After going through a location door: stand at the named Marker3D in this level.
-func _arrive_at_marker(marker_name: String) -> void:
+## Stand at the named Marker3D in this level (after a location door, or a new game's opening).
+func arrive_at_marker(marker_name: String) -> void:
 	if marker_name == "" or owner == null:
 		return
 	var marker := owner.find_child(marker_name, true, false) as Node3D

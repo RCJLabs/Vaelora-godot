@@ -108,6 +108,7 @@ func _refresh_details() -> void:
 
 func begin() -> void:
 	Character.create(race, player_name, background_id, trait_ids, spend, modes)
+	Openings.pending = true   # the level's player plays the background's first scene
 	get_tree().change_scene_to_file(START_LEVEL)
 
 
