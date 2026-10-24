@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_dimming"
+display_name = "On the Dimming, and Whether It Is Over"
+description = "An essay from the Glass College, water-stained, left at the stone circle."
+value = 5
+weight = 0.5
+book_text = "ON THE DIMMING, AND WHETHER IT IS OVER
+by Magister Ysolt of the Glass College, in the 899th year of the Arrival
+
+It is commonly said that the Dimming ended in the 760s, when the colleges stopped counting the fallen towers. I have spent eleven years measuring what the stones of the twelve wells give, and I must report that it did not end. It slowed.
+
+Every stone I have measured gives less than its own records say it gave a century ago. Not much less. A little, every year, the way a well gives a little less in a dry summer, except that the summers have not been dry.
+
+Before the Dimming, masters crossed the Empire in a day. Caelmere stood in the air above the Riverlands until 731, and a city does not fall out of the sky because its builders grew careless. It falls because what held it up was spent.
+
+My conclusion is that the residue is a well, not a spring. What was given to us at the Arrival was given once, and we have been drawing on it for nine hundred years.
+
+I have been told this conclusion is unhelpful.
+
+I am told the same of the question that follows from it: if it was given once, who gave it, and did they mean to?"

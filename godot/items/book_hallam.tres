@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_hallam"
+display_name = "Hallam and the Hundred Lights"
+description = "A children's songbook, soft with handling, from the waystation."
+value = 5
+weight = 0.5
+book_text = "Inside the cover, in a child's careful capitals: TOBIN'S. NOT YOURS. NOT EVEN MAMS.
+
+HALLAM AND THE HUNDRED LIGHTS
+(to be sung at Lanternfast, with the shutters closed)
+
+When the lights came down they were many and bright,
+and they crept through the shutters in the dead of the night,
+and they drank the warm breath of the children asleep,
+so Hallam the Lamplighter went out to keep watch.
+
+(Tobin has crossed out \"to keep watch\" and written \"with his sheep\". Underneath, in a grown-up hand: IT IS NOT ABOUT SHEEP, TOBIN.)
+
+He took up his lantern, he took up his hook,
+he went to the stones where the lights used to look,
+and he caught one each night, and he put out its glow,
+for a hundred nights more, through the rain and the snow.
+
+On the hundredth night, by the old standing stone,
+the last light was little, and frightened, and alone.
+It said, \"We were lost, and we only came by,\"
+and Hallam said, \"You should have stayed in the sky.\"
+
+So light your lantern and shutter it tight,
+and sleep, little one, through the dark of the night,
+for Hallam is watching, his hook at his side,
+and no light gets in where a lantern's inside."

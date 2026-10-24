@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_charter"
+display_name = "Rules for Licensed Practice"
+description = "The Collegium's rules for licensed mages, abridged, with notes in the margin in a neat, impatient hand."
+value = 5
+weight = 0.5
+book_text = "RULES FOR LICENSED PRACTICE
+Issued under the seal of the Eight Colleges to every mage licensed in the Ilunar Empire. Carry it on your person.
+
+I. A licensed mage shall carry their licence, and show it on request to any officer of the Empire.
+
+II. No mage shall work upon another's mind without leave of the Veil College.
+(Margin: The Veil College has never given leave to anyone. I have checked. - M. Aurel)
+
+III. No mage shall raise the dead within a city's walls.
+(Margin: Outside them is apparently fine.)
+
+IV. Spellwork upon the twelve wells is reserved to the Colleges.
+
+V. A mage who fails to show their licence may be held by the garrison until it is found.
+
+VI. Fire is not to be cast in a granary, a library, or a vessel at sea.
+(Margin: Commentary on this rule runs to forty pages, most of them about one barge in the year 611.)
+
+IX. No mage, licensed or otherwise, shall drink from a wisp, nor sell its light, nor carry it. By order of the Founders. This rule takes no commentary.
+
+(Margin, in the same hand, smaller: Every other rule has a commentary longer than itself. This one has none, and never has. I have asked three Magisters why. The first said it was dangerous. The second said it was tradition. The third asked me who I had been talking to. - M. Aurel)"

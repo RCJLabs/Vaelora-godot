@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_lantern"
+display_name = "A Lamp Against the Dark"
+description = "A pamphlet of the Lantern Order, left at the shrine with a lantern stamped on its cover."
+value = 5
+weight = 0.5
+book_text = "A LAMP AGAINST THE DARK
+Words for the faithful, from the Lantern Order. Founded by Corin Hallamson, son of Hallam the Lamplighter, First Grand Lantern.
+
+Friend, the lights are not gone. They wander yet, by the stones and in the deep woods, and they are patient.
+
+There are those among us who drink them. They call it power. It is theft, and it is hunger, and it is never satisfied. The corrupt mage drinks one light, and then another, until there is nothing of them left but the drinking.
+
+Know the signs, and look for them in your neighbour:
+- a coldness behind the eyes, and wounds slow to close;
+- veins that show green in the dark;
+- fingertips grey as ash.
+
+If you see these signs in another, bring word to the Order. Our lantern burns for you.
+
+If you see these signs in yourself, come to us. We will be gentle. We will make it quick.
+
+Light your lantern at Lanternfast, and keep it lit."

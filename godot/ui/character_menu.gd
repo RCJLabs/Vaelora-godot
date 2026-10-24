@@ -52,6 +52,8 @@ func _ready() -> void:
 
 # _input (not _unhandled_input) so Tab works even when a button has focus.
 func _input(event: InputEvent) -> void:
+	if BookReader.is_open:
+		return   # the reader handles its own keys, over the menu or not
 	if not is_open and (DialogueManager.is_active or PauseMenu.is_open or RestMenu.is_open):
 		return   # leave the keys to the conversation / pause menu
 	if event.is_action_pressed("character_menu"):
@@ -280,9 +282,11 @@ func _show_selected_item() -> void:
 			details = "Armor %d   -   %s\n" % [item.armor, item.slot_name().capitalize()]
 		details += "Value: %d gold   -   Weight: %.1f" % [item.value, item.weight]
 	%ItemValue.text = details
-	use_button.visible = item != null and (item.type == ItemData.Type.CONSUMABLE or item.is_equipment())
+	use_button.visible = item != null and (item.type == ItemData.Type.CONSUMABLE or item.is_equipment() or item.is_readable())
 	if item and item.is_equipment():
 		use_button.text = "Unequip" if Inventory.is_equipped(id) else "Equip"
+	elif item and item.is_readable():
+		use_button.text = "Read"
 	else:
 		use_button.text = "Drink"
 

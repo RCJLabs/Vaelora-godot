@@ -1,4 +1,4 @@
-[gd_scene load_steps=95 format=3]
+[gd_scene load_steps=96 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -169,6 +169,10 @@ radius = 0.12
 height = 0.18
 radial_segments = 10
 rings = 6
+
+[sub_resource type="BoxMesh" id="Mesh_book"]
+material = SubResource("Mat_leather")
+size = Vector3(0.22, 0.06, 0.3)
 
 [sub_resource type="BoxShape3D" id="Shape_pickup"]
 size = Vector3(0.35, 0.35, 0.35)
@@ -627,6 +631,71 @@ label = "coin purse"
 mesh = SubResource("Mesh_purse")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CoinPurse"]
+shape = SubResource("Shape_pickup")
+
+[node name="BookHallam" type="StaticBody3D" parent="."]
+transform = Transform3D(0.9211, 0, 0.3894, 0, 1, 0, -0.3894, 0, 0.9211, 5.6, 0.04, 3.4)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "book_hallam"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BookHallam"]
+mesh = SubResource("Mesh_book")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BookHallam"]
+shape = SubResource("Shape_pickup")
+
+[node name="BookCharter" type="StaticBody3D" parent="."]
+transform = Transform3D(0.8253, 0, -0.5646, 0, 1, 0, 0.5646, 0, 0.8253, 8.4, 0.04, -3.7)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "book_charter"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BookCharter"]
+mesh = SubResource("Mesh_book")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BookCharter"]
+shape = SubResource("Shape_pickup")
+
+[node name="BookDimming" type="StaticBody3D" parent="."]
+transform = Transform3D(0.4536, 0, 0.8912, 0, 1, 0, -0.8912, 0, 0.4536, -8.6, 0.04, -6.4)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "book_dimming"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BookDimming"]
+mesh = SubResource("Mesh_book")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BookDimming"]
+shape = SubResource("Shape_pickup")
+
+[node name="BookLantern" type="StaticBody3D" parent="."]
+transform = Transform3D(0.9801, 0, 0.1987, 0, 1, 0, -0.1987, 0, 0.9801, -2.0, 0.04, 9.9)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "book_lantern"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BookLantern"]
+mesh = SubResource("Mesh_book")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BookLantern"]
+shape = SubResource("Shape_pickup")
+
+[node name="BookLullaby" type="StaticBody3D" parent="."]
+transform = Transform3D(0.5403, 0, -0.8415, 0, 1, 0, 0.8415, 0, 0.5403, -11.6, 0.04, -47.9)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_pickup")
+item_id = "book_lullaby"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BookLullaby"]
+mesh = SubResource("Mesh_book")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BookLullaby"]
 shape = SubResource("Shape_pickup")
 
 [node name="Brannoc" type="StaticBody3D" parent="."]

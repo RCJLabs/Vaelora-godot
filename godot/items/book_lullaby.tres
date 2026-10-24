@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_lullaby"
+display_name = "A Passenger Lullaby"
+description = "A scrap of paper from the outlaws' camp, written on both sides: once in Trade, once in an older script."
+value = 5
+weight = 0.5
+book_text = "(In Trade, in a careful hand:)
+
+Hush now, hush, the lights are high,
+we came down with them from the sky,
+we came down in their light, and when
+they called for us, we hid, and then
+
+hush now, hush, the lights are few,
+and when they burned, we hid there too.
+Sleep now, sleep, and don't sing loud.
+The lanterns are for finding, love.
+The lanterns are for finding.
+
+(Underneath, in someone else's writing:)
+Don't sing this in town."

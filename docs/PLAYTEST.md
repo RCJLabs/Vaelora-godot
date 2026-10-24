@@ -38,6 +38,9 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
       "Release a Wisp Essence" a choice you'd make over swallowing it? Did Wisp's Grace (the
       wisps letting you be that night) feel like enough of a reward?
 - [ ] **Wisps and corruption:** once corrupted, do night wisps feel more aggressive? Too much?
+- [ ] **Books:** five lie around the valley (by the waystation fire, beside Magister Aurel, at the
+      stone circle, at the shrine, at the outlaw camp). Did you find any without looking? Did you
+      read them? Too long, too short?
 - [ ] Side quests (pick one or two): **Silent Shrine** (the roadside shrine south of spawn),
       **The Lost Wagon** (a yellow wagon north-east of the bandit camp), **Licence to Burn**
       (ask Brannoc for work), **Readings Under the Wanderer** (Magister Aurel at the
