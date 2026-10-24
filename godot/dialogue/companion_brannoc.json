@@ -1,0 +1,56 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "\"Lead on. I'll keep an eye on your back, and the other one on the trees.\"",
+			"choices": [
+				{
+					"text": "Wait here.",
+					"next": "wait"
+				},
+				{
+					"text": "Follow me.",
+					"next": "follow"
+				},
+				{
+					"text": "Go home. I'll find you later.",
+					"next": "home"
+				},
+				{
+					"text": "Nothing. Let's go.",
+					"next": "end"
+				}
+			]
+		},
+		"wait": {
+			"text": "\"I'll be here. Don't make me come looking.\"",
+			"set_flag": "companion_cmd_wait",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"follow": {
+			"text": "\"Right behind you.\"",
+			"set_flag": "companion_cmd_follow",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"home": {
+			"text": "\"Back to the stones, then. The captain will be thrilled.\"",
+			"set_flag": "companion_cmd_dismiss",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

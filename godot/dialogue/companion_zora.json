@@ -1,0 +1,56 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "\"Where are we going? Somewhere with fewer trees, I hope. They've heard all my stories.\"",
+			"choices": [
+				{
+					"text": "Wait here.",
+					"next": "wait"
+				},
+				{
+					"text": "Follow me.",
+					"next": "follow"
+				},
+				{
+					"text": "Go home. I'll find you later.",
+					"next": "home"
+				},
+				{
+					"text": "Nothing. Let's go.",
+					"next": "end"
+				}
+			]
+		},
+		"wait": {
+			"text": "\"I'll wait. I'm very good at it. Ask any tree.\"",
+			"set_flag": "companion_cmd_wait",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"follow": {
+			"text": "\"Coming.\"",
+			"set_flag": "companion_cmd_follow",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"home": {
+			"text": "\"Home, then. The hut won't have missed me, but the cat might.\"",
+			"set_flag": "companion_cmd_dismiss",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

@@ -181,6 +181,15 @@
 					"requires_not_flag": "brannoc_would_travel"
 				},
 				{
+					"text": "Come with me. Now, not later.",
+					"next": "join",
+					"requires_flag": "brannoc_would_travel",
+					"requires_not_flag": [
+						"companion_brannoc",
+						"companion_zora"
+					]
+				},
+				{
 					"text": "Not yet.",
 					"next": "end"
 				}
@@ -291,6 +300,21 @@
 					"requires_not_flag": [
 						"licence_started",
 						"shards_kept"
+					]
+				},
+				{
+					"text": "What will you do, after all this?",
+					"next": "after_all",
+					"requires_flag": "wrong_things_done",
+					"requires_not_flag": "brannoc_would_travel"
+				},
+				{
+					"text": "Come with me. Now, not later.",
+					"next": "join",
+					"requires_flag": "brannoc_would_travel",
+					"requires_not_flag": [
+						"companion_brannoc",
+						"companion_zora"
 					]
 				},
 				{
@@ -415,6 +439,21 @@
 					]
 				},
 				{
+					"text": "What will you do, after all this?",
+					"next": "after_all",
+					"requires_flag": "wrong_things_done",
+					"requires_not_flag": "brannoc_would_travel"
+				},
+				{
+					"text": "Come with me. Now, not later.",
+					"next": "join",
+					"requires_flag": "brannoc_would_travel",
+					"requires_not_flag": [
+						"companion_brannoc",
+						"companion_zora"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -467,6 +506,21 @@
 					"requires_not_flag": [
 						"licence_started",
 						"shards_kept"
+					]
+				},
+				{
+					"text": "What will you do, after all this?",
+					"next": "after_all",
+					"requires_flag": "wrong_things_done",
+					"requires_not_flag": "brannoc_would_travel"
+				},
+				{
+					"text": "Come with me. Now, not later.",
+					"next": "join",
+					"requires_flag": "brannoc_would_travel",
+					"requires_not_flag": [
+						"companion_brannoc",
+						"companion_zora"
 					]
 				},
 				{
@@ -525,6 +579,21 @@
 					]
 				},
 				{
+					"text": "What will you do, after all this?",
+					"next": "after_all",
+					"requires_flag": "wrong_things_done",
+					"requires_not_flag": "brannoc_would_travel"
+				},
+				{
+					"text": "Come with me. Now, not later.",
+					"next": "join",
+					"requires_flag": "brannoc_would_travel",
+					"requires_not_flag": [
+						"companion_brannoc",
+						"companion_zora"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -561,6 +630,21 @@
 					"next": "bandit_bounty",
 					"requires_flag": "bandits_cleared",
 					"requires_not_flag": "bandit_bounty_paid"
+				},
+				{
+					"text": "What will you do, after all this?",
+					"next": "after_all",
+					"requires_flag": "wrong_things_done",
+					"requires_not_flag": "brannoc_would_travel"
+				},
+				{
+					"text": "Come with me. Now, not later.",
+					"next": "join",
+					"requires_flag": "brannoc_would_travel",
+					"requires_not_flag": [
+						"companion_brannoc",
+						"companion_zora"
+					]
 				},
 				{
 					"text": "Goodbye.",
@@ -956,6 +1040,16 @@
 			"choices": [
 				{
 					"text": "I will.",
+					"next": "end"
+				}
+			]
+		},
+		"join": {
+			"text": "He looks at the stones, then north, then at you. \"The captain did say to look into it.\" He picks up his pack. \"Lead on.\"",
+			"set_flag": "companion_brannoc",
+			"choices": [
+				{
+					"text": "(Leave)",
 					"next": "end"
 				}
 			]

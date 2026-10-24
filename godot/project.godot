@@ -39,6 +39,8 @@ Openings="*res://systems/openings.gd"
 Epilogue="*res://systems/epilogue.gd"
 Corruption="*res://systems/corruption.gd"
 BookReader="*res://ui/book_reader.gd"
+Companions="*res://systems/companions.gd"
+Glamour="*res://systems/glamour.gd"
 
 [editor_plugins]
 

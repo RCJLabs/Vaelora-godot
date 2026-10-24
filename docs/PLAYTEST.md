@@ -95,6 +95,10 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 - [ ] Dual-cast (both buttons with nothing in the right hand): does it feel worth the Magicka?
 - [ ] Night (rest at a fire until 21:00, or wait): **wisps** at the stone circle. Can you read
       their charge-up and parry a bolt back at them?
+- [ ] **Glamour** (Zora teaches it: "What do you really do?"): a **Mirror Image** in front of the
+      wolves, then **Fear**, then **Charm** one wolf of the pack. Readable? Fun, or fiddly?
+- [ ] **A companion** (Brannoc after Wrong Things, or Zora): "Come with me." Do they keep up,
+      get stuck, or get in your way in a fight? Try Wait here / Follow me / Go home.
 
 ## 6. The dungeon (8 min) — the wooden door in a stone mound, about 35 m south-west of spawn
 

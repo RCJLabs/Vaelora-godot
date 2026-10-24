@@ -800,17 +800,21 @@ display_name = "The Merciful"
 aggro_range = 4.0
 gold = 10
 
-[node name="Brannoc" type="StaticBody3D" parent="."]
+[node name="BrannocAtPost" type="Node3D" parent="."]
+script = ExtResource("85_presence")
+hide_flag = "companion_brannoc"
+
+[node name="Brannoc" type="StaticBody3D" parent="BrannocAtPost"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -6, 0, -3)
 script = ExtResource("4_npc")
 display_name = "Brannoc"
 dialogue_file = "res://dialogue/brannoc.json"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Brannoc"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BrannocAtPost/Brannoc"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.925, 0)
 mesh = SubResource("CapsuleMesh_scout")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Brannoc"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BrannocAtPost/Brannoc"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape_npc")
 
@@ -1835,17 +1839,21 @@ shape = SubResource("Shape_hut")
 script = ExtResource("85_presence")
 hide_flag = "zora_left"
 
-[node name="Zora" type="StaticBody3D" parent="ZoraHere"]
+[node name="ZoraAtHome" type="Node3D" parent="ZoraHere"]
+script = ExtResource("85_presence")
+hide_flag = "companion_zora"
+
+[node name="Zora" type="StaticBody3D" parent="ZoraHere/ZoraAtHome"]
 transform = Transform3D(-0.2326, 0, -0.9726, 0, 1, 0, 0.9726, 0, -0.2326, -29.2, 0, -50.2)
 script = ExtResource("4_npc")
 display_name = "Zora"
 dialogue_file = "res://dialogue/zora.json"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ZoraHere/Zora"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ZoraHere/ZoraAtHome/Zora"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 mesh = SubResource("CapsuleMesh_hedge")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ZoraHere/Zora"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ZoraHere/ZoraAtHome/Zora"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape_npc")
 

@@ -14,6 +14,7 @@ const DIALOGUE := "res://dialogue/hollow_wolf.json"
 const FUR := Color(0.52, 0.52, 0.5)
 
 var _examined_corpse := false
+var glamour_proof := true   # nothing left in it to fool (systems/glamour.gd)
 
 
 func _ready() -> void:

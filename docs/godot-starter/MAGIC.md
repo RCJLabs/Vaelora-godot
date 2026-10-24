@@ -43,9 +43,30 @@ the right hand and Flames in the left is the classic spellsword.
 | Mending | Restoration | Self, 0.5 s | 30 | +5 Health/s for 10 s | Acolytes start with it; tome in the waystation cellar chest |
 | Stoneflesh | Alteration | Self, 0.7 s | 45 | 20% less damage taken for 60 s | Maren sells the tome (60 gold) |
 | Candlelight | Alteration | Self, 0.4 s | 15 | A light floats above you for 3 minutes | Scholars start with it; Maren sells the tome (25 gold) |
+| Mirror Image | Glamour | Area, 0.7 s | 30 | A decoy of you where you aim (up to 20 m). Enemies within 18 m of it go for it instead, until 3 hits or 12 s | Zora ("What do you really do?") |
+| Fear | Glamour | Area, 0.9 s | 40 | Enemies within 5 m of where you aim run from you for 8 s, then come back | Zora, after Mirror Image |
+| Charm | Glamour | Area, 1.0 s | 45 | The enemy nearest where you aim (within 2 m) fights for you for 15 s; its packmates within 10 m turn on it | Zora, after Fear |
 
 **Spell tomes** are items. Use one from Tab → Inventory to learn its spell (the tome is
 used up). Maren's tomes are under "Let's trade."
+
+### Glamour (the fourth school)
+
+Glamour changes what minds see. It rarely deals damage itself: your enemies do it to each
+other. All three spells are **Area** spells whose `glamour` field (`decoy`, `fear`, `charm`)
+replaces the damage; `duration` is how long it lasts, scaled by spell power (skill, Intellect,
+perks, and ×2.2 dual-cast). `systems/glamour.gd` (autoload **Glamour**) does the work:
+
+- **Who enemies go after.** Wolves and bandit-kind (bandits, cultists, the inquisitor, the
+  Mercy) ask `Glamour.target_for(self, player)` every frame. With no decoys and nobody
+  charmed, that's the player straight away. Otherwise: a charmed enemy goes for the nearest
+  other enemy (within 16 m; none means it stands still); its own packmates within 10 m turn
+  on it; anyone else within 18 m of a decoy goes for the decoy.
+- **Who it works on:** anything with a `frighten()` method (wolves, bandits), unless
+  `glamour_proof` is true (the hollow wolf). Wisps, the stone guardian and The First aren't
+  touched: the wisps are Vael and this was their magic first.
+- **When a charm wears off**, the enemy is still in the fight, and now it's after you.
+- Companions leave charmed enemies alone.
 
 ## Skills
 
@@ -53,10 +74,12 @@ Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point
 - **Destruction XP:** 1 per 5 damage dealt (streams, bolts, bursts).
 - **Restoration XP:** 1 per 5 health actually restored, and 1 per 4 damage a ward stops.
 - **Alteration XP:** 1 per 6 Magicka spent on Alteration spells.
+- **Glamour XP:** 1 per 5 Magicka spent on Glamour spells. Glamour levels make them last longer.
 
 Alteration perks: **Efficient Alteration** (20, −25% cost), **Arcane Reserve** (25, +25 max
 Magicka), **Focused Mind** (35, after Arcane Reserve: Magicka +25% faster). Restoration
-gained **Ward Mastery** (30, after Recovery: wards stop 20% more and cost 10% less).
+gained **Ward Mastery** (30, after Recovery: wards stop 20% more and cost 10% less). Glamour:
+**Efficient Glamour** (20, −25% cost) and **Long Shadows** (35, after it: +30% duration).
 
 **Magicka** refills 5/s (more with Willpower), starting 1 s after you stop casting.
 
@@ -64,7 +87,7 @@ gained **Ward Mastery** (30, after Recovery: wards stop 20% more and cost 10% le
 
 1. Duplicate the spell closest to what you want in `spells/` (each style has one).
 2. Edit **Id**, **Display Name**, **Description**, **Style**, **Skill** (`destruction` /
-   `restoration` / `alteration`), **Color**, and the numbers in its style's group
+   `restoration` / `alteration` / `glamour`), **Color**, and the numbers in its style's group
    (Stream and ward, or Charged).
 3. Self spells give a status effect: make one in `effects/` and add it to `EFFECT_FILES` in
    `systems/effect_library.gd`.
@@ -81,4 +104,7 @@ The casting code is in `player/player_magic.gd`; projectiles and bursts are
 - Flames go through walls (the stream only checks enemies); bursts and bolts don't.
 - Spells can't hurt you or friendly NPCs (no friendly fire), and enemies don't cast yet.
 - Candlelight is one light that follows you; it doesn't cast shadows.
+- Glamour (greybox): the decoy is a translucent capsule; there's no invisibility or frenzy
+  yet (the lore's other Glamour spells); hitting a charmed enemy doesn't break the charm; and
+  people you can talk to can't be charmed.
 - Saved with the game: known spells and the ready spell (Block saves as no spell).

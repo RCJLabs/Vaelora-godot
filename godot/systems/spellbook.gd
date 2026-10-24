@@ -18,6 +18,9 @@ const SPELL_FILES := [
 	"res://spells/mending.tres",
 	"res://spells/stoneflesh.tres",
 	"res://spells/candlelight.tres",
+	"res://spells/mirror_image.tres",
+	"res://spells/fear.tres",
+	"res://spells/charm.tres",
 ]
 
 var known: Array = []        # spell ids, in the order learned

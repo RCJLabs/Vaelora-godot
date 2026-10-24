@@ -50,6 +50,10 @@ const SKILLS := {
 		"name": "Mending",
 		"description": "+1% healing from Mending spells per level. Improves with health restored.",
 	},
+	"glamour": {
+		"name": "Glamour",
+		"description": "+1% to how long Glamour spells (decoys, fear, charm) last per level. Improves as you cast them.",
+	},
 }
 const START_LEVEL := 15
 const MAX_LEVEL := 100
