@@ -148,6 +148,17 @@ def main():
                 print("FLAKY %-40s %5.0fs  failed once, passed on retry" % (label, seconds), flush=True)
             else:
                 print("pass  %-40s %5.0fs" % (label, seconds), flush=True)
+    if not options.tests:   # the full run also checks the generated quest doc and the flags
+        jobs.append(("quest_flow", []))
+        check = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "quest_flow.py"), "--check"],
+                               capture_output=True, text=True)
+        if check.returncode:
+            failures += 1
+            print("FAIL  %-40s        docs/QUEST_FLOW.md or a story flag" % "quest_flow", flush=True)
+            for line in check.stdout.splitlines()[:10]:
+                print("        " + line)
+        else:
+            print("pass  %-40s" % "quest_flow", flush=True)
     if flaky:
         print("\nFlaky (failed, then passed on retry):")
         for label, problems, fails in flaky:
