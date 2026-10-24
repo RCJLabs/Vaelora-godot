@@ -86,12 +86,15 @@
 	"waking_stones": {
 		"title": "The Waking Stones",
 		"giver": "Brannoc, a scout of the Riverwatch garrison",
-		"description": "The old stone circle west of the waystation has been glowing since the new moon. Brannoc wants to know why, but won't go near it himself.",
+		"description": "The old stone circle west of the waystation has been glowing since the new moon, out of season. Brannoc wants to know why, but won't go near it himself. The mark on the hollow wolf is carved on its tallest stone.",
 		"started_when": {
 			"requires_flag": "stones_quest_started"
 		},
 		"completed_when": {
-			"requires_flag": "stones_quest_done"
+			"requires_flag": [
+				"stones_quest_done",
+				"saw_drain_line"
+			]
 		},
 		"objectives": [
 			{
@@ -131,6 +134,17 @@
 					"requires_flag": "stones_restored"
 				},
 				"marker": "StoneCircle"
+			},
+			{
+				"text": "Look into the crystal again.",
+				"show_when": {
+					"requires_flag": "shards_decided",
+					"requires_not_flag": "shards_chose_stones"
+				},
+				"done_when": {
+					"requires_flag": "saw_drain_line"
+				},
+				"marker": "StoneCircle"
 			}
 		],
 		"outcomes": [
@@ -138,21 +152,22 @@
 				"when": {
 					"requires_flag": "shards_given"
 				},
-				"text": "I gave the shards to Brannoc for the scholars of Riverwatch. The garrison paid well, and the captain knows my name."
+				"text": "I gave the shards to Brannoc for the scholars of Riverwatch. The garrison paid well, and the captain knows my name. And the crystal showed me a thread of light running north into the Thornwood: something is drawing on it."
 			},
 			{
 				"when": {
 					"requires_flag": "stones_restored"
 				},
-				"text": "I returned the shards to the stones. The crystal burns brighter now, and some of its light stayed with me."
+				"text": "I returned the shards to the stones. The crystal burns brighter now, and some of its light stayed with me. And the crystal showed me a thread of light running north into the Thornwood: something is drawing on it."
 			},
 			{
 				"when": {
 					"requires_flag": "shards_kept"
 				},
-				"text": "I kept the shards for myself. Brannoc won't forget it, and neither will the garrison."
+				"text": "I kept the shards for myself. Brannoc won't forget it, and neither will the garrison. And the crystal showed me a thread of light running north into the Thornwood: something is drawing on it."
 			}
-		]
+		],
+		"main": true
 	},
 	"bandit_camp": {
 		"title": "Thieves by the Fire",
@@ -186,6 +201,67 @@
 					"requires_flag": "bandit_bounty_paid"
 				},
 				"text": "The bandit camp is ash and bodies. Brannoc paid the garrison's bounty and promised the captain would hear of it."
+			}
+		]
+	},
+	"ask_forest": {
+		"title": "Ask the Forest",
+		"giver": "The drain-line, running north from the stone circle",
+		"main": true,
+		"description": "Something is drawing magic out of the stone circle along a thread of light that runs north into the Thornwood, where the outlaws live. The garrison won't go in. Someone has to.",
+		"started_when": {
+			"requires_flag": "saw_drain_line"
+		},
+		"completed_when": {
+			"requires_flag": "barrow_lead"
+		},
+		"objectives": [
+			{
+				"text": "Follow the drain-line north into the Thornwood and find the outlaws.",
+				"done_when": {
+					"requires_flag": "met_mirela"
+				},
+				"marker": "Mirela"
+			},
+			{
+				"text": "Earn the outlaws' trust: clear the bandit camp, or bring Mirela a crate of garrison supplies.",
+				"show_when": {
+					"requires_flag": "outlaws_terms"
+				},
+				"done_when": {
+					"requires_flag": "outlaws_trust"
+				},
+				"marker": [
+					"MapBanditCamp",
+					"Brannoc"
+				]
+			},
+			{
+				"text": "Hear what Mirela's scouts have seen.",
+				"done_when": {
+					"requires_flag": "barrow_lead"
+				},
+				"marker": "Mirela"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "outlaws_trust_bandits"
+				},
+				"text": "I cleared the bandit camp, and Mirela of the Thornwood Free told me what her scouts have seen: hooded folk carrying cages in and out of the Old Barrow after dark."
+			},
+			{
+				"when": {
+					"requires_flag": "outlaws_trust_supplies"
+				},
+				"text": "I brought the outlaws a crate of the garrison's supplies, and Mirela of the Thornwood Free told me what her scouts have seen: hooded folk carrying cages in and out of the Old Barrow after dark."
+			},
+			{
+				"when": {
+					"requires_flag": "barrow_lead"
+				},
+				"text": "The outlaws took me at my word, or at my wanted notice. Mirela of the Thornwood Free told me what her scouts have seen: hooded folk carrying cages in and out of the Old Barrow after dark."
 			}
 		]
 	}

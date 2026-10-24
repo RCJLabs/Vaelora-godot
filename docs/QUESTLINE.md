@@ -10,8 +10,13 @@ demo).
 |---|---|
 | Six background openings | ✅ Built (greybox): start marker, items, intro card, Maren's first line. See QUESTS.md |
 | 1. Wrong Things | ✅ Built: Maren → the hollow wolf (put it down or leave it) → Brannoc |
-| 2. The Waking Stones (reframed) | Existing quest; the drain-line and the fading wisps are next |
-| 3–5, side quests | Not started |
+| 2. The Waking Stones (reframed) | ✅ Built: the crystal shows the drain-line once the shards are dealt with; one wisp a night is drained into the crystal; Brannoc points you at the outlaws |
+| 3. Ask the Forest | ✅ Built (greybox): an outlaw camp at the north edge where the drain-line ends (Mirela, a lookout, and Dunya, their hollowed hedge-witch) inside a band of placeholder Thornwood trees; trust by bandits, supply crate, or the Outlaw's wanted notice; the Thornwood Free faction |
+| 4–5, side quests | Not started |
+
+Names picked: Mirela (the outlaws' leader), Ostap (her lookout), Dunya (the hollowed
+hedge-witch). The supplies come from Brannoc's cache, not from Riverwatch itself (the town
+isn't in the game yet).
 
 Simplifications against the outline, so far: every opening's first step is "Talk to Maren"
 (the Scholar and Acolyte don't have to visit the stones or the shrine first), and the

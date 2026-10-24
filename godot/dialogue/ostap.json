@@ -1,0 +1,41 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Far enough. Hands where I can see them. ...You're the one who's been following the light. Mirela's by the fire. Walk slow.",
+			"choices": [
+				{
+					"text": "Who are you people?",
+					"next": "who"
+				},
+				{
+					"text": "(Outlaw) Easy. I'm on the same notice board as you.",
+					"next": "outlaw",
+					"requires_background": "outlaw"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"who": {
+			"text": "The Thornwood Free. Free of taxes, free of licences, free of the garrison. Mostly free of food, lately.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"outlaw": {
+			"text": "Ha. Then you know the rules: don't steal from the pot, and don't bring the garrison home with you.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

@@ -92,19 +92,25 @@ func _physics_process(_d: float) -> bool:
 			DM.choose(0)
 		88:
 			if ending == "riverwatch":
-				ok(state("waking_stones") == "completed", "quest completed", state("waking_stones"))
-				ok(QL.status("waking_stones")["outcome"].begins_with("I gave the shards to Brannoc"), "Riverwatch outcome in the journal")
+				ok(state("waking_stones") == "active", "not done until the crystal's looked at again", state("waking_stones"))
+				ok(objectives_done("waking_stones") == [true, true, true, false], "new objective: look into the crystal", objectives_done("waking_stones"))
+				ok(not current_scene.get_node("DrainLine").visible, "no drain-line yet")
 			else:
 				ok(state("waking_stones") == "active", "quest still active", state("waking_stones"))
 				ok(objectives_done("waking_stones") == [true, true, true, false], "new objective: return the shards", objectives_done("waking_stones"))
 			notices_seen = []
 		90:
-			if ending == "stones":
-				look_at_point(Vector3(-11, 1.55, -9), 2.0)
+			look_at_point(Vector3(-11, 1.55, -9), 2.0)
 		94:
 			if ending == "stones":
-				near(p.stats.max_magicka, 100.0, 0.5, "max magicka before the crystal"); key(KEY_E)
+				near(p.stats.max_magicka, 100.0, 0.5, "max magicka before the crystal")
+			key(KEY_E)
 		98:
+			ok(current_scene.get_node("DrainLine").visible, "the drain-line shows")
+			ok(p.hud.message_label.text.contains("thread of light"), "the crystal shows the drain-line", p.hud.message_label.text)
+			if ending == "riverwatch":
+				ok(state("waking_stones") == "completed", "quest completed", state("waking_stones"))
+				ok(QL.status("waking_stones")["outcome"].begins_with("I gave the shards to Brannoc"), "Riverwatch outcome in the journal")
 			if ending == "stones":
 				near(p.stats.max_magicka, 110.0, 0.5, "crystal gives +10 max magicka")
 				ok(I.count("rune_shard") == 0, "shards returned")

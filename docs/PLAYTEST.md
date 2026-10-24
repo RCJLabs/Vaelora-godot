@@ -22,6 +22,11 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
       and up long enough? Do you know where to go (talk to Maren)?
 - [ ] Main quest 1, **Wrong Things** (5 min): Maren → the hollow wolf east of Greyfang Hollow
       (press E on it) → Brannoc. Does the hollow wolf feel eerie or just broken?
+- [ ] Main quest 2, **The Waking Stones**: after you deal with the shards, touch the crystal
+      again. Can you see the thread of light running north? At night, stay near the stones
+      (but not too near) for a minute: one wisp should drift into the crystal and streak away.
+- [ ] Main quest 3, **Ask the Forest**: follow the line north to the trees and the outlaw camp.
+      Is the camp easy to find? Is Mirela's choice (bandits or a garrison crate) clear?
 - [ ] First view of the level: note the **FPS** in the corner, on **High**.
 - [ ] The compass at the top: can you tell where the wolves quest points once Maren gives it?
       Press **M**: is the map readable?

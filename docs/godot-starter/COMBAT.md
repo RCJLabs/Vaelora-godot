@@ -202,6 +202,10 @@ spawned by `StoneWisps` (`enemies/wisp_spawner.gd`); the wisp is `enemies/wisp.g
   air** for 1.6 s: it sinks to the ground and can't cast.
 - **Wisp Essence** drops where one dies: +40 Magicka when used, and it sells for 20 gold.
 - You can't rest while a wisp is hunting you.
+- **Drained wisps:** once the main quest has started (`drain_flag` on the spawner,
+  "wrong_things_started" by default), about 30 s into each night one *calm* wisp drifts into
+  the crystal, dims, and streaks away north. Only one a night, never one that's fighting you,
+  and the first time you're within 25 m a message tells you what you saw.
 
 Enemy bolts (`combat/spell_bolt.gd` with `hits_player`) go through the same
 `player.receive_attack()` as melee, so any future caster gets blocking, wards, dodging and

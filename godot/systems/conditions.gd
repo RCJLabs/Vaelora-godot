@@ -9,6 +9,7 @@ class_name Conditions
 #   "requires_background": "soldier" or ["soldier", "hunter"]   any of these
 #   "requires_trait": "charming" or ["a", "b"]                   all of these
 #   "requires_item": "id" or {"id": "id", "count": 3}
+#   "requires_not_item": "id"                    you carry none of it
 #   "requires_gold": 50
 #   "requires_reputation": {"riverwatch": 10}        at least this much
 #   "requires_reputation_below": {"riverwatch": 0}   less than this
@@ -33,6 +34,8 @@ static func met(entry: Dictionary) -> bool:
 		var need := item_and_count(entry["requires_item"])
 		if Inventory.count(need[0]) < need[1]:
 			return false
+	if entry.has("requires_not_item") and Inventory.count(item_and_count(entry["requires_not_item"])[0]) > 0:
+		return false
 	if entry.has("requires_gold") and Inventory.gold < int(entry["requires_gold"]):
 		return false
 	for faction in entry.get("requires_reputation", {}):
