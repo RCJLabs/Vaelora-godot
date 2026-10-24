@@ -81,6 +81,7 @@ they apply to every character:
 | Tutorial hints | on/off |
 | **Graphics...** | see below |
 | **Controls...** | rebinding (CONTROLS.md) |
+| **Accessibility...** | toggle sprint, toggle block, camera shake, interface size (below) |
 
 ### Graphics
 
@@ -110,8 +111,34 @@ scenes need nothing: `Settings` applies the preset to every WorldEnvironment and
 DirectionalLight3D as it enters the game.
 
 **Not measured yet:** these are standard Godot settings with typical costs, but nobody has
-profiled this game on real hardware. Check the FPS counter on your PC, and on a low-end
+profiled this game on real hardware. Run the benchmark below on your PC, and on a low-end
 laptop if you can, before trusting the presets.
+
+### Accessibility
+
+| Setting | What it does |
+|---|---|
+| Toggle sprint | Tap the sprint key **while moving** to run; tap again to walk. Stopping, or running out of Stamina, ends it |
+| Toggle block | Tap the left-hand button to raise your guard (weapon or shield), tap again to lower it. Parrying still works: the parry window starts when the guard goes up. Doesn't affect spells or bows, which stay hold-to-use |
+| Camera shake | 0–100%: how much hits, swings, dodges and landings jolt the view. 0% turns it off. (Hit-stop, the brief freeze on a heavy hit, isn't affected) |
+| Interface size | 100 / 115 / 130 / 150%: menus, HUD and text. The 3D view isn't affected. On narrow screens the bottom bars shrink to fit |
+
+Not there yet: subtitles (there's no speech), colour-blind modes (health, stamina and magicka
+are red, green and blue), and remapping the menu buttons.
+
+### Benchmark
+
+**Title screen → Settings → Graphics → Run benchmark** (about 3 minutes; or start the game
+with `-- --benchmark`, e.g. `HighFantasySandboxRPG.exe -- --benchmark`). A camera circles
+three scenes (the open level by day, the stone circle at night with wisps, the barrow arena)
+at each preset, Low to Ultra, with VSync off. For each it records the average FPS, the
+**1% low** (the FPS of the slowest 1% of frames: what stutter feels like) and the worst frame.
+
+Your settings are put back afterwards. The results show on screen, are copied to the
+clipboard, and saved to `user://benchmark.txt` (on Windows:
+`%APPDATA%\Godot\app_userdata\High Fantasy Sandbox RPG\benchmark.txt`). Paste them back
+and the presets can be tuned from real numbers. It only runs from the title screen, because
+it loads levels.
 
 ### Report a Bug
 

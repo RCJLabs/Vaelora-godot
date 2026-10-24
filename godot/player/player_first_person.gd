@@ -80,6 +80,7 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var spawn_position: Vector3
 var is_dead := false
 var _exhausted := false   # ran out of stamina; no sprinting until it recovers
+var _sprint_toggled := false   # Settings.toggle_sprint: sprint is latched on
 var is_casting := false
 var _camera_kick := Vector3.ZERO   # degrees, springs back to zero
 var _lunge_velocity := Vector3.ZERO
@@ -159,6 +160,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if Settings.toggle_sprint and Input.is_action_just_pressed("sprint"):
+		_sprint_toggled = not _sprint_toggled   # once per frame (sprint_input() is read twice)
 	if traversal.busy:   # mantling or vaulting moves the player by itself
 		traversal.update(delta)
 		_stick_look(delta)
@@ -174,7 +177,7 @@ func _physics_process(delta: float) -> void:
 	# Holding jump in the air grabs a ledge within reach.
 	var can_climb := not talking and combat.state in [PlayerCombat.State.READY, PlayerCombat.State.RECOVERY]
 	if Input.is_action_just_pressed("jump") and is_on_floor() and not talking:
-		var running := Input.is_action_pressed("sprint") and Vector2(velocity.x, velocity.z).length() > walk_speed * 1.1
+		var running := sprint_input() and Vector2(velocity.x, velocity.z).length() > walk_speed * 1.1
 		if not (can_climb and traversal.try_start(false, running)):
 			velocity.y = jump_velocity
 	elif Input.is_action_pressed("jump") and not is_on_floor() and velocity.y < 2.0 and can_climb:
@@ -192,7 +195,9 @@ func _physics_process(delta: float) -> void:
 		_exhausted = true
 	elif stats.stamina >= stamina_to_sprint_again:
 		_exhausted = false
-	var sprinting := Input.is_action_pressed("sprint") and direction != Vector3.ZERO \
+	if Settings.toggle_sprint and (direction == Vector3.ZERO or _exhausted):
+		_sprint_toggled = false   # stopping (or running out of breath) ends a toggled sprint
+	var sprinting := sprint_input() and direction != Vector3.ZERO \
 			and is_on_floor() and moving and not _exhausted and combat.allows_sprint()
 	if sprinting:
 		stats.use_stamina(sprint_stamina_per_second * Skills.athletics_stamina_mult()
@@ -301,8 +306,16 @@ func can_fight() -> bool:
 
 
 ## Nudges the view (degrees: pitch, yaw, roll); it springs back by itself.
+## Whether the player is asking to sprint: holding the key, or (with Toggle sprint
+## on) having pressed it once since they last stopped.
+func sprint_input() -> bool:
+	if not Settings.toggle_sprint:
+		return Input.is_action_pressed("sprint")
+	return _sprint_toggled
+
+
 func camera_kick(degrees: Vector3) -> void:
-	_camera_kick += degrees
+	_camera_kick += degrees * Settings.camera_shake
 
 
 ## Steps forward for `seconds` (heavy attacks).

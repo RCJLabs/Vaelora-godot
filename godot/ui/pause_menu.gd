@@ -35,7 +35,7 @@ func _input(event: InputEvent) -> void:
 	if DialogueManager.is_active or CharacterMenu.is_open or RestMenu.is_open:
 		return
 	if is_open:
-		if _page in ["graphics", "controls"]:
+		if _page in ["graphics", "controls", "accessibility"]:
 			_show("settings")   # sub-pages of Settings go back one level
 		elif _page == "main" or _from_title:
 			close()
@@ -79,6 +79,7 @@ func _show(page: String) -> void:
 		"load": _build_load()
 		"settings": _build_settings()
 		"graphics": _build_graphics()
+		"accessibility": _build_accessibility()
 		"report": _build_report()
 		"controls": _build_controls()
 	_focus_first.call_deferred()
@@ -184,7 +185,23 @@ func _build_settings() -> void:
 	_checkbox("Tutorial hints", "show_hints")
 	_button("Graphics...", _show.bind("graphics"))
 	_button("Controls...", _show.bind("controls"))
+	_button("Accessibility...", _show.bind("accessibility"))
 	_back_button()
+
+
+func _build_accessibility() -> void:
+	title_label.text = "Accessibility"
+	_checkbox("Toggle sprint (press once while moving; stopping ends it)", "toggle_sprint")
+	_checkbox("Toggle block (press to raise your guard, again to lower it)", "toggle_block")
+	_slider("Camera shake", "camera_shake", 0.0, 1.0, 0.05, "%.0f%%", 100.0)
+	_choice("Interface size", "ui_scale", Settings.UI_SCALES.map(func(v): return "%d%%" % roundi(v * 100.0)), Settings.UI_SCALES)
+	var note := Label.new()
+	note.text = "Camera shake is the jolt from hits, swings, dodges and landings (0% turns it off). Interface size scales menus, the HUD and text; the 3D view isn't affected."
+	note.modulate = Color(1, 1, 1, 0.65)
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note.custom_minimum_size.x = 560
+	content.add_child(note)
+	_button("Back", _show.bind("settings"))
 
 
 func _build_graphics() -> void:
@@ -200,6 +217,10 @@ func _build_graphics() -> void:
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	note.custom_minimum_size.x = 560
 	content.add_child(note)
+	if _from_title:   # it changes scenes, so never in the middle of a game
+		_button("Run benchmark (about 3 minutes)", func():
+			close()
+			Benchmark.start(get_tree()))
 	_button("Back", _show.bind("settings"))
 
 
@@ -332,7 +353,8 @@ func _slider(label_text: String, key: String, low: float, high: float, step: flo
 
 
 ## A slider over a list of named steps (gamepad: left/right).
-func _choice(label_text: String, key: String, names: Array) -> void:
+## With `values`, the setting stores the chosen value instead of its index.
+func _choice(label_text: String, key: String, names: Array, values: Array = []) -> void:
 	var row := HBoxContainer.new()
 	var label := Label.new()
 	label.text = label_text
@@ -342,14 +364,14 @@ func _choice(label_text: String, key: String, names: Array) -> void:
 	slider.step = 1
 	slider.tick_count = names.size()
 	slider.ticks_on_borders = true
-	slider.value = Settings.get(key)
+	slider.value = maxi(values.find(Settings.get(key)), 0) if values else Settings.get(key)
 	slider.custom_minimum_size.x = 320
 	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var value_label := Label.new()
 	value_label.text = names[int(slider.value)]
 	slider.value_changed.connect(func(v):
 		value_label.text = names[int(v)]
-		Settings.set_option(key, int(v)))
+		Settings.set_option(key, values[int(v)] if values else int(v)))
 	for c in [label, slider, value_label]:
 		row.add_child(c)
 	content.add_child(row)

@@ -25,6 +25,9 @@ layout; PlayStation and Switch pads map to the same positions.
 | In conversations: pick a reply | Number keys, click, or arrows + Enter | D-pad + A (B leaves) |
 | Quicksave / quickload | F5 / F9 | (pause menu) |
 
+Prefer tapping to holding? **Settings → Accessibility** has toggle sprint and toggle block
+(see STATS_AND_SAVING.md).
+
 Look speed for both the mouse and the right stick is **Settings → Mouse sensitivity**, and
 **Invert Y** applies to both. The stick is curved: small tilts aim finely, full tilt turns
 about 180° a second.

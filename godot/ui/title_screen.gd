@@ -37,6 +37,11 @@ func _ready() -> void:
 	_button("Quit", func(): get_tree().quit())
 	buttons.get_child(0).grab_focus.call_deferred()   # gamepad: A starts straight away
 	_place_camera()
+	# `<game> -- --benchmark` runs the graphics benchmark straight away (once).
+	if "--benchmark" in OS.get_cmdline_user_args() and not get_tree().root.has_node("Benchmark") \
+			and not get_tree().has_meta("benchmark_ran"):
+		get_tree().set_meta("benchmark_ran", true)
+		Benchmark.start.call_deferred(get_tree())
 
 
 func _process(delta: float) -> void:
