@@ -73,6 +73,8 @@ ten that exist get theirs filled in along the way).
      firewood, slower needs in Survival mode, and 21 perks (`docs/godot-starter/SURVIVAL.md`).
    - ✅ Command (an addition, Presence): companions stronger by level, the Command key to point
      out a target, and 21 perks (`docs/godot-starter/COMPANIONS.md`).
+   - ✅ The martial trees: One-Handed, Two-Handed, Block, Archery and Athletics to 21 perks
+     each (`docs/godot-starter/COMBAT.md`, "Martial perk trees"). The five magic schools next.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
 6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.

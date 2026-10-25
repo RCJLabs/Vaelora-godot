@@ -253,6 +253,27 @@ Named in **Project Settings → Layer Names → 3D Physics** so the Inspector sh
 | 3 | enemies | wolves, bandits, wisps | player, other enemies, weapons, arrows, spells |
 | 4 | loot | pickups, dead wolves and bandits | interaction ray only (the player walks through) |
 
+## Martial perk trees
+
+One-Handed, Two-Handed, Block, Archery and Athletics have 21 perks each (phase 5 of
+`docs/CHARACTER_BUILDING.md` brings deeper fighting; these are the perk trees). Plain numbers
+are ordinary perk modifiers. Many only count with the right thing in your hand: a perk's
+`when_skill` (the weapon's skill: `one_handed`, `two_handed`, `archery`, `unarmed`),
+`when_weapon` (`ItemData.weapon_type`: `sword`, `dagger`, `axe`, `mace`, `greatsword`, `bow`)
+or `when_shield`. The rest are fields `systems/arms.gd` (the autoload `Arms`) reads.
+
+| Skill | Perks (level) |
+|---|---|
+| One-Handed | Armsman I–IV (15/35/55/75): +20% each → **Weapon Master** (95): one blow in ten double · Fighting Rhythm I–II (25/50): −25% swing Stamina · Quick Blades I–II (30/60): +15% attack speed · Swords: Bladesman I–II (30/60): one in ten, then five, double · Axes: Hack and Slash → Deep Cuts (30/60): a third, then two thirds, bleed · Maces: Bone Breaker (30): one in five staggers → Skull Cracker (60): staggered enemies take +50% · Daggers: Knife Fighter (25): +25% speed · Duellist (35): +20% with no other enemy within 8 m · **Flowing Strikes** (40): +5% a hit in a row, to +25% → **Blade Dance** (80): after a kill, a free swing · Lunging Strike (45): +50% from a sprint · Executioner (70): +50% under a quarter health |
+| Two-Handed | Barbarian I–IV → **Colossus** (95): heavy +50% · Reaver I–II · Iron Grip (20): −15% Stamina · Wide Arcs (25): +20% reach · Crushing Blows (30): +50% stagger · Devastating Blow (35): heavy +25% → **Cleave** (40): half a heavy blow hits everything within 2.5 m → **Earthshaker** (65): and staggers everything within 3 m → **Juggernaut** (90): heavy blows always stagger · **Unstoppable** (45): you can't be staggered mid-swing · Berserker (50): +25% under half health → Bloodlust (60): +25 Stamina a kill · Headsman (70) · Great Critical (35, greatswords) · Relentless (40) · Battering Ram (45) |
+| Block | Steady Guard I–II · Shield Wall I–III (15/35/60): blocks stop +10% each → **Unbroken Guard** (70): your guard never breaks · **Last Guard** (55): under a quarter health, a block stops everything · Deflection I–II → Perfect Timing (80): +20 Stamina a parry · Riposte I–II · **Counterweight** (45): a parry staggers them → **Aegis** (90): a parry heals 15 · Retaliation (35): +25% for 2 s after a block · Shields: Power Bash (25) → Deadly Bash (45): ×3 → **Staggering Bash** (65) · Quick Bash (30) · Battle-Ready (40): +20 Stamina · Guardian's Lore (15) |
+| Archery | Overdraw I–IV · Quick Draw I–II → **Snapshot** (60): half-drawn, almost full damage · Steady Aim (30): arrows 30% faster · Critical Shot I–II (30/55) → **Deadeye** (90): full draw does double · Power Shot (45): stagger ×2 → Bullseye (70): one in six staggers · **Pinning Shot** (50): one in four pins (40% speed, 3 s) · Arrow Recovery (25): a third come back · Ranger (35): half Stamina · Hunter (20): +25% on beasts · Long Shot (40): +25% past 25 m · Headhunter (70) · Hunter's Rhythm (65) · Fletcher's Eye (15) |
+| Athletics | Wind Runner I–II → Tireless (75) → **Runner's High** (85): sprinting heals 1 a second · Marathon I–II · Sure-Footed I–II: no fall damage · Fleet Foot I–II: +5% speed each · Sprinter (35) → Long Strides (65): +10% sprint each · Catch Your Breath (25) → Deep Lungs (60): Stamina +20% faster each · Nimble (20) → Evasive (45): dodge sooner · High Jump (30): +20% · **Charging Blow** (40): any attack from a sprint +30% · Pack Mule I–II (20/50): carry +25, +50 · Athlete (15) |
+
+New modifiers: `attack_speed`, `reach`, `block_share`, `bash_stamina`, `arrow_speed`,
+`dodge_cooldown`, `jump_height`, `sprint_speed`, and `carry` (a stat bonus). A crit says
+"Critical!". Wolves are in the group `beast`.
+
 ## Known limits
 
 - Wolves don't jump or climb. Anything over 0.5 m tall (like the stone block) is a wall to

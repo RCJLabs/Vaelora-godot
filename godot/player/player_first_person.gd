@@ -81,6 +81,7 @@ extends CharacterBody3D
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var spawn_position: Vector3
 var is_dead := false
+var sprinting_now := false   # this frame (Arms: attacks begun at a sprint)
 var _exhausted := false   # ran out of stamina; no sprinting until it recovers
 var _sprint_toggled := false   # Settings.toggle_sprint: sprint is latched on
 var last_attacker: Node        # who last hit you (systems/defeat.gd: who beat you)
@@ -208,7 +209,7 @@ func _physics_process(delta: float) -> void:
 		set_sneaking(false)
 		var running := sprint_input() and Vector2(velocity.x, velocity.z).length() > walk_speed * 1.1
 		if not (can_climb and traversal.try_start(false, running)):
-			velocity.y = jump_velocity
+			velocity.y = jump_velocity * stats.modifier("jump_height")
 	elif Input.is_action_pressed("jump") and not is_on_floor() and velocity.y < 2.0 and can_climb:
 		if traversal.try_start(true, false):
 			return
@@ -230,11 +231,13 @@ func _physics_process(delta: float) -> void:
 		set_sneaking(false)   # breaking into a run stands you up
 	var sprinting := sprint_input() and direction != Vector3.ZERO and is_on_floor() and moving \
 			and not _exhausted and combat.allows_sprint() and not is_over_encumbered()
+	sprinting_now = sprinting
 	if sprinting:
+		stats.heal(Arms.sum("sprint_heal") * delta)   # Runner's High (Athletics)
 		stats.use_stamina(sprint_stamina_per_second * Skills.athletics_stamina_mult()
 				* stats.modifier("sprint_stamina") * Armor.sprint_mult() * delta)
 		Skills.add_xp("athletics", Vector2(velocity.x, velocity.z).length() * delta / 5.0)   # 1 XP per 5 m
-	var target_speed := (sprint_speed if sprinting else walk_speed) * stats.modifier("move_speed") * combat.move_mult()
+	var target_speed := (sprint_speed * stats.modifier("sprint_speed") if sprinting else walk_speed) * stats.modifier("move_speed") * combat.move_mult()
 	if is_sneaking:
 		target_speed *= SNEAK_SPEED * stats.modifier("sneak_speed")
 	head.position.y = move_toward(head.position.y, SNEAK_HEAD if is_sneaking else _head_height, 3.0 * delta)

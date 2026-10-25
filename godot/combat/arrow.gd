@@ -22,6 +22,9 @@ var _stuck := false
 
 
 ## Starts the arrow at `from`, flying along `direction` at `speed` m/s.
+## Set by whoever loosed it: (target, damage) -> damage, for perks that depend on the target.
+var damage_for: Callable
+
 func launch(from: Vector3, direction: Vector3, speed: float) -> void:
 	global_position = from
 	velocity = direction.normalized() * speed
@@ -52,6 +55,8 @@ func _physics_process(delta: float) -> void:
 		var origin := shooter.global_position if is_instance_valid(shooter) else from
 		var sneak := Stealth.sneak_attack_mult(target, "archery") if sneaking and Stealth.is_sneaking() else 1.0
 		damage *= sneak
+		if damage_for.is_valid():
+			damage = damage_for.call(target, damage)   # the shooter's perks (Arms)
 		target.take_hit(damage, origin, 1.5, poise_damage)
 		Glamour.struck(target, shooter)
 		if sneak > 1.0:

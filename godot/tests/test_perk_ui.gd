@@ -40,19 +40,31 @@ func _physics_process(_d: float) -> bool:
 		ok(M.get_node("%PerksButton").text == "Perks  -  1 point to spend  >", "perk points button on the Skills tab", M.get_node("%PerksButton").text)
 		ok(M.tabs.get_tab_control(M.PERKS_TAB) == T and M.tabs.get_tab_title(M.PERKS_TAB) == "Perks", "a Perks tab, last")
 		var skills: Array = range(T._skills.item_count).map(func(i): return T._skills.get_item_text(i))
-		ok(skills.size() == autoload("Skills").SKILLS.size() and skills[0] == "One-Handed  0/3  •" and skills.back().begins_with("Tidecraft"), "every skill with counts; • where a perk is ready", skills)
-		ok(skills.has("Block  0/3"), "nothing ready in Block", skills)
+		var SK = autoload("Skills")
+		var count := func(skill: String) -> int: return C.perk_list.keys().filter(func(k): return C.perk_list[k]["skill"] == skill).size()
+		ok(skills.size() == SK.SKILLS.size() and skills[0] == "One-Handed  0/%d  •" % count.call("one_handed") and skills.back().begins_with("Tidecraft"), "every skill with counts; • where a perk is ready", skills)
+		# • exactly where a perk with no prerequisite is within the skill's level.
+		var wrong := []
+		for i in SK.SKILLS.size():
+			var skill: String = T._skill_ids[i]
+			var ready: bool = C.perk_list.values().any(func(perk): return perk["skill"] == skill and not perk.has("requires") and perk["level"] <= SK.levels[skill])
+			if skills[i].ends_with("•") != ready:
+				wrong.append(skills[i])
+		ok(wrong.is_empty(), "• only where something's ready", wrong)
 		# One-Handed: Armsman, Fighting Rhythm beside it a row down, Armsman II under Armsman.
 		ok(T.skill_id == "one_handed", "One-Handed shown first")
-		ok(T.layout("one_handed") == {"armsman_1": Vector2i(0, 0), "armsman_2": Vector2i(0, 1), "fighting_rhythm": Vector2i(1, 0)},
-				"Armsman II under Armsman; Fighting Rhythm its own column", T.layout("one_handed"))
+		var one: Dictionary = T.layout("one_handed")
+		ok(one["armsman_1"] == Vector2i(0, 0) and one["armsman_2"] == Vector2i(0, 1) and one["fighting_rhythm"] == Vector2i(1, 0),
+				"Armsman II under Armsman; Fighting Rhythm its own column", one)
 		ok(T._buttons["armsman_1"].text == "Armsman  (15)", "a perk shows its name and level", T._buttons["armsman_1"].text)
 		ok(T._buttons["armsman_1"].get_theme_color("font_color") == T.READY and T._buttons["armsman_2"].get_theme_color("font_color") == T.LOCKED, "ready bright, locked dim")
-		ok(T._canvas.lines.size() == 1, "one line: Armsman to Armsman II", T._canvas.lines.size())
+		var links: int = C.perk_list.values().filter(func(perk): return perk["skill"] == "one_handed" and perk.has("requires")).size()
+		ok(T._canvas.lines.size() == links, "a line for every perk that needs another", T._canvas.lines.size())
 		T.select("armsman_2")
 		ok(T._take.disabled and T._details.text.contains("Needs One-Handed 35, and Armsman") and T._details.text.contains("(needs One-Handed 35)"), "details say what it needs", T._details.text)
 		T.show_skill("block")
-		ok(T._buttons.size() == 3 and T._buttons.values().all(func(b): return b.get_theme_color("font_color") == T.LOCKED), "Block perks all locked")
+		var above: Array = T._buttons.keys().filter(func(id): return C.perk_list[id]["level"] > SK.levels["block"])
+		ok(T._buttons.size() == count.call("block") and not above.is_empty() and above.all(func(id): return T._buttons[id].get_theme_color("font_color") == T.LOCKED), "Block perks over your level locked")
 		T.show_skill("one_handed")
 		for c in M.get_node("%AttributeRow").get_children():
 			if c is Button: c.emit_signal("pressed"); break
@@ -67,7 +79,7 @@ func _physics_process(_d: float) -> bool:
 		M.get_node("%PerksButton").emit_signal("pressed")
 		ok(M.tabs.current_tab == M.PERKS_TAB, "the button opens the Perks tab", M.tabs.current_tab)
 		ok(C.perks == ["armsman_1"], "perks list", C.perks)
-		ok(T._skills.get_item_text(0) == "One-Handed  1/3", "1 of 3, nothing more to take now", T._skills.get_item_text(0))
+		ok(T._skills.get_item_text(0) == "One-Handed  1/%d" % C.perk_list.keys().filter(func(k): return C.perk_list[k]["skill"] == "one_handed").size(), "1 taken, nothing more to take now", T._skills.get_item_text(0))
 		ok(T._buttons["armsman_1"].text.begins_with("✓") and T._buttons["armsman_1"].get_theme_color("font_color") == T.TAKEN, "taken: ✓ and gold")
 		ok(T.selected_perk == "armsman_1" and T._details.text.contains("You have it."), "still selected, and says so", T._details.text)
 		ok(T._canvas.lines[0][1] == T.TAKEN, "the line from a taken perk is gold")
@@ -81,7 +93,8 @@ func _physics_process(_d: float) -> bool:
 			C.perk_list["test_%d" % i] = perk
 		T.show_skill("athletics")
 		var spots: Dictionary = T.layout("athletics")
-		ok(spots.size() == 25 and spots.values().size() == _unique(spots.values()).size(), "25 perks, no two in one spot", spots.size())
+		var athletics: int = C.perk_list.keys().filter(func(k): return C.perk_list[k]["skill"] == "athletics").size()
+		ok(spots.size() == athletics and spots.values().size() == _unique(spots.values()).size(), "every perk placed, no two in one spot", spots.size())
 		var bad := []
 		for p in spots:
 			var parent: String = C.perk_list[p].get("requires", "")

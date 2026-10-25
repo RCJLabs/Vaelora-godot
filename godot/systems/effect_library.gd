@@ -7,6 +7,7 @@ const EFFECT_FILES := [
 	"res://effects/bleeding.tres",
 	"res://effects/bound.tres",
 	"res://effects/venom.tres",
+	"res://effects/arrow_pinned.tres",
 	"res://effects/commanded.tres",
 	"res://effects/guarded.tres",
 	"res://effects/avenging.tres",

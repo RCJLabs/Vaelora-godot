@@ -65,3 +65,4 @@ light_attacks = Array[ExtResource("3_attack")]([SubResource("Attack_1"), SubReso
 heavy_attack = SubResource("Attack_heavy")
 block_reduction = 0.6
 material = "iron"
+weapon_type = "sword"

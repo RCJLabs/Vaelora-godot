@@ -67,3 +67,4 @@ heavy_attack = SubResource("Attack_heavy")
 block_reduction = 0.4
 dagger = true
 material = "iron"
+weapon_type = "dagger"

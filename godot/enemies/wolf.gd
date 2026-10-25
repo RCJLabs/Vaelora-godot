@@ -68,6 +68,7 @@ const FLEE_SECONDS := 12.0
 func _ready() -> void:
 	add_to_group("persistent")
 	add_to_group("enemy")
+	add_to_group("beast")   # Hunter (Archery)
 	home = global_position
 	_wander_target = home
 	stats.died.connect(_on_died)
