@@ -77,7 +77,11 @@ ten that exist get theirs filled in along the way).
      each (`docs/godot-starter/COMBAT.md`, "Martial perk trees").
    - ✅ The magic trees: Ruin, Shaping, Mending, Glamour and Tidecraft to 21 perks each
      (`docs/godot-starter/MAGIC.md`, "Perk trees"). Every one of the 24 skills now has 21+.
-5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
+5. **Fighting deeper:**
+   - ✅ Weapon arts: one for each weapon (and the shield, and fists), learned at 25
+     (`docs/godot-starter/COMBAT.md`, "Weapon arts").
+   - ✅ Spell combinations: Shatter, Undertow, Riptide (`docs/godot-starter/MAGIC.md`).
+   - Dual-wielding and spell-blades next.
 6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.
 

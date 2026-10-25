@@ -184,6 +184,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		Character.use_power(0)
 	elif event.is_action_pressed("power_background"):
 		Character.use_power(1)
+	elif event.is_action_pressed("weapon_art"):
+		combat.weapon_art_pressed()   # systems/weapon_arts.gd
 	elif event.is_action_pressed("command"):
 		Command.point_out(self)   # your companion (and called things) go for what you aim at
 

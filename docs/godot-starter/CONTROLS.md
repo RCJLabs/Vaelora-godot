@@ -21,6 +21,7 @@ layout; PlayStation and Switch pads map to the same positions.
 | First / third person | V | R3 (press the right stick) |
 | Race power / background power | Z / X | LB / RB |
 | Command: send your companion at what you aim at | G | D-pad up |
+| Weapon art (the special attack for what you hold; a shield's while blocking) | F | D-pad right |
 | Character menu (skills, inventory, magic, journal, map...) | Tab (J opens the journal, M the map) | View |
 | Switch menu tabs | Click the tab, or Z / X | LB / RB |
 | Pause menu | Esc | Menu |

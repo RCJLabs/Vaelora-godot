@@ -274,6 +274,26 @@ New modifiers: `attack_speed`, `reach`, `block_share`, `bash_stamina`, `arrow_sp
 `dodge_cooldown`, `jump_height`, `sprint_speed`, and `carry` (a stat bonus). A crit says
 "Critical!". Wolves are in the group `beast`.
 
+## Weapon arts
+
+Phase 5 (`docs/CHARACTER_BUILDING.md`), from the questionnaire: "a special attack for each
+weapon type, earned by skill". Press **Weapon Art** (F, or D-pad right). Each is learned at 25
+in its skill (you're told when), and is a quarter stronger at 50 and again at 75. It costs 30
+Stamina and then waits 8 seconds; it's 8 XP in its skill. The blows go through the usual
+pipeline, so skill, perks and crits count. The rules are `systems/weapon_arts.gd`; what each
+does is `PlayerCombat.weapon_art_pressed()`.
+
+| Weapon | Art | What it does |
+|---|---|---|
+| Sword | **Flurry** | Three quick cuts at 70% of a heavy blow each |
+| Dagger | **Gutting Strike** | A lunge: double a heavy blow, triple on an enemy that hasn't noticed you, and it bleeds |
+| Axe | **Rend** | 140%, and three stacks of bleeding |
+| Mace | **Skull Crack** | 150%, and it always staggers |
+| Greatsword | **Whirlwind** | 150% to everything within reach, all the way round |
+| Bow | **Volley** | Three arrows at once, 6° apart (uses three) |
+| Shield (while blocking) | **Shield Charge** | A rush; everything in a 70° cone within 3.5 m takes double a bash and is staggered |
+| Fists | **Palm Strike** | 150%, hurls them back and staggers them |
+
 ## Known limits
 
 - Wolves don't jump or climb. Anything over 0.5 m tall (like the stone block) is a wall to

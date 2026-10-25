@@ -181,6 +181,18 @@ school's spells.
 Streams hit every frame, so they don't roll staggers, and Lingering Elements stretches an
 effect once rather than every frame.
 
+## Combinations
+
+From the questionnaire ("frost then fire shatters, a well then a crush"). `systems/combos.gd`.
+
+| Combination | How | What |
+|---|---|---|
+| **Shatter** | A spell that burns (Firebolt, Flames) on a chilled enemy (Frost Burst) | 30 more (by your Ruin), a stagger, and the chill is gone |
+| **Undertow** | Moon-Crush on an enemy a Gravity Well is holding | Double |
+| **Riptide** | Hit something within 1.5 s of pulling it (Pull) | Half as much again, from a blade, an arrow or a spell; once |
+
+Each says its name and is 5 XP (Ruin for Shatter, Tidecraft for the others).
+
 ## Adding a spell (no code)
 
 1. Duplicate the spell closest to what you want in `spells/` (each style has one).
