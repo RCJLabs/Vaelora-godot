@@ -39,8 +39,11 @@ func apply(effect, stacks: int = 1) -> bool:
 
 # Harmful effects on the player wear off sooner with Willpower (Attributes).
 func _duration(data: StatusEffectData) -> float:
-	if data.is_harmful and data.duration > 0.0 and _stats and _stats.permanent == Character:
-		return data.duration * Attributes.harmful_duration_mult() * Character.modifier("harmful_duration")
+	if data.duration > 0.0 and _stats and _stats.permanent == Character:
+		var mult: float = Character.modifier("duration_" + data.id)   # perks for one effect (Lasting Edge)
+		if data.is_harmful:
+			mult *= Attributes.harmful_duration_mult() * Character.modifier("harmful_duration")
+		return data.duration * mult
 	return data.duration
 
 

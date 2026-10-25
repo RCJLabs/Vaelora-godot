@@ -5,7 +5,7 @@ pauses).
 
 ## Skills
 
-Sixteen so far, each rising by use from 15 (plus race bonuses) to 100. Each has a **governing
+Seventeen so far, each rising by use from 15 (plus race bonuses) to 100. Each has a **governing
 attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult()`).
 
 | Skill | Attribute | Improves by | Effect |
@@ -21,6 +21,7 @@ attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult
 | Heavy Armour | Endurance | Being hit in heavy armour | +1% armour from heavy pieces per level (ARMOUR.md) |
 | Ruin (`destruction`) | Intellect | Spell damage dealt | +1% Ruin damage per level |
 | Shaping (`alteration`) | Intellect | Casting Shaping spells | +1% to Shaping spells per level |
+| Runecraft | Intellect | Casting Runecraft spells, runes going off | +1% to Runecraft spells per level (RUNECRAFT.md) |
 | Mending (`restoration`) | Willpower | Health restored | +1% healing per level |
 | Binding | Willpower | Casting Binding spells | +1% to how long they last per level (BINDING.md) |
 | Speech | Presence | Checks passed, trading | +1 to persuade and intimidate checks per level, cheaper bribes, better prices (SPEECH.md) |
@@ -66,7 +67,7 @@ Four skills to each attribute (your note: an even number per attribute). Bold on
 | Strength | **One-Handed**, **Two-Handed**, Smithing, ***Unarmed*** |
 | Endurance | **Block**, **Heavy Armour**, **Athletics**, Survival |
 | Agility | **Archery**, **Light Armour**, **Sneak**, Lockpicking |
-| Intellect | **Ruin**, **Shaping**, Runecraft, Alchemy |
+| Intellect | **Ruin**, **Shaping**, **Runecraft**, Alchemy |
 | Willpower | **Mending**, **Binding**, **Tidecraft**, Drawing |
 | Presence | **Speech**, **Glamour**, Sight, *Command* (companions) |
 

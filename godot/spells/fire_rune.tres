@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "fire_rune"
+display_name = "Fire Rune"
+description = "Charge, then release where you're aiming (up to 15 m): a rune on the ground. When an enemy comes within 1.6 m it goes off: everything within 2.5 m takes 30 and burns. Lasts 2 minutes; three at once."
+style = 2
+skill = "runecraft"
+color = Color(1, 0.5, 0.2, 1)
+charge_time = 0.9
+magicka_cost = 40.0
+damage = 30.0
+max_distance = 15.0
+radius = 1.0
+duration = 10.0
+rune = "fire"

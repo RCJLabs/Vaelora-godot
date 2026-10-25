@@ -429,6 +429,9 @@ func _land_hit(target: Node) -> void:
 			damage += hands.armor   # gauntlets as knuckles
 	if main_item == null and not is_bash:
 		damage = _unarmed_damage(target, damage)
+	var rune_blade: bool = not is_bash and player.effects.has("rune_blade")   # Enchant Weapon (Runecraft)
+	if rune_blade:
+		damage += Runecraft.BLADE_DAMAGE * stats.modifier("enchant_damage")
 	var poise := current_attack.poise_damage * _charge_mult() * stats.modifier("poise_dealt")
 	var heavy := is_heavy
 	var sneak := Stealth.sneak_attack_mult(target, "melee", null if is_bash else main_item)
@@ -448,6 +451,8 @@ func _land_hit(target: Node) -> void:
 		target.add_effect(current_attack.applies_effect)
 	if main_item == null and not is_bash:
 		_unarmed_landed(target)
+	if rune_blade and target.has_method("add_effect") and randf() < (1.0 if "searing_edge" in Character.perks else 0.3):
+		target.add_effect("burning")
 	Skills.add_xp(skill, 5.0 if is_heavy else 3.0)
 	player.hud.flash_hit()
 	_show_target_health(target)

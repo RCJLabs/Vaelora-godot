@@ -82,6 +82,11 @@ const SKILLS := {
 		"name": "Binding",
 		"description": "+1% to how long Binding spells (called things, the dead raised, enemies held) last per level. Improves as you cast them.",
 	},
+	"runecraft": {
+		"attribute": "intellect",
+		"name": "Runecraft",
+		"description": "+1% to Runecraft spells (rune damage, how long wards and enchantments last) per level. Improves as you cast them and as your runes go off.",
+	},
 	"restoration": {
 		"attribute": "willpower",
 		"name": "Mending",

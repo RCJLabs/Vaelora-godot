@@ -77,6 +77,11 @@ enum Effect { DAMAGE_STREAM, HEAL_SELF }
 ## fight for you, or holds an enemy in place (systems/binding.gd). Lasts `duration`.
 @export var binding: String = ""
 
+@export_group("Runecraft")
+## "fire", "frost", "binding" (a rune-trap where you aim) or "ward" (a circle where you
+## stand): systems/runecraft.gd. Runes do `damage`; the ward lasts `duration`.
+@export var rune: String = ""
+
 
 func is_charged() -> bool:
 	return style == Style.BOLT or style == Style.AREA or style == Style.SELF

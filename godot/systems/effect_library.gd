@@ -6,6 +6,10 @@ extends Node
 const EFFECT_FILES := [
 	"res://effects/bleeding.tres",
 	"res://effects/bound.tres",
+	"res://effects/rune_ward.tres",
+	"res://effects/rune_ward_steady.tres",
+	"res://effects/rune_ward_renewal.tres",
+	"res://effects/rune_blade.tres",
 	"res://effects/burning.tres",
 	"res://effects/poisoned.tres",
 	# powers (res://character/abilities.json)

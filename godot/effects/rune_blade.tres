@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "rune_blade"
+display_name = "Rune-Blade"
+description = "Your weapon carries a burning rune: +8 damage, and a chance to set them alight."
+is_harmful = false
+duration = 60.0
+modifiers = {
+
+}
