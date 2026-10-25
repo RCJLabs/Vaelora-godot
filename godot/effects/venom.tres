@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "venom"
+display_name = "Venom"
+description = "A brewed poison: loses 3 health a second per dose, and moves a little slower."
+duration = 10.0
+health_per_second = -3.0
+stacking = 1
+max_stacks = 5
+modifiers = {
+"move_speed": 0.95
+}

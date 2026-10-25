@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "potion_poison_0"
+display_name = "Weak Poison"
+description = "Coats your weapon: the next 3 hits each put 1 dose of venom in what they strike (3 a second for 10 s a dose). (Brewed.)"
+type = 1
+value = 25
+weight = 0.3
+potion_effect = "poison"
+potion_tier = 0

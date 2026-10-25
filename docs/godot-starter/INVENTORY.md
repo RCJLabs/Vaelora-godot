@@ -1,7 +1,7 @@
 # Inventory, Gold & Loot
 
 Press **Tab** → **Inventory** tab: your gold, your items, and a description of the selected
-item. Potions get a **Drink** button. The game is paused while the menu is open, so you can
+item. Potions get a **Drink** button (a poison: **Coat blade**; the mortar and pestle: **Brew**, see ALCHEMY.md). The game is paused while the menu is open, so you can
 drink mid-fight like in Skyrim.
 
 ## Where items come from right now

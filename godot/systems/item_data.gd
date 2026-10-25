@@ -40,6 +40,15 @@ enum ArmorClass { NONE, LIGHT, HEAVY }
 ## Spell tomes: the spell id it teaches (the tome is used up).
 @export var teaches_spell: String = ""
 
+@export_group("Alchemy")
+## Ingredients: the effects it brings to a brew (keys of Alchemy.EFFECTS), up to three.
+@export var alchemy_effects: Array[String] = []
+## Brewed potions: the effect it has when drunk (Alchemy.drink) and how strong (0-2).
+@export var potion_effect: String = ""
+@export var potion_tier: int = 0
+## A tool you use from the pack: "alchemy" (a mortar and pestle) opens the brewing screen.
+@export var tool: String = ""
+
 @export_group("Book")
 ## Books and notes: the text you read (BookReader). A book isn't used up by reading.
 @export_multiline var book_text: String = ""
