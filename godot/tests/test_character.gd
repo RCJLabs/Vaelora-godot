@@ -56,7 +56,7 @@ func _physics_process(_d: float) -> bool:
 			near(p.stats.modifier("damage_dealt"), 1.20, 0.001, "damage dealt")
 			near(p.stats.modifier("health_regen"), 0.25, 0.001, "Hardcore health regen")
 			ok([p.stats.max_health, p.stats.max_stamina, p.stats.max_magicka] == [155.0, 130.0, 60.0], "max pools", [p.stats.max_health, p.stats.max_stamina, p.stats.max_magicka])
-			ok(C.powers() == ["battle_fury", "second_wind"], "orc and soldier powers", C.powers())
+			ok(C.powers() == ["battle_fury", "second_wind", ""], "orc and soldier powers (no class)", C.powers())
 			var h = p.stats.health; p.stats.take_damage(10.0, true)
 			near(h - p.stats.health, 15.18, 0.01, "10 damage over time")
 		40: key(KEY_Z)

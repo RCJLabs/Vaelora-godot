@@ -1,5 +1,5 @@
 extends "res://tests/test_base.gd"
-# The character creator, clicked through: elf, scholar, the trait rules, spending the
+# The character creator, clicked through: elf, scholar, mage, the trait rules, spending the
 # 4 attribute points, name and Hardcore; then the created character and the level.
 var f := 0
 var cc
@@ -34,50 +34,60 @@ func _process(_d: float) -> bool:
 			ok(d.any(func(t): return t.contains("Clarity")), "scholar power listed")
 			cc.next_button.emit_signal("pressed")
 		14:
+			ok(cc.title_label.text == "Choose your calling", "step 3 is class", cc.title_label.text)
+			ok(cc.choices.get_child_count() == 12, "twelve classes", cc.choices.get_child_count())
+			btn(cc.choices, "Mage").button_pressed = true; btn(cc.choices, "Mage").emit_signal("pressed")
+		16:
+			var d := texts(cc.details)
+			ok(d[0] == "Mage", "mage details shown", d[0])
+			ok(d.any(func(t): return t.contains("Ruin, Shaping, Mending, Runecraft, Alchemy")), "mage skills listed", d)
+			ok(d.any(func(t): return t.contains("Arcane Surge")), "mage power listed")
+			cc.next_button.emit_signal("pressed")
+		18:
 			btn(cc.choices, "Bookish").button_pressed = true
 			btn(cc.choices, "Arcane Spark").button_pressed = true
-		16:
+		20:
 			ok(btn(cc.choices, "Hardy").disabled, "a third strength is blocked")
 			ok(not btn(cc.choices, "Frail").disabled, "a flaw is still allowed")
 			btn(cc.choices, "Frail").button_pressed = true
-		18:
+		22:
 			ok(not btn(cc.choices, "Hardy").disabled, "taking a flaw allows a third strength")
 			ok(btn(cc.choices, "Dim").disabled, "a second flaw is blocked")
 			btn(cc.choices, "Quick Learner").button_pressed = true
-		20:
+		24:
 			ok(cc.trait_ids == ["bookish", "arcane_spark", "frail", "quick_learner"], "four traits picked", cc.trait_ids)
 			btn(cc.choices, "Frail").button_pressed = false
-		22:
+		26:
 			ok(cc.trait_ids == ["bookish", "arcane_spark"], "dropping the flaw drops the third strength", cc.trait_ids)
 			btn(cc.choices, "Frail").button_pressed = true
 			btn(cc.choices, "Quick Learner").button_pressed = true
-		24:
+		28:
 			ok(cc.trait_ids.size() == 4, "traits picked again", cc.trait_ids)
 			cc.next_button.emit_signal("pressed")
-		26:
+		30:
 			ok(cc.next_button.disabled, "Next disabled while points are left")
 			var plus = cc.choices.get_child(3).get_child(2)   # intellect +
 			for i in 3: plus.emit_signal("pressed")
 			cc.choices.get_child(4).get_child(2).emit_signal("pressed")   # willpower +
-		28:
+		32:
 			ok(cc.spend == {"intellect": 3, "willpower": 1}, "points spent", cc.spend)
 			ok(not cc.next_button.disabled, "Next enabled once all points are spent")
 			var rows := texts(cc.choices)
 			ok(rows.has("Intellect  19  (+3)") and rows.has("Willpower  12  (+1)"), "attribute rows", rows)
 			ok(texts(cc.details).has("0 points left"), "0 points left shown")
 			cc.next_button.emit_signal("pressed")
-		30:
+		34:
 			var edit: LineEdit = cc.choices.find_children("*", "LineEdit", true, false)[0]
 			edit.text = "Ilyra"; edit.text_changed.emit("Ilyra")
 			btn(cc.choices, "Hardcore").button_pressed = true
-		32:
+		36:
 			var d := texts(cc.details)
-			ok(d.has("Ilyra") and d.has("Elf Scholar") and d.has("Mode: Hardcore"), "summary", d)
+			ok(d.has("Ilyra") and d.has("Elf Scholar, Mage") and d.has("Mode: Hardcore"), "summary", d)
 			ok(cc.next_button.text == "Begin journey", "last step's button", cc.next_button.text)
 			cc.next_button.emit_signal("pressed")
-		45:
+		49:
 			var C = autoload("Character"); var A = autoload("Attributes")
-			ok(C.player_name == "Ilyra" and C.background == "scholar", "name and background", [C.player_name, C.background])
+			ok(C.player_name == "Ilyra" and C.background == "scholar" and C.class_id == "mage", "name, background and class", [C.player_name, C.background, C.class_id])
 			ok(C.traits == ["bookish", "arcane_spark", "frail", "quick_learner"], "traits", C.traits)
 			ok(C.modes == {"survival": false, "hardcore": true}, "modes", C.modes)
 			ok(A.values == {"strength": 9, "endurance": 6, "agility": 12, "intellect": 19, "willpower": 12, "presence": 10}, "attributes", A.values)

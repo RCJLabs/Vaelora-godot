@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "rally"
+display_name = "Rally"
+description = "You and your companions deal 25% more damage."
+is_harmful = false
+duration = 20.0
+modifiers = {
+"damage_dealt": 1.25
+}

@@ -1,10 +1,10 @@
 extends Control
 
-# Title screen and character creator: five steps (race, background, traits,
+# Title screen and character creator: six steps (race, background, class, traits,
 # attributes, name & mode), then "Begin journey" calls Character.create() and
 # loads the starting level.
 # To add a race: create a new .tres in res://races/ and add it to RACE_FILES.
-# Backgrounds and traits are read from res://character/*.json.
+# Backgrounds, classes and traits are read from res://character/*.json.
 
 const RACE_FILES := [
 	"res://races/human.tres",
@@ -19,6 +19,7 @@ const RED := Color(1, 0.55, 0.5)
 const STEPS := [
 	{"title": "Choose your people", "hint": "Your race sets your starting attributes, Health, Stamina and Magicka, and a power (Z)."},
 	{"title": "Choose your past", "hint": "Your background decides your starting skills, gear, gold, how Riverwatch sees you, and a second power (X)."},
+	{"title": "Choose your calling", "hint": "Your class's five skills improve 20% faster, and it gives a third power (R). You can still learn anything, and change class later at a price."},
 	{"title": "Strengths and flaws", "hint": "Pick up to 2 strengths. Taking 1 flaw lets you pick a 3rd strength. Traits are permanent."},
 	{"title": "Attributes", "hint": "Spend %d points. You get one more at every level-up (Tab → Skills)."},
 	{"title": "Who are you?", "hint": "Name your character and choose how hard the world should be. Modes can't be changed later."},
@@ -38,6 +39,7 @@ var step := 0
 # The character being built.
 var race: RaceData
 var background_id := ""
+var class_id := ""
 var trait_ids: Array = []
 var spend := {}              # attribute id -> points spent here
 var player_name := ""
@@ -50,6 +52,7 @@ func _ready() -> void:
 		races.append(load(path))
 	race = races[0]
 	background_id = Character.backgrounds.keys()[0]
+	class_id = Classes.classes.keys()[0]
 	back_button.pressed.connect(_go.bind(-1))
 	next_button.pressed.connect(_go.bind(1))
 	_show_step()
@@ -77,11 +80,12 @@ func _show_step() -> void:
 	match step:
 		0: _build_race_step()
 		1: _build_background_step()
-		2: _build_traits_step()
-		3: _build_attributes_step()
-		4: _build_final_step()
+		2: _build_class_step()
+		3: _build_traits_step()
+		4: _build_attributes_step()
+		5: _build_final_step()
 	_refresh_details()
-	if step != 4:   # the name step focuses its text box itself
+	if step != 5:   # the name step focuses its text box itself
 		_focus_first_choice.call_deferred()
 
 
@@ -100,14 +104,15 @@ func _refresh_details() -> void:
 	match step:
 		0: _race_details()
 		1: _background_details()
-		2: _traits_details()
-		3: _attributes_details()
-		4: _final_details()
-	next_button.disabled = step == 3 and _points_left() > 0
+		2: _class_details()
+		3: _traits_details()
+		4: _attributes_details()
+		5: _final_details()
+	next_button.disabled = step == 4 and _points_left() > 0
 
 
 func begin() -> void:
-	Character.create(race, player_name, background_id, trait_ids, spend, modes)
+	Character.create(race, player_name, background_id, trait_ids, spend, modes, class_id)
 	Openings.pending = true   # the level's player plays the background's first scene
 	get_tree().change_scene_to_file(START_LEVEL)
 
@@ -167,7 +172,25 @@ func _background_details() -> void:
 	_label(_power_text(bg.get("ability", ""), "X"), 18, GOLD)
 
 
-# --- step 3: traits -----------------------------------------------------------------------
+# --- step 3: class ------------------------------------------------------------------------
+
+func _build_class_step() -> void:
+	var group := ButtonGroup.new()
+	for id in Classes.classes:
+		var button := _choice_button(Classes.name_of(id), group)
+		button.button_pressed = id == class_id
+		button.pressed.connect(func(): class_id = id; _refresh_details())
+
+
+func _class_details() -> void:
+	var data: Dictionary = Classes.classes[class_id]
+	_label(data["name"], 30)
+	_label(data["description"], 18)
+	_label("Skills (+20%% XP): %s" % Classes.skills_text(class_id), 18, BLUE)
+	_label(_power_text(data.get("ability", ""), "R"), 18, GOLD)
+
+
+# --- step 4: traits -----------------------------------------------------------------------
 
 func _build_traits_step() -> void:
 	for positive in [true, false]:
@@ -221,7 +244,7 @@ func _traits_details() -> void:
 	_label(_attributes_text(Character.preview_attributes(race, background_id, trait_ids, {})), 18, BLUE)
 
 
-# --- step 4: attributes -------------------------------------------------------------------
+# --- step 5: attributes -------------------------------------------------------------------
 
 func _build_attributes_step() -> void:
 	for id in Attributes.ATTRIBUTES:
@@ -283,7 +306,7 @@ func _attributes_details() -> void:
 		_label("%s: %s" % [Attributes.ATTRIBUTES[id]["name"], Attributes.ATTRIBUTES[id]["description"]], 16, GREY)
 
 
-# --- step 5: name and mode ----------------------------------------------------------------
+# --- step 6: name and mode ----------------------------------------------------------------
 
 func _build_final_step() -> void:
 	_label("Name", 22, GOLD, choices)
@@ -315,12 +338,13 @@ func _final_details() -> void:
 	var bg: Dictionary = Character.backgrounds[background_id]
 	var shown_name := player_name.strip_edges() if player_name.strip_edges() != "" else "Traveller"
 	_label(shown_name, 30)
-	_label("%s %s" % [race.display_name, bg["name"]], 20, GOLD)
+	_label("%s %s, %s" % [race.display_name, bg["name"], Classes.name_of(class_id)], 20, GOLD)
 	var trait_names := trait_ids.map(func(id): return Character.trait_list[id]["name"])
 	_label("Traits: " + (", ".join(trait_names) if not trait_names.is_empty() else "none"), 18)
 	var attrs := Character.preview_attributes(race, background_id, trait_ids, spend)
 	_label("%s\n%s" % [_pools_text(attrs), _attributes_text(attrs)], 18, BLUE)
-	_label("%s\n%s" % [_power_text(race.ability_id, "Z"), _power_text(bg.get("ability", ""), "X")], 18, GOLD)
+	_label("%s\n%s\n%s" % [_power_text(race.ability_id, "Z"), _power_text(bg.get("ability", ""), "X"),
+			_power_text(Classes.classes[class_id].get("ability", ""), "R")], 18, GOLD)
 	var mode_names := []
 	for mode in modes:
 		if modes[mode]:

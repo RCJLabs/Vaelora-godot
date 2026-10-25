@@ -22,6 +22,7 @@ layout; PlayStation and Switch pads map to the same positions.
 | Switch spell / Block | Q | Y |
 | First / third person | V | R3 (press the right stick) |
 | Race power / background power | Z / X | LB / RB |
+| Class power | R | D-pad left |
 | Command: send your companion at what you aim at | G | D-pad up |
 | Weapon art (the special attack for what you hold; a shield's while blocking) | F | D-pad right |
 | Character menu (skills, inventory, magic, journal, map...) | Tab (J opens the journal, M the map) | View |
@@ -121,7 +122,7 @@ in **Esc > Settings > Accessibility > Touch controls**.
 - **Look:** drag anywhere on the right half that isn't a button.
 - **Buttons** (right side): ⚔ attack (hold for a heavy), ✋ left hand (cast, block, aim), ⤒ jump,
   ↷ dodge, E use/talk, ▼ sneak, » sprint (tap on, tap off), ★ weapon art, ✦ switch spell, ⚑
-  command, ☰ character menu, Esc pause. Top left: Ⅰ race power, Ⅱ background power.
+  command, ☰ character menu, Esc pause. Top left: Ⅰ race power, Ⅱ background power, Ⅲ class power.
 - **Menus:** tap as you would click. A ✕ at the top right closes whatever's open.
 - Sizes scale with the screen's height, so they're the same physical size on a phone with many
   pixels.
