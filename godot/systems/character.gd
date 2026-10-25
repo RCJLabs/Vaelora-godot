@@ -87,6 +87,7 @@ func create(race: RaceData, new_name: String, background_id: String, trait_ids: 
 	Trade.reset()
 	Alchemy.reset()
 	Smithing.reset()
+	Lockpicking.reset()
 
 	player_name = new_name.strip_edges() if new_name.strip_edges() != "" else "Traveller"
 	background = background_id

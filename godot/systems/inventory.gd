@@ -81,6 +81,7 @@ const ITEM_FILES := [
 	"res://items/leather_strip.tres",
 	"res://items/seasoned_wood.tres",
 	"res://items/smiths_hammer.tres",
+	"res://items/lockpick.tres",
 	"res://items/leather_cap.tres",
 	"res://items/leather_gloves.tres",
 	"res://items/iron_cuirass.tres",

@@ -314,6 +314,23 @@ mesh = SubResource("Mesh_chest")
 [node name="Shape" type="CollisionShape3D" parent="Chest"]
 shape = SubResource("Shape_chest")
 
+[node name="Strongbox" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -2.4, 0.24, -4.5)
+script = ExtResource("2_container")
+container_name = "strongbox"
+contents = {
+"lockpick": 2,
+"minor_healing_potion": 1
+}
+gold = 25
+lock_level = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Strongbox"]
+mesh = SubResource("Mesh_chest")
+
+[node name="Shape" type="CollisionShape3D" parent="Strongbox"]
+shape = SubResource("Shape_chest")
+
 [node name="ExitHatch" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 2.6, 3.2)
 collision_layer = 8
