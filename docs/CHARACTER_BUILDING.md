@@ -44,7 +44,7 @@ ten that exist get theirs filled in along the way).
    - ✅ Skill books and trainers.
    - ✅ Respec (Aurel's rite, 150 gold; the shrine's interaction is part of the Silent Shrine
      quest, so the teacher came first).
-   - The perk tree view, ready for 20+ perks a skill.
+   - ✅ The perk tree view (Tab → Perks), ready for 20+ perks a skill.
 2. **New skills on the body:** Sneak (and sneak attacks), Light and Heavy Armour, Speech
    (persuasion checks and haggling), Unarmed.
 3. **Magic:** Binding, then Runecraft, Sight and Drawing (each with its 20 perks).

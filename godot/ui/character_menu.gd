@@ -2,8 +2,9 @@ extends CanvasLayer
 
 # Tab menu: Skills tab (levels, level-up bonuses), Inventory tab (items,
 # gold, using potions), Magic tab (known spells), Quests tab (the journal,
-# also opened directly with J), Factions tab (reputation) and Map tab (also
-# opened directly with M; ui/map_view.gd). Pauses the game.
+# also opened directly with J), Factions tab (reputation), Map tab (also
+# opened directly with M; ui/map_view.gd) and Perks tab (the perk trees;
+# ui/perk_tree.gd). Pauses the game.
 # Autoloaded as "CharacterMenu" (process mode Always, so it runs while paused).
 
 @onready var root_control: Control = $Root
@@ -18,7 +19,9 @@ extends CanvasLayer
 
 const QUESTS_TAB := 3
 const MAP_TAB := 5
+const PERKS_TAB := 6
 var map_view: MapView
+var perk_tree: PerkTree
 var _quest_ids: Array = []   # quest id for each row of quest_list
 
 var _item_ids: Array = []   # item id for each row of item_list
@@ -34,6 +37,9 @@ func _ready() -> void:
 	root_control.hide()
 	map_view = MapView.new()
 	tabs.add_child(map_view)
+	perk_tree = PerkTree.new()
+	tabs.add_child(perk_tree)
+	%PerksButton.pressed.connect(func(): tabs.current_tab = PERKS_TAB; _focus_tab.call_deferred())
 	%HealthButton.pressed.connect(Skills.spend_level_up.bind("health"))
 	%StaminaButton.pressed.connect(Skills.spend_level_up.bind("stamina"))
 	%MagickaButton.pressed.connect(Skills.spend_level_up.bind("magicka"))
@@ -208,36 +214,8 @@ func _identity_text() -> String:
 
 
 func _refresh_perks() -> void:
-	%PerksLabel.text = "Perks  -  %d point%s to spend" % [Character.perk_points, "" if Character.perk_points == 1 else "s"]
-	var list: VBoxContainer = %PerkList
-	for child in list.get_children():
-		list.remove_child(child)
-		child.queue_free()
-	for skill_id in Skills.SKILLS:
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 10)
-		var skill_label := Label.new()
-		skill_label.text = Skills.SKILLS[skill_id]["name"]
-		skill_label.custom_minimum_size.x = 160
-		row.add_child(skill_label)
-		for perk_id in Character.perk_list:
-			var perk: Dictionary = Character.perk_list[perk_id]
-			if perk["skill"] != skill_id:
-				continue
-			var blocker := Character.perk_blocker(perk_id)
-			var button := Button.new()
-			button.tooltip_text = "%s (%s %d)" % [perk["description"], Skills.SKILLS[skill_id]["name"], perk["level"]]
-			if blocker == "taken":
-				button.text = "✓ " + perk["name"]
-				button.disabled = true
-			elif blocker == "":
-				button.text = "Take: " + perk["name"]
-				button.pressed.connect(Character.take_perk.bind(perk_id))
-			else:
-				button.text = "%s (%s)" % [perk["name"], blocker]
-				button.disabled = true
-			row.add_child(button)
-		list.add_child(row)
+	%PerksButton.text = "Perks  -  %d point%s to spend  >" % [Character.perk_points, "" if Character.perk_points == 1 else "s"]
+	perk_tree.refresh()
 
 
 func _refresh_inventory() -> void:
