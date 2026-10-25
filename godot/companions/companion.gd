@@ -16,6 +16,8 @@ extends CharacterBody3D
 
 enum State { FOLLOW, WAIT, FIGHT, DOWN }
 
+const BOLT_SCENE := preload("res://combat/spell_bolt.tscn")
+
 const FOLLOW_DISTANCE := 3.0
 const CATCH_UP_DISTANCE := 40.0   # further than this, they simply arrive behind you
 const FIGHT_RADIUS := 15.0
@@ -35,6 +37,9 @@ var damage := 10.0
 ## Metres they can hit from: melee for Brannoc, Zora's fire for her.
 var reach := 1.9
 var attack_interval := 1.2
+## Throws a bolt (Zora's fire) instead of striking in melee.
+var ranged := false
+var bolt_color := Color(1, 0.5, 0.15)
 var max_health := 100.0
 var health := 100.0
 var state := State.FOLLOW
@@ -63,6 +68,7 @@ func setup(id: String, def: Dictionary) -> void:
 	damage = def.get("damage", damage)
 	reach = def.get("reach", reach)
 	attack_interval = def.get("attack_interval", attack_interval)
+	ranged = def.get("ranged", false)
 	max_health = def.get("health", max_health)
 	health = max_health
 	name = "Companion_" + id
@@ -204,8 +210,24 @@ func _strike(enemy: Node3D) -> void:
 	if _attack_left > 0.0:
 		return
 	_attack_left = attack_interval
+	if ranged:
+		_throw_bolt(enemy)
+		return
 	enemy.take_hit(damage, global_position, 3.0, 8.0)
 	Targeting.provoke(enemy, self)
+
+
+# A bolt of fire from chest height at the enemy's middle; it does the damage when it lands.
+func _throw_bolt(enemy: Node3D) -> void:
+	var bolt: SpellBolt = BOLT_SCENE.instantiate()
+	bolt.shooter = self
+	bolt.damage = damage
+	bolt.poise_damage = 4.0
+	bolt.color = bolt_color
+	bolt.hit.connect(func(target, _dealt): Targeting.provoke(target, self))
+	get_parent().add_child(bolt)
+	var from := global_position + Vector3(0, 1.3, 0)
+	bolt.launch(from, (enemy.global_position + Vector3(0, 0.6, 0)) - from, 22.0, 0.7)
 
 
 func _flat_distance(node: Node3D) -> float:

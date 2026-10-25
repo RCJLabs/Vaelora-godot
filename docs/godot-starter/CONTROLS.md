@@ -102,7 +102,6 @@ gamepad buttons for them).
 - No aim assist for the stick yet.
 - Third person (greybox): your body is a capsule with no arms or walk animation. What you
   hold floats where your hands would be, posed like the first-person model, so poses meant
-  to read from the eye can look odd from behind. Camera shake only moves the first-person
-  view.
+  to read from the eye can look odd from behind.
 - Typing a name in the character creator needs a keyboard (leave it blank for "Traveller").
 - Gamepad was tested with simulated input; it hasn't been tried with a real controller.

@@ -26,7 +26,7 @@ extends Node
 
 const DEFS := {
 	"brannoc": {"name": "Brannoc", "dialogue": "res://dialogue/companion_brannoc.json", "npc_dialogue": "res://dialogue/brannoc.json", "health": 150.0, "damage": 12.0, "reach": 1.9},
-	"zora": {"name": "Zora", "dialogue": "res://dialogue/companion_zora.json", "npc_dialogue": "res://dialogue/zora.json", "health": 90.0, "damage": 9.0, "reach": 6.0, "attack_interval": 1.6},
+	"zora": {"name": "Zora", "dialogue": "res://dialogue/companion_zora.json", "npc_dialogue": "res://dialogue/zora.json", "health": 90.0, "damage": 9.0, "reach": 6.0, "attack_interval": 1.6, "ranged": true},
 }
 const COMMANDS := ["companion_cmd_wait", "companion_cmd_follow", "companion_cmd_dismiss", "companion_cmd_talk"]
 const COMPANION_SCRIPT := preload("res://companions/companion.gd")
@@ -37,6 +37,7 @@ const BANTER_EVERY := 150.0
 signal said(id: String, line: String)
 
 var approval := {}   # id -> -100..100
+var health := {}     # id -> their health, kept across levels and saves (missing: full)
 var _said := {}      # id -> [banter ids already said]
 var _talk := {}      # id -> {"reactions": {...}, "banter": [...], "leave_line": "..."}
 var _banter_left := BANTER_EVERY
@@ -54,11 +55,12 @@ func reset() -> void:
 	for id in DEFS:
 		approval[id] = 0
 		_said[id] = []
+	health = {}
 	_banter_left = BANTER_EVERY
 
 
 func to_dict() -> Dictionary:
-	return {"approval": approval.duplicate(), "said": _said.duplicate(true)}
+	return {"approval": approval.duplicate(), "said": _said.duplicate(true), "health": health.duplicate()}
 
 
 func from_dict(data: Dictionary) -> void:
@@ -67,6 +69,8 @@ func from_dict(data: Dictionary) -> void:
 		approval[id] = int(data["approval"][id])
 	for id in data.get("said", {}):
 		_said[id] = Array(data["said"][id])
+	for id in data.get("health", {}):
+		health[id] = float(data["health"][id])
 
 
 ## Changes how `id` feels about you. Below LEAVE_AT while following, they leave.
@@ -110,6 +114,9 @@ func body() -> Node3D:
 func _process(delta: float) -> void:
 	var id := active()
 	_tick_banter(id, delta)
+	var here := body()
+	if here:
+		health[id] = here.health
 	# No longer following (the flag was cleared some other way than "Go home"): gone.
 	for companion in get_tree().get_nodes_in_group("companion"):
 		if companion.companion_id != id and not companion.is_queued_for_deletion():
@@ -119,6 +126,9 @@ func _process(delta: float) -> void:
 	if id != "" and player and body() == null:
 		var companion := COMPANION_SCRIPT.new()
 		companion.setup(id, DEFS[id])
+		if health.has(id):
+			# As you left them; down when you left means getting up as they arrive.
+			companion.health = health[id] if health[id] > 0.0 else companion.max_health * companion.GOT_UP
 		get_tree().current_scene.add_child(companion)
 		companion.arrive_behind(player)
 
@@ -159,6 +169,7 @@ func _on_flag_set(flag: String) -> void:
 		"companion_cmd_dismiss":
 			if companion:
 				companion.queue_free()
+			health.erase(active())   # rested by the time you see them again
 			GameState.clear_flag("companion_" + active())
 		"companion_cmd_talk":
 			# After this conversation has closed (the choice that sets this ends it).

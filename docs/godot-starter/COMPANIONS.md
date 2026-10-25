@@ -34,8 +34,9 @@ Companions acts on and clears at once (`GameState.clear_flag`, which StoryPresen
 While following, they fight the nearest enemy within 15 m of you or them that's in the
 fight (not idle, heading home, fleeing or charmed). Told to wait, they stay put but still hit
 back at whatever is hitting them. Brannoc has 150 health and hits for 12 in melee every 1.2 s;
-Zora has 90 and throws fire for 9 from 6 m every 1.6 s. Numbers are in `DEFS` in
-`systems/companions.gd`.
+Zora has 90 and throws fire for 9 from 6 m every 1.6 s: a bolt (`combat/spell_bolt.tscn`,
+`"ranged": true` in her def) that flies from her chest and hurts what it lands on, so
+something in the way stops it. Numbers are in `DEFS` in `systems/companions.gd`.
 
 **Enemies fight them too.** Wolves and bandit-kind ask `Targeting.foe_for()`
 (`systems/targeting.gd`) who to go after: Glamour first (decoys, charm), then the nearer of
@@ -47,6 +48,10 @@ and The First still only go for you.
 alone. A notice says so. Help them up (E) for half their health, or they get up on their own
 after 20 s with 30%, and go back to what they were told to do. Out of a fight (not hit for
 6 s) they heal 3 a second. A floating name and health show while they're hurt.
+
+**Health carries over.** `Companions.health` keeps it as it is, through doors and into the
+save: hurt when you left a level, hurt when they arrive in the next. Down when you left means
+getting up as they arrive (30%). Sent home, they're rested by the time you see them again.
 
 ## Approval, remarks and banter
 
@@ -81,8 +86,8 @@ game (`Companions.approval`).
 
 ## Known limits (greybox)
 
-- They're capsules (`companions/companion.gd`); Zora's fire has no visual.
-- Their health isn't saved: they're back to full after a load.
+- They're capsules (`companions/companion.gd`), with no attack animations; Zora's bolt
+  just leaves her chest.
 - They never block, dodge or retreat, and wisps and bosses ignore them.
 - Remarks and banter are on-screen text, not voiced or spoken in the world, and they can
   talk over other messages.
