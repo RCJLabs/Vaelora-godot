@@ -19,6 +19,20 @@ func _physics_process(_d: float) -> bool:
 	if f == 3:
 		C.attribute_points = 2; M.open()
 	if f == 5:
+		# perks.json: no id twice (JSON keeps the last one silently), and every
+		# "requires" is a perk of the same skill.
+		var ids := []
+		var raw := RegEx.create_from_string('^\\t"([a-z0-9_]+)": \\{')
+		for line in FileAccess.get_file_as_string("res://character/perks.json").split("\n"):
+			var m := raw.search(line)
+			if m:
+				ids.append(m.get_string(1))
+		var twice: Array = ids.filter(func(id): return ids.count(id) > 1)
+		ok(twice.is_empty() and ids.size() == C.perk_list.size(), "no perk id twice in perks.json", twice)
+		var orphans: Array = C.perk_list.keys().filter(func(id):
+				var parent: String = C.perk_list[id].get("requires", "")
+				return parent != "" and (not C.perk_list.has(parent) or C.perk_list[parent]["skill"] != C.perk_list[id]["skill"]))
+		ok(orphans.is_empty(), "every perk requires one of its own skill's", orphans)
 		var identity: String = M.get_node("%IdentityLabel").text
 		ok(identity.begins_with("Grukka  -  Orc Soldier  -  Quick Learner, Charming  -  Hardcore"), "identity line", identity)
 		var row: Array = M.get_node("%AttributeRow").get_children().map(func(c): return c.text)

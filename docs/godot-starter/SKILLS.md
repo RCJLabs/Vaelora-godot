@@ -20,6 +20,7 @@ attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult
 | Athletics | Endurance | Sprinting (1 XP per 5 m) | −0.5% sprint stamina cost per level |
 | Smithing | Strength | Forging and improving (SMITHING.md) | Improve one quality higher every 25 levels (Fine at the start) |
 | Lockpicking | Agility | Pins set, locks opened (LOCKPICKING.md) | +1% sweet spot, a slower pick per level |
+| Survival | Endurance | Cooking, foraging, making camp, hours in Survival mode (SURVIVAL.md) | Cooked food +0.5% per level; in Survival mode, needs rise up to 25% slower |
 | Heavy Armour | Endurance | Being hit in heavy armour | +1% armour from heavy pieces per level (ARMOUR.md) |
 | Ruin (`destruction`) | Intellect | Spell damage dealt | +1% Ruin damage per level |
 | Shaping (`alteration`) | Intellect | Casting Shaping spells | +1% to Shaping spells per level |
@@ -30,6 +31,7 @@ attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult
 | Sight | Presence | Casting Sight spells | +1% to how long Weak Point and Ill Fortune last per level (SIGHT.md) |
 | Speech | Presence | Checks passed, trading | +1 to persuade and intimidate checks per level, cheaper bribes, better prices (SPEECH.md) |
 | Glamour | Presence | Casting Glamour spells | +1% duration per level |
+| Command | Presence | Your companion's damage, orders given | Your companion +1% damage and health per level; the Command key (COMPANIONS.md) |
 | Drawing | Willpower | Life taken | Forbidden: +1% per level, more with corruption; it corrupts you (DRAWING.md) |
 | Tidecraft | Willpower | Casting Tidecraft spells | +1% power per level (and the moons) |
 
@@ -70,11 +72,11 @@ Four skills to each attribute (your note: an even number per attribute). Bold on
 | Attribute | Skills |
 |---|---|
 | Strength | **One-Handed**, **Two-Handed**, **Smithing**, ***Unarmed*** |
-| Endurance | **Block**, **Heavy Armour**, **Athletics**, Survival |
+| Endurance | **Block**, **Heavy Armour**, **Athletics**, **Survival** |
 | Agility | **Archery**, **Light Armour**, **Sneak**, **Lockpicking** |
 | Intellect | **Ruin**, **Shaping**, **Runecraft**, **Alchemy** |
 | Willpower | **Mending**, **Binding**, **Tidecraft**, **Drawing** |
-| Presence | **Speech**, **Glamour**, **Sight**, *Command* (companions) |
+| Presence | **Speech**, **Glamour**, **Sight**, ***Command*** (companions) |
 
 See `docs/CHARACTER_BUILDING.md` for the order they'll be built in.
 

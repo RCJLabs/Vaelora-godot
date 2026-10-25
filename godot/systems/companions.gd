@@ -80,7 +80,7 @@ func add_approval(id: String, amount: int) -> void:
 	if amount > 0:
 		amount = roundi(amount * Character.modifier("approval_gain"))   # Trusted (Speech)
 	approval[id] = clampi(approval[id] + amount, -100, 100)
-	if active() == id and approval[id] <= LEAVE_AT:
+	if active() == id and approval[id] <= (-80 if "beloved" in Character.perks else LEAVE_AT):   # Beloved (Command)
 		say(id, _talk[id].get("leave_line", "I'm done. Find someone else."))
 		var companion := body()
 		if companion:
@@ -133,6 +133,7 @@ func _process(delta: float) -> void:
 			companion.health = health[id] if health[id] > 0.0 else companion.max_health * companion.GOT_UP
 		get_tree().current_scene.add_child(companion)
 		companion.arrive_behind(player)
+		Hints.show_once("command", "%s is with you. Aim at an enemy and press %s to send them at it (the Command skill)." % [DEFS[id]["name"], Hints.key("command")])
 
 
 # Every BANTER_EVERY seconds of following, out of a fight: the next line they haven't said.

@@ -62,6 +62,11 @@ const SKILLS := {
 		"name": "Block",
 		"description": "+0.5% of a hit blocked per level (up to 95%). Improves when you block or parry.",
 	},
+	"survival": {
+		"attribute": "endurance",
+		"name": "Survival",
+		"description": "Cook meals at a campfire (+0.5% to what cooked food restores per level), forage plants, make camp with firewood. In Survival mode, needs rise up to a quarter slower. Improves as you cook, forage, make camp and get through the hours.",
+	},
 	"athletics": {
 		"attribute": "endurance",
 		"name": "Athletics",
@@ -116,6 +121,11 @@ const SKILLS := {
 		"attribute": "presence",
 		"name": "Sight",
 		"description": "+1% to how long Weak Point and Ill Fortune last per level. Improves as you cast Sight spells.",
+	},
+	"command": {
+		"attribute": "presence",
+		"name": "Command",
+		"description": "Your companion does +1% damage and has +1% health per level. Press Command aiming at an enemy to send them at it. Improves with the damage your companion deals and the orders you give.",
 	},
 	"glamour": {
 		"attribute": "presence",

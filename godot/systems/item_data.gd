@@ -40,6 +40,12 @@ enum ArmorClass { NONE, LIGHT, HEAVY }
 ## Spell tomes: the spell id it teaches (the tome is used up).
 @export var teaches_spell: String = ""
 
+@export_group("Cooking")
+## Cooked at a campfire (Survival skill): restores more with skill and Good Cook.
+@export var cooked: bool = false
+## A meal's buff, a status effect id (well_fed_*), put on you when you eat it.
+@export var meal_effect: String = ""
+
 @export_group("Smithing")
 ## What it's made of, for improving it at a forge: "iron", "steel", "leather", "wood" ("" can't be).
 @export var material: String = ""
@@ -51,7 +57,8 @@ enum ArmorClass { NONE, LIGHT, HEAVY }
 @export var potion_effect: String = ""
 @export var potion_tier: int = 0
 ## A tool you use from the pack: "alchemy" (a mortar and pestle) opens the brewing screen;
-## "smithing" (a smith's hammer) opens the forge to improve things, with Field Smith.
+## "smithing" (a smith's hammer) opens the forge to improve things, with Field Smith;
+## "camp" (firewood) makes a campfire where you stand.
 @export var tool: String = ""
 
 @export_group("Book")

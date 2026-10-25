@@ -69,8 +69,9 @@ nothing poisons you with venom yet.
 
 ## Not yet
 
-- **Gathering in the world.** There are no herb plants to pick yet: ingredients come from
-  Maren, two Barrow pickups and wolves. Green Thumb doubles both kinds of pickup.
+- **Gathering in the world** came with the Survival skill: forage plants grow mountain
+  flowers, red caps, blue moss, river reeds and apples around the test level (SURVIVAL.md).
+  Green Thumb doubles those too. Nightshade and grave dust are still only in the Barrow.
 - **Unknown effects.** Skyrim hides an ingredient's effects until you taste it or brew with it.
   Here they're all shown. Hiding them would make Alchemy more about discovery.
 - **No alchemist trainer or skill book.**

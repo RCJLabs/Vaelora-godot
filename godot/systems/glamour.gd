@@ -43,7 +43,8 @@ func target_for(enemy: Node3D, player: Node3D) -> Node3D:
 		return player
 	match kind_of(enemy):
 		"charm":
-			return _nearest(enemy, _foes_of(enemy), CHARM_SEEK)
+			var ordered := Command.order_for_bound() if enemy.has_meta("bound") else null
+			return ordered if ordered else _nearest(enemy, _foes_of(enemy), CHARM_SEEK)   # Pack Leader (Command)
 		"frenzy":
 			var anyone := _nearest(enemy, _others(enemy), CHARM_SEEK)
 			return anyone if anyone else player

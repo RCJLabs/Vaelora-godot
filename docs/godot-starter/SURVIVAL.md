@@ -144,3 +144,63 @@ for the companion system.
 - **Food:** an item with type Consumable and the **Ease Hunger / Thirst / Fatigue / Cold**
   values (and optionally a **Side Effect** with a chance).
 - Anything in the group `heat_source` with a `heat_radius` property keeps you warm.
+
+## The Survival skill
+
+Phase 4's last skill (`docs/CHARACTER_BUILDING.md`). It's Endurance's. Survival mode is a choice
+at character creation, so the skill is built to be worth having **without** it: cooking,
+foraging and making camp work for everyone, and only the needs perks are mode-only. The code
+is `systems/bushcraft.gd` (the autoload `Bushcraft`; `Survival` is the mode).
+
+### Cooking
+
+At a campfire (the rest menu), every dish you have the makings for gets a **Cook** button.
+Cooked food restores +0.5% more per Survival level, and a meal leaves a **Well Fed** buff for
+5 minutes.
+
+| Dish | Makings | Restores | Well Fed |
+|---|---|---|---|
+| Cooked Wolf Meat | raw wolf meat (all at once, as before) | 15 Health | – |
+| Hunter's Skewer | raw meat, mountain flower | 20 Health, 20 Stamina | blows +5%, Stamina +15% faster |
+| Wolf Stew | raw meat, red cap, water | 35 Health; warms you | Health back 1.5× as fast |
+| Herb Bread | bread, mountain flower | 40 Stamina | Stamina +30% faster |
+| Apple Tea | apple, river reed, water | 35 Magicka; warms you | Magicka +30% faster |
+
+XP: 2 plus a fifth of the dish's value.
+
+### Foraging
+
+**Forage plants** (`props/forage_plant.gd`) grow around the test level: two each of mountain
+flowers, red caps and blue moss, river reeds and an apple bush. E picks one (1.5 XP); it's bare
+for three days, then flowers again (saved). This is where Alchemy's herbs grow wild now.
+
+### Making camp
+
+**Firewood** (Maren, 3 gold): use two from the pack and a fire is laid where you're looking
+(`props/camp_fire.gd`). It's a campfire like any other (cook, rest, warmth) and burns three
+in-game hours, resting included. It isn't saved: a fire doesn't outlast a reload. Only
+outdoors.
+
+### Needs (Survival mode)
+
+Hunger, thirst, fatigue and cold rise up to a quarter slower at Survival 100. Getting through
+the hours awake gives 0.5 XP an hour.
+
+### Perks (21)
+
+| Branch | Perks (level) |
+|---|---|
+| Cooking | Good Cook (15) → II (35): cooked food +25% each · Hearty Meals (30): buffs twice as long → **Camp Chef** (45): two of every meal → **Gourmand** (60): cooked food ends poison, +20 Stamina · Living off the Land (25): raw food never sickens |
+| Foraging | Forager (15): +1 a plant → **Wild Harvest** (30): one in four turns up nightshade or a moth wing · **Regrowth** (45): plants regrow in a day |
+| Camp | Firestarter (20): fires burn twice as long → Bedroll (35): 4 hours by a fire make you Well Rested → **Ember Ward** (55): your fire heals 1 Health a second |
+| Needs (mode) | Iron Stomach (20) → Waterwise (25): hunger / thirst 25% slower · Night Owl (30): fatigue 25% slower, sleep a third faster · Cold-Blooded (25): cold 30% slower → **Winter-Born** (60): never Freezing |
+| — | Butcher (20): two raw meat a wolf · Pathfinder (35): +5% move speed · Weathered (40): +20 max Health · Wilderness Lore (15): +25% XP |
+
+New modifiers: `meal_potency`, `hunger_rate`, `thirst_rate`, `fatigue_rate`, `cold_rate`,
+`sleep_recovery`. Green Thumb (Alchemy) doubles what plants give, too.
+
+### Not yet
+
+- **Tracking and hunting** beyond wolves: no deer or rabbits, no tracks.
+- **Water:** you can't refill a flask at a river.
+- **More plants** in more places (the Barrow and other levels have none).

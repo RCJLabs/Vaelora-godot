@@ -489,7 +489,7 @@ func interact(_player: Node) -> void:
 	prompt = ""
 	collision_layer = 0   # nothing left to interact with
 	Inventory.add("wolf_pelt")
-	Inventory.add("raw_wolf_meat")
+	Inventory.add("raw_wolf_meat", 2 if "butcher" in Character.perks else 1)   # Butcher (Survival)
 	Inventory.add("wolf_fang", 2 if "green_thumb" in Character.perks else 1)   # (Alchemy; Green Thumb)
 
 

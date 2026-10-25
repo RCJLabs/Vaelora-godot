@@ -129,6 +129,10 @@ func _build() -> void:
 	var raw := Inventory.count("raw_wolf_meat")
 	if _is_fire and raw > 0:
 		_button("Cook raw wolf meat (%d)" % raw, _cook)
+	if _is_fire:
+		for meal in Bushcraft.cookable():
+			if meal != "cooked_wolf_meat":   # that one's the button above, all at once
+				_button("Cook %s" % Inventory.get_item(meal).display_name, _cook_meal.bind(meal))
 	_button("Rest 1 hour", _rest.bind(1.0))
 	_button("Rest 4 hours", _rest.bind(4.0))
 	_button("Sleep 8 hours", _rest.bind(8.0))
@@ -156,9 +160,15 @@ func _button(text: String, action: Callable) -> void:
 
 
 func _cook() -> void:
-	var raw := Inventory.count("raw_wolf_meat")
-	Inventory.remove("raw_wolf_meat", raw)
-	Inventory.add("cooked_wolf_meat", raw)
+	for i in Inventory.count("raw_wolf_meat"):
+		Bushcraft.cook("cooked_wolf_meat")   # one at a time: each is Survival XP
+	Sfx.play("spell_impact", -12.0)
+	_build()
+
+
+## A meal from Bushcraft.RECIPES (tests call it too).
+func _cook_meal(meal: String) -> void:
+	Bushcraft.cook(meal)
 	Sfx.play("spell_impact", -12.0)
 	_build()
 
@@ -185,7 +195,7 @@ func _pass_time(hours: float) -> void:
 		if data.is_harmful and data.duration > 0.0:
 			effects.remove(id)
 	player.stats.refill()
-	if hours >= WELL_RESTED_HOURS:
+	if hours >= (4.0 if _is_fire and "bedroll" in Character.perks else WELL_RESTED_HOURS):   # Bedroll (Survival)
 		effects.apply("well_rested")
 		effects.remove("wounded")   # a full night's sleep heals a defeat's wounds
 	get_tree().paused = false   # saving reads the live game
