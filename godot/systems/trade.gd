@@ -40,7 +40,7 @@ const MERCHANTS := {
 				"tome_call_wolf": 1, "tome_bind": 1, "tome_summon_guardian": 1, "tome_raise_dead": 1,
 				"tome_fire_rune": 1, "tome_frost_rune": 1, "tome_binding_rune": 1, "tome_ward_circle": 1, "tome_enchant_weapon": 1,
 				"tome_weak_point": 1, "tome_ill_fortune": 1, "tome_foresight": 1, "tome_true_sight": 1, "tome_moment_of_clarity": 1,
-				"lockpick": 10, "smiths_hammer": 1, "iron_ingot": 10, "seasoned_wood": 6, "leather_strip": 6,
+				"lockpick": 10, "firewood": 8, "smiths_hammer": 1, "iron_ingot": 10, "seasoned_wood": 6, "leather_strip": 6,
 				"mortar_and_pestle": 1, "mountain_flower": 6, "river_reed": 6, "red_cap": 4, "blue_moss": 4, "moth_wing": 2},
 		"unique": ["hunting_bow", "tome_candlelight", "tome_stoneflesh", "tome_healing_ward",
 				"tome_call_wolf", "tome_bind", "tome_summon_guardian", "tome_raise_dead",

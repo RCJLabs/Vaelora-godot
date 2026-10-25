@@ -45,7 +45,7 @@ None of the existing chests got locks: the bandit chest holds the Lost Wagon's s
 | Branch | Perks (level) |
 |---|---|
 | The spot | Light Touch (15) → II (35) → III (60): +20% each · Steady Hands (20) → II (45): the marker 15% slower each |
-| Picks | Sturdy Picks (20): snap half as often → **Lucky Break** (45): one in three snaps sets the pin anyway → **Unbreakable** (85) |
+| Picks | Sturdy Picks (20): snap half as often → **Lucky Break** (45): one in three snaps sets the pin anyway → **Unbreakable Picks** (85) |
 | Locks | Apprentice Locks (25) → Adept (50) → Expert (70) → Master (90): one pin fewer each → **Spring the Lock** (95): once a day, open any lock outright |
 | Quiet | Silent Picking (20): snaps make no noise → **Under Pressure** (55): sneaking and unnoticed, +25% spot |
 | — | **Nimble Fingers** (40): a miss doesn't drop a pin · **Locksense** (30): the first pin sets itself · **The Lampless Way** (40): +25% spot while the Wanderer is dark · **Treasure Hunter** (50): locked chests hold +50% gold · Scavenger (25): a lockpick or two in every locked chest · Burglar's Eye (15): +25% XP |

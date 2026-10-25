@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "well_fed_tea"
+display_name = "Well Fed (Tea)"
+description = "A warm drink: Magicka comes back 30% faster."
+is_harmful = false
+duration = 300.0
+modifiers = {
+"magicka_regen": 1.3
+}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=102 format=3]
+[gd_scene load_steps=103 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -44,6 +44,8 @@
 [ext_resource type="Script" path="res://props/reading_stone.gd" id="83_reading"]
 
 [ext_resource type="Script" path="res://props/forge.gd" id="205_forge"]
+
+[ext_resource type="Script" path="res://props/forage_plant.gd" id="206_forage"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -2028,3 +2030,51 @@ color = Color(0.95, 0.94, 0.88, 1)
 [node name="Forge" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, -6)
 script = ExtResource("205_forge")
+
+[node name="MountainFlowers1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -20)
+script = ExtResource("206_forage")
+item_id = "mountain_flower"
+color = Color(0.95, 0.95, 0.9, 1)
+
+[node name="MountainFlowers2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, -26)
+script = ExtResource("206_forage")
+item_id = "mountain_flower"
+color = Color(0.95, 0.95, 0.9, 1)
+
+[node name="RedCaps1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -20)
+script = ExtResource("206_forage")
+item_id = "red_cap"
+color = Color(0.85, 0.15, 0.1, 1)
+
+[node name="RedCaps2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 10)
+script = ExtResource("206_forage")
+item_id = "red_cap"
+color = Color(0.85, 0.15, 0.1, 1)
+
+[node name="BlueMoss1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -14)
+script = ExtResource("206_forage")
+item_id = "blue_moss"
+color = Color(0.3, 0.55, 0.95, 1)
+
+[node name="BlueMoss2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -30)
+script = ExtResource("206_forage")
+item_id = "blue_moss"
+color = Color(0.3, 0.55, 0.95, 1)
+
+[node name="RiverReeds" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -10)
+script = ExtResource("206_forage")
+item_id = "river_reed"
+color = Color(0.55, 0.7, 0.3, 1)
+
+[node name="AppleBush" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 2)
+script = ExtResource("206_forage")
+item_id = "apple"
+color = Color(0.8, 0.2, 0.15, 1)

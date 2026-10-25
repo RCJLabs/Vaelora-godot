@@ -48,12 +48,17 @@ func tick(hours: float, sleeping: bool) -> void:
 	if not active():
 		return
 	var slow := 0.5 if sleeping else 1.0
-	values["hunger"] += RATES["hunger"] * hours * slow
-	values["thirst"] += RATES["thirst"] * hours * slow
-	values["fatigue"] += (-SLEEP_RECOVERY if sleeping else RATES["fatigue"]) * hours
-	values["cold"] += _cold_rate(sleeping) * hours
+	values["hunger"] += RATES["hunger"] * hours * slow * Bushcraft.need_mult("hunger")   # the Survival skill
+	values["thirst"] += RATES["thirst"] * hours * slow * Bushcraft.need_mult("thirst")
+	values["fatigue"] += (-SLEEP_RECOVERY * Character.modifier("sleep_recovery") if sleeping
+			else RATES["fatigue"] * Bushcraft.need_mult("fatigue")) * hours
+	var cold := _cold_rate(sleeping)
+	values["cold"] += cold * hours * (Bushcraft.need_mult("cold") if cold > 0.0 else 1.0)
 	for need in NEEDS:
 		values[need] = clampf(values[need], 0.0, 100.0)
+	values["cold"] = minf(values["cold"], Bushcraft.cold_cap())   # Winter-Born
+	if not sleeping:
+		Bushcraft.hours_survived(hours)
 	_apply_effects()
 	changed.emit()
 

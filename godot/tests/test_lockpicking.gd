@@ -45,7 +45,7 @@ func _physics_process(_d: float) -> bool:
 			L.marker = L.spot_center
 			ok(L.attempt() == "set" and L.set_pins == 1, "in the spot: a pin sets")
 			ok(S.xp["lockpicking"] > 0.0, "and Lockpicking improves")
-			C.perks.append("unbreakable")
+			C.perks.append("unbreakable_picks")
 			L.marker = fposmod(L.spot_center + 0.5, 1.0)
 			ok(L.attempt() == "miss" and L.set_pins == 0, "a miss drops the pin")
 			C.perks.append("quick_hands")

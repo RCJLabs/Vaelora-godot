@@ -62,6 +62,11 @@ const SKILLS := {
 		"name": "Block",
 		"description": "+0.5% of a hit blocked per level (up to 95%). Improves when you block or parry.",
 	},
+	"survival": {
+		"attribute": "endurance",
+		"name": "Survival",
+		"description": "Cook meals at a campfire (+0.5% to what cooked food restores per level), forage plants, make camp with firewood. In Survival mode, needs rise up to a quarter slower. Improves as you cook, forage, make camp and get through the hours.",
+	},
 	"athletics": {
 		"attribute": "endurance",
 		"name": "Athletics",

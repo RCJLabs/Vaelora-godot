@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "apple_tea"
+display_name = "Apple Tea"
+description = "Apple and river reed steeped in hot water. Clears the head: your Magicka comes back faster for a while."
+type = 1
+value = 8
+weight = 1.0
+restore_magicka = 35.0
+ease_thirst = 45.0
+ease_cold = 20.0
+cooked = true
+meal_effect = "well_fed_tea"

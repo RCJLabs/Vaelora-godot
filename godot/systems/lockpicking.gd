@@ -98,7 +98,7 @@ func attempt() -> String:
 		return "set"
 	if not "quick_hands" in Character.perks:
 		set_pins = maxi(set_pins - 1, 0)
-	if "unbreakable" in Character.perks:
+	if "unbreakable_picks" in Character.perks:
 		return "miss"
 	var chance := BREAK_CHANCE * (0.5 if "sturdy_picks" in Character.perks else 1.0)
 	if randf() < chance:

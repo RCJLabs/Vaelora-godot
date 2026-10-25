@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "firewood"
+display_name = "Firewood"
+description = "A bundle of split, dry wood. Two make a fire wherever you stand."
+type = 1
+value = 3
+weight = 2.0
+tool = "camp"

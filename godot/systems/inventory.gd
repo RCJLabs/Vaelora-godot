@@ -82,6 +82,11 @@ const ITEM_FILES := [
 	"res://items/seasoned_wood.tres",
 	"res://items/smiths_hammer.tres",
 	"res://items/lockpick.tres",
+	"res://items/hunters_skewer.tres",
+	"res://items/wolf_stew.tres",
+	"res://items/herb_bread.tres",
+	"res://items/apple_tea.tres",
+	"res://items/firewood.tres",
 	"res://items/leather_cap.tres",
 	"res://items/leather_gloves.tres",
 	"res://items/iron_cuirass.tres",
@@ -227,6 +232,8 @@ func use(id: String) -> bool:
 			return false
 		SmithingScreen.open.call_deferred(false)   # a smith's hammer: improve, wherever you are
 		return true
+	if item != null and item.tool == "camp" and player != null:
+		return Bushcraft.make_camp(player) != null   # firewood: a fire where you stand
 	if item == null or item.type != ItemData.Type.CONSUMABLE or player == null or count(id) == 0:
 		return false
 	if item.potion_effect != "":
@@ -242,13 +249,15 @@ func use(id: String) -> bool:
 		return true
 	var stats: Stats = player.stats
 	Survival.ease(item)
-	if item.side_effect != "" and randf() < item.side_effect_chance:
+	if Bushcraft.sickens(item) and randf() < item.side_effect_chance:
 		player.effects.apply(item.side_effect)
 	if item.corruption > 0.0:
 		Corruption.add(item.corruption, item.display_name)
-	stats.heal(item.restore_health)
-	stats.stamina = minf(stats.stamina + item.restore_stamina, stats.max_stamina)
-	stats.magicka = minf(stats.magicka + item.restore_magicka, stats.max_magicka)
+	var food := Bushcraft.food_mult(item)   # cooked food: more with Survival
+	stats.heal(item.restore_health * food)
+	stats.stamina = minf(stats.stamina + item.restore_stamina * food, stats.max_stamina)
+	stats.magicka = minf(stats.magicka + item.restore_magicka * food, stats.max_magicka)
+	Bushcraft.ate(item, player)
 	stats.changed.emit()
 	remove(id)
 	return true
