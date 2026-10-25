@@ -47,6 +47,7 @@ var _knockback := Vector3.ZERO
 var _lift_left := 0.0   # the Lifting Tide holds it up this much longer
 var _lift_to := 0.0
 var _fur: StandardMaterial3D
+var fur_color := Color(0.3, 0.3, 0.32)   # what the fur goes back to after a hit flash (a wolf-spirit is pale)
 var _flank_angle := 0.0     # where around the player this wolf is heading
 var _close_in := false      # within 4 m and circling in on its flank spot
 var _blocked_time := 0.0    # how long a packmate has been in the way
@@ -477,7 +478,7 @@ func _on_damaged(_amount: float) -> void:
 	var tween := create_tween()
 	_flash_tween = tween
 	tween.tween_property(_fur, "albedo_color", Color(0.8, 0.15, 0.1), 0.05)
-	tween.tween_property(_fur, "albedo_color", Color(0.3, 0.3, 0.32), 0.25)
+	tween.tween_property(_fur, "albedo_color", fur_color, 0.25)
 
 
 ## Dead wolves can be skinned with E for a pelt.

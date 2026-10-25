@@ -371,8 +371,8 @@ func _sweep() -> void:
 	if not current_attack.cleave and not _hit_this_swing.is_empty():
 		return
 	for target in _targets_in_reach():
-		if target in _hit_this_swing or not target.has_method("take_hit"):
-			continue
+		if target in _hit_this_swing or not target.has_method("take_hit") or Binding.is_bound(target):
+			continue   # (your own called things: the swing passes through them)
 		_hit_this_swing.append(target)
 		_land_hit(target)
 		if state != State.ACTIVE or not current_attack.cleave:

@@ -53,7 +53,10 @@ ten that exist get theirs filled in along the way).
      (`docs/godot-starter/SPEECH.md`).
    - ✅ Unarmed: fists train their own skill, 21 perks that work bare-handed
      (`docs/godot-starter/UNARMED.md`).
-3. **Magic:** Binding, then Runecraft, Sight and Drawing (each with its 20 perks).
+3. **Magic:**
+   - ✅ Binding: four spells and 21 perks, built to the lore bible's school
+     (`docs/godot-starter/BINDING.md`).
+   - Runecraft, Sight and Drawing (each with its 20 perks).
 4. **Making things:** Alchemy, Smithing, Lockpicking, Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
 6. **Classes** (defined below).

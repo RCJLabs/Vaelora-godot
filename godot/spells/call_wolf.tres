@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "call_wolf"
+display_name = "Call Wolf-Spirit"
+description = "Charge, then release where you're aiming (up to 15 m): a wolf-spirit answers, pale and glowing, and fights for you for 60 seconds. With no fight it follows you. One called thing at a time (perks: more)."
+style = 2
+skill = "binding"
+color = Color(0.55, 0.8, 1, 1)
+charge_time = 1.0
+magicka_cost = 55.0
+max_distance = 15.0
+radius = 2.0
+duration = 60.0
+binding = "call_wolf"

@@ -65,7 +65,8 @@ func is_charmed(enemy: Node) -> bool:
 
 ## Something hit `target`. If it was you and it's charmed, the charm breaks.
 func struck(target, by) -> void:   # untyped: an arrow's shooter may be gone
-	if is_instance_valid(target) and is_charmed(target) and is_instance_valid(by) and by.is_in_group("player"):
+	if is_instance_valid(target) and is_charmed(target) and is_instance_valid(by) and by.is_in_group("player") \
+			and not target.has_meta("bound"):   # a stray arrow doesn't break a binding
 		_end(target)
 
 

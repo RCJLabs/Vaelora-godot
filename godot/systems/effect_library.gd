@@ -5,6 +5,7 @@ extends Node
 ## Add new effect files here.
 const EFFECT_FILES := [
 	"res://effects/bleeding.tres",
+	"res://effects/bound.tres",
 	"res://effects/burning.tres",
 	"res://effects/poisoned.tres",
 	# powers (res://character/abilities.json)

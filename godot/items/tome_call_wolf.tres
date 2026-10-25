@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_call_wolf"
+display_name = "Tome: Call Wolf-Spirit"
+description = "A Bell College primer, stamped with a bell on the spine. Use it to learn Call Wolf-Spirit."
+type = 1
+value = 80
+weight = 1.0
+teaches_spell = "call_wolf"

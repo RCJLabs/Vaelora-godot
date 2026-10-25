@@ -100,6 +100,7 @@ The tree scrolls both ways and scrolls to the perk you pick, so a skill can hold
 | Light Armour, Heavy Armour | 21 perks each, some only in armour or a full set: see ARMOUR.md |
 | Speech | 22 perks: haggling, check bonuses (`check_bonus`), bribes, trainers, companions: see SPEECH.md |
 | Unarmed | 21 perks, most bare-handed only (`when_unarmed`): see UNARMED.md |
+| Binding | 21 perks: how many you hold, how long, how tough, Bind, the raised dead: see BINDING.md |
 
 ### Respec
 
