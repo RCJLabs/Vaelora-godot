@@ -85,7 +85,8 @@ var skill_ups_toward_level := 0
 ## Levels bought from trainers since the last character level (systems/training.gd).
 var trained_this_level := 0
 var unspent_level_ups := 0
-var bonus := {"health": 0, "stamina": 0, "magicka": 0}   # from level-ups
+var bonus := {"health": 0, "stamina": 0, "magicka": 0}   # from level-ups (and quest rewards)
+var level_spent := {"health": 0, "stamina": 0, "magicka": 0}   # level-ups alone (a respec gives these back)
 
 
 func _ready() -> void:
@@ -102,6 +103,7 @@ func reset(race: RaceData) -> void:
 	skill_ups_toward_level = 0
 	unspent_level_ups = 0
 	bonus = {"health": 0, "stamina": 0, "magicka": 0}
+	level_spent = {"health": 0, "stamina": 0, "magicka": 0}
 	changed.emit()
 
 
@@ -153,7 +155,17 @@ func spend_level_up(stat: String) -> void:
 		return
 	unspent_level_ups -= 1
 	bonus[stat] += LEVEL_BONUS
+	level_spent[stat] += 1
 	level_bonus_spent.emit(stat, LEVEL_BONUS)
+	changed.emit()
+
+
+## A respec: the level-up bonuses come back to spend again (quest rewards stay).
+func refund_level_ups() -> void:
+	for stat in level_spent:
+		bonus[stat] -= level_spent[stat] * LEVEL_BONUS
+		unspent_level_ups += level_spent[stat]
+		level_spent[stat] = 0
 	changed.emit()
 
 
@@ -199,6 +211,7 @@ func to_dict() -> Dictionary:
 		"trained_this_level": trained_this_level,
 		"unspent_level_ups": unspent_level_ups,
 		"bonus": bonus,
+		"level_spent": level_spent,
 	}
 
 
@@ -214,4 +227,5 @@ func from_dict(data: Dictionary) -> void:
 	unspent_level_ups = int(data["unspent_level_ups"])
 	for stat in bonus:
 		bonus[stat] = int(data["bonus"].get(stat, 0))
+		level_spent[stat] = int(data.get("level_spent", {}).get(stat, 0))   # older saves: nothing to refund
 	changed.emit()

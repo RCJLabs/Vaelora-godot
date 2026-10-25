@@ -42,7 +42,8 @@ ten that exist get theirs filled in along the way).
    - ✅ Heavy weapons clumsy below a Strength level.
    - ✅ The buy and sell screen, with prices by Presence.
    - ✅ Skill books and trainers.
-   - Respec at a shrine.
+   - ✅ Respec (Aurel's rite, 150 gold; the shrine's interaction is part of the Silent Shrine
+     quest, so the teacher came first).
    - The perk tree view, ready for 20+ perks a skill.
 2. **New skills on the body:** Sneak (and sneak attacks), Light and Heavy Armour, Speech
    (persuasion checks and haggling), Unarmed.

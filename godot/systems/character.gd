@@ -225,6 +225,22 @@ func _on_leveled_up(_level: int) -> void:
 	changed.emit()
 
 
+## A respec (systems/character.gd; Aurel's rite, for gold): every perk and every
+## attribute point you chose comes back to spend again, and so do the level-up
+## bonuses. Race, background and traits stay; so do your skills.
+func respec() -> void:
+	perk_points += perks.size()
+	perks = []
+	Attributes.reset(GameState.race_data)
+	_add_attributes(backgrounds.get(background, {}).get("attributes", {}))
+	for id in traits:
+		_add_attributes(trait_list[id].get("attributes", {}))
+	attribute_points = CREATION_ATTRIBUTE_POINTS + (Skills.character_level - 1)
+	Skills.refund_level_ups()
+	changed.emit()
+	notice.emit("Remade: perks, attribute points and level bonuses to spend again.")
+
+
 func spend_attribute_point(id: String) -> bool:
 	if attribute_points <= 0:
 		return false

@@ -88,6 +88,19 @@ say why ("needs One-Handed 35", "needs Armsman").
 | Alteration | Efficient Alteration −25% cost (20) · Arcane Reserve +25 max Magicka (25) · Focused Mind, Magicka +25% faster (35, needs Arcane Reserve) |
 | Archery | Overdraw +20% (15) · Quick Draw, bows draw 30% faster (25) · Overdraw II +20% (35, needs Overdraw) |
 
+### Respec
+
+Magister Aurel's "rite of unlearning" (Tide College → "Can the College undo what I've
+learned?", **150 gold**; the dialogue action `"respec": true`, `Character.respec()`):
+- every perk comes back as a perk point;
+- attributes go back to race + background + traits, and every point you chose comes back to
+  spend (the 4 from creation plus 1 per level);
+- the +10 Health / Stamina / Magicka level bonuses come back too (`Skills.level_spent`);
+  bonuses from quest rewards stay. Saves from before this didn't record level spends, so they
+  have none to give back.
+- Skills, race, background and traits are untouched. Classes will change here too, once they
+  exist.
+
 ## Modes
 
 - **Hardcore:** you take 50% more damage, deal 20% more, and Health regenerates at a quarter

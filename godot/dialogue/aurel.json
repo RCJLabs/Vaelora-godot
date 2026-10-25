@@ -237,6 +237,10 @@
 					"next": "end"
 				},
 				{
+					"text": "Can the College undo what I've learned?",
+					"next": "unlearn"
+				},
+				{
 					"text": "Why the moons?",
 					"next": "why_moons"
 				},
@@ -367,6 +371,35 @@
 		},
 		"lift_later": {
 			"text": "\"The mastery primer?\" He looks at your hands as if they were already in the air. \"Not yet. When the tide comes when you call it, every time (Tidecraft 50, the College would say), come back and ask me again.\"",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"unlearn": {
+			"text": "\"There's a rite. Scholars who chose the wrong road take it, quietly. You keep what you know, your skills, your hands. What you made of yourself (the knacks, the strengths you leaned on) goes back into the pot, to be chosen again.\" He names a price. \"A hundred and fifty. The candles are expensive, and so is my silence.\"",
+			"choices": [
+				{
+					"text": "Do it. (150 gold)",
+					"next": "unlearned",
+					"requires_gold": 150,
+					"take_gold": 150,
+					"respec": true
+				},
+				{
+					"text": "Not now.",
+					"next": "teach"
+				}
+			]
+		},
+		"unlearned": {
+			"text": "Candle-smoke, a word you don't catch, a cold feeling behind the eyes. \"There. Choose better this time. Or at least differently.\" (Your perks, attribute points and level bonuses are yours to spend again: Tab.)",
 			"choices": [
 				{
 					"text": "Something else.",
