@@ -85,7 +85,8 @@ ten that exist get theirs filled in along the way).
      perks (`docs/godot-starter/COMBAT.md`, "Dual-wielding").
    - ✅ Spell-blades: a charged spell into the blade in the other hand, four perks
      (`docs/godot-starter/COMBAT.md`, "Spell-blades").
-6. **Classes** (defined below).
+6. ✅ **Classes**: chosen at creation, +20% XP in five skills, a class power on R, changed after
+   Aurel's rite (`docs/godot-starter/CLASSES.md`).
 7. **Earned powers:** shrines, quests and the stones.
 
 ## Classes (decided, after the questionnaire)
@@ -98,7 +99,7 @@ ten that exist get theirs filled in along the way).
 - Built after phase 2, since most classes lean on skills that don't exist yet (the creation
   step itself can come earlier).
 
-### The classes *(suggested: names, skills and powers to approve or change)*
+### The classes *(approved 2026-10-25; Spellsword's power changed, below)*
 
 Five skills each, drawn from the 24 so every skill belongs to at least one class.
 
@@ -108,7 +109,7 @@ Five skills each, drawn from the 24 so every skill belongs to at least one class
 | Ranger | Archery, Sneak, Light Armour, Survival, Athletics | Hunter's Mark: one target takes more from everything |
 | Thief | Sneak, Lockpicking, Light Armour, Speech, One-Handed | Vanish: unseen for a few seconds |
 | Mage | Ruin, Shaping, Mending, Runecraft, Alchemy | Arcane Surge: spells cost nothing for a few seconds |
-| Spellsword | One-Handed, Ruin, Shaping, Block, Light Armour | Charged Blade: your weapon carries your ready spell |
+| Spellsword | One-Handed, Ruin, Shaping, Block, Light Armour | Quickened Blade: your ready spell into your blade at once, free (was "Charged Blade", which spell-blades now give everyone) |
 | Nightblade | Sneak, One-Handed, Glamour, Drawing, Light Armour | Shadow Feast: a sneak attack drains life |
 | Tide-Warden | Tidecraft, Two-Handed, Heavy Armour, Mending, Sight | Moon's Favour: the tide is high for a minute |
 | Battlemage | Ruin, Heavy Armour, Two-Handed, Binding, Athletics | Storm Mantle: harm around you as you fight |

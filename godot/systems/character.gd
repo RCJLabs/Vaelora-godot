@@ -35,6 +35,7 @@ var ability_list: Dictionary = {}
 
 var player_name := "Traveller"
 var background := ""          # "" when a level is run directly (F6)
+var class_id := ""            # systems/classes.gd ("" for none: old saves, F6)
 var traits: Array = []
 var perks: Array = []
 var perk_points := 0
@@ -70,7 +71,7 @@ func _process(delta: float) -> void:
 ## Starts a brand-new character. Resets every other system and applies the
 ## race, background, traits, spent attribute points and modes.
 func create(race: RaceData, new_name: String, background_id: String, trait_ids: Array,
-		attribute_spend: Dictionary, new_modes: Dictionary) -> void:
+		attribute_spend: Dictionary, new_modes: Dictionary, new_class: String = "") -> void:
 	GameState.set_race(race)
 	GameState.flags = {}
 	GameState.play_time = 0.0
@@ -93,9 +94,11 @@ func create(race: RaceData, new_name: String, background_id: String, trait_ids: 
 	Spellcraft.reset()
 	WeaponArts.reset()
 	Spellblade.reset()
+	Classes.reset()
 
 	player_name = new_name.strip_edges() if new_name.strip_edges() != "" else "Traveller"
 	background = background_id
+	class_id = new_class if Classes.classes.has(new_class) else ""
 	traits = trait_ids.duplicate()
 	perks = []
 	perk_points = STARTING_PERK_POINTS
@@ -180,6 +183,8 @@ func modifier(key: String) -> float:
 			result *= float(perk_list[id].get("modifiers", {}).get(key, 1.0))
 	if modes["hardcore"]:
 		result *= float(HARDCORE_MODIFIERS.get(key, 1.0))
+	if key.begins_with("skill_xp_") and Classes.has_skill(key.substr(9)):
+		result *= Classes.XP_MULT   # your class's skills
 	return result * Corruption.modifier(key)
 
 
@@ -194,15 +199,15 @@ func stat_bonus(stat: String) -> float:
 	return total + Corruption.stat_bonus(stat)
 
 
-# --- active powers (Z = race, X = background) ------------------------------------------
+# --- active powers (Z = race, X = background, R = class) -------------------------------
 
-## [race power id, background power id] ("" if none).
+## [race power id, background power id, class power id] ("" if none).
 func powers() -> Array:
 	var bg_power: String = backgrounds.get(background, {}).get("ability", "")
-	return [GameState.race_data.ability_id, bg_power]
+	return [GameState.race_data.ability_id, bg_power, Classes.classes.get(class_id, {}).get("ability", "")]
 
 
-## Uses power 0 (race) or 1 (background). Returns true if it worked.
+## Uses power 0 (race), 1 (background) or 2 (class). Returns true if it worked.
 func use_power(index: int) -> bool:
 	var id: String = powers()[index]
 	var player := get_tree().get_first_node_in_group("player")
@@ -212,6 +217,8 @@ func use_power(index: int) -> bool:
 	if cooldowns.has(id):
 		notice.emit("%s isn't ready (%ds)" % [power["name"], ceili(cooldowns[id])])
 		return false
+	if power.get("class", false) and not Classes.activate(id, player):
+		return false   # nothing to aim at, too little Health...: no cooldown
 	if power.has("effect"):
 		player.effects.apply(power["effect"])
 	var restore: Dictionary = power.get("restore", {})
@@ -233,6 +240,15 @@ func _on_leveled_up(_level: int) -> void:
 	perk_points += 1
 	attribute_points += 1
 	changed.emit()
+
+
+## A new class (after Aurel's rite: ClassScreen). Skills and perks stay.
+func change_class(id: String) -> void:
+	if not Classes.classes.has(id) or id == class_id:
+		return
+	class_id = id
+	changed.emit()
+	notice.emit("You walk the %s's road now." % Classes.name_of(id))
 
 
 ## A respec (systems/character.gd; Aurel's rite, for gold): every perk and every
@@ -286,7 +302,7 @@ func take_perk(id: String) -> bool:
 # --- saving --------------------------------------------------------------------------------
 
 func to_dict() -> Dictionary:
-	return {"name": player_name, "background": background, "traits": traits, "perks": perks,
+	return {"name": player_name, "background": background, "class": class_id, "traits": traits, "perks": perks,
 			"perk_points": perk_points, "attribute_points": attribute_points,
 			"modes": modes, "cooldowns": cooldowns}
 
@@ -294,6 +310,7 @@ func to_dict() -> Dictionary:
 func from_dict(data: Dictionary) -> void:
 	player_name = data.get("name", "Traveller")
 	background = data.get("background", "")
+	class_id = data.get("class", "") if Classes.classes.has(data.get("class", "")) else ""
 	traits = data.get("traits", []).filter(func(id): return trait_list.has(id))
 	perks = data.get("perks", []).filter(func(id): return perk_list.has(id))
 	perk_points = int(data.get("perk_points", 0))

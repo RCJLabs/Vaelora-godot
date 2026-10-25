@@ -146,6 +146,8 @@ func _run_actions(entry: Dictionary) -> void:
 		TradeScreen.open.call_deferred(str(entry["open_trade"]))
 	if entry.get("respec", false):
 		Character.respec()
+	if entry.get("open_class_screen", false):
+		ClassScreen.open.call_deferred()   # a new class, once this conversation has closed (point the choice at "end")
 	if entry.has("open_training"):
 		TrainingScreen.open.call_deferred(str(entry["open_training"]))   # a trainer's lesson, likewise
 

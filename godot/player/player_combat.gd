@@ -636,6 +636,7 @@ func _land_hit(target: Node) -> void:
 		return
 	if sneak > 1.0:
 		Stealth.sneak_attack_landed(target, sneak)
+		Classes.sneak_attack_landed(damage, player)   # Shadow Feast (Nightblade)
 	Arms.landed(target, damage, player, heavy or (is_bash and Arms.any("bash_stagger")))
 	if Arms.crit_landed:
 		player.hud.notify("Critical!")

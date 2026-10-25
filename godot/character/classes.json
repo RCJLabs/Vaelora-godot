@@ -1,0 +1,14 @@
+{
+	"warrior": { "name": "Warrior", "description": "Steel, a shield and the forge. Stands in the middle of the fight and stays there.", "skills": ["one_handed", "two_handed", "block", "heavy_armor", "smithing"], "ability": "war_cry" },
+	"ranger": { "name": "Ranger", "description": "Bow, wild and long roads. Sees it first, hits it from far away.", "skills": ["archery", "sneak", "light_armor", "survival", "athletics"], "ability": "hunters_mark" },
+	"thief": { "name": "Thief", "description": "Quiet feet, quick hands, a quick tongue for when both fail.", "skills": ["sneak", "lockpicking", "light_armor", "speech", "one_handed"], "ability": "vanish" },
+	"mage": { "name": "Mage", "description": "The College's road: Ruin, Shaping, Mending, runes and the alchemist's bench.", "skills": ["destruction", "alteration", "restoration", "runecraft", "alchemy"], "ability": "arcane_surge" },
+	"spellsword": { "name": "Spellsword", "description": "A blade in one hand and a spell in the other, and the knack of putting one into the other.", "skills": ["one_handed", "destruction", "alteration", "block", "light_armor"], "ability": "quickened_blade" },
+	"nightblade": { "name": "Nightblade", "description": "Shadows, glamours and the old hunger. Strikes from nowhere and takes something back.", "skills": ["sneak", "one_handed", "glamour", "drawing", "light_armor"], "ability": "shadow_feast" },
+	"tide_warden": { "name": "Tide-Warden", "description": "Keeps the old watch on the moons. Heavy steel, a heavy blade and the tide behind them.", "skills": ["tidecraft", "two_handed", "heavy_armor", "restoration", "sight"], "ability": "moons_favour" },
+	"battlemage": { "name": "Battlemage", "description": "Fights in the thick of it with Ruin on their hands and bound things at their back.", "skills": ["destruction", "heavy_armor", "two_handed", "binding", "athletics"], "ability": "storm_mantle" },
+	"binder": { "name": "Binder", "description": "Calls things, binds things, commands them. Rarely fights alone.", "skills": ["binding", "command", "runecraft", "sight", "glamour"], "ability": "call_the_host" },
+	"wayfarer": { "name": "Wayfarer", "description": "Bare hands, long legs and a healer's knack. Goes anywhere, carries little.", "skills": ["unarmed", "athletics", "survival", "restoration", "sight"], "ability": "second_breath" },
+	"herald": { "name": "Herald", "description": "A voice people follow: speaks first, shoots second, and brings friends.", "skills": ["speech", "command", "glamour", "archery", "light_armor"], "ability": "rally" },
+	"hedge_witch": { "name": "Hedge Witch", "description": "The old ways: drawing, brewing, binding and bargains best not looked at closely.", "skills": ["drawing", "alchemy", "binding", "glamour", "restoration"], "ability": "old_bargain" }
+}

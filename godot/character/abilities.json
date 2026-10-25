@@ -7,5 +7,17 @@
 	"shadowstep": { "name": "Shadowstep", "description": "For 6 seconds, move 40% faster.", "cooldown": 60, "effect": "shadowstep" },
 	"hunters_focus": { "name": "Hunter's Focus", "description": "For 20 seconds, deal 15% more damage.", "cooldown": 90, "effect": "hunters_focus" },
 	"blessing": { "name": "Blessing", "description": "Restore 4 Health per second for 10 seconds.", "cooldown": 90, "effect": "blessing" },
-	"steady_nerves": { "name": "Steady Nerves", "description": "For 12 seconds, take 20% less damage and recover Stamina 50% faster.", "cooldown": 90, "effect": "steady_nerves" }
+	"steady_nerves": { "name": "Steady Nerves", "description": "For 12 seconds, take 20% less damage and recover Stamina 50% faster.", "cooldown": 90, "effect": "steady_nerves" },
+	"war_cry": { "name": "War Cry", "description": "Every enemy within 8 m reels, staggered.", "cooldown": 60, "class": true },
+	"hunters_mark": { "name": "Hunter's Mark", "description": "The enemy you're aiming at (within 40 m) takes 30% more from everything for 20 seconds.", "cooldown": 45, "class": true },
+	"vanish": { "name": "Vanish", "description": "Unseen for 8 seconds: enemies lose you. Attacking or casting ends it.", "cooldown": 90, "class": true },
+	"arcane_surge": { "name": "Arcane Surge", "description": "For 8 seconds, spells cost no Magicka.", "cooldown": 120, "effect": "arcane_surge" },
+	"quickened_blade": { "name": "Quickened Blade", "description": "Your ready spell goes into your blade at once, for no Magicka (a damage spell and a melee weapon; see Spell-blades).", "cooldown": 60, "class": true },
+	"shadow_feast": { "name": "Shadow Feast", "description": "For 20 seconds, a sneak attack heals you by half the damage it does.", "cooldown": 90, "effect": "shadow_feast" },
+	"moons_favour": { "name": "Moon's Favour", "description": "For 60 seconds the tide is high for you, whatever the moons say.", "cooldown": 300, "class": true },
+	"storm_mantle": { "name": "Storm Mantle", "description": "For 15 seconds, enemies within 3 m of you take 8 damage a second.", "cooldown": 90, "effect": "storm_mantle" },
+	"call_the_host": { "name": "Call the Host", "description": "For 2 minutes you can hold one more bound creature than usual.", "cooldown": 300, "effect": "call_the_host" },
+	"second_breath": { "name": "Second Breath", "description": "Instantly recover half your Health and half your Stamina.", "cooldown": 150, "class": true },
+	"rally": { "name": "Rally", "description": "For 20 seconds, you and your companions deal 25% more damage.", "cooldown": 120, "effect": "rally" },
+	"old_bargain": { "name": "Old Bargain", "description": "Trade 30 Health for 60 Magicka. Not when it would kill you.", "cooldown": 30, "class": true }
 }

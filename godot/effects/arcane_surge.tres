@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "arcane_surge"
+display_name = "Arcane Surge"
+description = "Spells cost no Magicka."
+is_harmful = false
+duration = 8.0
+modifiers = {
+"spell_cost": 0.0
+}

@@ -23,7 +23,7 @@ func _level() -> int:
 
 
 func damage_mult() -> float:
-	return (1.0 + 0.01 * (_level() - Skills.START_LEVEL)) * Character.modifier("ally_damage")
+	return (1.0 + 0.01 * (_level() - Skills.START_LEVEL)) * Character.modifier("ally_damage") * Classes.ally_mult()   # Rally
 
 
 func health_mult() -> float:

@@ -30,7 +30,8 @@ var summons := []              # [{"node", "left", "cost", "corpse"}], oldest fi
 
 
 func max_summons() -> int:
-	return 3 if "host_of_echoes" in Character.perks else (2 if "twin_souls" in Character.perks else 1)
+	return (3 if "host_of_echoes" in Character.perks else (2 if "twin_souls" in Character.perks else 1)) \
+			+ Classes.extra_summons()   # Call the Host (Binder)
 
 
 ## A Binding spell going off at `center`. `power` scales how long it lasts. Returns

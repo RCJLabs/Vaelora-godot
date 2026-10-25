@@ -36,6 +36,7 @@ const BUTTONS := {
 	"pause":    ["pause", "Esc", Vector2(0.14, 0.9), 30.0],
 	"race":     ["power_race", "Ⅰ", Vector2(0.95, 0.82), 30.0],         # top left: the two powers
 	"background": ["power_background", "Ⅱ", Vector2(0.89, 0.82), 30.0],
+	"class":    ["power_class", "Ⅲ", Vector2(0.83, 0.82), 30.0],
 }
 
 var shown := false              # the play controls are up

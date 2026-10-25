@@ -320,6 +320,15 @@ func _power_mult() -> float:
 			* (Drawing.power_mult() if spell.skill == "drawing" else 1.0)   # one spell's perks and Tidecraft's moons (Spellcraft); Drawing by your corruption
 
 
+## The caster's power for `s` (Classes: Quickened Blade charges a blade without casting).
+func power_mult_for(s: SpellData) -> float:
+	var was := spell
+	spell = s
+	var mult := _power_mult()
+	spell = was
+	return mult
+
+
 func _cost_mult() -> float:
 	return player.stats.modifier("spell_cost") * player.stats.modifier("spell_cost_" + spell.skill) * Spellcraft.cost_mult(spell, player)
 

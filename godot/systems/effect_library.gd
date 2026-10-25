@@ -38,6 +38,12 @@ const EFFECT_FILES := [
 	"res://effects/burning.tres",
 	"res://effects/poisoned.tres",
 	# powers (res://character/abilities.json)
+	"res://effects/hunters_mark.tres",
+	"res://effects/arcane_surge.tres",
+	"res://effects/shadow_feast.tres",
+	"res://effects/storm_mantle.tres",
+	"res://effects/call_the_host.tres",
+	"res://effects/rally.tres",
 	"res://effects/adaptable.tres",
 	"res://effects/innate_focus.tres",
 	"res://effects/battle_fury.tres",

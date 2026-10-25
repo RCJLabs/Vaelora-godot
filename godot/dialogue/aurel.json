@@ -402,6 +402,11 @@
 			"text": "Candle-smoke, a word you don't catch, a cold feeling behind the eyes. \"There. Choose better this time. Or at least differently.\" (Your perks, attribute points and level bonuses are yours to spend again: Tab.)",
 			"choices": [
 				{
+					"text": "While the candles burn: I'd walk a different road. (Change class)",
+					"next": "end",
+					"open_class_screen": true
+				},
+				{
 					"text": "Something else.",
 					"next": "teach"
 				},

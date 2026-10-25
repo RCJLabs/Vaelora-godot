@@ -98,6 +98,8 @@ func wanderer_lit() -> float:
 ## The pull of the moons, for Tidecraft (0 to 1): the stronger of Ilun's fullness
 ## and the Wanderer's darkness. Day or night doesn't matter: the moons pull either way.
 func tide() -> float:
+	if Classes.moon_favoured():
+		return 1.0   # Moon's Favour (Tide-Warden)
 	return maxf(ilun_lit(), 1.0 - wanderer_lit())
 
 

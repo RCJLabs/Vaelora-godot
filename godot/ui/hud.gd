@@ -304,7 +304,7 @@ func _refresh_effects() -> void:
 # "Z Battle Fury   X Second Wind 42s"
 func _update_powers() -> void:
 	var parts := []
-	var keys := [InputHints.label("power_race"), InputHints.label("power_background")]
+	var keys := [InputHints.label("power_race"), InputHints.label("power_background"), InputHints.label("power_class")]
 	var ids: Array = Character.powers()
 	for i in ids.size():
 		var id: String = ids[i]
