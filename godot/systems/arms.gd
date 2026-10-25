@@ -100,6 +100,10 @@ func hit_mult(target: Node, player: Node3D, charged_from_sprint: bool = false, d
 		mult *= prod("duel")
 	if _retaliate_left > 0.0:
 		mult *= prod("retaliate")
+	if player.effects.has("invisible"):
+		mult *= prod("unseen_strike")   # Shade's Edge (Glamour)
+	if target.get("_afraid"):
+		mult *= prod("vs_afraid")   # Panic (Glamour)
 	mult *= 1.0 + sum("momentum") * _momentum
 	return mult
 

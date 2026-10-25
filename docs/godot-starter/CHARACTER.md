@@ -90,11 +90,13 @@ The tree scrolls both ways and scrolls to the perk you pick, so a skill can hold
 |---|---|
 | One-Handed | 21 perks, by weapon (swords crit, axes bleed, maces stagger, daggers are quick): see COMBAT.md, "Martial perk trees" |
 | Athletics | 21 perks: sprinting, Stamina, dodging, jumping, carrying: see COMBAT.md |
-| Destruction | Augmented Flames +25% (20) · Efficient Destruction −20% cost (25) · Searing +25% (35, needs Augmented Flames) |
-| Restoration | Recovery, Magicka +25% faster (20) · Potent Healing +30% (25) · Efficient Restoration −20% cost (30, needs Potent Healing) · Ward Mastery, wards +20% (30, needs Recovery) |
+| Ruin (`destruction`) | 21 perks: fire and frost, crits, Annihilate, Arc, Kindling: see MAGIC.md, "Perk trees" |
+| Mending (`restoration`) | 21 perks: healing, wards, Respite, Cleansing Light, Last Breath: see MAGIC.md |
 | Block | 21 perks: guarding, parrying, the shield bash: see COMBAT.md |
 | Two-Handed | 21 perks: heavy blows, Cleave and Earthshaker, Berserker: see COMBAT.md |
-| Alteration | Efficient Alteration −25% cost (20) · Arcane Reserve +25 max Magicka (25) · Focused Mind, Magicka +25% faster (35, needs Arcane Reserve) |
+| Shaping (`alteration`) | 21 perks: Magicka, Stoneflesh, Candlelight, Spellweaver, Archmage: see MAGIC.md |
+| Glamour | 21 perks: each spell longer, Shade's Edge, Panic, Veil: see MAGIC.md |
+| Tidecraft | 21 perks: each tide spell, the moons (Moon-Touched, Steady Tide, Moonborn): see MAGIC.md |
 | Archery | 21 perks: draw, crits, Deadeye, pinning, beasts and long shots: see COMBAT.md |
 | Sneak | 22 perks in five branches: see SNEAK.md |
 | Light Armour, Heavy Armour | 21 perks each, some only in armour or a full set: see ARMOUR.md |

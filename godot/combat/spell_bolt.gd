@@ -24,6 +24,9 @@ var homing: Node3D
 var _life := LIFETIME
 
 
+## Set by whoever threw it: (target, damage) -> damage, for perks that depend on the target.
+var damage_for: Callable
+
 func launch(from: Vector3, direction: Vector3, speed: float, size: float = 1.0) -> void:
 	global_position = from
 	velocity = direction.normalized() * speed
@@ -65,6 +68,8 @@ func _physics_process(delta: float) -> void:
 			return
 	elif target.has_method("take_hit"):
 		var origin := shooter.global_position if is_instance_valid(shooter) else from
+		if damage_for.is_valid():
+			damage = damage_for.call(target, damage)   # the caster's perks (Spellcraft)
 		target.take_hit(damage, origin, 2.0, poise_damage)
 		Glamour.struck(target, shooter)
 		if applies_effect != "" and target.has_method("add_effect"):
