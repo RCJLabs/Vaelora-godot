@@ -18,6 +18,7 @@ var is_active := false
 var _nodes: Dictionary = {}
 var _choices: Array = []   # the choices currently on screen (after conditions)
 var _selected := 0         # highlighted choice, for the D-pad / arrow keys
+var _node: Dictionary = {}  # the node on screen ("on_leave" runs if you Esc out of it)
 
 
 func _ready() -> void:
@@ -47,6 +48,9 @@ func choose(index: int) -> void:
 	if not is_active or index < 0 or index >= _choices.size():
 		return
 	var choice: Dictionary = _choices[index]
+	if choice.has("check") and not Speech.resolve(choice["check"]):
+		_show_node(choice.get("fail_next", "end"))   # a failed Speech check: its actions don't run
+		return
 	_run_actions(choice)
 	_show_node(choice.get("next", "end"))
 
@@ -55,6 +59,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not is_active:
 		return
 	if event.is_action_pressed("ui_cancel"):
+		_run_actions(_node.get("on_leave", {}))   # walking away can mean something (e.g. a fight)
 		end()
 		get_viewport().set_input_as_handled()
 	elif event is InputEventKey and event.pressed and not event.echo \
@@ -90,6 +95,7 @@ func _show_node(node_id: String) -> void:
 		return
 
 	var node: Dictionary = _nodes[node_id]
+	_node = node
 	_run_actions(node)
 	line_label.text = node.get("text", "")
 
@@ -97,13 +103,15 @@ func _show_node(node_id: String) -> void:
 		choices_box.remove_child(old_button)
 		old_button.queue_free()
 
-	_choices = node.get("choices", []).filter(_conditions_met)
+	_choices = node.get("choices", []).filter(_conditions_met) \
+			.filter(func(c): return not (c.has("check") and Speech.is_spent(c["check"])))
 	if _choices.is_empty():
 		_choices = [{"text": "(Leave)", "next": "end"}]
 
 	for i in _choices.size():
 		var button := Button.new()
-		button.text = "%d. %s" % [i + 1, _choices[i].get("text", "...")]
+		var check: Dictionary = _choices[i].get("check", {})
+		button.text = "%d. %s%s" % [i + 1, Speech.label(check) if not check.is_empty() else "", _choices[i].get("text", "...")]
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.focus_mode = Control.FOCUS_NONE   # so Space (jump) can't click it
 		button.pressed.connect(choose.bind(i))

@@ -77,6 +77,11 @@ const SKILLS := {
 		"name": "Mending",
 		"description": "+1% healing from Mending spells per level. Improves with health restored.",
 	},
+	"speech": {
+		"attribute": "presence",
+		"name": "Speech",
+		"description": "Persuade and intimidate in conversation (+1 to the check per level), cheaper bribes, and better prices (-0.3% buying, +0.2% selling per level). Improves with checks passed and with trading.",
+	},
 	"glamour": {
 		"attribute": "presence",
 		"name": "Glamour",

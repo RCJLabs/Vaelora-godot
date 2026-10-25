@@ -152,7 +152,7 @@ func buy(id: String) -> bool:
 	if reason != "":
 		_note.text = reason
 		return false
-	var price := Trade.buy_price(id)
+	var price := Trade.buy_price(id, merchant)
 	Trade.buy(merchant, id)
 	_note.text = "Bought %s for %d." % [Inventory.get_item(id).display_name, price]
 	_refresh()
@@ -186,15 +186,15 @@ func _do_sell() -> void:
 func _refresh() -> void:
 	var who: String = Trade.MERCHANTS[merchant]["name"]
 	_title.text = "Trading with %s" % who
-	_purses.text = "Your gold: %d      %s's gold: %d      (Presence %d: buying at x%.2f, selling at x%.2f)" % [
-			Inventory.gold, who, Trade.gold(merchant), Attributes.value("presence"), Trade.buy_mult(), Trade.sell_mult()]
+	_purses.text = "Your gold: %d      %s's gold: %d      (Presence %d, Speech %d: buying at x%.2f, selling at x%.2f)" % [
+			Inventory.gold, who, Trade.gold(merchant), Attributes.value("presence"), Skills.levels["speech"], Trade.buy_mult(merchant), Trade.sell_mult()]
 	var keep_theirs := _selected_id(_theirs, _their_ids)
 	var keep_yours := _selected_id(_yours, _your_ids)
 	_theirs.clear(); _their_ids.clear()
 	var stock: Dictionary = Trade.stock(merchant)
 	for id in stock:
 		var item := Inventory.get_item(id)
-		_theirs.add_item("%s  x%d      %d gold" % [item.display_name, stock[id], Trade.buy_price(id)])
+		_theirs.add_item("%s  x%d      %d gold" % [item.display_name, stock[id], Trade.buy_price(id, merchant)])
 		_their_ids.append(id)
 	_yours.clear(); _your_ids.clear()
 	for id in Inventory.items:
@@ -214,7 +214,7 @@ func _refresh() -> void:
 func _refresh_buttons() -> void:
 	var their_pick := _selected_id(_theirs, _their_ids)
 	var your_pick := _selected_id(_yours, _your_ids)
-	_buy.text = "Buy %s (%d gold)" % [Inventory.get_item(their_pick).display_name, Trade.buy_price(their_pick)] if their_pick != "" else "Buy"
+	_buy.text = "Buy %s (%d gold)" % [Inventory.get_item(their_pick).display_name, Trade.buy_price(their_pick, merchant)] if their_pick != "" else "Buy"
 	_buy.disabled = their_pick == "" or Trade.why_not_buy(merchant, their_pick) != ""
 	_sell.text = "Sell %s (%d gold)" % [Inventory.get_item(your_pick).display_name, Trade.sell_price(your_pick)] if your_pick != "" else "Sell"
 	_sell.disabled = your_pick == "" or Trade.why_not_sell(merchant, your_pick) != ""

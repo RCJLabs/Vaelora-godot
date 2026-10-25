@@ -77,6 +77,8 @@ func from_dict(data: Dictionary) -> void:
 func add_approval(id: String, amount: int) -> void:
 	if not approval.has(id) or amount == 0:
 		return
+	if amount > 0:
+		amount = roundi(amount * Character.modifier("approval_gain"))   # Trusted (Speech)
 	approval[id] = clampi(approval[id] + amount, -100, 100)
 	if active() == id and approval[id] <= LEAVE_AT:
 		say(id, _talk[id].get("leave_line", "I'm done. Find someone else."))

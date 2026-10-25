@@ -1,6 +1,11 @@
 {
 	"start": [
 		{
+			"node": "spared_again",
+			"requires_flag": "inquisitor_spared",
+			"requires_not_flag": "inquisitor_hostile"
+		},
+		{
 			"node": "marked",
 			"requires_corruption": 2
 		},
@@ -147,15 +152,47 @@
 		"marked": {
 			"text": "He lifts his lantern to your face, and his other hand goes to his sword. In the lantern-light, your veins show green. \"Ah, friend.\" He sounds sorry. \"The Order is merciful, and it's quick.\"",
 			"set_flag": [
-				"met_inquisitor",
-				"inquisitor_hostile"
+				"met_inquisitor"
 			],
 			"choices": [
 				{
+					"text": "I'm fighting it. Every day. Let me finish what I started.",
+					"check": {
+						"id": "inquisitor_marked",
+						"kind": "persuade",
+						"difficulty": 60
+					},
+					"next": "spared",
+					"fail_next": "draws"
+				},
+				{
+					"text": "Look closer. Do you really want to find out what it does?",
+					"check": {
+						"id": "inquisitor_marked_threat",
+						"kind": "intimidate",
+						"difficulty": 55
+					},
+					"next": "spared_afraid",
+					"fail_next": "draws"
+				},
+				{
+					"text": "The Order accepts donations, I hear.",
+					"check": {
+						"id": "inquisitor_marked_bribe",
+						"kind": "bribe",
+						"gold": 150
+					},
+					"next": "spared_bribed"
+				},
+				{
 					"text": "(Fight.)",
+					"set_flag": "inquisitor_hostile",
 					"next": "end"
 				}
-			]
+			],
+			"on_leave": {
+				"set_flag": "inquisitor_hostile"
+			}
 		},
 		"notebook": {
 			"text": "His hand goes to his coat, where something book-shaped sits over his heart. \"Evidence. The Order doesn't sell evidence.\" A pause. \"The Order does accept donations to the lamp fund. A hundred, say.\"",
@@ -164,6 +201,16 @@
 					"text": "(Donate 100 gold.)",
 					"next": "notebook_sold",
 					"requires_gold": 100
+				},
+				{
+					"text": "Ilse's dead. Her words can't hurt anyone, and they might help the living.",
+					"check": {
+						"id": "inquisitor_notebook",
+						"kind": "persuade",
+						"difficulty": 45
+					},
+					"next": "notebook_given",
+					"fail_next": "notebook_refused"
 				},
 				{
 					"text": "Then I'll take it.",
@@ -193,6 +240,84 @@
 			"choices": [
 				{
 					"text": "(Fight.)",
+					"next": "end"
+				}
+			]
+		},
+		"spared": {
+			"text": "He looks at you for a long time, the lantern between you. Then he lowers it. \"A season, then. The Order has been wrong before; I'd rather not be wrong today.\" He steps off the road. \"If I see you greener, I won't ask.\"",
+			"set_flag": "inquisitor_spared",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"spared_afraid": {
+			"text": "His hand stays on the hilt, but his eyes go to the green under your skin and stay there. \"Go,\" he says quietly. \"Before I remember my oath.\"",
+			"set_flag": "inquisitor_spared",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"spared_bribed": {
+			"text": "He weighs the purse in his palm, and something in his face closes. \"For the Order's work. Not for you.\" He steps aside, and doesn't watch you go.",
+			"set_flag": "inquisitor_spared",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"draws": {
+			"text": "\"No,\" he says, almost kindly, and draws.",
+			"set_flag": "inquisitor_hostile",
+			"choices": [
+				{
+					"text": "(Fight.)",
+					"next": "end"
+				}
+			]
+		},
+		"spared_again": {
+			"text": "He watches you pass, one hand never far from his sword. \"Still fighting it?\"",
+			"choices": [
+				{
+					"text": "Every day.",
+					"next": "end"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"notebook_given": {
+			"text": "He's quiet a moment. Then he takes the notebook out and holds it, as if weighing more than paper. \"She wrote about cures, mostly. Fevers. A boy's cough.\" He hands it over. \"The Order doesn't need to know where it went.\"",
+			"give_item": "book_ilse_notebook",
+			"set_flag": "zora_notebook_persuaded",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"notebook_refused": {
+			"text": "\"Evidence,\" he says again, and his hand rests on the coat. \"Donations, or nothing.\"",
+			"choices": [
+				{
+					"text": "(Donate 100 gold.)",
+					"requires_gold": 100,
+					"next": "notebook_sold"
+				},
+				{
+					"text": "Never mind.",
 					"next": "end"
 				}
 			]

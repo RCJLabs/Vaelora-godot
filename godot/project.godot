@@ -50,6 +50,7 @@ Targeting="*res://systems/targeting.gd"
 Lanternfast="*res://systems/lanternfast.gd"
 Stealth="*res://systems/stealth.gd"
 Armor="*res://systems/armor.gd"
+Speech="*res://systems/speech.gd"
 
 [editor_plugins]
 

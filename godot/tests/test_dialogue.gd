@@ -47,7 +47,7 @@ func _physics_process(_d: float) -> bool:
 			key(KEY_E)
 		75:
 			ok(dm.line_label.text == "Back again? The kettle's still warm.", "second talk uses the met_maren line", dm.line_label.text)
-			ok(choices().size() == 4 and "Who else comes up this road?" in choices()[1] and "Let's trade." in choices()[2], "second talk choices", choices())
+			ok(choices().size() == 5 and "Who else comes up this road?" in choices()[1] and "Let's trade." in choices()[2] and "[Persuade 30" in choices()[3], "second talk choices (and a Speech check)", choices())
 		76: key(KEY_ESCAPE)
 		80: ok(not dm.is_active, "Esc closes the dialogue")
 		81: autoload("GameState").race = "Orc"; autoload("GameState").flags = {}; key(KEY_E)
