@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_moon_crush"
+display_name = "Tome: Moon-Crush"
+description = "A Tide College primer, heavier than it looks. Use it to learn Moon-Crush."
+type = 1
+value = 220
+weight = 1.0
+teaches_spell = "moon_crush"

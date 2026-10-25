@@ -61,6 +61,7 @@ const ITEM_FILES := [
 	"res://items/tome_pull.tres",
 	"res://items/tome_tides_shove.tres",
 	"res://items/tome_gravity_well.tres",
+	"res://items/tome_moon_crush.tres",
 	"res://items/bread.tres",
 	"res://items/lantern_cake.tres",
 	"res://items/apple.tres",

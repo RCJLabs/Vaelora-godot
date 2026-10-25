@@ -202,6 +202,18 @@
 					"requires_not_flag": "readings_delivered"
 				},
 				{
+					"text": "Moon-Crush. (220 gold)",
+					"next": "sold_crush",
+					"requires_gold": 220,
+					"requires_not_flag": "bought_tome_crush",
+					"requires_flag": "bought_tome_well"
+				},
+				{
+					"text": "Moon-Crush?",
+					"next": "crush_later",
+					"requires_not_flag": "bought_tome_well"
+				},
+				{
 					"text": "Why the moons?",
 					"next": "why_moons"
 				},
@@ -274,6 +286,35 @@
 		},
 		"why_moons": {
 			"text": "\"Every tide in the world answers them. The sea, the sap, the blood in your ears. The College says the moons are only stones in the sky and we measure their weight.\" He hesitates. \"The Wanderer pulls harder than a stone that size should. Nobody at the College likes that question.\"",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"sold_crush": {
+			"text": "He lowers his voice. \"The deep end of the deep end. The College calls it Moon-Crush; the sailors call it the Weight. Don't cast it over your own feet, and never indoors under anything you'd miss.\"",
+			"take_gold": 220,
+			"give_item": "tome_moon_crush",
+			"set_flag": "bought_tome_crush",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"crush_later": {
+			"text": "\"Learn to open a well first. Holding a weight comes before dropping one.\"",
 			"choices": [
 				{
 					"text": "Something else.",

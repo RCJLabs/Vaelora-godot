@@ -8,6 +8,9 @@ extends Node
 #   shove  everything in reach in front of you is hurled away, and reels
 #   well   a well where you aim drags everything in its radius to the middle and
 #          holds it there, pinned (slow), for a while
+#   crush  the moons' weight comes down where you aim: everything in the radius is
+#          hit hard (most at the middle) and knocked down. Nothing is too heavy to
+#          be crushed, guardians included; it just can't be moved
 # All of them are stronger or weaker by the moons (WorldClock.tide_mult(): x0.6
 # with Ilun dark and the Wanderer full, x1.4 with Ilun full or the Wanderer
 # dark), which player_magic.gd puts into `power`: damage, how far things are
@@ -24,6 +27,8 @@ const SHOVE_SECONDS := 0.35
 const SHOVE_STAGGER := 1.5
 ## Well: how fast it drags at its edge (slower nearer the middle).
 const WELL_DRAG := 7.0
+## Moon-Crush: how long what it hits stays down.
+const CRUSH_STAGGER := 2.5
 
 var _drags := []   # {"node", "to": Node3D or null, "velocity": Vector3, "left": seconds}
 var _wells := []   # {"center", "radius", "left", "scene", "mark": Node3D}
@@ -59,17 +64,29 @@ func cast(spell: SpellData, center: Vector3, power: float, caster: Node3D, dual:
 			SpellBurst.spawn(caster.get_parent(), caster.global_position + forward.normalized() * 2.0 + Vector3.UP, 1.6, spell.color)
 			return touched
 		"well":
-			# On the ground under where you aimed (not halfway up a wall).
-			var down := PhysicsRayQueryParameters3D.create(center + Vector3.UP, center + Vector3.DOWN * 6.0, 1)
-			var ground := caster.get_world_3d().direct_space_state.intersect_ray(down)
-			if not ground.is_empty():
-				center = ground["position"]
+			center = _on_ground(caster, center)
 			var radius := spell.radius * (1.3 if dual else 1.0)
 			var well := {"center": center, "radius": radius, "left": spell.duration * power,
 					"scene": get_tree().current_scene, "mark": _make_mark(caster.get_parent(), center, radius, spell.color)}
 			_wells.append(well)
 			SpellBurst.spawn(caster.get_parent(), center, radius, spell.color)
 			return _movable_in_radius(caster, center, radius)
+		"crush":
+			center = _on_ground(caster, center)
+			var radius := spell.radius * (1.3 if dual else 1.0)
+			var touched := []
+			for hit in _shape_hits(caster, center, radius):
+				if hit in touched or not hit.has_method("take_hit") or _dead(hit):
+					continue
+				touched.append(hit)
+				var falloff := lerpf(1.0, 0.5, clampf(_flat(hit.global_position - center).length() / radius, 0.0, 1.0))
+				_hurt(hit, spell.damage * power * falloff, caster)
+				if hit.has_method("stagger"):
+					hit.stagger(CRUSH_STAGGER)
+			SpellBurst.spawn(caster.get_parent(), center + Vector3.UP * 0.3, radius * 1.2, spell.color)
+			if caster.has_method("camera_kick"):
+				caster.camera_kick(Vector3(-2.5, 0.0, 1.0))   # the ground shakes
+			return touched
 	return []
 
 
@@ -138,19 +155,30 @@ func _hurt(enemy: Node, damage: float, caster: Node3D) -> void:
 
 # Enemies (layer 4) in reach of `center` that the tide can move.
 func _movable_in_radius(caster: Node3D, center: Vector3, radius: float) -> Array:
+	var found := []
+	for node in _shape_hits(caster, center, radius):
+		if node in found or not node.has_method("shove") or _dead(node):
+			continue
+		found.append(node)
+	return found
+
+
+# Everything on the enemy layer (4) within `radius` of `center`.
+func _shape_hits(caster: Node3D, center: Vector3, radius: float) -> Array:
 	var sphere := SphereShape3D.new()
 	sphere.radius = radius
 	var query := PhysicsShapeQueryParameters3D.new()
 	query.shape = sphere
 	query.transform = Transform3D(Basis(), center)
 	query.collision_mask = 4
-	var found := []
-	for hit in caster.get_world_3d().direct_space_state.intersect_shape(query, 32):
-		var node: Object = hit["collider"]
-		if node in found or not node.has_method("shove") or _dead(node):
-			continue
-		found.append(node)
-	return found
+	return caster.get_world_3d().direct_space_state.intersect_shape(query, 32).map(func(hit): return hit["collider"])
+
+
+# The ground under where you aimed (not halfway up a wall), or `point` with none in reach.
+func _on_ground(caster: Node3D, point: Vector3) -> Vector3:
+	var down := PhysicsRayQueryParameters3D.create(point + Vector3.UP, point + Vector3.DOWN * 6.0, 1)
+	var ground := caster.get_world_3d().direct_space_state.intersect_ray(down)
+	return ground["position"] if not ground.is_empty() else point
 
 
 # A dark ring on the ground where a well is, turning slowly.

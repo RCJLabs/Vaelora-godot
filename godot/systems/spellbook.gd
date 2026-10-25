@@ -26,6 +26,7 @@ const SPELL_FILES := [
 	"res://spells/pull.tres",
 	"res://spells/tides_shove.tres",
 	"res://spells/gravity_well.tres",
+	"res://spells/moon_crush.tres",
 ]
 
 var known: Array = []        # spell ids, in the order learned

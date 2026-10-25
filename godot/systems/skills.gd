@@ -56,7 +56,7 @@ const SKILLS := {
 	},
 	"tidecraft": {
 		"name": "Tidecraft",
-		"description": "+1% to Tidecraft spells (pull, shove, wells) per level. They're also stronger or weaker by the moons. Improves as you cast them.",
+		"description": "+1% to Tidecraft spells (pull, shove, wells, moon-crush) per level. They're also stronger or weaker by the moons. Improves as you cast them.",
 	},
 }
 const START_LEVEL := 15
