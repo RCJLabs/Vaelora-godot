@@ -396,9 +396,9 @@ Round four's answers (`docs/lore/questionnaire-4-answers-2026-10-24.txt`), round
 (`docs/lore/questionnaire-5-answers-2026-10-25.txt`, the last scene) and round six's
 (`docs/lore/questionnaire-6-answers-2026-10-25.txt`: places and shapes, the one aboard the
 Wanderer, the final images) are folded into `docs/lore/STORY.md`. Still to settle:
-- **How the aboard Vael's secret gets back down** in the vessel ending, where you don't come
-  back (STORY.md, "The one aboard the Wanderer").
-- **Who you fight in Aeviro's way,** if it opens with a fight.
+- Nothing left from rounds five and six. (Decided after round six: your companion carries the
+  aboard Vael's secret back down, or Maren receives it if you came alone; in Aeviro's way you
+  fight the Lantern Order.)
 - **Built:** switching between first and third person, all game (V; see
   `docs/godot-starter/CONTROLS.md`).
 - **My suggestions in STORY.md:** the hidden fourth ending (Lantern Night), the wisps in each
