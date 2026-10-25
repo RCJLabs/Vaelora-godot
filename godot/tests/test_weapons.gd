@@ -83,8 +83,8 @@ func _physics_process(_d: float) -> bool:
 			w2.global_position = Vector3(8.7, 0, -21.4); w2._knockback = Vector3.ZERO
 			h0 = w.stats.health; h1 = w2.stats.health; tap())
 		add(40, func():
-			near(h0 - w.stats.health, 26.0, 1.0, "greatsword damage to wolf 1")
-			near(h1 - w2.stats.health, 26.0, 1.0, "greatsword cleaves wolf 2")
+			near(h0 - w.stats.health, 26.0 * autoload("Attributes").heavy_damage_mult(18.0), 1.0, "greatsword damage to wolf 1 (less without Strength 14)")
+			near(h1 - w2.stats.health, 26.0 * autoload("Attributes").heavy_damage_mult(18.0), 1.0, "greatsword cleaves wolf 2")
 			w2.global_position = Vector3(50, 0, 50))
 		add(60, func(): SB.select("healing"); Input.action_press("cast"))
 		add(10, func():

@@ -37,15 +37,29 @@ descriptions and amounts all live in `systems/attributes.gd`, so they're easy to
 
 | Attribute | Per point above 10 | Human | Elf | Orc |
 |---|---|---|---|---|
-| Strength | +3% melee damage | 10 | 9 | **13** |
+| Strength | +3% melee damage, +10 carry weight | 10 | 9 | **13** |
 | Endurance | +5 max Health, +3 max Stamina | 10 | 8 | **12** |
 | Agility | +1% move speed, +4% Stamina regen | 10 | **12** | 10 |
 | Intellect | +5 max Magicka, +2% spell power | 10 | **12** | 8 |
-| Willpower | +5% Magicka regen | 11 | 11 | 10 |
+| Willpower | +5% Magicka regen, harmful effects on you 4% shorter | 11 | 11 | 10 |
 | Presence | +3% reputation gains | **12** | 10 | 9 |
 
 With the race's own base pools, that makes Human 100/100/100, Elf 75/94/140, and Orc
 140/121/60 for Health/Stamina/Magicka.
+
+- **Every attribute governs some skills:** +3% XP for each of them per point above 10 (the
+  table is in SKILLS.md). The skills list shows it: "One-Handed (STR)".
+- **Carry weight:** 120 at Strength 10, +10 per point (`Attributes.carry_capacity()`).
+  Everything you carry counts, worn or not (`Inventory.total_weight()`; Tab → Inventory shows
+  "Carrying: 34 / 120"). Over it you're **Over-encumbered** (an effect in the HUD): half
+  speed, no sprinting, until you put something down.
+- **Willpower** shortens harmful effects on you (burning, chilled, wounded...): 4% per point
+  above 10, from 40% to 160% of their time. Not enemies'. Helpful effects aren't touched.
+- **Heavy weapons want Strength:** anything over 10 weight wants Strength 10 plus 1 per 2
+  weight over (iron axe 11, iron mace 11, steel greatsword 14). Short of it, −4% damage and
+  +6% stamina per swing for each point short (damage never below 60%). You can always use it;
+  the item details say "Heavy: wants Strength 14".
+- Presence's prices and persuasion come with the trading screen and Speech.
 
 - Shown on the race screen and at the top of **Tab → Skills** (hover for details).
 - Race sets the starting values; backgrounds, traits, 4 creation points and 1 point per

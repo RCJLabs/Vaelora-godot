@@ -5,27 +5,54 @@ pauses).
 
 ## Skills
 
-| Skill | Improves by | Effect | Starts at |
+Ten so far, each rising by use from 15 (plus race bonuses) to 100. Each has a **governing
+attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult()`).
+
+| Skill | Attribute | Improves by | Effect |
 |---|---|---|---|
-| One-Handed | Sword hits that land (3 XP each) | +1% sword damage per level | 15 (Orc 25) |
-| Athletics | Sprinting (1 XP per 5 m) | −0.5% sprint stamina cost per level (max −50%) | 15 (Elf 25) |
-| Destruction | Spell damage dealt (1 XP per 5) | +1% Destruction spell damage per level | 15 (Elf 25) |
-| Restoration | Health restored by spells (1 XP per 5) | +1% Restoration healing per level | 15 |
+| One-Handed | Strength | Hits with swords, axes, maces, daggers | +1% damage per level |
+| Two-Handed | Strength | Greatsword hits | +1% damage per level |
+| Archery | Agility | Arrow hits | +1% bow damage per level |
+| Block | Endurance | Blocking and parrying | +0.5% of a hit blocked per level |
+| Athletics | Endurance | Sprinting (1 XP per 5 m) | −0.5% sprint stamina cost per level |
+| Ruin (`destruction`) | Intellect | Spell damage dealt | +1% Ruin damage per level |
+| Shaping (`alteration`) | Intellect | Casting Shaping spells | +1% to Shaping spells per level |
+| Mending (`restoration`) | Willpower | Health restored | +1% healing per level |
+| Glamour | Presence | Casting Glamour spells | +1% duration per level |
+| Tidecraft | Willpower | Casting Tidecraft spells | +1% power per level (and the moons) |
 
 - XP to the next level is `5 + level × 0.5`: 12.5 XP at level 15, 55 XP at level 100.
-- Humans gain all skill XP 15% faster (`skill_xp_mult` in `races/human.tres`).
+- XP is multiplied by the race (Humans +15%), traits and powers (`skill_xp`), and the
+  governing attribute.
 - A top-left notice shows each increase: "One-Handed increased to 16".
+
+### The planned skills (character building, round one)
+
+Four skills to each attribute (your note: an even number per attribute). Bold ones exist;
+*Unarmed* and *Command* are my additions to make it even.
+
+| Attribute | Skills |
+|---|---|
+| Strength | **One-Handed**, **Two-Handed**, Smithing, *Unarmed* |
+| Endurance | **Block**, Heavy Armour, **Athletics**, Survival |
+| Agility | **Archery**, Light Armour, Sneak, Lockpicking |
+| Intellect | **Ruin**, **Shaping**, Runecraft, Alchemy |
+| Willpower | **Mending**, Binding, **Tidecraft**, Drawing |
+| Presence | Speech, **Glamour**, Sight, *Command* (companions) |
+
+See `docs/CHARACTER_BUILDING.md` for the order they'll be built in.
 
 ## Character level
 
 Every **5 skill increases** raise your character level. Each level gives a bonus to spend in
-the Tab menu: **+10 max Health, Stamina or Magicka**. The new points arrive full. Unspent
-bonuses wait until you choose.
+the Tab menu: **+10 max Health, Stamina or Magicka**, plus **1 perk point** and **1 attribute
+point** (CHARACTER.md). The new points arrive full. Unspent bonuses wait until you choose. No
+level cap: skills cap at 100, and levels follow.
 
 ## Adding a skill
 
 1. Add an entry to `SKILLS` at the top of `systems/skills.gd`:
-   `"sneak": {"name": "Sneak", "description": "..."},`
+   `"sneak": {"attribute": "agility", "name": "Sneak", "description": "..."},`
 2. Call `Skills.add_xp("sneak", amount)` wherever the player does that thing.
 3. Read `Skills.levels["sneak"]` wherever the skill should have an effect.
 4. Optional: give a race a head start in its `.tres`: **Skill Bonuses** → `"sneak": 10`.

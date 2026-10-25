@@ -119,6 +119,16 @@ func remove(id: String, amount: int = 1) -> bool:
 	return true
 
 
+## What everything you carry weighs (equipped things included).
+func total_weight() -> float:
+	var total := 0.0
+	for id in items:
+		var item := get_item(id)
+		if item:
+			total += item.weight * items[id]
+	return total
+
+
 func count(id: String) -> int:
 	return items.get(id, 0)
 

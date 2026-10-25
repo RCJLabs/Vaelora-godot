@@ -169,7 +169,8 @@ func _refresh() -> void:
 	for id in Skills.SKILLS:
 		var info: Dictionary = Skills.SKILLS[id]
 		var name_label := Label.new()
-		name_label.text = info["name"]
+		var governs: String = info.get("attribute", "")
+		name_label.text = info["name"] + ("  (%s)" % Attributes.ATTRIBUTES[governs]["short"] if governs != "" else "")
 		name_label.custom_minimum_size.x = 160
 		name_label.tooltip_text = info["description"]
 		name_label.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -243,7 +244,7 @@ func _refresh_inventory() -> void:
 	if not is_open:
 		return
 	var selected_id: String = _selected_id()
-	%GoldLabel.text = "Gold: %d      Armor: %d" % [Inventory.gold, Inventory.armor_total()]
+	%GoldLabel.text = "Gold: %d      Armor: %d      Carrying: %.0f / %.0f" % [Inventory.gold, Inventory.armor_total(), Inventory.total_weight(), Attributes.carry_capacity()]
 	item_list.clear()
 	_item_ids = Inventory.items.keys()
 	_item_ids.sort()
@@ -281,6 +282,9 @@ func _show_selected_item() -> void:
 		elif item.type == ItemData.Type.ARMOR:
 			details = "Armor %d   -   %s\n" % [item.armor, item.slot_name().capitalize()]
 		details += "Value: %d gold   -   Weight: %.1f" % [item.value, item.weight]
+		if Attributes.strength_needed(item.weight) > 0.0 and item.type == ItemData.Type.WEAPON:
+			details += "\nHeavy: wants Strength %d%s" % [ceili(Attributes.strength_needed(item.weight)),
+					"" if Attributes.strength_short(item.weight) == 0.0 else " (you're short: less damage, more stamina)"]
 	%ItemValue.text = details
 	use_button.visible = item != null and (item.type == ItemData.Type.CONSUMABLE or item.is_equipment() or item.is_readable())
 	if item and item.is_equipment():

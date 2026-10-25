@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "over_encumbered"
+display_name = "Over-encumbered"
+description = "Carrying more than you can (Strength sets the limit): moving at half speed, and you can't sprint. Drop or sell something."
+is_harmful = true
+duration = 0.0
+modifiers = {
+"move_speed": 0.5
+}

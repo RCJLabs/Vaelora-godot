@@ -11,6 +11,10 @@ extends Node
 #
 # To add a skill: add an entry to SKILLS, then call Skills.add_xp("id", amount)
 # wherever the player does that thing.
+#
+# Each skill has a governing attribute ("attribute"): +3% XP for that skill per
+# point above 10 (docs/godot-starter/SKILLS.md has the full planned table, four
+# skills to each attribute).
 
 signal changed                                   # anything changed (menus refresh)
 signal skill_increased(skill_id: String, new_level: int)
@@ -19,42 +23,52 @@ signal level_bonus_spent(stat: String, amount: int)
 
 const SKILLS := {
 	"one_handed": {
+		"attribute": "strength",
 		"name": "One-Handed",
 		"description": "+1% damage with swords, axes, maces and daggers per level. Improves when your swings land.",
 	},
 	"two_handed": {
+		"attribute": "strength",
 		"name": "Two-Handed",
 		"description": "+1% greatsword damage per level. Improves when your swings land.",
 	},
 	"archery": {
+		"attribute": "agility",
 		"name": "Archery",
 		"description": "+1% bow damage per level. Improves when your arrows hit.",
 	},
 	"block": {
+		"attribute": "endurance",
 		"name": "Block",
 		"description": "+0.5% of a hit blocked per level (up to 95%). Improves when you block or parry.",
 	},
 	"athletics": {
+		"attribute": "endurance",
 		"name": "Athletics",
 		"description": "-0.5% sprint stamina cost per level. Improves as you sprint.",
 	},
 	"destruction": {
+		"attribute": "intellect",
 		"name": "Ruin",
 		"description": "+1% damage from Ruin spells (fire, frost, storm) per level. Improves with spell damage dealt.",
 	},
 	"alteration": {
+		"attribute": "intellect",
 		"name": "Shaping",
 		"description": "+1% to Shaping spells (stone, light, force) per level, and cheaper with perks. Improves as you cast them.",
 	},
 	"restoration": {
+		"attribute": "willpower",
 		"name": "Mending",
 		"description": "+1% healing from Mending spells per level. Improves with health restored.",
 	},
 	"glamour": {
+		"attribute": "presence",
 		"name": "Glamour",
 		"description": "+1% to how long Glamour spells (decoys, fear, charm) last per level. Improves as you cast them.",
 	},
 	"tidecraft": {
+		"attribute": "willpower",
 		"name": "Tidecraft",
 		"description": "+1% to Tidecraft spells (pull, shove, wells, moon-crush, the lifting tide) per level. They're also stronger or weaker by the moons. Improves as you cast them.",
 	},
@@ -98,7 +112,8 @@ func add_xp(id: String, amount: float) -> void:
 		return
 	var player := get_tree().get_first_node_in_group("player")
 	var trait_mult: float = player.stats.modifier("skill_xp") if player else 1.0   # traits, Adaptable
-	xp[id] += amount * GameState.race_data.skill_xp_mult * trait_mult
+	xp[id] += amount * GameState.race_data.skill_xp_mult * trait_mult \
+			* Attributes.skill_xp_mult(SKILLS[id].get("attribute", ""))
 	while levels[id] < MAX_LEVEL and xp[id] >= xp_needed(id):
 		xp[id] -= xp_needed(id)
 		levels[id] += 1
