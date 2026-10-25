@@ -82,6 +82,7 @@ func ward_absorb(stopped: float) -> bool:
 		_stop()
 		return false
 	Skills.add_xp(spell.skill, stopped / 4.0)
+	Spellcraft.ward_stopped(stopped, player, spell.skill)   # Ward Absorb (Mending)
 	return true
 
 
@@ -118,15 +119,16 @@ func _channel(delta: float) -> void:
 	if spell.style == SpellData.Style.WARD:
 		return   # the ward works when something hits it (ward_share)
 	Stealth.make_noise(player.global_position, "spell")   # a stream is loud the whole time
-	var power := spell.power_per_second * delta * _power_mult() * (DUAL_POWER if dual else 1.0)
+	var power := spell.power_per_second * delta * _power_mult() * (_dual_power() if dual else 1.0)
 	match spell.effect:
 		SpellData.Effect.DAMAGE_STREAM:
 			_damage_stream(power * player.stats.modifier("damage_dealt"))
 		SpellData.Effect.DRAIN_STREAM, SpellData.Effect.SIPHON_STREAM:   # Drawing: take it, keep it
 			Drawing.drained(_damage_stream(power * player.stats.modifier("damage_dealt")), spell, player)
 		SpellData.Effect.HEAL_SELF:
-			var healed := minf(power, player.stats.max_health - player.stats.health)
+			var healed := minf(power * Spellcraft.heal_mult(player, spell.skill), player.stats.max_health - player.stats.health)
 			player.stats.heal(healed)
+			Spellcraft.healed(healed, player, spell.skill)   # Respite, Cleansing Light, Shared Light
 			Skills.add_xp(spell.skill, healed / 5.0)   # 1 XP per 5 health actually restored
 
 
@@ -141,8 +143,10 @@ func _damage_stream(damage: float) -> float:
 		if target and target.has_method("take_hit") and not Binding.is_bound(target):
 			var stats = target.get("stats")
 			var before: float = stats.health if stats else damage
-			target.take_hit(damage, player.global_position, 0.0)
-			dealt += before - stats.health if stats else damage
+			target.take_hit(damage * Spellcraft.hit_mult(target, spell), player.global_position, 0.0)
+			var took: float = before - stats.health if stats else damage
+			dealt += took
+			Spellcraft.landed(target, spell, took, player, true)
 			if stats and stats.is_dead and spell.skill == "drawing":
 				Drawing.killed(player)
 			Glamour.struck(target, player)
@@ -186,13 +190,14 @@ func _release() -> void:
 		player.hud.flash_magicka()
 		return
 	Stealth.make_noise(player.global_position, "spell")
-	var power := _power_mult() * (DUAL_POWER if dual else 1.0)
+	var power := _power_mult() * (_dual_power() if dual else 1.0)
+	var cast_spell := Spellcraft.scaled(spell, player)   # the school's radius perks
 	match spell.style:
 		SpellData.Style.BOLT:
 			_fire_bolt(spell.damage * power * player.stats.modifier("damage_dealt"))
 		SpellData.Style.AREA:
 			if spell.glamour != "":
-				Glamour.cast(spell, _aim_point(), power, player)
+				Glamour.cast(cast_spell, _aim_point(), power, player)
 				Skills.add_xp(spell.skill, cost / 5.0)
 			elif spell.drawing != "":
 				Drawing.cast(spell, _aim_point(), power, player)
@@ -207,14 +212,16 @@ func _release() -> void:
 				Binding.cast(spell, _aim_point(), power, player, cost)
 				Skills.add_xp(spell.skill, cost / 5.0)
 			elif spell.tide != "":
-				for target in Tidecraft.cast(spell, _aim_point(), power, player, dual):
+				for target in Tidecraft.cast(cast_spell, _aim_point(), power, player, dual):
 					if spell.damage > 0.0:
 						_show_target(target)
 				Skills.add_xp(spell.skill, cost / 5.0)
 			else:
-				_burst(spell.damage * power * player.stats.modifier("damage_dealt"))
+				_burst(spell.damage * power * player.stats.modifier("damage_dealt"), cast_spell.radius)
 		SpellData.Style.SELF:
 			player.effects.apply(spell.self_effect)
+			if spell.skill == "restoration" and Spellcraft.any("cleanse", "restoration"):
+				Spellcraft.cleanse(player)   # Cleansing Light
 			Skills.add_xp(spell.skill, cost / 6.0)
 	player.camera_kick(Vector3(-0.8 if not dual else -1.6, 0.0, 0.0))
 	Sfx.play("spell_cast", -2.0 if dual else -5.0)
@@ -228,8 +235,11 @@ func _fire_bolt(damage: float) -> void:
 	bolt.poise_damage = 16.0 if dual else 8.0
 	bolt.applies_effect = spell.applies_effect
 	bolt.color = spell.color
+	var thrown := spell
+	bolt.damage_for = func(target: Node, base: float) -> float: return base * Spellcraft.hit_mult(target, thrown)
 	bolt.hit.connect(func(target, dealt):
-		Skills.add_xp(spell.skill, dealt / 5.0)
+		Skills.add_xp(thrown.skill, dealt / 5.0)
+		Spellcraft.landed(target, thrown, dealt, player)
 		_show_target(target))
 	player.get_parent().add_child(bolt)
 	var camera: Camera3D = player.camera
@@ -252,9 +262,9 @@ func _aim_point() -> Vector3:
 
 # Where you're aiming: everything in the radius is hit, full damage at the
 # centre down to half at the edge.
-func _burst(damage: float) -> void:
+func _burst(damage: float, base_radius: float) -> void:
 	var center := _aim_point()
-	var radius := spell.radius * (1.3 if dual else 1.0)
+	var radius := base_radius * (1.3 if dual else 1.0)
 	var sphere := SphereShape3D.new()
 	sphere.radius = radius
 	var area := PhysicsShapeQueryParameters3D.new()
@@ -268,8 +278,11 @@ func _burst(damage: float) -> void:
 			continue
 		hits.append(target)
 		var falloff := lerpf(1.0, 0.5, clampf(target.global_position.distance_to(center) / radius, 0.0, 1.0))
-		target.take_hit(damage * falloff, center, 5.0, 12.0 if not dual else 20.0)
+		var stats = target.get("stats")
+		var before: float = stats.health if stats else 0.0
+		target.take_hit(damage * falloff * Spellcraft.hit_mult(target, spell), center, 5.0, 12.0 if not dual else 20.0)
 		Glamour.struck(target, player)
+		Spellcraft.landed(target, spell, before - stats.health if stats else damage * falloff, player)
 		if spell.applies_effect != "" and target.has_method("add_effect"):
 			target.add_effect(spell.applies_effect)
 		Skills.add_xp(spell.skill, damage * falloff / 5.0)
@@ -283,12 +296,16 @@ func _burst(damage: float) -> void:
 func _power_mult() -> float:
 	return Skills.spell_power_mult(spell.skill) * Attributes.spell_mult() \
 			* player.stats.modifier("spell_power") * player.stats.modifier("spell_power_" + spell.skill) \
-			* (WorldClock.tide_mult() if spell.tide != "" else 1.0) \
-			* (Drawing.power_mult() if spell.skill == "drawing" else 1.0)   # Tidecraft by the moons, Drawing by your corruption
+			* Spellcraft.power_mult(spell, player) \
+			* (Drawing.power_mult() if spell.skill == "drawing" else 1.0)   # one spell's perks and Tidecraft's moons (Spellcraft); Drawing by your corruption
 
 
 func _cost_mult() -> float:
-	return player.stats.modifier("spell_cost") * player.stats.modifier("spell_cost_" + spell.skill)
+	return player.stats.modifier("spell_cost") * player.stats.modifier("spell_cost_" + spell.skill) * Spellcraft.cost_mult(spell, player)
+
+
+func _dual_power() -> float:
+	return DUAL_POWER * player.stats.modifier("dual_power")   # Twin Flames (Ruin)
 
 
 func _in_front(attacker: Node3D) -> bool:

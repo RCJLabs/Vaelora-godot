@@ -705,7 +705,7 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 	Arms.hurt()   # momentum lost
 	player.camera_kick(Vector3(-2.0, randf_range(-1.5, 1.5), randf_range(-3.0, 3.0)))
 	var attacking := state in [State.WINDUP, State.ACTIVE, State.RECOVERY, State.CHARGING]
-	stats.take_poise_damage(poise_damage * (Arms.prod("poise_guard") if attacking else 1.0))   # Unstoppable
+	stats.take_poise_damage(poise_damage * (Arms.prod("poise_guard") if attacking else 1.0) * Spellcraft.poise_taken_mult(player))   # Unstoppable, Stone Body
 	return "hit"
 
 

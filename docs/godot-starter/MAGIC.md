@@ -161,6 +161,26 @@ power).
 
 **Magicka** refills 5/s (more with Willpower), starting 1 s after you stop casting.
 
+## Perk trees
+
+Ruin, Shaping, Mending, Glamour and Tidecraft have 21 perks each. Numbers are perk modifiers,
+including per spell (`spell_power_<spell id>`, `spell_cost_<spell id>`), per school
+(`spell_power_`, `spell_cost_`, `charge_time_`, `spell_range_`, new `spell_radius_<school>`),
+`dual_power`, and `duration_<effect>` for self-spells. The rest are fields
+`systems/spellcraft.gd` (the autoload `Spellcraft`) reads: a school's perks count for that
+school's spells.
+
+| School | Perks (level) |
+|---|---|
+| Ruin | Augmented Flames → Searing I–II (+25% each) → **Archmage of Ruin** (90): half cost · Efficient Destruction I–II · Fire Mastery (30): Firebolt and Flames +30% · Frost Mastery (30) · Lingering Elements (40): burning and chill twice as long · Rapid Ruin (25) · Long Fire (35) · Wide Blast (40): bursts +30% wider · **Impact** (45): one hit in three staggers → **Arc** (65): half a hit arcs to the next enemy within 5 m · Arcane Precision I–II (35/60): crits → **Annihilate** (75): +50% under a quarter health · **Kindling** (50): 15 Magicka a kill → Desperate Power (70): +50% under a quarter Magicka · Twin Flames (45): dual-casting +25% · Pyromancer's Lore (15) |
+| Shaping | Efficient Alteration I–II · Arcane Reserve I–III: +25 Magicka each · Focused Mind I–II → **Deep Reserves** (65): under half Magicka, +50% regen · Quick Shaping I–II · Lasting Light (20) → Lantern Mind (35): by Candlelight, Magicka +20% · Lasting Stone (25) → Living Stone (50): in Stoneflesh, Health twice as fast → Granite Skin (75) · **Stone Body** (60): in Stoneflesh, you can't be staggered · Stone Ward (45) · Attunement (30): all spells −5% → **Spellweaver** (80): −10% cost and charge → **Archmage** (95): +50 Magicka, all spells +10% · Shaper's Insight (15) |
+| Mending | Potent Healing I–III · Efficient Restoration I–II · Recovery I–II · Ward Mastery I–II → **Ward Absorb** (45): a quarter of what a ward stops is Magicka · Patient Ward (35): the Healing Ward −25% · Lasting Mending (25) · **Respite** (30): half of healing as Stamina · Battle Medic (40): +25% with enemies near → Desperate Prayer (50): +50% under a quarter health → **Last Breath** (80): once every 10 minutes, under a tenth of your health, heal 50 · Lantern's Grace (35): +25% at night · **Cleansing Light** (45): healing ends poison, bleeding, burning, venom → **Shared Light** (60): it heals your companion too · Quick Mending (25) · Healer's Lore (15) |
+| Glamour | Efficient Glamour I–II · Long Shadows I–II → **Master Illusionist** (80) · Spreading Spell (30): 40% wider · Quick Glamour (25) · Far Glamour (30) · Dreadful (35) → **Panic** (50): a fleeing enemy takes 25% more → Terror (75) · Beguiling (35) → Enthrall (75) · Blood Frenzy (35) · Many Faces (40) → Lasting Phantoms (70) · Lasting Veil (35) → Veil (60): Invisibility half cost · **Shade's Edge** (55): blows from Invisibility +50% · Honeyed Words (20): +10 to checks · Glamour Lore (15) |
+| Tidecraft | Efficient Tidecraft I–II · Spring Tide I–II → **Master of Tides** (95) · Quick Tides (25) → Tide-Caller (70) · Far Tides (30) · Wide Tides (35) · Undertow (30): Pull · Breaker I–II: Shove · Deep Well (40) · Crushing Depths → Drowning Depths: Moon-Crush · Rising Tide (45) · **Moon-Touched** (35): the moons sway it twice as much, both ways → **Steady Tide** (45): they never weaken it → **Moonborn** (85): at a high tide, every spell +20% · Tidal Reserve (50): +30 Magicka · Tide Lore (15) |
+
+Streams hit every frame, so they don't roll staggers, and Lingering Elements stretches an
+effect once rather than every frame.
+
 ## Adding a spell (no code)
 
 1. Duplicate the spell closest to what you want in `spells/` (each style has one).

@@ -74,7 +74,9 @@ ten that exist get theirs filled in along the way).
    - ✅ Command (an addition, Presence): companions stronger by level, the Command key to point
      out a target, and 21 perks (`docs/godot-starter/COMPANIONS.md`).
    - ✅ The martial trees: One-Handed, Two-Handed, Block, Archery and Athletics to 21 perks
-     each (`docs/godot-starter/COMBAT.md`, "Martial perk trees"). The five magic schools next.
+     each (`docs/godot-starter/COMBAT.md`, "Martial perk trees").
+   - ✅ The magic trees: Ruin, Shaping, Mending, Glamour and Tidecraft to 21 perks each
+     (`docs/godot-starter/MAGIC.md`, "Perk trees"). Every one of the 24 skills now has 21+.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
 6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.

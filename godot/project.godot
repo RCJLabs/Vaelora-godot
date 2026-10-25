@@ -64,6 +64,7 @@ LockpickScreen="*res://ui/lockpick_screen.gd"
 Bushcraft="*res://systems/bushcraft.gd"
 Command="*res://systems/command.gd"
 Arms="*res://systems/arms.gd"
+Spellcraft="*res://systems/spellcraft.gd"
 
 [editor_plugins]
 
