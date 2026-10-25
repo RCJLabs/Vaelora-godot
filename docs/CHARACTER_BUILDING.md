@@ -83,7 +83,8 @@ ten that exist get theirs filled in along the way).
    - ✅ Spell combinations: Shatter, Undertow, Riptide (`docs/godot-starter/MAGIC.md`).
    - ✅ Dual-wielding: a one-handed weapon in the left hand, twin strikes, three One-Handed
      perks (`docs/godot-starter/COMBAT.md`, "Dual-wielding").
-   - Spell-blades next.
+   - ✅ Spell-blades: a charged spell into the blade in the other hand, four perks
+     (`docs/godot-starter/COMBAT.md`, "Spell-blades").
 6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.
 

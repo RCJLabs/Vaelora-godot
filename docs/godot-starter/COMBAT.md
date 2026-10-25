@@ -318,6 +318,33 @@ One-Handed perks (`when_dual`: only with a weapon in each hand):
 | Dual Savagery | 50 | Off-hand blows at full damage |
 | Twin Strike | 70 | A twin strike staggers |
 
+## Spell-blades
+
+Phase 5 (`docs/CHARACTER_BUILDING.md`): "a spell in one hand charges the weapon in the other".
+With a melee weapon in the right hand and a damage spell ready in the left, **hold the left
+button until the spell is fully charged, then press Attack** instead of letting go. The spell
+goes into the blade (it costs the spell's Magicka, and your hand stops casting); the weapon
+glows in the spell's colour. The rules are `systems/spellblade.gd`; the gesture is
+`PlayerMagic.try_imbue()`.
+
+- The next **3 blows that land** each add **60% of the spell's damage**, at the spell power you
+  had when you charged it, and its effect: a **fire** blade (Firebolt) burns, a **frost** blade
+  (Frost Burst) chills.
+- A charged blow counts as the spell landing for **combinations**: a fire blade on a chilled
+  enemy **shatters** (`docs/godot-starter/MAGIC.md`, "Combinations").
+- Unused, the charge fades after **30 s**. Shield bashes and bare fists don't use it.
+- Which spells: charged spells that just do damage (today Firebolt and Frost Burst). The
+  schools' special casts (Moon-Crush, runes, Glamour...) and streams (Flames) can't.
+- XP: the spell's school, a fifth of the Magicka when you charge it and a fifth of the damage
+  each charged blow adds.
+
+| Perk | Skill | Level | What it does |
+|---|---|---|---|
+| Battle Channelling | Ruin | 25 | Charging a blade costs half the Magicka |
+| Lingering Charge | Ruin | 35 | Two more charged blows (5) |
+| Spellsword | One-Handed | 40 | Charged blows carry half as much of the spell again (90%) |
+| Arc Discharge | Ruin | 65 | The last charged blow bursts: the spell's full damage to everything within 3 m |
+
 ## Known limits
 
 - Dual-wielding: the off-hand blow of a twin strike uses the main weapon's attack (its

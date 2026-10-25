@@ -157,6 +157,24 @@ func _damage_stream(damage: float) -> float:
 	return dealt
 
 
+# --- spell-blades -------------------------------------------------------------------------
+
+## Attack pressed while a spell is fully charged in the left hand and a melee weapon
+## is in the right: the spell goes into the blade instead (Spellblade). True if it did.
+func try_imbue() -> bool:
+	if state != State.CHARGE or charge < 1.0 or not Spellblade.can_hold(spell) or not Spellblade.can_take(combat.main_item):
+		return false
+	var cost := spell.magicka_cost * _cost_mult() * Arms.prod("blade_cost")
+	if not player.stats.try_use_magicka(cost):
+		player.hud.flash_magicka()
+		return false
+	Spellblade.imbue(spell, _power_mult(), player)
+	Sfx.play("spell_cast", -5.0)
+	_stop()
+	_cooldown = RECAST_DELAY
+	return true
+
+
 # --- charged spells: bolts, areas, self -----------------------------------------------
 
 func _charge(delta: float, holding: bool, both: bool) -> void:
@@ -175,6 +193,8 @@ func _charge(delta: float, holding: bool, both: bool) -> void:
 	if both and charge >= 1.0 and spell.can_dual_cast:
 		dual = true   # both hands held once charged: it goes off dual-cast
 	player.hud.set_charge(charge)
+	if charge >= 1.0 and Spellblade.can_hold(spell) and Spellblade.can_take(combat.main_item):
+		Hints.show_once("spell_blade", "%s is charged and you hold a blade: press %s now to put the spell into it instead of casting." % [spell.display_name, Hints.key("attack")])
 	if holding:
 		return
 	# Released.

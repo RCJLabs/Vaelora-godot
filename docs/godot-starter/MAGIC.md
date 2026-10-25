@@ -187,7 +187,7 @@ From the questionnaire ("frost then fire shatters, a well then a crush"). `syste
 
 | Combination | How | What |
 |---|---|---|
-| **Shatter** | A spell that burns (Firebolt, Flames) on a chilled enemy (Frost Burst) | 30 more (by your Ruin), a stagger, and the chill is gone |
+| **Shatter** | A spell that burns (Firebolt, Flames, or a fire blade: `COMBAT.md`, "Spell-blades") on a chilled enemy (Frost Burst) | 30 more (by your Ruin), a stagger, and the chill is gone |
 | **Undertow** | Moon-Crush on an enemy a Gravity Well is holding | Double |
 | **Riptide** | Hit something within 1.5 s of pulling it (Pull) | Half as much again, from a blade, an arrow or a spell; once |
 
