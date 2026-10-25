@@ -125,7 +125,7 @@ own of both.
 
 **After the credits, you keep playing in the changed world.**
 
-**Camera: first and third person, switchable all game** (a build item, not only an ending one).
+**Camera: first and third person, switchable all game** (built: V, or Settings).
 
 ### Still open from round five
 

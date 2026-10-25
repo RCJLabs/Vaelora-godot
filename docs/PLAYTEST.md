@@ -59,6 +59,9 @@ noticed, and send it back. Short answers are fine ("too easy", "parry window fee
 - [ ] Is it too dark / too bright / washed out? (Screenshots so far were all from the simpler
       renderer; this is the first look in the real one.)
 
+- [ ] **Third person** (V): walk around, fight a wolf, take something, talk to someone. Does
+      the crosshair land where you expect? Does the camera get stuck behind walls or trees?
+
 ## 2. Sound (2 min, with headphones if you can)
 
 Every sound is a synthesised placeholder, and nobody has listened to them yet.

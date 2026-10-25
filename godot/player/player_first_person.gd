@@ -18,13 +18,14 @@ extends CharacterBody3D
 #   ├── Magic (player_magic.gd)     spellcasting: streams, bolts, areas, wards, self, dual-casting
 #   ├── Traversal (player_traversal.gd)  mantling onto ledges, vaulting low obstacles
 #   ├── Footsteps (player_footsteps.gd)  step sounds by surface
+#   ├── View (player_view.gd)       first or third person (V); the third-person camera and body
 #   ├── StatusEffects               bleeding, burning... (systems/status_effects.gd)
 #   └── HUD (instance of ui/hud.tscn)
 #
 # Controls: WASD move, Shift sprint, Space jump, mouse look, E interact,
 # left-click attack (hold for a heavy attack; bows: hold to draw), hold
 # right-click for the left hand (cast the ready spell, block, shield, or aim a
-# bow), Q switch spell / Block, Alt dodge, Z race power,
+# bow), Q switch spell / Block, Alt dodge, V first / third person, Z race power,
 # X background power, F5 quicksave,
 # F9 load the latest save, Esc pause menu.
 
@@ -70,6 +71,7 @@ extends CharacterBody3D
 @onready var magic: PlayerMagic = $Magic
 @onready var traversal: PlayerTraversal = $Traversal
 @onready var footsteps: PlayerFootsteps = $Footsteps
+@onready var view: PlayerView = $View
 @onready var spell_cast: ShapeCast3D = $Head/Camera3D/SpellCast
 @onready var spell_orb: MeshInstance3D = $Head/Camera3D/SpellHand/Orb
 @onready var spell_light: OmniLight3D = $Head/Camera3D/SpellHand/Light
@@ -343,7 +345,8 @@ func _process(delta: float) -> void:
 	var aiming := combat.is_bow() and Input.is_action_pressed("cast") and can_fight()
 	camera.fov = lerpf(camera.fov, Settings.fov * (0.6 if aiming else 1.0), minf(delta * 10.0, 1.0))
 	_camera_kick = _camera_kick.lerp(Vector3.ZERO, minf(delta * 12.0, 1.0))
-	camera.rotation = Vector3(deg_to_rad(_camera_kick.x), deg_to_rad(_camera_kick.y), deg_to_rad(_camera_kick.z))
+	# (In third person, view.aim_rotation turns the eye to whatever is under the crosshair.)
+	camera.rotation = Vector3(deg_to_rad(_camera_kick.x), deg_to_rad(_camera_kick.y), deg_to_rad(_camera_kick.z)) + view.aim_rotation
 
 
 func _apply_settings() -> void:

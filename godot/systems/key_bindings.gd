@@ -19,7 +19,7 @@ const ACTIONS := [
 	["move_left", "Move left"], ["move_right", "Move right"],
 	["sprint", "Sprint"], ["jump", "Jump / climb"], ["dodge", "Dodge"],
 	["attack", "Attack (right hand)"], ["cast", "Left hand (cast / block / aim)"],
-	["switch_spell", "Switch spell"], ["interact", "Use / talk"],
+	["switch_spell", "Switch spell"], ["interact", "Use / talk"], ["toggle_view", "First / third person"],
 	["power_race", "Race power"], ["power_background", "Background power"],
 	["character_menu", "Character menu"], ["journal", "Journal"], ["map", "Map"],
 	["quicksave", "Quicksave"], ["quickload", "Load latest save"],
