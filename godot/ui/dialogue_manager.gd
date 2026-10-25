@@ -115,6 +115,7 @@ func _show_node(node_id: String) -> void:
 #   "set_flag": "name" or ["a", "b"]   "give_gold": 50     "take_gold": 10
 #   "give_item": "id" or {"id": "id", "count": 2}          "take_item": same
 #   "add_reputation": {"riverwatch": 10}   (negative to lose reputation)
+#   "add_approval": {"brannoc": 5}          a companion's approval (negative to lose it)
 func _run_actions(entry: Dictionary) -> void:
 	for flag in Conditions.as_list(entry.get("set_flag", [])):
 		GameState.set_flag(flag)
@@ -130,6 +131,8 @@ func _run_actions(entry: Dictionary) -> void:
 		Inventory.remove(take[0], take[1])
 	for faction in entry.get("add_reputation", {}):
 		Reputation.add(faction, int(entry["add_reputation"][faction]))
+	for id in entry.get("add_approval", {}):
+		Companions.add_approval(id, int(entry["add_approval"][id]))
 
 
 # "start" is either a node id, or a list of {"node": id, <conditions>}

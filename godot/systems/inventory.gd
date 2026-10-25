@@ -31,6 +31,8 @@ const ITEM_FILES := [
 	"res://items/book_dimming.tres",
 	"res://items/book_lantern.tres",
 	"res://items/book_lullaby.tres",
+	"res://items/book_riverwatch_roll.tres",
+	"res://items/book_ilse_notebook.tres",
 	"res://items/cult_letter.tres",
 	"res://items/strongbox.tres",
 	"res://items/rune_glass.tres",

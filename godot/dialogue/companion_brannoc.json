@@ -1,5 +1,21 @@
 {
-	"start": "greet",
+	"start": [
+		{
+			"node": "warm",
+			"requires_approval": {
+				"brannoc": 40
+			}
+		},
+		{
+			"node": "cold",
+			"requires_approval_below": {
+				"brannoc": -15
+			}
+		},
+		{
+			"node": "greet"
+		}
+	],
 	"nodes": {
 		"greet": {
 			"text": "\"Lead on. I'll keep an eye on your back, and the other one on the trees.\"",
@@ -11,6 +27,114 @@
 				{
 					"text": "Follow me.",
 					"next": "follow"
+				},
+				{
+					"text": "Your father's story, about who founded Riverwatch. Is it true?",
+					"next": "founded",
+					"requires_approval": {
+						"brannoc": 10
+					},
+					"requires_not_flag": "brannoc_founded_started"
+				},
+				{
+					"text": "I read the roll in the barrow.",
+					"next": "roll",
+					"requires_flag": [
+						"brannoc_founded_started",
+						"read_book_riverwatch_roll"
+					],
+					"requires_not_flag": "brannoc_founded_done"
+				},
+				{
+					"text": "About something else.",
+					"next": "end",
+					"set_flag": "companion_cmd_talk"
+				},
+				{
+					"text": "Go home. I'll find you later.",
+					"next": "home"
+				},
+				{
+					"text": "Nothing. Let's go.",
+					"next": "end"
+				}
+			]
+		},
+		"warm": {
+			"text": "He grins. \"Where to, then? Wherever it is, I'd rather be there with you than at the stones with the captain.\"",
+			"choices": [
+				{
+					"text": "Wait here.",
+					"next": "wait"
+				},
+				{
+					"text": "Follow me.",
+					"next": "follow"
+				},
+				{
+					"text": "Your father's story, about who founded Riverwatch. Is it true?",
+					"next": "founded",
+					"requires_approval": {
+						"brannoc": 10
+					},
+					"requires_not_flag": "brannoc_founded_started"
+				},
+				{
+					"text": "I read the roll in the barrow.",
+					"next": "roll",
+					"requires_flag": [
+						"brannoc_founded_started",
+						"read_book_riverwatch_roll"
+					],
+					"requires_not_flag": "brannoc_founded_done"
+				},
+				{
+					"text": "About something else.",
+					"next": "end",
+					"set_flag": "companion_cmd_talk"
+				},
+				{
+					"text": "Go home. I'll find you later.",
+					"next": "home"
+				},
+				{
+					"text": "Nothing. Let's go.",
+					"next": "end"
+				}
+			]
+		},
+		"cold": {
+			"text": "\"What.\" Not a question. He doesn't quite look at you.",
+			"choices": [
+				{
+					"text": "Wait here.",
+					"next": "wait"
+				},
+				{
+					"text": "Follow me.",
+					"next": "follow"
+				},
+				{
+					"text": "Your father's story, about who founded Riverwatch. Is it true?",
+					"next": "founded",
+					"requires_approval": {
+						"brannoc": 10
+					},
+					"requires_not_flag": "brannoc_founded_started"
+				},
+				{
+					"text": "I read the roll in the barrow.",
+					"next": "roll",
+					"requires_flag": [
+						"brannoc_founded_started",
+						"read_book_riverwatch_roll"
+					],
+					"requires_not_flag": "brannoc_founded_done"
+				},
+				{
+					"text": "About something else.",
+					"next": "end",
+					"set_flag": "companion_cmd_talk"
 				},
 				{
 					"text": "Go home. I'll find you later.",
@@ -45,6 +169,70 @@
 		"home": {
 			"text": "\"Back to the stones, then. The captain will be thrilled.\"",
 			"set_flag": "companion_cmd_dismiss",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"founded": {
+			"text": "\"True? It's a story. One of Hallam's own hunters held the ford, and was given the land for it, and his company with him.\" He scratches his jaw. \"There's a roll of their names in the old barrow, in a niche by the door. My father went to read it once, and came back and never talked about it. I've never had the nerve.\"",
+			"set_flag": "brannoc_founded_started",
+			"choices": [
+				{
+					"text": "Then let's go and read it.",
+					"next": "founded_go"
+				}
+			]
+		},
+		"founded_go": {
+			"text": "\"The barrow's south-west of the stones. Bring a torch. And if it's nothing, you never saw me nervous.\"",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"roll": {
+			"text": "\"Well?\" He's trying to sound like he doesn't care. \"What does it say?\"",
+			"choices": [
+				{
+					"text": "The truth: they hunted the lights, and were paid in land for it. Your family's on it.",
+					"next": "roll_truth"
+				},
+				{
+					"text": "Just names. Old soldiers, and what they were given.",
+					"next": "roll_lie"
+				}
+			]
+		},
+		"roll_truth": {
+			"text": "He takes the roll and reads it twice. \"Aldo Brannoch. Twenty-two lights.\" He rolls it up very carefully. \"'The lights asked for mercy in their own tongue.'\" A long breath. \"I was raised on that song. Hallam and his hook. I sang it to my sister.\" He hands it back. \"Thank you for not lying to me. I'm going to need to think about what I'm guarding.\"",
+			"set_flag": [
+				"brannoc_knows_hunt",
+				"brannoc_founded_done"
+			],
+			"add_approval": {
+				"brannoc": 10
+			},
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"roll_lie": {
+			"text": "\"Names.\" He looks at you a moment too long. \"Right. Good. That's... good.\" He doesn't ask to see it.",
+			"set_flag": [
+				"brannoc_spared_truth",
+				"brannoc_founded_done"
+			],
+			"add_approval": {
+				"brannoc": -3
+			},
 			"choices": [
 				{
 					"text": "(Leave)",

@@ -13,17 +13,82 @@ extends Node
 #   companion_cmd_wait     wait here
 #   companion_cmd_follow   follow again
 #   companion_cmd_dismiss  go home (back to their post)
+#   companion_cmd_talk     their usual conversation (the one at their post), since
+#                          the person at the post is away while they're with you
+#
+# Approval (-100..100, saved): how they feel about you. While they're following,
+# story flags they care about move it and get a remark (companions/<id>.json
+# "reactions"); now and then, out of a fight, they say something (its "banter",
+# each line once, gated by the usual conditions). At LEAVE_AT or below they walk
+# out ("left_you_<id>") and won't come back. Dialogue reads it with
+# "requires_approval" / "requires_approval_below" and changes it with
+# "add_approval" (systems/conditions.gd, ui/dialogue_manager.gd).
 
 const DEFS := {
-	"brannoc": {"name": "Brannoc", "dialogue": "res://dialogue/companion_brannoc.json", "health": 150.0, "damage": 12.0, "reach": 1.9},
-	"zora": {"name": "Zora", "dialogue": "res://dialogue/companion_zora.json", "health": 90.0, "damage": 9.0, "reach": 6.0, "attack_interval": 1.6},
+	"brannoc": {"name": "Brannoc", "dialogue": "res://dialogue/companion_brannoc.json", "npc_dialogue": "res://dialogue/brannoc.json", "health": 150.0, "damage": 12.0, "reach": 1.9},
+	"zora": {"name": "Zora", "dialogue": "res://dialogue/companion_zora.json", "npc_dialogue": "res://dialogue/zora.json", "health": 90.0, "damage": 9.0, "reach": 6.0, "attack_interval": 1.6},
 }
-const COMMANDS := ["companion_cmd_wait", "companion_cmd_follow", "companion_cmd_dismiss"]
+const COMMANDS := ["companion_cmd_wait", "companion_cmd_follow", "companion_cmd_dismiss", "companion_cmd_talk"]
 const COMPANION_SCRIPT := preload("res://companions/companion.gd")
+const LEAVE_AT := -40
+## Seconds of following (out of a fight) between remarks.
+const BANTER_EVERY := 150.0
+
+signal said(id: String, line: String)
+
+var approval := {}   # id -> -100..100
+var _said := {}      # id -> [banter ids already said]
+var _talk := {}      # id -> {"reactions": {...}, "banter": [...], "leave_line": "..."}
+var _banter_left := BANTER_EVERY
 
 
 func _ready() -> void:
+	for id in DEFS:
+		var file := "res://companions/%s.json" % id
+		_talk[id] = JSON.parse_string(FileAccess.get_file_as_string(file)) if FileAccess.file_exists(file) else {}
+	reset()
 	GameState.flag_set.connect(_on_flag_set)
+
+
+func reset() -> void:
+	for id in DEFS:
+		approval[id] = 0
+		_said[id] = []
+	_banter_left = BANTER_EVERY
+
+
+func to_dict() -> Dictionary:
+	return {"approval": approval.duplicate(), "said": _said.duplicate(true)}
+
+
+func from_dict(data: Dictionary) -> void:
+	reset()
+	for id in data.get("approval", {}):
+		approval[id] = int(data["approval"][id])
+	for id in data.get("said", {}):
+		_said[id] = Array(data["said"][id])
+
+
+## Changes how `id` feels about you. Below LEAVE_AT while following, they leave.
+func add_approval(id: String, amount: int) -> void:
+	if not approval.has(id) or amount == 0:
+		return
+	approval[id] = clampi(approval[id] + amount, -100, 100)
+	if active() == id and approval[id] <= LEAVE_AT:
+		say(id, _talk[id].get("leave_line", "I'm done. Find someone else."))
+		var companion := body()
+		if companion:
+			companion.queue_free()
+		GameState.clear_flag("companion_" + id)
+		GameState.set_flag("left_you_" + id)
+
+
+## A remark from `id`, shown to the player.
+func say(id: String, line: String) -> void:
+	var player = get_tree().get_first_node_in_group("player")
+	if player and player.get("hud"):
+		player.hud.show_message("%s: \"%s\"" % [DEFS[id]["name"], line], 6.0)
+	said.emit(id, line)
 
 
 ## The id of whoever's following you, or "".
@@ -42,8 +107,9 @@ func body() -> Node3D:
 	return get_tree().current_scene.get_node_or_null("Companion_" + id) as Node3D
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var id := active()
+	_tick_banter(id, delta)
 	# No longer following (the flag was cleared some other way than "Go home"): gone.
 	for companion in get_tree().get_nodes_in_group("companion"):
 		if companion.companion_id != id and not companion.is_queued_for_deletion():
@@ -57,7 +123,28 @@ func _process(_delta: float) -> void:
 		companion.arrive_behind(player)
 
 
+# Every BANTER_EVERY seconds of following, out of a fight: the next line they haven't said.
+func _tick_banter(id: String, delta: float) -> void:
+	var companion := body()
+	if companion == null or get_tree().paused or DialogueManager.is_active or companion.target or companion.is_down:
+		return
+	_banter_left -= delta
+	if _banter_left > 0.0:
+		return
+	_banter_left = BANTER_EVERY
+	for line in _talk[id].get("banter", []):
+		if not line["id"] in _said[id] and Conditions.met(line):
+			_said[id].append(line["id"])
+			say(id, line["line"])
+			return
+
+
 func _on_flag_set(flag: String) -> void:
+	var id := active()
+	if id != "" and _talk[id].get("reactions", {}).has(flag):
+		var reaction: Dictionary = _talk[id]["reactions"][flag]
+		say(id, reaction["line"])
+		add_approval(id, int(reaction.get("approval", 0)))
 	if not flag in COMMANDS:
 		return
 	GameState.clear_flag(flag)   # an order, not a memory
@@ -73,3 +160,8 @@ func _on_flag_set(flag: String) -> void:
 			if companion:
 				companion.queue_free()
 			GameState.clear_flag("companion_" + active())
+		"companion_cmd_talk":
+			# After this conversation has closed (the choice that sets this ends it).
+			var npc: Dictionary = DEFS.get(active(), {})
+			if npc.has("npc_dialogue"):
+				DialogueManager.start.call_deferred(npc["npc_dialogue"], npc["name"])

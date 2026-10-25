@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_ilse_notebook"
+display_name = "Ilse's Notebook"
+description = "A small notebook with a burnt corner, stamped inside the cover with a lantern. The handwriting is a hedge-witch's; the stamp is the Order's."
+value = 10
+weight = 0.5
+book_text = "Inside the cover, in a stranger's hand: \"Taken from the witch Ilse Marrow at her burning. For the Order's study. - H.\"
+
+The rest is in a smaller, quicker hand.
+
+Glamour is not a lie. A lie asks the other person to believe something false. Glamour shows them what they already half-believe, and lets them finish the thought themselves. That is why it works on frightened people best.
+
+The wolves know me now. I leave them bones; they leave me alone. A fair trade, which is more than the garrison offers.
+
+Zora asked me today why we hide. I told her: because the Order has never once burned the wrong person, if you ask the Order.
+
+The lights at the stone circle sing at night. Not words. Something like words. I have written down what I can.
+
+If you are reading this, I suppose they found me. Zora, if it's you: keep the window facing north. And stop apologising to the trees; they don't mind."

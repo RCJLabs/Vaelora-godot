@@ -670,5 +670,85 @@
 				"text": "I fought the Mercy at their stone. Sister Halina slipped away before the end."
 			}
 		]
+	},
+	"brannoc_founded": {
+		"title": "What Riverwatch Was Founded On",
+		"giver": "Brannoc",
+		"description": "Brannoc's father always said Riverwatch was founded by one of Hallam's own hunters. A roll of the founders' names is kept in a niche at the mouth of the old barrow. Brannoc has never had the nerve to read it.",
+		"started_when": {
+			"requires_flag": "brannoc_founded_started"
+		},
+		"completed_when": {
+			"requires_flag": "brannoc_founded_done"
+		},
+		"objectives": [
+			{
+				"text": "Read the Riverwatch Roll in the old barrow.",
+				"done_when": {
+					"requires_flag": "read_book_riverwatch_roll"
+				},
+				"marker": "DungeonEntrance"
+			},
+			{
+				"text": "Tell Brannoc what it says.",
+				"done_when": {
+					"requires_flag": "brannoc_founded_done"
+				}
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "brannoc_knows_hunt"
+				},
+				"text": "Riverwatch was founded by men who hunted the lights and were paid in land for it, and Brannoc's family was among them. I told him the truth. He's thinking about what he guards."
+			},
+			{
+				"when": {
+					"requires_flag": "brannoc_spared_truth"
+				},
+				"text": "The roll lists Brannoc's family among the hunters who put out the lights. I told him it was only names. He didn't ask to see it."
+			}
+		]
+	},
+	"zora_notebook": {
+		"title": "Her Teacher's Notebook",
+		"giver": "Zora",
+		"description": "The Lantern Order burned Zora's teacher, Ilse Marrow, and Inquisitor Hale carries her notebook. Zora wants it back, and won't ask how.",
+		"started_when": {
+			"requires_flag": "zora_notebook_started"
+		},
+		"completed_when": {
+			"requires_flag": "zora_notebook_done"
+		},
+		"objectives": [
+			{
+				"text": "Get Ilse's notebook from Inquisitor Hale on the south road.",
+				"done_when": {
+					"requires_item": "book_ilse_notebook"
+				},
+				"marker": "Inquisitor"
+			},
+			{
+				"text": "Give it to Zora.",
+				"done_when": {
+					"requires_flag": "zora_notebook_done"
+				}
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "zora_notebook_bought"
+				},
+				"text": "I bought Ilse Marrow's notebook back from Inquisitor Hale with a 'donation' to the lamp fund, and gave it to Zora."
+			},
+			{
+				"when": {
+					"requires_flag": "zora_notebook_done"
+				},
+				"text": "I took Ilse Marrow's notebook from Inquisitor Hale, the hard way, and gave it to Zora."
+			}
+		]
 	}
 }

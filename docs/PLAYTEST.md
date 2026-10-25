@@ -102,6 +102,8 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
       get stuck, or get in your way in a fight? Try Wait here / Follow me / Go home.
       Do the wolves split between you and them in a way that reads? Let one go down and help
       them up (E): is it clear when that happens?
+      Do their remarks and banter come too often, or not often enough? Try their quests:
+      Zora's ("You said the Order burned your teacher") and Brannoc's ("Your father's story").
 - [ ] **Lanternfast** (rest until 18:00 on day 7; the rest menu says how many days are left):
       do the lanterns read as a festival? Talk to Maren and Zora. Do the wisps leave you be?
 

@@ -739,7 +739,8 @@ attack_damage = 12.0
 guard_chance = 0.6
 gold = 25
 loot = {
-"book_lantern": 1
+"book_lantern": 1,
+"book_ilse_notebook": 1
 }
 
 [node name="MercyCell" type="Node3D" parent="."]

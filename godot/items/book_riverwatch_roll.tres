@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_riverwatch_roll"
+display_name = "The Riverwatch Roll"
+description = "A roll of names on oiled hide, left in a niche at the mouth of the old barrow."
+value = 5
+weight = 0.5
+book_text = "THE ROLL OF THE RIVERWATCH COMPANY
+set down in the third year of the Pact
+
+These are the men who held the ford for the Pact, and put out the lights of the Greywater, and were paid in land for it.
+
+Osric Vane, of Hallam's own company. Forty lights, put out with his own hook. Captain, and given the ford.
+Aldo Brannoch, his sergeant. Twenty-two lights. Given the north field.
+Berit the Tall. Nineteen lights. Given the mill.
+Hamund Grey. Eleven lights, and two that would not go out, which he caged and sold to the Collegium at Ilunhall for a great price.
+
+Let it be remembered that the lights asked for mercy in their own tongue, and that we were told this tongue was a trick, and that we believed it.
+
+Let it be remembered that we built the garrison on the place where we burned the last of them, so that nobody would dig there.
+
+The Pact pays well. Ilun keep us."

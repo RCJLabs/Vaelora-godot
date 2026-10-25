@@ -1,5 +1,21 @@
 {
-	"start": "greet",
+	"start": [
+		{
+			"node": "warm",
+			"requires_approval": {
+				"zora": 40
+			}
+		},
+		{
+			"node": "cold",
+			"requires_approval_below": {
+				"zora": -15
+			}
+		},
+		{
+			"node": "greet"
+		}
+	],
 	"nodes": {
 		"greet": {
 			"text": "\"Where are we going? Somewhere with fewer trees, I hope. They've heard all my stories.\"",
@@ -11,6 +27,108 @@
 				{
 					"text": "Follow me.",
 					"next": "follow"
+				},
+				{
+					"text": "You said the Order burned your teacher.",
+					"next": "teacher",
+					"requires_approval": {
+						"zora": 10
+					},
+					"requires_not_flag": "zora_notebook_started"
+				},
+				{
+					"text": "I have Ilse's notebook.",
+					"next": "notebook",
+					"requires_flag": "zora_notebook_started",
+					"requires_item": "book_ilse_notebook",
+					"requires_not_flag": "zora_notebook_done"
+				},
+				{
+					"text": "About something else.",
+					"next": "end",
+					"set_flag": "companion_cmd_talk"
+				},
+				{
+					"text": "Go home. I'll find you later.",
+					"next": "home"
+				},
+				{
+					"text": "Nothing. Let's go.",
+					"next": "end"
+				}
+			]
+		},
+		"warm": {
+			"text": "\"There you are. I was just telling a squirrel about you. Good things, mostly.\"",
+			"choices": [
+				{
+					"text": "Wait here.",
+					"next": "wait"
+				},
+				{
+					"text": "Follow me.",
+					"next": "follow"
+				},
+				{
+					"text": "You said the Order burned your teacher.",
+					"next": "teacher",
+					"requires_approval": {
+						"zora": 10
+					},
+					"requires_not_flag": "zora_notebook_started"
+				},
+				{
+					"text": "I have Ilse's notebook.",
+					"next": "notebook",
+					"requires_flag": "zora_notebook_started",
+					"requires_item": "book_ilse_notebook",
+					"requires_not_flag": "zora_notebook_done"
+				},
+				{
+					"text": "About something else.",
+					"next": "end",
+					"set_flag": "companion_cmd_talk"
+				},
+				{
+					"text": "Go home. I'll find you later.",
+					"next": "home"
+				},
+				{
+					"text": "Nothing. Let's go.",
+					"next": "end"
+				}
+			]
+		},
+		"cold": {
+			"text": "\"Yes?\" Very polite. She's been polite to the Lantern Order, too.",
+			"choices": [
+				{
+					"text": "Wait here.",
+					"next": "wait"
+				},
+				{
+					"text": "Follow me.",
+					"next": "follow"
+				},
+				{
+					"text": "You said the Order burned your teacher.",
+					"next": "teacher",
+					"requires_approval": {
+						"zora": 10
+					},
+					"requires_not_flag": "zora_notebook_started"
+				},
+				{
+					"text": "I have Ilse's notebook.",
+					"next": "notebook",
+					"requires_flag": "zora_notebook_started",
+					"requires_item": "book_ilse_notebook",
+					"requires_not_flag": "zora_notebook_done"
+				},
+				{
+					"text": "About something else.",
+					"next": "end",
+					"set_flag": "companion_cmd_talk"
 				},
 				{
 					"text": "Go home. I'll find you later.",
@@ -45,6 +163,39 @@
 		"home": {
 			"text": "\"Home, then. The hut won't have missed me, but the cat might.\"",
 			"set_flag": "companion_cmd_dismiss",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"teacher": {
+			"text": "\"Ilse Marrow. Everything I know that's worth knowing, she taught me, mostly by shouting.\" Zora's smile doesn't move. \"The Order took her notebook at the burning. That inquisitor on the south road carries it like a prayer book; he quotes it at the people he's about to hang. I want it back. I won't ask how.\"",
+			"set_flag": "zora_notebook_started",
+			"choices": [
+				{
+					"text": "I'll get it.",
+					"next": "teacher_go"
+				}
+			]
+		},
+		"teacher_go": {
+			"text": "\"Hale. White coat, gold lantern, no sense of humour. You can't miss him; that's rather the point of him.\"",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"notebook": {
+			"text": "She holds it for a long while without opening it. Then she opens it to the last page, reads, and laughs, and then doesn't. \"'Keep the window facing north. Stop apologising to the trees.'\" She closes it. \"Thank you. I mean it. I don't say that often; ask the trees.\"",
+			"take_item": "book_ilse_notebook",
+			"set_flag": "zora_notebook_done",
+			"add_approval": {
+				"zora": 15
+			},
 			"choices": [
 				{
 					"text": "(Leave)",

@@ -1,0 +1,99 @@
+{
+	"leave_line": "I've seen enough. I'm going back to my post, and I'm going to write down what I saw. Don't follow me.",
+	"reactions": {
+		"wolves_cleared": {
+			"approval": 5,
+			"line": "Clean work. The road's safer for it, and the captain can stop asking me about wolves."
+		},
+		"bandits_cleared": {
+			"approval": 5,
+			"line": "That camp's been a thorn for a year. The garrison owes you a drink. I'll pretend I paid for it."
+		},
+		"cultists_cleared": {
+			"approval": 5,
+			"line": "Whatever they were doing down there, it's done. Good."
+		},
+		"ritual_cultists_cleared": {
+			"approval": 5,
+			"line": "Hooded lunatics in the woods. I'll put it in the report as 'trespassers'."
+		},
+		"took_wisp_essence": {
+			"approval": -10,
+			"line": "Whatever you just did to that light, it didn't look right. Don't do it again where I can see."
+		},
+		"released_wisp": {
+			"approval": 5,
+			"line": "It went up like a spark off a fire. Strange. I felt... lighter. Don't tell anyone I said that."
+		},
+		"freed_wisp": {
+			"approval": 3,
+			"line": "You let it go? Huh. It looked glad."
+		},
+		"hollow_wolf_killed": {
+			"approval": 3,
+			"line": "Kinder that way. Nothing left in it to save."
+		},
+		"hollow_wolf_spared": {
+			"approval": -3,
+			"line": "You left it standing there? That's not mercy. That's just leaving it."
+		},
+		"mercy_let_go": {
+			"approval": -5,
+			"line": "You let them walk. They were stealing something from those lights, and you let them walk."
+		},
+		"mercy_cell_fight": {
+			"approval": 5,
+			"line": "Hoods up, knives out. I know where I am with that."
+		},
+		"inquisitor_hostile": {
+			"approval": -15,
+			"line": "That's a Lantern Order coat. You understand what we've just done? The Empire hangs people for less."
+		},
+		"jory_freed": {
+			"approval": 3,
+			"line": "Get the merchant home in one piece. That's the job, most days."
+		},
+		"strongbox_returned": {
+			"approval": 5,
+			"line": "Returned it. You'd be surprised how few do."
+		},
+		"strongbox_kept": {
+			"approval": -10,
+			"line": "That's theft, plain and simple. I'm a soldier, not a fence."
+		},
+		"shrine_rekindled": {
+			"approval": 3,
+			"line": "My mother used to light one of these on the long nights. I'd forgotten."
+		}
+	},
+	"banter": [
+		{
+			"id": "road",
+			"line": "Twelve years on this road. You learn which birds go quiet before trouble. Those ones, there. Quiet."
+		},
+		{
+			"id": "captain",
+			"line": "The captain thinks the stones are bandits with lanterns. The captain has never been wrong, according to the captain."
+		},
+		{
+			"id": "hallam",
+			"line": "You've read the Hallam book? My father used to say Riverwatch was founded by one of his hunters. Said it like it was something to be proud of.",
+			"requires_flag": "read_book_hallam"
+		},
+		{
+			"id": "stain",
+			"line": "Your hands. That grey. I'm not blind. Whatever it is, I hope you know what you're doing.",
+			"requires_corruption": 2
+		},
+		{
+			"id": "night",
+			"line": "Wisps are out. Keep your back to something solid.",
+			"requires_flag": "saw_drain_line"
+		},
+		{
+			"id": "lanternfast",
+			"line": "Lanternfast. My mother made us sit up till midnight with a lantern each, to keep the lights out. I never asked out of what.",
+			"requires_flag": "lanternfast_now"
+		}
+	]
+}

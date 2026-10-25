@@ -186,7 +186,8 @@
 					"requires_flag": "brannoc_would_travel",
 					"requires_not_flag": [
 						"companion_brannoc",
-						"companion_zora"
+						"companion_zora",
+						"left_you_brannoc"
 					]
 				},
 				{
@@ -314,7 +315,8 @@
 					"requires_flag": "brannoc_would_travel",
 					"requires_not_flag": [
 						"companion_brannoc",
-						"companion_zora"
+						"companion_zora",
+						"left_you_brannoc"
 					]
 				},
 				{
@@ -450,7 +452,8 @@
 					"requires_flag": "brannoc_would_travel",
 					"requires_not_flag": [
 						"companion_brannoc",
-						"companion_zora"
+						"companion_zora",
+						"left_you_brannoc"
 					]
 				},
 				{
@@ -520,7 +523,8 @@
 					"requires_flag": "brannoc_would_travel",
 					"requires_not_flag": [
 						"companion_brannoc",
-						"companion_zora"
+						"companion_zora",
+						"left_you_brannoc"
 					]
 				},
 				{
@@ -590,7 +594,8 @@
 					"requires_flag": "brannoc_would_travel",
 					"requires_not_flag": [
 						"companion_brannoc",
-						"companion_zora"
+						"companion_zora",
+						"left_you_brannoc"
 					]
 				},
 				{
@@ -643,7 +648,8 @@
 					"requires_flag": "brannoc_would_travel",
 					"requires_not_flag": [
 						"companion_brannoc",
-						"companion_zora"
+						"companion_zora",
+						"left_you_brannoc"
 					]
 				},
 				{
