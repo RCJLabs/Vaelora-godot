@@ -94,6 +94,8 @@ func scaled(spell: SpellData, player: Node) -> SpellData:
 ## What a hit by `spell` on `target` is multiplied by (rolls the crit).
 func hit_mult(target: Node, spell: SpellData) -> float:
 	var mult := 2.0 if randf() < sum("spell_crit", spell.skill) else 1.0
+	var player := get_tree().get_first_node_in_group("player") as Node3D
+	mult *= Combos.riptide_mult(target, player)   # Riptide
 	var stats = target.get("stats")
 	if stats and stats.health < stats.max_health * 0.25:
 		mult *= prod("spell_execute", spell.skill)
@@ -104,6 +106,7 @@ func hit_mult(target: Node, spell: SpellData) -> float:
 ## they don't roll staggers.
 func landed(target: Node, spell: SpellData, dealt: float, player: Node3D, stream: bool = false) -> void:
 	var school := spell.skill
+	Combos.spell_landed(target, spell, player)   # Shatter
 	if spell.applies_effect != "":
 		var effects = target.get("effects")
 		if effects is StatusEffects and effects.active.has(spell.applies_effect):

@@ -174,6 +174,130 @@ func is_bow() -> bool:
 
 # --- input (called by the player) ---------------------------------------------------
 
+## Weapon Art (systems/weapon_arts.gd): the special attack for what you hold.
+## Returns the art's kind if it went off, "" if not (and says why).
+func weapon_art_pressed() -> String:
+	if not (state == State.READY or state == State.BLOCKING) or not player.can_fight():
+		return ""
+	var kind := WeaponArts.kind_for(main_item, state == State.BLOCKING and left_hand() == Hand.SHIELD)
+	var reason := WeaponArts.why_not(kind, player.stats.stamina)
+	if reason != "":
+		player.hud.notify(reason)
+		return ""
+	if kind == "bow" and Inventory.count(main_item.ammo) <= 0:
+		player.hud.notify("No arrows")
+		return ""
+	player.stats.use_stamina(WeaponArts.STAMINA)
+	WeaponArts.used(kind)
+	var power := WeaponArts.power(kind)
+	player.hud.notify("%s!" % WeaponArts.ARTS[kind]["name"])
+	match kind:
+		"sword":
+			var target := _art_target()
+			if target:
+				for i in 3:
+					_art_hit(target, 0.7 * power)
+		"dagger":
+			player.lunge(5.0, 0.15)
+			var target := _art_target()
+			if target:
+				var unaware: bool = target.has_method("is_unaware") and target.is_unaware()
+				_art_hit(target, (3.0 if unaware else 2.0) * power)
+				if target.has_method("add_effect"):
+					target.add_effect("bleeding")
+		"axe":
+			var target := _art_target()
+			if target:
+				_art_hit(target, 1.4 * power)
+				if target.has_method("add_effect"):
+					for i in 3:
+						target.add_effect("bleeding")
+		"mace":
+			var target := _art_target()
+			if target:
+				_art_hit(target, 1.5 * power)
+				Arms._stagger(target, player)
+		"greatsword":
+			for target in _around(main_item.reach * 1.2):
+				_art_hit(target, 1.5 * power)
+		"bow":
+			var forward: Vector3 = -player.camera.global_transform.basis.z
+			for angle in [-6.0, 0.0, 6.0]:
+				if Inventory.count(main_item.ammo) > 0:
+					_art_arrow(forward.rotated(Vector3.UP, deg_to_rad(angle)), power)
+		"shield":
+			player.lunge(9.0, 0.25)
+			for target in _around(3.5, 70.0):
+				target.take_hit(shield_item.damage * 2.0 * power * Smithing.damage_mult(shield_item), player.global_position, 10.0, 999.0)
+				Arms._stagger(target, player)
+		"unarmed":
+			var target := _art_target()
+			if target:
+				_art_hit(target, 1.5 * power, 14.0)
+				Arms._stagger(target, player)
+	animator.go(heavy_attack.strike_pose if heavy_attack else "low_center", 0.15, 2.2)
+	player.camera_kick(Vector3(-2.0, 0.0, 0.0))
+	return kind
+
+
+func _art_target() -> Node3D:
+	for target in _targets_in_reach():
+		if target.has_method("take_hit") and not Binding.is_bound(target):
+			return target
+	return null
+
+
+## Enemies within `radius` of you, or in a cone of `angle` degrees in front if given.
+func _around(radius: float, angle: float = 360.0) -> Array:
+	var forward: Vector3 = -player.global_transform.basis.z
+	forward.y = 0.0
+	var out := []
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		if not enemy is Node3D or not enemy.has_method("take_hit") or Glamour._dead(enemy) or Binding.is_bound(enemy):
+			continue
+		var to: Vector3 = enemy.global_position - player.global_position
+		to.y = 0.0
+		if to.length() > radius:
+			continue
+		if angle < 360.0 and to.length() > 0.3 and rad_to_deg(forward.angle_to(to)) > angle / 2.0:
+			continue
+		out.append(enemy)
+	return out
+
+
+# One art blow through the usual pipeline (skill, perks, crits), at `mult` of a heavy attack.
+func _art_hit(target: Node, mult: float, knockback: float = 6.0) -> void:
+	var art := (heavy_attack if heavy_attack else _fist_heavy()).duplicate() as AttackData
+	art.damage_mult = mult
+	art.knockback = knockback
+	art.applies_effect = ""
+	var was: Array = [current_attack, is_heavy, is_bash, charge]
+	current_attack = art
+	is_heavy = true
+	is_bash = false
+	charge = 1.0
+	_land_hit(target)
+	current_attack = was[0]; is_heavy = was[1]; is_bash = was[2]; charge = was[3]
+
+
+func _art_arrow(direction: Vector3, power: float) -> void:
+	Inventory.remove(main_item.ammo, 1)
+	var stats: Stats = player.stats
+	var arrow: Arrow = ARROW_SCENE.instantiate()
+	arrow.shooter = player
+	arrow.damage = base_damage * power * Skills.weapon_damage_mult("archery") \
+			* stats.modifier("damage_dealt") * stats.modifier("weapon_damage_archery")
+	arrow.poise_damage = 15.0 * stats.modifier("poise_dealt")
+	arrow.damage_for = func(target: Node, base: float) -> float:
+		var dist: float = target.global_position.distance_to(player.global_position) if target is Node3D else 0.0
+		return base * Arms.hit_mult(target, player, false, dist)
+	arrow.hit.connect(_on_arrow_hit)
+	player.get_parent().add_child(arrow)
+	var camera: Camera3D = player.camera
+	arrow.launch(camera.global_position + direction * 0.6, direction, main_item.arrow_speed * stats.modifier("arrow_speed"))
+	Sfx.play("bow_release", -3.0)
+
+
 func attack_pressed() -> void:
 	if player.magic.right_hand_free():
 		return   # an empty right hand casts the ready spell instead (PlayerMagic)
@@ -392,7 +516,7 @@ func _targets_in_reach() -> Array:
 	var camera: Camera3D = player.camera
 	var reach := -attack_cast.target_position.z
 	var box := BoxShape3D.new()
-	box.size = Vector3(SWING_WIDTH_CLEAVE if current_attack.cleave else SWING_WIDTH, SWING_HEIGHT, reach)
+	box.size = Vector3(SWING_WIDTH_CLEAVE if current_attack and current_attack.cleave else SWING_WIDTH, SWING_HEIGHT, reach)   # (no swing yet: a weapon art)
 	var basis := camera.global_transform.basis
 	var query := PhysicsShapeQueryParameters3D.new()
 	query.shape = box
@@ -739,7 +863,7 @@ func _facing(attacker: Node3D) -> bool:
 		return true
 	var to_attacker := attacker.global_position - player.global_position
 	to_attacker.y = 0.0
-	var forward := -player.global_transform.basis.z
+	var forward: Vector3 = -player.global_transform.basis.z
 	forward.y = 0.0
 	if to_attacker.length() < 0.01:
 		return true

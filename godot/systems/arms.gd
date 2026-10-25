@@ -105,6 +105,7 @@ func hit_mult(target: Node, player: Node3D, charged_from_sprint: bool = false, d
 	if target.get("_afraid"):
 		mult *= prod("vs_afraid")   # Panic (Glamour)
 	mult *= 1.0 + sum("momentum") * _momentum
+	mult *= Combos.riptide_mult(target, player)   # Riptide: hit what you just pulled
 	return mult
 
 

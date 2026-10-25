@@ -54,6 +54,7 @@ func cast(spell: SpellData, center: Vector3, power: float, caster: Node3D, dual:
 				return []
 			_hurt(enemy, spell.damage * power, caster)
 			enemy.stagger(PULL_STAGGER)
+			Combos.pulled(enemy)   # Riptide
 			_drags.append({"node": enemy, "to": caster, "velocity": Vector3.ZERO, "left": 2.0})
 			return [enemy]
 		"shove":
@@ -90,7 +91,7 @@ func cast(spell: SpellData, center: Vector3, power: float, caster: Node3D, dual:
 					continue
 				touched.append(hit)
 				var falloff := lerpf(1.0, 0.5, clampf(_flat(hit.global_position - center).length() / radius, 0.0, 1.0))
-				_hurt(hit, spell.damage * power * falloff, caster)
+				_hurt(hit, spell.damage * power * falloff * Combos.crush_mult(hit, caster), caster)   # Undertow
 				if hit.has_method("stagger"):
 					hit.stagger(CRUSH_STAGGER)
 			SpellBurst.spawn(caster.get_parent(), center + Vector3.UP * 0.3, radius * 1.2, spell.color)
