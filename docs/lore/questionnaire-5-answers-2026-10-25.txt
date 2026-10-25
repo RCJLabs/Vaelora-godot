@@ -1,0 +1,43 @@
+Lore questionnaire V answers: the last scene (as sent in chat, 25 October 2026)
+
+1. The draft, piece by piece:
+    The last playable scene is at the Pale Gate, on the dark of the Wanderer (Lantern Night: Ilunhall instead): keep
+    Aeviro deals one last hand of cards first; you can play or not; Aeviro cheats and says so: keep
+    Then ending slides for each faction, place and companion: keep
+    The final image is the Greywater stone circle at dawn, in every ending: drop → Idk what I want the last image to be yet
+    What's changed tells you the ending: the stones' hum, the Wanderer, the wisps: keep
+    Maren is there, with one lantern facing north: keep
+    The last line is the wisp companion's (or Maren's, if the wisp isn't with you): change → Whoever your companion is
+2. Which scene do you mean by the last scene?:
+    C (Both: a playable last scene, then one final image); D (Each ending gets its own last scene; nothing shared)
+3. Should every ending finish in the same place?:
+    B (No: each ending its own place)
+4. Where is the last scene you play?:
+    E (A different place for each ending)
+5. Where is the final image?:
+    E (Wherever the player's opening began (their background))
+6. When is the final image?:
+    B (The next Lanternfast, a year later)
+7. What shape is the last scene you play?:
+    E (A different shape for each ending)
+8. Who is there?:
+    A (Aeviro); B (The companions you brought)
+9. Can you still change your mind in the last scene?:
+    A (Yes: the ending is chosen there, at the last moment)
+10. Aeviro's last words: what kind?:
+    A (A joke: the funniest line in the game, then quiet); D (A card game: one last hand, and Aeviro cheats)
+11. Does Aeviro die in every ending?:
+    A (Yes: nine hundred years is long enough)
+12. Does the player speak in the last scene?:
+    A (Dialogue choices, as everywhere else)
+13. How do we see the player at the very end?:
+    Note: I want to be able to switch between 1st and 3rd person all game.
+14. After the ending?:
+    B (Credits, then keep playing in the changed world)
+15. What should the last scene leave you with?:
+    Note: Depends on the ending
+16. One last twist?:
+    B (The Wanderer isn't empty: someone is still aboard)
+17. The last thing you hear:
+    A (The Hallam song, sung the Passengers' way)
+18. Anything else about how the game should end: (skipped)
