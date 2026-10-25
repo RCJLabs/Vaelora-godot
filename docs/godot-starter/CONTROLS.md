@@ -48,6 +48,10 @@ How it works (`player/player_view.gd`, the player's `View` node):
 - **The crosshair is what you hit.** In third person the eye is turned each frame towards
   whatever is under the crosshair (up to 60 m), so the middle of the screen is what you'll
   take, talk to, hit or cast at.
+- **What you hold shows on the body.** Each first-person model (weapon, shield, spell
+  hands) has a copy on the body that takes the same pose every frame, 1.35× further out from
+  the shoulders. So third person swings, blocks, bashes and draws a bow exactly as first
+  person does, with no separate animations. Changing equipment rebuilds the copies.
 - **Render layers** keep each camera to its own things. The first-person hands, weapons and
   spell glow are on layer 11, which the third-person camera doesn't draw. Your body is on
   layer 12, which the eye camera doesn't draw.
@@ -96,8 +100,9 @@ gamepad buttons for them).
 
 ## Known limits
 - No aim assist for the stick yet.
-- Third person (greybox): your body is a capsule with no animation, and it shows nothing in
-  your hands, so you can't see your weapon, shield or spell in third person. Camera shake
-  only moves the first-person view.
+- Third person (greybox): your body is a capsule with no arms or walk animation. What you
+  hold floats where your hands would be, posed like the first-person model, so poses meant
+  to read from the eye can look odd from behind. Camera shake only moves the first-person
+  view.
 - Typing a name in the character creator needs a keyboard (leave it blank for "Traveller").
 - Gamepad was tested with simulated input; it hasn't been tried with a real controller.

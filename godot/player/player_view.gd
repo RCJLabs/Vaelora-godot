@@ -13,6 +13,11 @@ extends Node
 # is under the crosshair (aim_rotation, which the player adds to the eye's
 # rotation): what you see in the middle of the screen is what you hit.
 #
+# What you hold shows on the body too: each first-person model (weapon, shield,
+# spell hands) has a copy on the body, rebuilt when equipment changes, that takes
+# the same pose every frame, scaled out to arm's length from the shoulder. So
+# third person swings, blocks, bashes and draws exactly as first person does.
+#
 # Render layers keep each camera to its own things: the first-person hands,
 # weapons and spell glow are on VIEWMODEL_LAYER (set as they enter the tree),
 # which the third-person camera doesn't draw; the body is on BODY_LAYER, which
@@ -27,6 +32,10 @@ const SHOULDER := Vector3(0.8, 0.35, 0.0)
 const AIM_DISTANCE := 60.0
 ## Closer than this, the body hides (it would fill the screen).
 const BODY_HIDE_DISTANCE := 0.9
+## The held copies: where the shoulders are on the body, and how much further out
+## from them than the first-person model is from the eye.
+const SHOULDERS := Vector3(0.0, 1.45, 0.0)
+const REACH_SCALE := 1.35
 
 var third_person := false
 ## Small pitch/yaw (radians) that points the eye at the crosshair; zero in first person.
@@ -38,6 +47,9 @@ var body: Node3D
 var _player: CharacterBody3D
 var _head: Node3D
 var _eye: Camera3D
+var _rig: Node3D          # on the body at the shoulders; holds the copies
+var _held := {}           # first-person model -> its copy on the body
+var _held_from := {}      # first-person model -> what its copy was built from
 
 
 func _ready() -> void:
@@ -97,6 +109,7 @@ func _process(_delta: float) -> void:
 	camera.fov = _eye.fov   # including the bow's aiming zoom
 	body.visible = arm.get_hit_length() > BODY_HIDE_DISTANCE
 	_aim_eye_at_crosshair()
+	_mirror_held()
 
 
 ## Where the crosshair is pointing, in the world (up to AIM_DISTANCE).
@@ -116,6 +129,43 @@ func _aim_eye_at_crosshair() -> void:
 		return
 	var d := (_head.global_transform.basis.inverse() * to_target).normalized()
 	aim_rotation = Vector3(asin(clampf(d.y, -1.0, 1.0)), atan2(-d.x, -d.z), 0.0)
+
+
+## The body's copy of a first-person model (Weapon, OffHand, SpellHand...), or null.
+func held_copy(model_name: String) -> Node3D:
+	var model := _eye.get_node_or_null(model_name)
+	return _held.get(model) if model else null
+
+
+# Each first-person model's copy on the body: rebuilt when what it holds changes,
+# then posed like it, half following your look up and down.
+func _mirror_held() -> void:
+	_rig.rotation.x = _head.rotation.x * 0.5
+	for model in _eye.get_children():
+		if not model is Node3D or model is RayCast3D or model is ShapeCast3D:
+			continue
+		var built_from := ",".join(model.get_children().map(func(c): return str(c.get_instance_id())))
+		if _held_from.get(model) != built_from:
+			_held_from[model] = built_from
+			if _held.has(model) and is_instance_valid(_held[model]):
+				_held[model].queue_free()
+			_held[model] = _copy_of(model)
+			_rig.add_child(_held[model])
+		var held: Node3D = _held[model]
+		held.transform = Transform3D(model.transform.basis, model.transform.origin * REACH_SCALE)
+		held.visible = model.visible
+
+
+func _copy_of(model: Node3D) -> Node3D:
+	var copy := Node3D.new()
+	copy.name = model.name
+	for child in model.get_children():
+		copy.add_child(child.duplicate())
+	for light in copy.find_children("*", "Light3D", true, false):
+		light.free()   # the first-person one already lights the world
+	for geometry in copy.find_children("*", "GeometryInstance3D", true, false):
+		geometry.layers = BODY_LAYER
+	return copy
 
 
 func _on_node_added(node: Node) -> void:
@@ -156,5 +206,9 @@ func _make_body() -> Node3D:
 	visor.material_override = dark
 	visor.layers = BODY_LAYER
 	root.add_child(visor)
+	_rig = Node3D.new()
+	_rig.name = "Held"
+	_rig.position = SHOULDERS
+	root.add_child(_rig)
 	root.visible = false
 	return root
