@@ -12,9 +12,16 @@ extends Node3D
 # it rises at 6:00 and is up only by day, out of sight. Half, it's up half the
 # night: rising at midnight while waning, setting at midnight while waxing. So the
 # Wanderer is never in the night sky on Lanternfast.
+#
+# Except for one light. On Lanternfast night a single small light hangs in the
+# northern sky, where everyone's lanterns face: the Vael who stayed aboard,
+# keeping watch (docs/lore/STORY.md). Only the Wanderer's node draws it.
 
 const DISTANCE := 400.0
 const HOURS_UP := 12.0
+## Lanternfast's one light: due north, a third of the way up the sky.
+const WATCH_DIRECTION := Vector3(0.0, 0.5, -0.866)
+const WATCH_SIZE := 5.0
 
 @export_enum("wanderer", "ilun") var moon: String = "wanderer"
 @export var size: float = 44.0
@@ -28,6 +35,8 @@ var direction: Vector3:
 
 var _disc: MeshInstance3D
 var _material: ShaderMaterial
+var _watch: MeshInstance3D   # Lanternfast's one light (the Wanderer only)
+var _time := 0.0
 
 
 func _ready() -> void:
@@ -41,11 +50,30 @@ func _ready() -> void:
 	_material.set_shader_parameter("color", color)
 	_disc.material_override = _material
 	add_child(_disc)
+	if moon == "wanderer":
+		_watch = MeshInstance3D.new()
+		var dot := SphereMesh.new()
+		dot.radius = WATCH_SIZE / 2.0
+		dot.height = WATCH_SIZE
+		_watch.mesh = dot
+		_watch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		var glow := StandardMaterial3D.new()
+		glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		glow.albedo_color = Color(0.85, 1.0, 0.9)
+		glow.disable_fog = true   # 400 m away: the fog would grey it out, as it would the discs
+		_watch.material_override = glow
+		add_child(_watch)
 	_update()
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	_time += delta
 	_update()
+
+
+## True while Lanternfast's one light is in the sky (the Wanderer's node, at night).
+func watch_shown() -> bool:
+	return _watch != null and WorldClock.is_lanternfast() and night() > 0.0
 
 
 ## Where it is in its cycle: 0 dark, 0.5 full.
@@ -89,9 +117,16 @@ func _update() -> void:
 	_material.set_shader_parameter("fade", night())
 	var where := direction
 	_disc.visible = night() > 0.0 and where.y > -0.02   # (it sets behind the hills a little late)
+	if _watch:
+		_watch.visible = watch_shown()
 	var camera := get_viewport().get_camera_3d()
-	if camera == null or not _disc.visible:
+	if camera == null:
 		return
 	var from := camera.global_position
+	if _watch and _watch.visible:
+		_watch.global_position = from + WATCH_DIRECTION.normalized() * DISTANCE
+		_watch.scale = Vector3.ONE * (1.0 + 0.15 * sin(_time * 2.3))   # a slow, steady pulse
+	if not _disc.visible:
+		return
 	_disc.global_position = from + where * DISTANCE
 	_disc.look_at(from, Vector3.UP)
