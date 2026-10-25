@@ -74,8 +74,16 @@ file) or **restores** pools instantly (`"restore": {"stamina": 50}`). Cooldowns 
 
 Each character level gives **1 perk point** and **1 attribute point** (you start with 1 perk
 point), on top of the existing +10 Health/Stamina/Magicka choice. Spend them in
-**Tab → Skills**: a **+** next to each attribute, and a row of perks per skill. Locked perks
-say why ("needs One-Handed 35", "needs Armsman").
+**Tab → Skills** (a **+** next to each attribute; the **Perks** button there jumps to the tree) and **Tab → Perks** (`ui/perk_tree.gd`).
+
+The Perks tab lists every skill with how many of its perks you have (`One-Handed 1/3`, and a
+**•** when one is ready to take). The chosen skill's perks are drawn as a tree: one row per
+skill level needed, lowest at the top, with a line from a perk down to each perk that requires
+it. Gold is taken, bright is ready (or would be, with a point), dim is locked. Click a perk to
+see what it does and what it needs ("needs One-Handed 35", "needs Armsman"), then **Take** it.
+A perk sits straight under the one it requires when nothing is in between; otherwise it gets
+its own column, so a line never runs behind an unrelated perk. The tree scrolls, so a skill
+can hold 20+ perks (the test lays out 25).
 
 | Skill | Perks (skill level needed) |
 |---|---|
@@ -139,7 +147,8 @@ at −15 with Riverwatch (Distrusted), so the garrison's potion sales, which nee
   `ability`. It appears in the creator automatically.
 - **A trait:** add an entry to `traits.json` with `"positive": true` or `false`.
 - **A perk:** add an entry to `perks.json` with `skill`, `level`, an optional `requires`
-  (another perk id), and `modifiers` or `stat_bonus`.
+  (another perk id), and `modifiers` or `stat_bonus`. The Perks tab places it by its level
+  and `requires`; there's no layout to edit.
 - **A power:** add an entry to `abilities.json`. If it uses an effect, create the `.tres`
   in `effects/` and add it to `EFFECT_FILES` in `systems/effect_library.gd`.
 

@@ -141,6 +141,7 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 
 - [ ] Stick look speed: too slow / OK / too fast?
 - [ ] Menus with the D-pad (pause, Tab menu, a conversation): anything you couldn't reach?
+- [ ] Tab → Perks: can you tell at a glance what's taken, ready and locked, and what leads to what?
 - [ ] Try **Settings → Accessibility → Toggle sprint / Toggle block**: better or worse than holding?
 - [ ] Any button that felt wrong where it is? (Rebind it in Settings → Controls, then tell me
       the new layout.)
