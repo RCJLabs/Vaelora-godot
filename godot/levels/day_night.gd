@@ -2,7 +2,9 @@ extends Node
 
 # Day and night for an outdoor level: moves the sun (a moon at night), and
 # blends the sky, sun and ambient colours through night -> dawn -> day -> dusk
-# by the WorldClock. Add one to an outdoor level and point it at the Sun and
+# by the WorldClock. At night the light comes from Ilun (the level's IlunMoon,
+# if it has one: levels/wanderer_moon.gd), brighter the fuller it is, and the
+# sky draws no disc for it, since IlunMoon draws the moon itself. Add one to an outdoor level and point it at the Sun and
 # the WorldEnvironment. Interiors don't need one.
 #
 # Dawn and dusk use the colours the test level was first tuned with. The other
@@ -16,6 +18,9 @@ extends Node
 @export_range(0.0, 24.0) var fixed_hour: float = 18.5
 ## Compass direction the sun rises from and travels along (degrees).
 @export var sun_azimuth: float = 25.0
+## Where the night light comes from (its direction and phase). Empty or missing: a
+## plain moonlight at 35 degrees opposite the sun.
+@export var night_moon_path: NodePath = ^"../IlunMoon"
 
 # hour: sun colour, sun energy, sky top, sky horizon, ground horizon, ambient energy, fog light
 const KEYS := [
@@ -31,6 +36,7 @@ const KEYS := [
 
 @onready var sun: DirectionalLight3D = get_node_or_null(sun_path)
 @onready var world_environment: WorldEnvironment = get_node_or_null(environment_path)
+@onready var night_moon: Node3D = get_node_or_null(night_moon_path) if not night_moon_path.is_empty() else null
 var _sky: ProceduralSkyMaterial
 var _last_hour := -1.0
 
@@ -75,6 +81,12 @@ func apply(hour: float) -> void:
 		var elevation := maxf(day_part * 60.0, 12.0) if day_part > 0.0 else 35.0
 		var azimuth := sun_azimuth + (hour - 12.0) * 8.0 if day_part > 0.0 else sun_azimuth + 180.0
 		sun.rotation_degrees = Vector3(-elevation, azimuth, 0.0)
+		sun.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_AND_SKY
+		if day_part <= 0.0 and night_moon:
+			# Shining from Ilun, a little dimmer when it's a sliver.
+			sun.basis = Basis.looking_at(-night_moon.direction, Vector3.UP)
+			sun.light_energy *= lerpf(0.6, 1.0, night_moon.lit())
+			sun.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
 	if _sky:
 		_sky.sky_top_color = a[3].lerp(b[3], t)
 		_sky.sky_horizon_color = a[4].lerp(b[4], t)

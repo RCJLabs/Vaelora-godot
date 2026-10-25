@@ -107,6 +107,8 @@ func _process(_delta: float) -> void:
 	if not third_person or not camera.is_inside_tree():
 		return
 	camera.fov = _eye.fov   # including the bow's aiming zoom
+	var kick: Vector3 = _player._camera_kick   # degrees, as the eye gets it
+	camera.rotation = Vector3(deg_to_rad(kick.x), deg_to_rad(kick.y), deg_to_rad(kick.z))
 	body.visible = arm.get_hit_length() > BODY_HIDE_DISTANCE
 	_aim_eye_at_crosshair()
 	_mirror_held()
