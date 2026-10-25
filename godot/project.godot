@@ -41,6 +41,7 @@ Corruption="*res://systems/corruption.gd"
 BookReader="*res://ui/book_reader.gd"
 Companions="*res://systems/companions.gd"
 Glamour="*res://systems/glamour.gd"
+Tidecraft="*res://systems/tidecraft.gd"
 Targeting="*res://systems/targeting.gd"
 Lanternfast="*res://systems/lanternfast.gd"
 

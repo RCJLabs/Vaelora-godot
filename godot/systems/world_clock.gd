@@ -19,6 +19,9 @@ const WANDERER_DAYS := 7
 const LANTERNFAST_FROM := 18.0
 ## Ilun, the old white moon, is slower: full on the first night, dark a week later.
 const ILUN_DAYS := 14
+## Tidecraft's power at the lowest and highest tide (tide_mult()).
+const TIDE_LOW := 0.6
+const TIDE_HIGH := 1.4
 const LANTERNFAST_UNTIL := 2.0   # the next morning
 
 var day := 1
@@ -80,6 +83,43 @@ func wanderer_phase() -> float:
 ## Where Ilun is in its cycle: 0 dark, 0.5 full (the night of day 1).
 func ilun_phase() -> float:
 	return fposmod(day + hour / 24.0 + 5.0, ILUN_DAYS) / ILUN_DAYS
+
+
+## How much of Ilun is lit (0 dark, 1 full).
+func ilun_lit() -> float:
+	return (1.0 - cos(ilun_phase() * TAU)) / 2.0
+
+
+## How much of the Wanderer is lit (0 dark, 1 full).
+func wanderer_lit() -> float:
+	return (1.0 - cos(wanderer_phase() * TAU)) / 2.0
+
+
+## The pull of the moons, for Tidecraft (0 to 1): the stronger of Ilun's fullness
+## and the Wanderer's darkness. Day or night doesn't matter: the moons pull either way.
+func tide() -> float:
+	return maxf(ilun_lit(), 1.0 - wanderer_lit())
+
+
+## Tidecraft spells' power: x0.6 at the lowest tide, x1.4 at the highest.
+func tide_mult() -> float:
+	return lerpf(TIDE_LOW, TIDE_HIGH, tide())
+
+
+## "high", "middling" or "low".
+func tide_word() -> String:
+	var t := tide()
+	return "high" if t >= 0.8 else ("middling" if t >= 0.45 else "low")
+
+
+## "The tide is high: Ilun is full." (the rest menu)
+func tide_text() -> String:
+	match tide_word():
+		"high":
+			return "The tide is high: %s." % ("Ilun is full" if ilun_lit() >= 1.0 - wanderer_lit() else "the Wanderer is dark")
+		"middling":
+			return "The tide is middling."
+	return "The tide is low: Ilun is dark and the Wanderer bright."
 
 
 ## The festival: from 18:00 on a dark day until 2:00 the next morning.

@@ -117,6 +117,8 @@ func _build() -> void:
 		child.queue_free()
 	_title.text = "Campfire" if _is_fire else "Bed"
 	var lines := [WorldClock.text(), WorldClock.wanderer_text()]
+	if Spellbook.known.any(func(id): return Spellbook.get_spell(id) and Spellbook.get_spell(id).tide != ""):
+		lines.append(WorldClock.tide_text())   # only matters once you know Tidecraft
 	if Survival.active():
 		lines.append(Survival.text())
 	if SaveSystem.hardcore_saves_locked():

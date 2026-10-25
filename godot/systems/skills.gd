@@ -54,6 +54,10 @@ const SKILLS := {
 		"name": "Glamour",
 		"description": "+1% to how long Glamour spells (decoys, fear, charm) last per level. Improves as you cast them.",
 	},
+	"tidecraft": {
+		"name": "Tidecraft",
+		"description": "+1% to Tidecraft spells (pull, shove, wells) per level. They're also stronger or weaker by the moons. Improves as you cast them.",
+	},
 }
 const START_LEVEL := 15
 const MAX_LEVEL := 100

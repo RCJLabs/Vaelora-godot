@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tides_shove"
+display_name = "Tide's Shove"
+description = "Charge, then release: everything in front of you within 7 m is hurled away and reels. Stronger or weaker by the moons: strongest when Ilun is full or the Wanderer is dark."
+style = 2
+skill = "tidecraft"
+color = Color(0.55, 0.62, 1, 1)
+can_dual_cast = true
+charge_time = 0.6
+magicka_cost = 32.0
+damage = 10.0
+max_distance = 7.0
+radius = 2.0
+tide = "shove"

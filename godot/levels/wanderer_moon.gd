@@ -44,7 +44,7 @@ func phase() -> float:
 
 ## How much of it is lit (0 dark, 1 full).
 func lit() -> float:
-	return (1.0 - cos(phase() * TAU)) / 2.0
+	return WorldClock.ilun_lit() if moon == "ilun" else WorldClock.wanderer_lit()
 
 
 ## 0 by day, 1 at night.

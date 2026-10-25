@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "pull"
+display_name = "Pull"
+description = "Charge, then release on an enemy (up to 20 m): the moons' pull drags it to you, and it reels. Stronger or weaker by the moons: strongest when Ilun is full or the Wanderer is dark."
+style = 2
+skill = "tidecraft"
+color = Color(0.55, 0.62, 1, 1)
+can_dual_cast = true
+charge_time = 0.7
+magicka_cost = 30.0
+damage = 6.0
+max_distance = 20.0
+radius = 2.0
+tide = "pull"

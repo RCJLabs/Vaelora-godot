@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_pull"
+display_name = "Tome: Pull"
+description = "A Tide College primer, its margins full of moon tables. Use it to learn Pull."
+type = 1
+value = 80
+weight = 1.0
+teaches_spell = "pull"
