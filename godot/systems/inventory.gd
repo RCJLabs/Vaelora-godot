@@ -40,6 +40,11 @@ const ITEM_FILES := [
 	"res://items/hunting_dagger.tres",
 	"res://items/leather_cuirass.tres",
 	"res://items/leather_boots.tres",
+	"res://items/leather_cap.tres",
+	"res://items/leather_gloves.tres",
+	"res://items/iron_cuirass.tres",
+	"res://items/iron_gauntlets.tres",
+	"res://items/iron_boots.tres",
 	"res://items/iron_helmet.tres",
 	"res://items/iron_axe.tres",
 	"res://items/iron_mace.tres",
@@ -122,13 +127,14 @@ func remove(id: String, amount: int = 1) -> bool:
 
 
 ## What everything you carry weighs (equipped things included).
+## What you carry, for carry weight (worn armour weighs nothing with Unhindered / Conditioning).
 func total_weight() -> float:
 	var total := 0.0
 	for id in items:
 		var item := get_item(id)
 		if item:
 			total += item.weight * items[id]
-	return total
+	return total - Armor.weightless()
 
 
 func count(id: String) -> int:
@@ -205,11 +211,9 @@ func equipped_item(slot: String) -> ItemData:
 	return get_item(equipped[slot]) if equipped.has(slot) else null
 
 
+## Your armour rating: worn pieces, raised by Light / Heavy Armour (systems/armor.gd).
 func armor_total() -> float:
-	var total := 0.0
-	for id in equipped.values():
-		total += get_item(id).armor
-	return total
+	return Armor.rating()
 
 
 func give_starting_gear() -> void:

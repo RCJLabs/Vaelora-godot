@@ -57,7 +57,7 @@ func range_mult() -> float:
 	var still := p != null and Vector2(p.velocity.x, p.velocity.z).length() < 0.3
 	mult *= STILL_MULT * Character.modifier("detection_still") if still else Character.modifier("detection_moving")
 	mult *= lerpf(DARK_MULT * Character.modifier("detection_night"), 1.0, WorldClock.daylight())
-	return mult * Character.modifier("detection")
+	return mult * Character.modifier("detection") * Armor.noise_mult()   # heavy armour is loud
 
 
 ## Called by an unaware enemy every physics frame: has it noticed `foe` (the

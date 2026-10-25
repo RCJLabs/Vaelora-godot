@@ -168,13 +168,15 @@ func modifier(key: String) -> float:
 	for id in traits:
 		result *= float(trait_list[id].get("modifiers", {}).get(key, 1.0))
 	for id in perks:
-		result *= float(perk_list[id].get("modifiers", {}).get(key, 1.0))
+		if Armor.perk_applies(perk_list[id]):   # "when_wearing" / "when_full" armour perks
+			result *= float(perk_list[id].get("modifiers", {}).get(key, 1.0))
 	if modes["hardcore"]:
 		result *= float(HARDCORE_MODIFIERS.get(key, 1.0))
 	return result * Corruption.modifier(key)
 
 
 ## Flat bonus to "health" / "stamina" / "magicka" maximums from perks and traits.
+## (Always on: an armour condition here would let you refill by swapping armour.)
 func stat_bonus(stat: String) -> float:
 	var total := 0.0
 	for id in perks:

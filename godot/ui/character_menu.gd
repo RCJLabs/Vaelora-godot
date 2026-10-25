@@ -258,7 +258,9 @@ func _show_selected_item() -> void:
 			details = "Damage %d   -   %.2f s per swing   -   Reach %.1f m   -   %d stamina per swing\n" % [
 				item.damage, item.attack_cooldown, item.reach, item.stamina_cost]
 		elif item.type == ItemData.Type.ARMOR:
-			details = "Armor %d   -   %s\n" % [item.armor, item.slot_name().capitalize()]
+			var kind := Armor.kind_of(item)
+			details = "Armor %d%s   -   %s%s\n" % [roundi(Armor.piece_armor(item)), "" if is_equal_approx(Armor.piece_armor(item), item.armor) else " (base %d)" % item.armor,
+					("%s, " % ("Light" if kind == "light" else "Heavy")) if kind != "" else "", item.slot_name().capitalize()]
 		details += "Value: %d gold   -   Weight: %.1f" % [item.value, item.weight]
 		if Attributes.strength_needed(item.weight) > 0.0 and item.type == ItemData.Type.WEAPON:
 			details += "\nHeavy: wants Strength %d%s" % [ceili(Attributes.strength_needed(item.weight)),

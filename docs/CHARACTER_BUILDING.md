@@ -47,7 +47,9 @@ ten that exist get theirs filled in along the way).
    - ✅ The perk tree view (Tab → Perks), ready for 20+ perks a skill.
 2. **New skills on the body:**
    - ✅ Sneak, with sneak attacks, noise and a 22-perk tree (`docs/godot-starter/SNEAK.md`).
-   - Light and Heavy Armour, Speech (persuasion checks and haggling), Unarmed.
+   - ✅ Light and Heavy Armour, 21 perks each, with perks that work only in armour or a full set
+     (`docs/godot-starter/ARMOUR.md`).
+   - Speech (persuasion checks and haggling), Unarmed.
 3. **Magic:** Binding, then Runecraft, Sight and Drawing (each with its 20 perks).
 4. **Making things:** Alchemy, Smithing, Lockpicking, Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.

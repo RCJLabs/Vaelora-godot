@@ -101,6 +101,7 @@ var _iframes_left := 0.0
 var _block_toggled := false   # Settings.toggle_block: guard latched up
 var _stagger_left := 0.0
 var _riposte_left := 0.0
+var _counter_left := 0.0   # Counter-Strike (Light Armour): after a dodge, the next hit is harder
 var _hit_stops := 0
 
 
@@ -204,7 +205,7 @@ func dodge_pressed(input_dir: Vector2) -> void:
 	var local := Vector3(input_dir.x, 0.0, input_dir.y) if input_dir != Vector2.ZERO else Vector3.BACK
 	_dodge_velocity = (player.transform.basis * local).normalized() * DODGE_SPEED
 	_set_state(State.DODGING)
-	_iframes_left = DODGE_IFRAMES
+	_iframes_left = DODGE_IFRAMES * player.stats.modifier("dodge_iframes")
 	_press_held = false
 	animator.go("dodge" if not is_bow() else "bow_rest", 0.08, 0.5)
 	if shield_item:
@@ -222,6 +223,7 @@ func _physics_process(delta: float) -> void:
 	_dodge_cooldown_left -= delta
 	_iframes_left -= delta
 	_riposte_left -= delta
+	_counter_left -= delta
 	if _combo_grace_left > 0.0:
 		_combo_grace_left -= delta
 		if _combo_grace_left <= 0.0:
@@ -412,7 +414,16 @@ func _land_hit(target: Node) -> void:
 			damage *= Attributes.heavy_damage_mult(main_item.weight)   # heavy, without the Strength for it
 	if _riposte_left > 0.0:
 		damage *= stats.modifier("riposte_damage")
-	var poise := current_attack.poise_damage * _charge_mult()
+	if _counter_left > 0.0:
+		damage *= Armor.COUNTER_MULT
+		_counter_left = 0.0
+	if is_heavy:
+		damage *= stats.modifier("heavy_attack_damage")   # Momentum (Heavy Armour)
+	if main_item == null and not is_bash and Armor.has_perk("fists_of_steel"):
+		var hands := Inventory.equipped_item("hands")
+		if Armor.kind_of(hands) == "heavy":
+			damage += hands.armor   # gauntlets as knuckles
+	var poise := current_attack.poise_damage * _charge_mult() * stats.modifier("poise_dealt")
 	var heavy := is_heavy
 	var sneak := Stealth.sneak_attack_mult(target, "melee", null if is_bash else main_item)
 	if sneak > 1.0:
@@ -572,6 +583,8 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 	if stats.is_dead:
 		return "hit"
 	if _iframes_left > 0.0:
+		if Armor.has_perk("counter_strike"):
+			_counter_left = Armor.COUNTER_TIME
 		defended.emit("dodged")
 		return "dodged"
 	var ward: float = player.magic.ward_share(attacker)
@@ -604,7 +617,13 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 		player.camera_kick(Vector3(-1.0, 0.0, 0.0))
 		defended.emit("blocked")
 		return "blocked"
-	stats.take_damage(damage)
+	var outcome := {}
+	var taken := Armor.adjust_hit(damage, attacker, player, outcome)   # armour perks
+	if taken <= 0.0:
+		defended.emit(outcome.get("result", "dodged"))
+		return outcome.get("result", "dodged")
+	Armor.hit_taken(damage)   # trains Light / Heavy Armour
+	stats.take_damage(taken)
 	player.camera_kick(Vector3(-2.0, randf_range(-1.5, 1.5), randf_range(-3.0, 3.0)))
 	stats.take_poise_damage(poise_damage)
 	return "hit"

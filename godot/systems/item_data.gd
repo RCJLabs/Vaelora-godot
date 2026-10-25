@@ -8,6 +8,7 @@ enum Type { MISC, CONSUMABLE, WEAPON, ARMOR }
 ## Where armour is worn. Weapons always go in MAIN_HAND.
 enum Slot { NONE, MAIN_HAND, OFF_HAND, HEAD, BODY, HANDS, FEET, RING, AMULET }
 enum WeaponKind { MELEE, BOW }
+enum ArmorClass { NONE, LIGHT, HEAVY }
 
 ## Unique name used in code, dialogue JSON and save files. Don't change it once
 ## saves exist.
@@ -84,6 +85,9 @@ enum WeaponKind { MELEE, BOW }
 @export_group("Armor")
 @export var slot: Slot = Slot.NONE
 @export var armor: float = 0.0
+## Light or heavy: which skill makes it better and trains in it (systems/armor.gd).
+## Shields are neither.
+@export var armor_class: ArmorClass = ArmorClass.NONE
 
 
 ## A skill book: +1 to this skill the first time it's read.

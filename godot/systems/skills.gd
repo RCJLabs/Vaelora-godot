@@ -42,6 +42,11 @@ const SKILLS := {
 		"name": "Sneak",
 		"description": "Crouched, enemies notice you closer and slower: -0.5% of their range per level. Sneak attacks on the unaware do x3 (arrows x2). Improves as you sneak near enemies and with sneak attacks.",
 	},
+	"light_armor": {
+		"attribute": "agility",
+		"name": "Light Armour",
+		"description": "+1% armour from light pieces per level. Improves as you're hit wearing them.",
+	},
 	"block": {
 		"attribute": "endurance",
 		"name": "Block",
@@ -51,6 +56,11 @@ const SKILLS := {
 		"attribute": "endurance",
 		"name": "Athletics",
 		"description": "-0.5% sprint stamina cost per level. Improves as you sprint.",
+	},
+	"heavy_armor": {
+		"attribute": "endurance",
+		"name": "Heavy Armour",
+		"description": "+1% armour from heavy pieces per level. Improves as you're hit wearing them. Each heavy piece makes sprinting cost more and sneaking louder.",
 	},
 	"destruction": {
 		"attribute": "intellect",
@@ -121,7 +131,7 @@ func add_xp(id: String, amount: float) -> void:
 	if levels[id] >= MAX_LEVEL:
 		return
 	var player := get_tree().get_first_node_in_group("player")
-	var trait_mult: float = player.stats.modifier("skill_xp") if player else 1.0   # traits, Adaptable
+	var trait_mult: float = player.stats.modifier("skill_xp") * player.stats.modifier("skill_xp_" + id) if player else 1.0   # traits, Adaptable, per-skill perks
 	xp[id] += amount * GameState.race_data.skill_xp_mult * trait_mult \
 			* Attributes.skill_xp_mult(SKILLS[id].get("attribute", ""))
 	while levels[id] < MAX_LEVEL and xp[id] >= xp_needed(id):

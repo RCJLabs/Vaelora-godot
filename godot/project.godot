@@ -49,6 +49,7 @@ TrainingScreen="*res://ui/training_screen.gd"
 Targeting="*res://systems/targeting.gd"
 Lanternfast="*res://systems/lanternfast.gd"
 Stealth="*res://systems/stealth.gd"
+Armor="*res://systems/armor.gd"
 
 [editor_plugins]
 
