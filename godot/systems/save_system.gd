@@ -132,6 +132,7 @@ func save_game(slot: String = QUICKSAVE, resting: bool = false) -> bool:
 		"companions": Companions.to_dict(),
 		"trade": Trade.to_dict(),
 		"alchemy": Alchemy.to_dict(),
+		"smithing": Smithing.to_dict(),
 		"player": player.get_save_data(),
 	}
 	var file := FileAccess.open(_path(slot), FileAccess.WRITE)
@@ -201,6 +202,7 @@ func load_game(slot: String = "") -> bool:
 	Corruption.from_dict(data.get("corruption", {}))   # versions 1-10: none
 	Companions.from_dict(data.get("companions", {}))   # versions 1-11: nobody's opinion yet
 	Alchemy.from_dict(data.get("alchemy", {}))
+	Smithing.from_dict(data.get("smithing", {}))
 	Trade.from_dict(data.get("trade", {}))   # before the trading screen: full stock (bought uniques come from flags)
 	if not data.has("corruption") and GameState.has_flag("took_wisp_essence"):
 		Corruption.value = 35.0   # took the caged wisp's light before corruption existed

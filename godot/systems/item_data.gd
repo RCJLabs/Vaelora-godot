@@ -40,13 +40,18 @@ enum ArmorClass { NONE, LIGHT, HEAVY }
 ## Spell tomes: the spell id it teaches (the tome is used up).
 @export var teaches_spell: String = ""
 
+@export_group("Smithing")
+## What it's made of, for improving it at a forge: "iron", "steel", "leather", "wood" ("" can't be).
+@export var material: String = ""
+
 @export_group("Alchemy")
 ## Ingredients: the effects it brings to a brew (keys of Alchemy.EFFECTS), up to three.
 @export var alchemy_effects: Array[String] = []
 ## Brewed potions: the effect it has when drunk (Alchemy.drink) and how strong (0-2).
 @export var potion_effect: String = ""
 @export var potion_tier: int = 0
-## A tool you use from the pack: "alchemy" (a mortar and pestle) opens the brewing screen.
+## A tool you use from the pack: "alchemy" (a mortar and pestle) opens the brewing screen;
+## "smithing" (a smith's hammer) opens the forge to improve things, with Field Smith.
 @export var tool: String = ""
 
 @export_group("Book")

@@ -57,6 +57,8 @@ Sight="*res://systems/sight.gd"
 Drawing="*res://systems/drawing.gd"
 Alchemy="*res://systems/alchemy.gd"
 AlchemyScreen="*res://ui/alchemy_screen.gd"
+Smithing="*res://systems/smithing.gd"
+SmithingScreen="*res://ui/smithing_screen.gd"
 
 [editor_plugins]
 

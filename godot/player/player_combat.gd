@@ -121,8 +121,8 @@ func _ready() -> void:
 func set_weapon(item: ItemData) -> void:
 	main_item = item
 	if item:
-		base_damage = item.damage
-		base_stamina_cost = item.stamina_cost
+		base_damage = item.damage * Smithing.damage_mult(item)   # improved at a forge
+		base_stamina_cost = item.stamina_cost * Smithing.stamina_mult(item)
 		weapon_skill = item.weapon_skill
 		block_reduction = item.block_reduction
 		light_attacks = item.light_attacks.duplicate()
@@ -409,7 +409,7 @@ func _targets_in_reach() -> Array:
 func _land_hit(target: Node) -> void:
 	var stats: Stats = player.stats
 	var skill := "block" if is_bash else weapon_skill
-	var damage := (shield_item.damage if is_bash else base_damage) * current_attack.damage_mult * _charge_mult()
+	var damage := (shield_item.damage * Smithing.damage_mult(shield_item) if is_bash else base_damage) * current_attack.damage_mult * _charge_mult()
 	damage *= Attributes.melee_mult() * stats.modifier("damage_dealt")
 	if not is_bash:
 		damage *= GameState.race_data.melee_damage_mult * Skills.weapon_damage_mult(skill) \
@@ -433,7 +433,8 @@ func _land_hit(target: Node) -> void:
 	var rune_blade: bool = not is_bash and player.effects.has("rune_blade")   # Enchant Weapon (Runecraft)
 	if rune_blade:
 		damage += Runecraft.BLADE_DAMAGE * stats.modifier("enchant_damage")
-	var poise := current_attack.poise_damage * _charge_mult() * stats.modifier("poise_dealt")
+	var poise := current_attack.poise_damage * _charge_mult() * stats.modifier("poise_dealt") \
+			* (1.0 if is_bash else Smithing.poise_mult(main_item))   # Heavy Hand
 	var heavy := is_heavy
 	var sneak := Stealth.sneak_attack_mult(target, "melee", null if is_bash else main_item)
 	if sneak > 1.0:
@@ -619,7 +620,7 @@ func is_blocking() -> bool:
 ## Share of a hit the current block stops (before the Block skill).
 func guard_share() -> float:
 	if left_hand() == Hand.SHIELD:
-		return shield_item.block_reduction
+		return Smithing.block_reduction(shield_item)   # improved shields block more
 	if main_item == null:
 		return minf(block_reduction * player.stats.modifier("fist_block"), 0.8)   # Martial Guard
 	return block_reduction

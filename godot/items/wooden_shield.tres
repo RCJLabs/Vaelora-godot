@@ -29,3 +29,4 @@ stamina_cost = 15.0
 block_reduction = 0.85
 held_scene = ExtResource("2_model")
 bash_attack = SubResource("Attack_bash")
+material = "wood"

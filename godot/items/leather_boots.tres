@@ -13,3 +13,4 @@ weight = 2.0
 slot = 6
 armor = 6.0
 armor_class = 1
+material = "leather"

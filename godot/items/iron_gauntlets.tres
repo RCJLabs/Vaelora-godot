@@ -13,3 +13,4 @@ weight = 4.0
 slot = 5
 armor = 10.0
 armor_class = 2
+material = "iron"

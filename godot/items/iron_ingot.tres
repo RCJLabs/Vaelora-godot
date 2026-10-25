@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "iron_ingot"
+display_name = "Iron Ingot"
+description = "A bar of grey iron, ready for the anvil. (A smithing material.)"
+value = 8
+weight = 1.0

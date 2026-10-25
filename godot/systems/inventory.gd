@@ -76,6 +76,11 @@ const ITEM_FILES := [
 	"res://items/potion_poison_1.tres",
 	"res://items/potion_poison_2.tres",
 	"res://items/mortar_and_pestle.tres",
+	"res://items/iron_ingot.tres",
+	"res://items/steel_ingot.tres",
+	"res://items/leather_strip.tres",
+	"res://items/seasoned_wood.tres",
+	"res://items/smiths_hammer.tres",
 	"res://items/leather_cap.tres",
 	"res://items/leather_gloves.tres",
 	"res://items/iron_cuirass.tres",
@@ -172,6 +177,7 @@ func remove(id: String, amount: int = 1) -> bool:
 	items[id] -= amount
 	if items[id] == 0:
 		items.erase(id)
+		Smithing.forget(id)   # an improved item's quality goes with the last copy
 		for slot in equipped.keys():
 			if equipped[slot] == id:
 				unequip(slot)
@@ -212,6 +218,13 @@ func use(id: String) -> bool:
 		return true
 	if item != null and item.tool == "alchemy" and count(id) > 0:
 		AlchemyScreen.open.call_deferred()   # a mortar and pestle: brew, wherever you are
+		return true
+	if item != null and item.tool == "smithing" and count(id) > 0:
+		if not "field_smith" in Character.perks:
+			if player:
+				player.hud.notify("You need a forge. (Field Smith lets you improve things anywhere.)")
+			return false
+		SmithingScreen.open.call_deferred(false)   # a smith's hammer: improve, wherever you are
 		return true
 	if item == null or item.type != ItemData.Type.CONSUMABLE or player == null or count(id) == 0:
 		return false

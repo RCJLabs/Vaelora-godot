@@ -65,7 +65,9 @@ ten that exist get theirs filled in along the way).
 4. **Making things:**
    - ✅ Alchemy: nine effects, nine ingredients, 27 potions, a brewing screen, venom
      coats and 21 perks (`docs/godot-starter/ALCHEMY.md`).
-   - Smithing, Lockpicking, Survival.
+   - ✅ Smithing: a forge, 18 recipes for the game's weapons and armour, six qualities of
+     improvement and 21 perks (`docs/godot-starter/SMITHING.md`).
+   - Lockpicking, Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
 6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.

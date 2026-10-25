@@ -64,3 +64,4 @@ held_scene = ExtResource("2_model")
 light_attacks = Array[ExtResource("3_attack")]([SubResource("Attack_1"), SubResource("Attack_2"), SubResource("Attack_3")])
 heavy_attack = SubResource("Attack_heavy")
 block_reduction = 0.6
+material = "iron"
