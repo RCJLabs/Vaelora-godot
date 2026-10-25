@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "frost_rune"
+display_name = "Frost Rune"
+description = "Like Fire Rune, in frost: 24 damage, and they're chilled (60% speed)."
+style = 2
+skill = "runecraft"
+color = Color(0.55, 0.8, 1, 1)
+charge_time = 0.9
+magicka_cost = 40.0
+damage = 24.0
+max_distance = 15.0
+radius = 1.0
+duration = 10.0
+rune = "frost"

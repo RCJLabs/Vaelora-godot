@@ -56,7 +56,9 @@ ten that exist get theirs filled in along the way).
 3. **Magic:**
    - ✅ Binding: four spells and 21 perks, built to the lore bible's school
      (`docs/godot-starter/BINDING.md`).
-   - Runecraft, Sight and Drawing (each with its 20 perks).
+   - ✅ Runecraft: rune-traps, a ward-circle, Enchant Weapon and 21 perks
+     (`docs/godot-starter/RUNECRAFT.md`).
+   - Sight and Drawing (each with its 20 perks).
 4. **Making things:** Alchemy, Smithing, Lockpicking, Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
 6. **Classes** (defined below).

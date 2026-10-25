@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_ward_circle"
+display_name = "Tome: Ward-Circle"
+description = "A Seal College primer, the runes inked twice so they won't smudge. Use it to learn Ward-Circle."
+type = 1
+value = 120
+weight = 1.0
+teaches_spell = "ward_circle"

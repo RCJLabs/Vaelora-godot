@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "enchant_weapon"
+display_name = "Enchant Weapon"
+description = "Charge, then release: a burning rune on your weapon for 60 seconds. Every blow does 8 more, and 3 in 10 set them alight."
+style = 4
+skill = "runecraft"
+color = Color(1, 0.6, 0.3, 1)
+charge_time = 1.0
+magicka_cost = 45.0
+self_effect = "rune_blade"

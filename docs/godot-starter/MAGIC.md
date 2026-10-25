@@ -118,6 +118,13 @@ full write-up is BINDING.md.
 | Summon Guardian | 1.6 s | 90 | A stone echo of an old guardian (160 Health, slow, hits 16) fights for you for 45 s | 160 gold |
 | Raise the Dead | 1.2 s | 70 | The nearest dead wolf or bandit where you aim gets up and fights for you for 40 s, then lies back down | 130 gold |
 
+### Runecraft (the seventh school)
+
+Rune-traps, wards and an enchanted blade: five spells, all sold by Maren as Seal College
+primers. The full write-up is RUNECRAFT.md. Fire, Frost and Binding Runes wait on the ground
+for an enemy to step close; Ward-Circle cuts the blows you take while you stand in it;
+Enchant Weapon adds 8 to every blow for a minute.
+
 ## Skills
 
 Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point above 10).
@@ -127,6 +134,7 @@ Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point
 - **Glamour XP:** 1 per 5 Magicka spent on Glamour spells. Glamour levels make them last longer.
 - **Tidecraft XP:** 1 per 5 Magicka spent on Tidecraft spells.
 - **Binding XP:** 1 per 5 Magicka spent on Binding spells. Binding levels make them last longer.
+- **Runecraft XP:** 1 per 5 Magicka spent, plus 2 + damage ÷ 5 each time a rune goes off.
 
 Alteration perks: **Efficient Alteration** (20, −25% cost), **Arcane Reserve** (25, +25 max
 Magicka), **Focused Mind** (35, after Arcane Reserve: Magicka +25% faster). Restoration
