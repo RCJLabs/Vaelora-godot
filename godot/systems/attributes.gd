@@ -39,7 +39,7 @@ const ATTRIBUTES := {
 	},
 	"presence": {
 		"name": "Presence", "short": "PRE",
-		"description": "+3% reputation gains per point. Its skills learn faster. Later: prices, persuasion.",
+		"description": "+3% reputation gains and better prices when trading per point. Its skills learn faster. Later: persuasion.",
 	},
 }
 

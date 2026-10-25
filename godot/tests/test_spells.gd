@@ -117,15 +117,18 @@ func _physics_process(_d: float) -> bool:
 			var trade = labels.filter(func(t): return t.contains("trade"))
 			if not ok(trade.size() == 1, "Maren offers to trade", labels):
 				dm.end(); return
-			dm.choose(labels.find(trade[0]))
-			labels = choices()
-			ok(labels.size() == 8 and labels.has("6. Tome: Stoneflesh (60 gold)"), "shop lists food, arrows, bow and tomes", labels)
+			dm.choose(labels.find(trade[0])))
+		add(5, func():
+			var ts = autoload("TradeScreen")
+			ok(ts.is_open and ts.merchant == "maren", "it opens the trading screen")
+			var stock: Dictionary = autoload("Trade").stock("maren")
+			ok(stock.has("tome_stoneflesh") and stock.has("arrow") and stock.has("hunting_bow"), "she sells food, arrows, the bow and tomes", stock.keys())
 			var g = I.gold
-			dm.choose(labels.find("6. Tome: Stoneflesh (60 gold)"))
-			labels = choices()
-			ok(g - I.gold == 60 and I.count("tome_stoneflesh") == 1, "bought the Stoneflesh tome for 60", [g - I.gold, I.count("tome_stoneflesh")])
-			ok(labels.size() == 7 and not labels.any(func(t): return t.contains("Stoneflesh")), "the bought tome leaves the shop", labels)
-			dm.end())
+			var price: int = autoload("Trade").buy_price("tome_stoneflesh")
+			ok(ts.buy("tome_stoneflesh"), "buy the Stoneflesh tome")
+			ok(g - I.gold == price and I.count("tome_stoneflesh") == 1, "for its price", [g - I.gold, price])
+			ok(not autoload("Trade").stock("maren").has("tome_stoneflesh"), "the bought tome leaves the shop")
+			ts.close())
 		add(5, func(): done(); quit())
 	if steps.is_empty() or f < 3: return false
 	wait += 1

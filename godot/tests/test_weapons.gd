@@ -80,6 +80,7 @@ func _physics_process(_d: float) -> bool:
 		# greatsword cleave
 		add(60, func():
 			equip("steel_greatsword"); place(); w.state = w.State.IDLE
+			w.effects.clear()   # the axe test's last bleed (6 s) would add to the damage measured
 			w2.global_position = Vector3(8.7, 0, -21.4); w2._knockback = Vector3.ZERO
 			h0 = w.stats.health; h1 = w2.stats.health; tap())
 		add(40, func():
@@ -97,6 +98,7 @@ func _physics_process(_d: float) -> bool:
 			ok(p.receive_attack(20.0, w, 0.0) == "blocked", "shield blocks the attack")
 			near(h - p.stats.health, 2.24, 0.3, "shield block lets little through")
 			ok(not p.is_casting, "not casting while holding the shield up")
+			w.effects.clear()   # no leftover bleed: under load it ticked into this measurement
 			h0 = w.stats.health; w.stats.poise = 25; w.state = w.State.CHASE
 			c.attack_pressed(); c.attack_released())
 		add(30, func():

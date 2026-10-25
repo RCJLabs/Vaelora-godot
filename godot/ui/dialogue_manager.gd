@@ -133,6 +133,9 @@ func _run_actions(entry: Dictionary) -> void:
 		Reputation.add(faction, int(entry["add_reputation"][faction]))
 	for id in entry.get("add_approval", {}):
 		Companions.add_approval(id, int(entry["add_approval"][id]))
+	if entry.has("open_trade"):
+		# The buy and sell screen, once this conversation has closed (point the choice at "end").
+		TradeScreen.open.call_deferred(str(entry["open_trade"]))
 
 
 # "start" is either a node id, or a list of {"node": id, <conditions>}

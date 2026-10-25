@@ -12,3 +12,4 @@ value = 20
 weight = 0.1
 restore_magicka = 40.0
 corruption = 10.0
+quest_item = true

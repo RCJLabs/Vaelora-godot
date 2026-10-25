@@ -130,6 +130,7 @@ func save_game(slot: String = QUICKSAVE, resting: bool = false) -> bool:
 		"survival": Survival.to_dict(),
 		"corruption": Corruption.to_dict(),
 		"companions": Companions.to_dict(),
+		"trade": Trade.to_dict(),
 		"player": player.get_save_data(),
 	}
 	var file := FileAccess.open(_path(slot), FileAccess.WRITE)
@@ -198,6 +199,7 @@ func load_game(slot: String = "") -> bool:
 	Survival.from_dict(data.get("survival", {}))  # versions 1-8: no needs yet
 	Corruption.from_dict(data.get("corruption", {}))   # versions 1-10: none
 	Companions.from_dict(data.get("companions", {}))   # versions 1-11: nobody's opinion yet
+	Trade.from_dict(data.get("trade", {}))   # before the trading screen: full stock (bought uniques come from flags)
 	if not data.has("corruption") and GameState.has_flag("took_wisp_essence"):
 		Corruption.value = 35.0   # took the caged wisp's light before corruption existed
 	QuestLog.silent = false

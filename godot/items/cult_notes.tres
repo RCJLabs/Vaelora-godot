@@ -12,3 +12,4 @@ description = "Pages in a small, careful hand, headed with the mark (a circle sp
 
 The map marks a clearing deep in the Thornwood, north-east of the outlaws' fire, beside a drawn oak with a hollow in it."
 weight = 0.2
+quest_item = true

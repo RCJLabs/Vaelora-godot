@@ -59,7 +59,8 @@ With the race's own base pools, that makes Human 100/100/100, Elf 75/94/140, and
   weight over (iron axe 11, iron mace 11, steel greatsword 14). Short of it, −4% damage and
   +6% stamina per swing for each point short (damage never below 60%). You can always use it;
   the item details say "Heavy: wants Strength 14".
-- Presence's prices and persuasion come with the trading screen and Speech.
+- **Presence** sets prices on the trading screen (INVENTORY.md, "Trading"). Persuasion comes
+  with Speech.
 
 - Shown on the race screen and at the top of **Tab → Skills** (hover for details).
 - Race sets the starting values; backgrounds, traits, 4 creation points and 1 point per

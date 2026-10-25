@@ -8,3 +8,4 @@ id = "rune_glass"
 display_name = "Collegium Rune-glass"
 description = "A brass ring set with a disc of smoky crystal and a needle that floats inside it. Held up to the stones at night, it measures which way their power is moving. Magister Aurel's, on loan."
 weight = 0.3
+quest_item = true

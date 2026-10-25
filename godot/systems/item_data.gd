@@ -17,8 +17,10 @@ enum WeaponKind { MELEE, BOW }
 @export var type: Type = Type.MISC
 ## Price in gold when sold.
 @export var value: int = 0
-## Kilograms. Used once carry weight exists.
+## Kilograms: counts against carry weight (Attributes.carry_capacity()).
 @export var weight: float = 0.0
+## Needed for a quest: merchants won't buy it (systems/trade.gd).
+@export var quest_item: bool = false
 
 @export_group("When used (consumables)")
 @export var restore_health: float = 0.0

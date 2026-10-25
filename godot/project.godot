@@ -42,6 +42,8 @@ BookReader="*res://ui/book_reader.gd"
 Companions="*res://systems/companions.gd"
 Glamour="*res://systems/glamour.gd"
 Tidecraft="*res://systems/tidecraft.gd"
+Trade="*res://systems/trade.gd"
+TradeScreen="*res://ui/trade_screen.gd"
 Targeting="*res://systems/targeting.gd"
 Lanternfast="*res://systems/lanternfast.gd"
 
