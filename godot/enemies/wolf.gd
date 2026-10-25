@@ -44,6 +44,8 @@ var _bite_left := 0.0
 var _wander_target: Vector3
 var _wander_wait := 0.0
 var _knockback := Vector3.ZERO
+var _lift_left := 0.0   # the Lifting Tide holds it up this much longer
+var _lift_to := 0.0
 var _fur: StandardMaterial3D
 var _flank_angle := 0.0     # where around the player this wolf is heading
 var _close_in := false      # within 4 m and circling in on its flank spot
@@ -84,7 +86,10 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
 		return
-	if not is_on_floor():
+	if _lift_left > 0.0:
+		_lift_left -= delta
+		velocity.y = clampf((_lift_to - global_position.y) * 4.0, -2.0, 6.0)   # held up by the tide
+	elif not is_on_floor():
 		velocity.y -= gravity * delta
 	_bite_left -= delta
 	# Eyes flare while a bite is coming: the telegraph to watch for.
@@ -331,6 +336,19 @@ func shove(push: Vector3) -> void:
 	if state != State.DEAD:
 		push.y = 0.0
 		_knockback = push
+
+## The Lifting Tide (systems/tidecraft.gd): rise `height` metres and hang there,
+## helpless, for `seconds`; then gravity has it again.
+func lift(height: float, seconds: float) -> void:
+	if state == State.DEAD:
+		return
+	_lift_to = global_position.y + height
+	_lift_left = seconds
+	stagger(seconds + 0.6)
+
+
+func is_lifted() -> bool:
+	return _lift_left > 0.0
 
 
 ## Reels for `seconds`: no biting, and a bite that was coming is cancelled.

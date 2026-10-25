@@ -11,6 +11,10 @@ extends Node
 #   crush  the moons' weight comes down where you aim: everything in the radius is
 #          hit hard (most at the middle) and knocked down. Nothing is too heavy to
 #          be crushed, guardians included; it just can't be moved
+#   lift   the Lifting Tide (mastery): everything movable in a wide radius rises
+#          into the air and hangs there, helpless, then falls and is hurt by the
+#          landing. Things that can be lifted have lift() (wolves, bandit-kind,
+#          wisps)
 # All of them are stronger or weaker by the moons (WorldClock.tide_mult(): x0.6
 # with Ilun dark and the Wanderer full, x1.4 with Ilun full or the Wanderer
 # dark), which player_magic.gd puts into `power`: damage, how far things are
@@ -29,9 +33,15 @@ const SHOVE_STAGGER := 1.5
 const WELL_DRAG := 7.0
 ## Moon-Crush: how long what it hits stays down.
 const CRUSH_STAGGER := 2.5
+## The Lifting Tide: how high things rise, and how long they reel after landing.
+const LIFT_HEIGHT := 3.0
+const LANDING_STAGGER := 1.0
+## After the tide lets go: the landing hurts once it's on the ground, or this long after.
+const FALL_TIME := 1.2
 
 var _drags := []   # {"node", "to": Node3D or null, "velocity": Vector3, "left": seconds}
 var _wells := []   # {"center", "radius", "left", "scene", "mark": Node3D}
+var _falls := []   # {"node", "damage", "falling": seconds since the tide let go, or -1 while held}
 
 
 ## A Tidecraft spell going off: `center` is where the player aimed. Returns what
@@ -87,7 +97,24 @@ func cast(spell: SpellData, center: Vector3, power: float, caster: Node3D, dual:
 			if caster.has_method("camera_kick"):
 				caster.camera_kick(Vector3(-2.5, 0.0, 1.0))   # the ground shakes
 			return touched
+		"lift":
+			center = _on_ground(caster, center)
+			var radius := spell.radius * (1.3 if dual else 1.0)
+			var touched := []
+			for hit in _shape_hits(caster, center, radius):
+				if hit in touched or not hit.has_method("lift") or _dead(hit):
+					continue
+				touched.append(hit)
+				hit.lift(LIFT_HEIGHT, spell.duration * power)
+				_falls.append({"node": hit, "damage": spell.damage * power, "falling": -1.0})
+			SpellBurst.spawn(caster.get_parent(), center + Vector3.UP, radius, spell.color)
+			return touched
 	return []
+
+
+## True while the Lifting Tide is holding `node` up or it hasn't landed yet.
+func is_falling(node: Node) -> bool:
+	return _falls.any(func(fall): return fall["node"] == node)
 
 
 ## True while a well is pulling at `node`.
@@ -100,6 +127,7 @@ func in_well(node: Node3D) -> bool:
 
 func reset() -> void:
 	_drags.clear()
+	_falls.clear()
 	for well in _wells:
 		if is_instance_valid(well["mark"]):
 			well["mark"].queue_free()
@@ -127,6 +155,22 @@ func _physics_process(delta: float) -> void:
 			node.shove(to_caster.normalized() * minf(PULL_SPEED, left / delta))
 		else:
 			node.shove(drag["velocity"])
+	for fall in _falls.duplicate():
+		var node = fall["node"]
+		if not is_instance_valid(node) or _dead(node):
+			_falls.erase(fall)
+			continue
+		if node.is_lifted():
+			continue
+		fall["falling"] = maxf(fall["falling"], 0.0) + delta
+		if (node is CharacterBody3D and node.is_on_floor()) or fall["falling"] >= FALL_TIME:
+			# Landed: the fall hurts.
+			var player := get_tree().get_first_node_in_group("player") as Node3D
+			if player:
+				_hurt(node, fall["damage"], player)
+			if node.has_method("stagger"):
+				node.stagger(LANDING_STAGGER)
+			_falls.erase(fall)
 	for well in _wells.duplicate():
 		well["left"] -= delta
 		if well["left"] <= 0.0 or well["scene"] != get_tree().current_scene:   # over, or you've left

@@ -214,6 +214,24 @@
 					"requires_not_flag": "bought_tome_well"
 				},
 				{
+					"text": "The Lifting Tide. (400 gold)",
+					"next": "sold_lift",
+					"requires_gold": 400,
+					"requires_not_flag": "bought_tome_lift",
+					"requires_flag": "bought_tome_crush",
+					"requires_skill": {
+						"tidecraft": 50
+					}
+				},
+				{
+					"text": "The Lifting Tide?",
+					"next": "lift_later",
+					"requires_flag": "bought_tome_crush",
+					"requires_skill_below": {
+						"tidecraft": 50
+					}
+				},
+				{
 					"text": "Why the moons?",
 					"next": "why_moons"
 				},
@@ -315,6 +333,35 @@
 		},
 		"crush_later": {
 			"text": "\"Learn to open a well first. Holding a weight comes before dropping one.\"",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"sold_lift": {
+			"text": "He looks around the empty room before he opens the case. \"The College's mastery primer. I'm not supposed to have one, and you're not supposed to be able to read it yet. Lift them, let them fall, and step out of the way. Everyone forgets the last part once.\"",
+			"take_gold": 400,
+			"give_item": "tome_lifting_tide",
+			"set_flag": "bought_tome_lift",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"lift_later": {
+			"text": "\"The mastery primer?\" He looks at your hands as if they were already in the air. \"Not yet. When the tide comes when you call it, every time (Tidecraft 50, the College would say), come back and ask me again.\"",
 			"choices": [
 				{
 					"text": "Something else.",

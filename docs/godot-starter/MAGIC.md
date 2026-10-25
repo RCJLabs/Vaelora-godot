@@ -52,6 +52,7 @@ the right hand and Flames in the left is the classic spellsword.
 | Tide's Shove | Tidecraft | Area, 0.6 s | 32 | Everything within 7 m and 70° of where you face takes 10, is thrown about 8 m away, and reels for 1.5 s | Aurel, 100 gold |
 | Gravity Well | Tidecraft | Area, 1.0 s | 55 | A well on the ground where you aim (up to 18 m) drags everything within 4 m to its middle and pins it (30% speed) for 6 s. No damage | Aurel, 160 gold, after his readings |
 | Moon-Crush | Tidecraft | Area, 1.2 s | 60 | Where you aim (up to 18 m, on the ground), everything within 3 m takes 32 at the middle down to 16 at the edge and is knocked down for 2.5 s. Hits what's too heavy to move, too | Aurel, 220 gold, after Gravity Well |
+| The Lifting Tide | Tidecraft (mastery) | Area, 1.6 s | 90 | Where you aim (up to 20 m), everything within 6 m that can be moved rises 3 m and hangs there helpless for 4 s, then falls and takes 18 from the landing | Aurel, 400 gold, after Moon-Crush, at Tidecraft 50 |
 
 **Spell tomes** are items. Use one from Tab → Inventory to learn its spell (the tome is
 used up). Maren's tomes are under "Let's trade."
@@ -83,10 +84,13 @@ perks, and ×2.2 dual-cast). `systems/glamour.gd` (autoload **Glamour**) does th
 
 ### Tidecraft (the fifth school)
 
-The pull of the two moons (docs/lore/MAGIC.md). Its four spells are **Area** spells whose
-`tide` field (`pull`, `shove`, `well`, `crush`) says what they do; `systems/tidecraft.gd`
-(autoload **Tidecraft**) moves enemies by calling their `shove()` each physics frame, which
-sets their knockback. Moon-Crush moves nothing: it hits and knocks down.
+The pull of the two moons (docs/lore/MAGIC.md). Its five spells are **Area** spells whose
+`tide` field (`pull`, `shove`, `well`, `crush`, `lift`) says what they do;
+`systems/tidecraft.gd` (autoload **Tidecraft**) moves enemies by calling their `shove()` each
+physics frame, which sets their knockback. Moon-Crush moves nothing: it hits and knocks down.
+The Lifting Tide calls `lift(height, seconds)`: the enemy holds itself up instead of falling
+(wisps hover at that height) and reels; when it lets go, Tidecraft hurts it on landing (once
+it's on the floor, or 1.2 s after).
 
 - **By the moons.** `WorldClock.tide()` (0 to 1) is the stronger of Ilun's fullness and the
   Wanderer's darkness. Tidecraft power is ×0.6 at the lowest tide and ×1.4 at the highest
@@ -144,7 +148,7 @@ The casting code is in `player/player_magic.gd`; projectiles and bursts are
 - Glamour (greybox): the decoy is a translucent capsule; you look the same to yourself while
   invisible (only the effect in the HUD says so); the mastery spell (a whole camp charmed)
   isn't in; and people you can talk to can't be glamoured.
-- Tidecraft (greybox): no mastery tide yet; things are moved flat along
-  the ground (nothing is lifted into the air); a well is a turning ring, nothing more; and
-  thrown enemies take no damage from hitting walls.
+- Tidecraft (greybox): a well is a turning ring, nothing more; thrown enemies take no damage
+  from hitting walls; lifted enemies rise straight up (no tumbling) and only the wolf's lift
+  is covered by a test, though bandit-kind and wisps share the code.
 - Saved with the game: known spells and the ready spell (Block saves as no spell).

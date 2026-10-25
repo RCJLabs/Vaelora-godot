@@ -106,7 +106,8 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
       Then her second lesson: **Frenzy** one wolf, and **Invisibility** while they hunt you.
 - [ ] **Tidecraft** (Magister Aurel sells it: "The Tide College. Do you teach?"): **Pull** a
       wolf out of the pack, **Shove** the rest off you, drop a **Gravity Well** on them
-      (after his readings), then **Moon-Crush** the pinned pack (after the well). Is Moon-Crush
+      (after his readings), then **Moon-Crush** the pinned pack (after the well), and try the **Lifting Tide** on
+      the whole pack (after Moon-Crush). Is Moon-Crush
       too strong at high tide (it kills a wolf at the middle outright)? Try it at high tide and at low tide (the rest menu says which):
       can you feel the difference? Is high tide too common?
 - [ ] **A companion** (Brannoc after Wrong Things, or Zora): "Come with me." Do they keep up,

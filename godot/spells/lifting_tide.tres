@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "lifting_tide"
+display_name = "The Lifting Tide"
+description = "Tidecraft's mastery. Charge, then release: the tide rises where you're aiming (up to 20 m). Everything within 6 m that can be moved is lifted 3 m into the air and hangs there helpless for 4 seconds, then falls, taking 18 from the landing. Stronger or weaker by the moons: strongest when Ilun is full or the Wanderer is dark."
+style = 2
+skill = "tidecraft"
+color = Color(0.6, 0.75, 1, 1)
+can_dual_cast = true
+charge_time = 1.6
+magicka_cost = 90.0
+damage = 18.0
+max_distance = 20.0
+radius = 6.0
+duration = 4.0
+tide = "lift"

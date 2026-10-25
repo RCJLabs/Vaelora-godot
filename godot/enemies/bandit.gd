@@ -73,6 +73,8 @@ var _stagger_left := 0.0
 var _flee_left := 0.0
 var _strafe := 1.0
 var _knockback := Vector3.ZERO
+var _lift_left := 0.0   # the Lifting Tide holds it up this much longer
+var _lift_to := 0.0
 var _searched := false
 var _cloth: StandardMaterial3D
 var _cloth_color: Color   # what a hit flash fades back to
@@ -117,7 +119,10 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
 		return
-	if not is_on_floor():
+	if _lift_left > 0.0:
+		_lift_left -= delta
+		velocity.y = clampf((_lift_to - global_position.y) * 4.0, -2.0, 6.0)   # held up by the tide
+	elif not is_on_floor():
 		velocity.y -= gravity * delta
 	var player := get_tree().get_first_node_in_group("player")
 	var paused: bool = player == null or player.is_dead or DialogueManager.is_active
@@ -417,6 +422,19 @@ func shove(push: Vector3) -> void:
 	if state != State.DEAD:
 		push.y = 0.0
 		_knockback = push
+
+## The Lifting Tide (systems/tidecraft.gd): rise `height` metres and hang there,
+## helpless, for `seconds`; then gravity has it again.
+func lift(height: float, seconds: float) -> void:
+	if state == State.DEAD:
+		return
+	_lift_to = global_position.y + height
+	_lift_left = seconds
+	stagger(seconds + 0.6)
+
+
+func is_lifted() -> bool:
+	return _lift_left > 0.0
 
 
 func stagger(seconds: float) -> void:

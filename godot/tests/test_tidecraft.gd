@@ -5,9 +5,11 @@ extends "res://tests/test_base.gd"
 # you and it reels; Tide's Shove hurls what's in front of you away and leaves
 # what's behind; a Gravity Well drags wolves to its middle and pins them, then
 # closes; the stone guardian can't be moved; Moon-Crush hits what's in its
-# radius (hardest at the middle) and knocks it down; the HUD shows the tide; and
-# Magister Aurel sells the tomes (Gravity Well only after his readings,
-# Moon-Crush only after the well).
+# radius (hardest at the middle) and knocks it down; the Lifting Tide raises two
+# wolves into the air, holds them helpless, and the landing hurts; the HUD shows
+# the tide; and Magister Aurel sells the tomes (Gravity Well only after his
+# readings, Moon-Crush only after the well, the Lifting Tide after Moon-Crush and
+# at Tidecraft 50: requires_skill).
 var f := 0
 var step := 0
 var wait := 0
@@ -79,7 +81,7 @@ func _physics_process(_d: float) -> bool:
 			w3.set_physics_process(false)
 			park(w3, base + Vector3(80, 0, 0))
 			park(w2, base + Vector3(60, 0, 0))
-			for id in ["pull", "tides_shove", "gravity_well", "moon_crush"]:
+			for id in ["pull", "tides_shove", "gravity_well", "moon_crush", "lifting_tide"]:
 				autoload("Spellbook").learn(id)
 			wait = 5
 		1:
@@ -190,13 +192,46 @@ func _physics_process(_d: float) -> bool:
 			ok(w1.state in [w1.State.STAGGER, w1.State.DEAD], "the one at the middle is down (at high tide, likely dead)", w1.State.keys()[w1.state])
 			ok(w2.state == w2.State.STAGGER, "the one further out is knocked down", w2.State.keys()[w2.state])
 			ok(lost2 <= 32.0 * power_high + 0.5 and lost2 >= 32.0 * power_high * 0.5 - 0.5, "between half and all of 32, by the tide", [lost2, 32.0 * power_high])
+			# The Lifting Tide on two fresh wolves.
+			var w3 = n("GreyfangPack/Wolf3")
+			var middle: Vector3 = get_meta("middle")
+			w3.set_physics_process(true)
+			park(w2, middle + Vector3(-2, 0, 0)); park(w3, middle + Vector3(2, 0, 0))
+			for w in [w2, w3]:
+				w.stats.health = w.stats.max_health
+				w.stagger(0.05)
+			set_meta("ground", w2.global_position.y)
+			p.stats.magicka = p.stats.max_magicka
+			wait = 3
+		10:
+			var w3 = n("GreyfangPack/Wolf3")
+			for w in [w2, w3]: w.set_meta("h", w.stats.health)
+			cast("lifting_tide")
+			ok(w2.is_lifted() and w3.is_lifted(), "the Lifting Tide takes both")
+			ok(autoload("Tidecraft").is_falling(w2), "tracked until they land")
+			wait = 40
+		11:
+			var w3 = n("GreyfangPack/Wolf3")
+			ok(w2.global_position.y > get_meta("ground") + 2.0 and w3.global_position.y > get_meta("ground") + 2.0, "lifted into the air", [w2.global_position.y - get_meta("ground"), w3.global_position.y - get_meta("ground")])
+			ok(w2.state == w2.State.STAGGER, "helpless while it holds them")
+			ok(w2.stats.health == w2.get_meta("h"), "no harm yet")
+			near(w2._lift_left, 4.0 * power_high - 40.0 / 60.0, 0.2, "held 4 s, by the tide")
+			for w in [w2, w3]: w._lift_left = 0.02   # (skip the wait)
+			wait = 90
+		12:
+			var w3 = n("GreyfangPack/Wolf3")
+			ok(w2.global_position.y < get_meta("ground") + 0.5 and w2.is_on_floor(), "then they fall", w2.global_position.y - get_meta("ground"))
+			var lost: float = w2.get_meta("h") - w2.stats.health
+			near(lost, 18.0 * power_high, 1.0, "and the landing hurts: 18, by the tide")
+			ok(w3.stats.health < w3.get_meta("h"), "both of them")
+			ok(not autoload("Tidecraft").is_falling(w2), "landed")
 			# The HUD says which way the tide is.
 			autoload("Spellbook").select("pull")
 			wait = 3
-		10:
+		13:
 			ok(p.hud.spell_label.text.contains("tide high"), "the HUD shows the tide", p.hud.spell_label.text)
 			# Aurel sells the tomes.
-			autoload("Inventory").add_gold(800)
+			autoload("Inventory").add_gold(1200)
 			DM.start("res://dialogue/aurel.json", "Aurel")
 			ok(DM.line_label.text.contains("Tide College"), "Aurel is of the Tide College")
 			pick("The Tide College. Do you teach?")
@@ -219,6 +254,13 @@ func _physics_process(_d: float) -> bool:
 			pick("Something else.")
 			pick("Moon-Crush. (220 gold)")
 			ok(I.count("tome_moon_crush") == 1, "then Moon-Crush")
+			pick("Something else.")
+			ok(not offered("The Lifting Tide. (400 gold)") and offered("The Lifting Tide?"), "the mastery primer waits for Tidecraft 50", autoload("Skills").levels["tidecraft"])
+			autoload("Skills").levels["tidecraft"] = 50
+			pick("The Lifting Tide?")
+			pick("Something else.")
+			pick("The Lifting Tide. (400 gold)")
+			ok(I.count("tome_lifting_tide") == 1, "at Tidecraft 50: the Lifting Tide, his mastery primer")
 			DM.end()
 			autoload("SaveSystem").delete_save()
 			return done()

@@ -17,6 +17,8 @@ class_name Conditions
 #   "requires_corruption_below": 2    corruption tier lower than this
 #   "requires_approval": {"brannoc": 20}        a companion's approval at least this
 #   "requires_approval_below": {"zora": 0}      less than this
+#   "requires_skill": {"tidecraft": 50}         a skill's level at least this
+#   "requires_skill_below": {"tidecraft": 50}   lower than this
 # An empty Dictionary always passes.
 
 
@@ -57,6 +59,12 @@ static func met(entry: Dictionary) -> bool:
 			return false
 	for id in entry.get("requires_approval_below", {}):
 		if Companions.approval.get(id, 0) >= int(entry["requires_approval_below"][id]):
+			return false
+	for id in entry.get("requires_skill", {}):
+		if Skills.levels.get(id, 0) < int(entry["requires_skill"][id]):
+			return false
+	for id in entry.get("requires_skill_below", {}):
+		if Skills.levels.get(id, 0) >= int(entry["requires_skill_below"][id]):
 			return false
 	return true
 
