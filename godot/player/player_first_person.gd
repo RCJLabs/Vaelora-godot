@@ -114,6 +114,9 @@ func _ready() -> void:
 	Inventory.gold_added.connect(_on_gold_added)
 	Inventory.equipment_changed.connect(_apply_equipment)
 	Inventory.changed.connect(func(): if combat.is_bow(): _on_spell_changed())   # arrow count
+	Inventory.changed.connect(_update_encumbrance)
+	Attributes.changed.connect(_update_encumbrance)
+	_update_encumbrance.call_deferred()
 	_apply_equipment()
 	Spellbook.changed.connect(_on_spell_changed)
 	InputHints.device_changed.connect(_on_spell_changed)   # button names in the HUD
@@ -206,8 +209,8 @@ func _physics_process(delta: float) -> void:
 		_exhausted = false
 	if Settings.toggle_sprint and (direction == Vector3.ZERO or _exhausted):
 		_sprint_toggled = false   # stopping (or running out of breath) ends a toggled sprint
-	var sprinting := sprint_input() and direction != Vector3.ZERO \
-			and is_on_floor() and moving and not _exhausted and combat.allows_sprint()
+	var sprinting := sprint_input() and direction != Vector3.ZERO and is_on_floor() and moving \
+			and not _exhausted and combat.allows_sprint() and not is_over_encumbered()
 	if sprinting:
 		stats.use_stamina(sprint_stamina_per_second * Skills.athletics_stamina_mult()
 				* stats.modifier("sprint_stamina") * delta)
@@ -332,6 +335,20 @@ func sprint_input() -> bool:
 
 func camera_kick(degrees: Vector3) -> void:
 	_camera_kick += degrees * Settings.camera_shake
+
+
+## Carrying more than Attributes.carry_capacity(): half speed (the effect), no sprinting.
+func is_over_encumbered() -> bool:
+	return effects.active.has("over_encumbered")
+
+
+func _update_encumbrance() -> void:
+	var over := Inventory.total_weight() > Attributes.carry_capacity()
+	if over and not is_over_encumbered():
+		effects.apply("over_encumbered")
+		hud.notify("You're carrying too much (%.0f / %.0f): you can't run." % [Inventory.total_weight(), Attributes.carry_capacity()])
+	elif not over and is_over_encumbered():
+		effects.remove("over_encumbered")
 
 
 ## Steps forward for `seconds` (heavy attacks).

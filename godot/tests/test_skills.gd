@@ -47,7 +47,7 @@ func _physics_process(_d: float) -> bool:
 			ok(m.level_label.text.begins_with("Level 2"), "level label", m.level_label.text)
 			ok(m.level_up_box.visible, "level-up choice shown")
 			var rows = m.skill_list.get_children().filter(func(c): return c is Label).map(func(c): return c.text)
-			ok(rows.size() >= 3 and rows[0] == "One-Handed" and rows[1] == "20", "skill list shows One-Handed 20", rows.slice(0, 3))
+			ok(rows.size() >= 3 and rows[0] == "One-Handed  (STR)" and rows[1] == "20", "skill list shows One-Handed (STR) 20", rows.slice(0, 3))
 			near(p.stats.max_health, 100, 0.01, "max health before the bonus")
 			m.get_node("%HealthButton").emit_signal("pressed")
 			near(p.stats.max_health, 110, 0.01, "+Health raises max health to 110")

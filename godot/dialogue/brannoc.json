@@ -181,6 +181,11 @@
 					"requires_not_flag": "brannoc_would_travel"
 				},
 				{
+					"text": "Teach me to use a blade properly.",
+					"open_training": "brannoc",
+					"next": "end"
+				},
+				{
 					"text": "Come with me. Now, not later.",
 					"next": "join",
 					"requires_flag": "brannoc_would_travel",

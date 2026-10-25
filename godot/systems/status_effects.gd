@@ -30,11 +30,18 @@ func apply(effect, stacks: int = 1) -> bool:
 				return false
 			StatusEffectData.Stacking.STACK:
 				entry["stacks"] = mini(entry["stacks"] + stacks, data.max_stacks)
-		entry["time_left"] = data.duration
+		entry["time_left"] = _duration(data)
 	else:
-		active[data.id] = {"data": data, "time_left": data.duration, "stacks": mini(stacks, data.max_stacks)}
+		active[data.id] = {"data": data, "time_left": _duration(data), "stacks": mini(stacks, data.max_stacks)}
 	changed.emit()
 	return true
+
+
+# Harmful effects on the player wear off sooner with Willpower (Attributes).
+func _duration(data: StatusEffectData) -> float:
+	if data.is_harmful and data.duration > 0.0 and _stats and _stats.permanent == Character:
+		return data.duration * Attributes.harmful_duration_mult()
+	return data.duration
 
 
 func remove(id: String) -> void:

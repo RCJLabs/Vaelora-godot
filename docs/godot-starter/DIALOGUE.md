@@ -63,6 +63,10 @@ They're listed in **Project → Project Settings → Globals → Autoload** (alr
   `requires_gold` (a number), `requires_reputation` / `requires_reputation_below`
   (`{"riverwatch": 10}`), `requires_background` (`"soldier"` or a list: any of them) and
   `requires_trait` (`"charming"` or a list: all of them). See CHARACTER.md.
+- **Trading:** `"open_trade": "maren"` on a choice (with `"next": "end"`) opens the buy and
+  sell screen once the conversation closes (INVENTORY.md, "Trading").
+- **Lessons:** `"open_training": "brannoc"` likewise opens a trainer's lesson screen
+  (SKILLS.md, "Skill books and trainers").
 - **Skills:** `requires_skill` / `requires_skill_below` (`{"tidecraft": 50}`: a skill's level,
   by its id in `systems/skills.gd`). Aurel keeps his mastery primer for Tidecraft 50.
 - **Actions**, on a node (run when the line is shown) or a choice (run when picked):

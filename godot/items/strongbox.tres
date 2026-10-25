@@ -8,3 +8,4 @@ id = "strongbox"
 display_name = "Iron Strongbox"
 description = "A small iron box with a merchant's mark on the lid, still locked, and heavy with coin. The bandits hadn't got it open yet."
 weight = 4.0
+quest_item = true

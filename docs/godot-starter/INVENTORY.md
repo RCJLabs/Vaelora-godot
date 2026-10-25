@@ -16,6 +16,28 @@ drink mid-fight like in Skyrim.
 
 Pickups stay gone once taken, even after loading, because each one sets a `taken:...` flag.
 
+## Trading
+
+Maren's **"Let's trade."** opens the buy and sell screen (`ui/trade_screen.gd`, autoload
+**TradeScreen**; the rules are `systems/trade.gd`, autoload **Trade**). Her goods on the left,
+yours on the right; click a row (or A / Enter) to buy or sell one, Esc to leave. The game
+pauses while it's open.
+
+- **Prices** come from an item's **Value** and your **Presence**: you buy at ×1.25 (2.5% less
+  per point above 10, never under ×1.0) and sell at ×0.45 (2% more per point, never over ×0.7).
+  The top line shows both. Speech will add to it once it exists.
+- **Her purse:** Maren has 250 gold and can't pay more than she has.
+- **Restocking:** every 3 days her stock and purse come back. The bow on her wall and the tomes
+  are one of a kind: once bought, gone.
+- **Can't sell:** quest items (**Quest Item** ticked in the item: the rune-glass, letters and
+  notes, the Riverwatch Roll, wisp essences...) show "keep"; worthless things show "worthless".
+- Her **pelt deal** ("I have a wolf pelt to sell", full value) and Aurel's Tidecraft lessons
+  stay in dialogue.
+- **Adding a merchant:** an entry in `MERCHANTS` in `systems/trade.gd` (name, gold, stock,
+  unique items), and a dialogue choice with `"open_trade": "<id>", "next": "end"`.
+- Saved with the game (the "trade" section); older saves start with full stock, except what
+  was bought through the old dialogue shop (its flags are honoured).
+
 ## Adding a new item (no code)
 
 1. In FileSystem, right-click `items/wolf_pelt.tres` → **Duplicate** → e.g. `iron_ore.tres`.
@@ -48,6 +70,6 @@ Inventory.use("minor_healing_potion")
 
 ## Known limits
 
-- No weight/encumbrance, no dropping items, no equipment slots (the sword is fixed).
-- No buy menu: trading is dialogue-only for now.
+- No dropping items. Carry weight is in FOUNDATIONS.md.
+- Only Maren trades so far; there's no haggling (Speech) yet.
 - Saved with the game (save version 3; older saves load with an empty inventory).

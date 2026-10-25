@@ -96,6 +96,9 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 
 - [ ] Flames on a wolf, then a **Firebolt** (hold to charge, release): satisfying?
 - [ ] Dual-cast (both buttons with nothing in the right hand): does it feel worth the Magicka?
+- [ ] **Trading and lessons:** Maren's "Let's trade." (does the screen read? are prices
+      fair?), a lesson from Brannoc, Ostap, Zora or Aurel (worth the gold?), and a skill book
+      (Maren sells two; three lore books in the world teach too).
 - [ ] **The moons** over a few nights: Ilun (white) and the Wanderer (green) rise in the east,
       cross the south and set in the west, at different times as their phases change. Does
       the sky read? Are nights with Ilun down too dark?

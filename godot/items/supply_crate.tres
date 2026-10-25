@@ -9,3 +9,4 @@ display_name = "Garrison Supply Crate"
 description = "Bread, salt pork, bandages and lamp oil, under a lid stamped with the Riverwatch garrison's seal. The quartermaster counts these."
 value = 0
 weight = 8.0
+quest_item = true

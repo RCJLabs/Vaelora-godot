@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_swordsmans_rest"
+display_name = "The Swordsman's Rest"
+description = "A slim drill-book from the Legion's schools, the corners soft with use. Reading it teaches One-Handed."
+value = 40
+weight = 0.5
+book_text = "THE SWORDSMAN'S REST
+Being the Seven Rests of the Riverwatch School
+
+The first rest is the feet. A swordsman who must think where his feet are has already lost them.
+
+The second rest is the breath. Out on the cut, in on the recovery. Never hold it; the body takes it as fear.
+
+The third rest is the eye. Watch the shoulder, never the blade. The blade lies; the shoulder can't.
+
+The fourth rest is the hand. Grip as you'd hold a bird: firm enough it can't fly, loose enough you don't kill it.
+
+The fifth rest is the edge. Let the weight do the work. A cut you force is a cut you'll have to make twice.
+
+The sixth rest is the guard. Every cut ends where the next block begins.
+
+The seventh rest is the quiet after. Count your fingers. Then count the enemy."
+teaches_skill = "one_handed"

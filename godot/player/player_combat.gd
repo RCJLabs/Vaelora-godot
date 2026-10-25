@@ -407,6 +407,8 @@ func _land_hit(target: Node) -> void:
 	if not is_bash:
 		damage *= GameState.race_data.melee_damage_mult * Skills.weapon_damage_mult(skill) \
 				* stats.modifier("weapon_damage_" + skill)
+		if main_item:
+			damage *= Attributes.heavy_damage_mult(main_item.weight)   # heavy, without the Strength for it
 	if _riposte_left > 0.0:
 		damage *= stats.modifier("riposte_damage")
 	var poise := current_attack.poise_damage * _charge_mult()
@@ -462,6 +464,8 @@ func _charge_mult() -> float:
 
 func _stamina_cost(attack: AttackData, heavy: bool = false) -> float:
 	var cost: float = base_stamina_cost * attack.stamina_mult * player.stats.modifier("attack_stamina")
+	if main_item:
+		cost *= Attributes.heavy_stamina_mult(main_item.weight)
 	if heavy:
 		cost *= player.stats.modifier("heavy_stamina")
 	return cost

@@ -121,6 +121,12 @@
 					]
 				},
 				{
+					"text": "Will you train me in Glamour? I'll pay.",
+					"open_training": "zora",
+					"next": "end",
+					"requires_flag": "zora_taught_glamour"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}

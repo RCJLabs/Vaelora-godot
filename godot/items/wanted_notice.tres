@@ -8,3 +8,4 @@ id = "wanted_notice"
 display_name = "Wanted Notice"
 description = "WANTED by the Riverwatch garrison, for crimes against the Crown's peace and the Crown's purse. The drawing could be anyone. That's the only good news."
 weight = 0.1
+quest_item = true

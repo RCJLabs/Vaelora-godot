@@ -66,7 +66,13 @@ func _physics_process(_d: float) -> bool:
 			n("PlateA")._rearm_left = 0.0
 			n("PlateA").disarm_chance = 0.0
 			place(Vector3(0, 0.05, -12.5))
-			n("PlateA").interact(p)
+			# A try never drops below 5% (pressure_plate.gd clamps it), so a lucky success is
+			# possible: undo it and try again, as a player would on a plate that's still live.
+			for attempt in 10:
+				n("PlateA").interact(p)
+				if not n("PlateA").disarmed:
+					break
+				n("PlateA").disarmed = false
 			ok(n("PlateA")._rearm_left > 0.0 and not n("PlateA").disarmed, "a failed disarm sets it off")
 			# Blades: watch one swing for a full period.
 			blade_min = 99.0; blade_max = -99.0; watched = 0

@@ -9,3 +9,4 @@ display_name = "Marked Coin"
 description = "A heavy silver coin from no mint you know. Instead of a king's head, it bears a circle split by three lines: the same mark as on the hollow wolf."
 value = 5
 weight = 0.05
+quest_item = true

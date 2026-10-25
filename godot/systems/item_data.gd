@@ -17,8 +17,10 @@ enum WeaponKind { MELEE, BOW }
 @export var type: Type = Type.MISC
 ## Price in gold when sold.
 @export var value: int = 0
-## Kilograms. Used once carry weight exists.
+## Kilograms: counts against carry weight (Attributes.carry_capacity()).
 @export var weight: float = 0.0
+## Needed for a quest: merchants won't buy it (systems/trade.gd).
+@export var quest_item: bool = false
 
 @export_group("When used (consumables)")
 @export var restore_health: float = 0.0
@@ -40,6 +42,8 @@ enum WeaponKind { MELEE, BOW }
 @export_group("Book")
 ## Books and notes: the text you read (BookReader). A book isn't used up by reading.
 @export_multiline var book_text: String = ""
+## Skill books: the skill (systems/skills.gd id) reading it raises by one, once.
+@export var teaches_skill: String = ""
 
 @export_group("Weapon")
 @export var weapon_kind: WeaponKind = WeaponKind.MELEE
@@ -78,6 +82,11 @@ enum WeaponKind { MELEE, BOW }
 @export_group("Armor")
 @export var slot: Slot = Slot.NONE
 @export var armor: float = 0.0
+
+
+## A skill book: +1 to this skill the first time it's read.
+func teaches_a_skill() -> bool:
+	return teaches_skill != ""
 
 
 func is_readable() -> bool:

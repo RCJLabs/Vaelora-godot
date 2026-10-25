@@ -24,6 +24,8 @@ const EFFECT_FILES := [
 	"res://effects/stoneflesh.tres",
 	"res://effects/candlelight.tres",
 	"res://effects/pinned.tres",
+	# carrying too much (player_first_person.gd)
+	"res://effects/over_encumbered.tres",
 	# survival (systems/survival.gd) and resting
 	"res://effects/survival_peckish.tres",
 	"res://effects/survival_hungry.tres",

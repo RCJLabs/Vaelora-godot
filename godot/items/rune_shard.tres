@@ -8,3 +8,4 @@ id = "rune_shard"
 display_name = "Rune Shard"
 description = "A sliver of pale stone, faintly warm. Runes flicker along its broken edge, the same cold blue as the standing stones."
 value = 10
+quest_item = true

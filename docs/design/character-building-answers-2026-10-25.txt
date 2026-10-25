@@ -1,0 +1,39 @@
+Character building questionnaire answers
+
+1. What should a level give you?:
+    A (Keep it as it is)
+2. How do skills rise?:
+    A (By use (as now)); B (Trainers who teach for gold, a few levels per character level); C (Skill books found in the world (+1 when read))
+3. How long to master a skill?:
+    B (Most of a playthrough for your main skills)
+4. Is there a level cap?:
+    A (No: skills cap at 100, levels follow)
+5. Which skills should the game have that it doesn't?:
+    A (Sneak (crouch, hide, sneak attacks)); B (Light Armour and Heavy Armour (the armour you wear gets better as you're hit in it)); C (Speech (persuade, haggle; Presence feeds it)); D (Lockpicking); E (Alchemy (herbs into potions)); F (Smithing (make and improve weapons and armour)); G (Survival as a skill (for Survival mode: cooking, cold, foraging))
+    Note: We need many more skills. All schools of magic for one. Also, each attribute should have a pretty even number of skills that correlate
+6. The four schools still to build: which first?:
+    A (Binding: call creatures to fight for you)
+7. Build the three "later" effects?:
+    A (Strength: carry weight, and heavy weapons need it); B (Willpower: harmful effects (burning, poison, fear) wear off faster); C (Presence: better prices and persuasion)
+8. Carry weight:
+    A (A limit by Strength; over it you slow down and can't sprint)
+9. Trading:
+    A (A proper buy and sell screen, with prices set by Presence (and Speech))
+10. Should attributes gate gear?:
+    A (No: anyone can use anything, just worse)
+11. How deep should each skill's perk tree be?:
+    C (Skyrim-sized: 15 or more)
+    Note: Minimum of 20 perks per skill tree
+12. What should perks do?:
+    C (Numbers early, new mechanics deeper in)
+13. Active powers (the once-a-day ones):
+    B (Earn more through play: shrines, quests, the stones)
+14. Can you rebuild your character?:
+    B (Yes, for a price at a shrine or a teacher)
+15. Classes?:
+    C (Real classes)
+16. What would make fights deeper?:
+    A (Weapon arts: a special attack for each weapon type, earned by skill); B (Spell combinations: frost then fire shatters, a well then a crush); C (Sneak attacks, if Sneak is added); D (Dual-wielding); E (Spell-blades: a spell in one hand charges the weapon in the other)
+17. Hybrid builds (warrior-mage, archer-thief):
+    A (Encouraged: perks that reward mixing)
+18. Anything else: (skipped)
