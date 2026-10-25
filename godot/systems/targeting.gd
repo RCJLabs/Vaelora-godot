@@ -5,7 +5,7 @@ extends Node
 #   1. Glamour first: a decoy, a charmed or frenzied packmate, or (when charmed
 #      or frenzied) another enemy (systems/glamour.gd).
 #   2. Otherwise the nearer of the player (unless invisible) and a companion
-#      who's on their feet. An enemy sticks with whoever it's after unless the
+#      who's on their feet, or something you've called (systems/binding.gd). An enemy sticks with whoever it's after unless the
 #      other is STICK metres closer, so it doesn't flip between two people
 #      standing side by side, and a companion who hits an enemy draws it
 #      (provoke()).
@@ -21,7 +21,8 @@ func foe_for(enemy: Node3D, player: Node3D) -> Node3D:
 	var glamoured := Glamour.target_for(enemy, player)
 	if glamoured != player:
 		return glamoured
-	var people: Array = get_tree().get_nodes_in_group("companion").filter(_can_be_fought)
+	var people: Array = (get_tree().get_nodes_in_group("companion") + get_tree().get_nodes_in_group("bound")) \
+			.filter(_can_be_fought).filter(func(c): return c != enemy and not Glamour._dead(c))
 	if not (player.get("effects") and player.effects.has("invisible")):
 		people.push_front(player)
 	if people.size() <= 1:

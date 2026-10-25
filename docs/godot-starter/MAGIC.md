@@ -106,6 +106,18 @@ it's on the floor, or 1.2 s after).
 - **Who teaches it:** Magister Aurel, of the Collegium's Tide College, at the waystation
   ("The Tide College. Do you teach?").
 
+### Binding (the sixth school)
+
+Calling things and holding them: four spells, all sold by Maren as Bell College primers. The
+full write-up is BINDING.md.
+
+| Spell | Charge | Magicka | What it does | Tome |
+|---|---|---|---|---|
+| Call Wolf-Spirit | 1.0 s | 55 | A pale wolf-spirit where you aim (up to 15 m) fights for you for 60 s | 80 gold |
+| Bind | 0.6 s | 30 | The enemy nearest where you aim (up to 20 m) is rooted for 6 s | 70 gold |
+| Summon Guardian | 1.6 s | 90 | A stone echo of an old guardian (160 Health, slow, hits 16) fights for you for 45 s | 160 gold |
+| Raise the Dead | 1.2 s | 70 | The nearest dead wolf or bandit where you aim gets up and fights for you for 40 s, then lies back down | 130 gold |
+
 ## Skills
 
 Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point above 10).
@@ -114,6 +126,7 @@ Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point
 - **Alteration XP:** 1 per 6 Magicka spent on Alteration spells.
 - **Glamour XP:** 1 per 5 Magicka spent on Glamour spells. Glamour levels make them last longer.
 - **Tidecraft XP:** 1 per 5 Magicka spent on Tidecraft spells.
+- **Binding XP:** 1 per 5 Magicka spent on Binding spells. Binding levels make them last longer.
 
 Alteration perks: **Efficient Alteration** (20, −25% cost), **Arcane Reserve** (25, +25 max
 Magicka), **Focused Mind** (35, after Arcane Reserve: Magicka +25% faster). Restoration

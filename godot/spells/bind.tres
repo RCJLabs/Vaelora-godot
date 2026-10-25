@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "bind"
+display_name = "Bind"
+description = "Charge, then release on an enemy (up to 20 m): it's rooted where it stands for 6 seconds. It can still bite or swing at whoever's in reach."
+style = 2
+skill = "binding"
+color = Color(0.75, 0.7, 0.95, 1)
+charge_time = 0.6
+magicka_cost = 30.0
+max_distance = 20.0
+radius = 2.0
+duration = 6.0
+binding = "bind"

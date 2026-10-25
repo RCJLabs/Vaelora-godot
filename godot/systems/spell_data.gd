@@ -15,6 +15,8 @@ extends Resource
 # Tidecraft spells are areas with a `tide` (systems/tidecraft.gd): pull the enemy
 # you aim at to you, shove everything in front of you away, or a well that holds
 # enemies where you aim. They're stronger or weaker by the moons.
+# Binding spells are areas with a `binding` (systems/binding.gd): call a
+# wolf-spirit or a stone echo to fight for you, raise a corpse, or root an enemy.
 # Charged spells only go off when fully charged; releasing early fizzles (free).
 # With nothing in your right hand, both hands cast: hold both buttons to
 # dual-cast for more power at a higher cost (can_dual_cast).
@@ -69,6 +71,11 @@ enum Effect { DAMAGE_STREAM, HEAL_SELF }
 @export_group("Tidecraft")
 ## "pull", "shove", "well", "crush" or "lift": an area spell that moves, crushes or lifts enemies (systems/tidecraft.gd).
 @export var tide: String = ""
+
+@export_group("Binding")
+## "call_wolf", "guardian", "raise" or "bind": an area spell that calls something to
+## fight for you, or holds an enemy in place (systems/binding.gd). Lasts `duration`.
+@export var binding: String = ""
 
 
 func is_charged() -> bool:

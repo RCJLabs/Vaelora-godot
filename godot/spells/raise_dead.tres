@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "raise_dead"
+display_name = "Raise the Dead"
+description = "Charge, then release on a fallen wolf or bandit (up to 15 m): it gets up and fights for you for 40 seconds, then falls where it stood."
+style = 2
+skill = "binding"
+color = Color(0.5, 0.65, 0.45, 1)
+charge_time = 1.2
+magicka_cost = 70.0
+max_distance = 15.0
+radius = 3.0
+duration = 40.0
+binding = "raise"

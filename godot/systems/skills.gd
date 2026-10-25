@@ -77,6 +77,11 @@ const SKILLS := {
 		"name": "Shaping",
 		"description": "+1% to Shaping spells (stone, light, force) per level, and cheaper with perks. Improves as you cast them.",
 	},
+	"binding": {
+		"attribute": "willpower",
+		"name": "Binding",
+		"description": "+1% to how long Binding spells (called things, the dead raised, enemies held) last per level. Improves as you cast them.",
+	},
 	"restoration": {
 		"attribute": "willpower",
 		"name": "Mending",

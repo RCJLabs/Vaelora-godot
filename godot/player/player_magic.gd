@@ -156,7 +156,8 @@ func _charge(delta: float, holding: bool, both: bool) -> void:
 		state = State.CHARGE
 		charge = 0.0
 		dual = false
-	charge = minf(charge + delta / maxf(spell.charge_time * player.stats.modifier("charge_time"), 0.05), 1.0)
+	charge = minf(charge + delta / maxf(spell.charge_time * player.stats.modifier("charge_time")
+			* player.stats.modifier("charge_time_" + spell.skill), 0.05), 1.0)
 	if both and charge >= 1.0 and spell.can_dual_cast:
 		dual = true   # both hands held once charged: it goes off dual-cast
 	player.hud.set_charge(charge)
@@ -182,6 +183,9 @@ func _release() -> void:
 		SpellData.Style.AREA:
 			if spell.glamour != "":
 				Glamour.cast(spell, _aim_point(), power, player)
+				Skills.add_xp(spell.skill, cost / 5.0)
+			elif spell.binding != "":
+				Binding.cast(spell, _aim_point(), power, player, cost)
 				Skills.add_xp(spell.skill, cost / 5.0)
 			elif spell.tide != "":
 				for target in Tidecraft.cast(spell, _aim_point(), power, player, dual):
@@ -220,7 +224,7 @@ func _fire_bolt(damage: float) -> void:
 func _aim_point() -> Vector3:
 	var camera: Camera3D = player.camera
 	var from := camera.global_position
-	var to := from - camera.global_transform.basis.z * spell.max_distance
+	var to: Vector3 = from - camera.global_transform.basis.z * spell.max_distance * player.stats.modifier("spell_range_" + spell.skill)
 	var query := PhysicsRayQueryParameters3D.create(from, to, 1 | 4)
 	query.exclude = [player.get_rid()]
 	var result := player.get_world_3d().direct_space_state.intersect_ray(query)
