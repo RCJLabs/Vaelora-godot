@@ -313,6 +313,8 @@ func attack_pressed() -> void:
 		return   # an empty right hand casts the ready spell instead (PlayerMagic)
 	match state:
 		State.READY:
+			if player.magic.try_imbue():
+				return   # a charged spell, into the blade (Spellblade)
 			if is_bow():
 				_start_drawing()
 			else:
@@ -615,6 +617,9 @@ func _land_hit(target: Node) -> void:
 	var rune_blade: bool = not is_bash and player.effects.has("rune_blade")   # Enchant Weapon (Runecraft)
 	if rune_blade:
 		damage += Runecraft.BLADE_DAMAGE * stats.modifier("enchant_damage")
+	var spell_blade: bool = not is_bash and swung != null and Spellblade.active()   # a spell in the blade
+	if spell_blade:
+		damage += Spellblade.bonus()
 	var poise := current_attack.poise_damage * _charge_mult() * stats.modifier("poise_dealt") \
 			* (Arms.prod("bash_poise") if is_bash else Smithing.poise_mult(swung))   # Power Bash, Heavy Hand
 	var heavy := is_heavy
@@ -640,6 +645,8 @@ func _land_hit(target: Node) -> void:
 		_unarmed_landed(target)
 	if not is_bash:
 		Alchemy.blade_hit(target)   # a poisoned blade
+	if spell_blade:
+		Spellblade.landed(target, player)
 	Command.player_hit(target)   # Coordinated Strike
 	if rune_blade and target.has_method("add_effect") and randf() < (1.0 if "searing_edge" in Character.perks else 0.3):
 		target.add_effect("burning")

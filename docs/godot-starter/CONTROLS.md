@@ -15,6 +15,7 @@ layout; PlayStation and Switch pads map to the same positions.
 | Attack (tap) / heavy attack or draw a bow (hold) | Left-click | RT |
 | Left hand: cast, block, shield, aim a bow (hold) | Right-click | LT |
 | Dual-cast (nothing in the right hand) | Both buttons | LT + RT |
+| Spell-blade: put a charged spell into your weapon | Hold right-click until charged, then left-click | Hold LT until charged, then RT |
 | Off-hand weapon swing (dual-wielding) / both weapons at once | Right-click / hold it and left-click | LT / hold it and RT |
 | Shield bash | Left-click while blocking | RT while blocking |
 | Dodge | Alt | B |
