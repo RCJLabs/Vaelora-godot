@@ -56,6 +56,7 @@ walls too). Each pushes their awareness to between half and nearly full.
 | A spell (cast, or every moment of a stream) | 8 m | Silent Casting: 25% |
 | Loosing an arrow | 3 m | Soft Release: silent |
 | A sneak-attack kill | 8 m around the body | Quiet Kill: silent |
+| A lockpick snapping | 5 m | Silent Picking (Lockpicking): silent |
 
 ## Sneak attacks
 

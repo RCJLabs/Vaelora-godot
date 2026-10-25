@@ -42,6 +42,11 @@ const SKILLS := {
 		"name": "Archery",
 		"description": "+1% bow damage per level. Improves when your arrows hit.",
 	},
+	"lockpicking": {
+		"attribute": "agility",
+		"name": "Lockpicking",
+		"description": "+1% to a lock's sweet spot per level, and a slower pick. Improves with pins set and locks opened.",
+	},
 	"sneak": {
 		"attribute": "agility",
 		"name": "Sneak",

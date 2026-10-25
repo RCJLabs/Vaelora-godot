@@ -1515,6 +1515,23 @@ mesh = SubResource("Mesh_hc8")
 [node name="Shape" type="CollisionShape3D" parent="GraveDust"]
 shape = SubResource("Shape_jar")
 
+[node name="CultCoffer" type="StaticBody3D" parent="." groups=["surface_wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4, 0.3, -71.6)
+script = ExtResource("3_loot_container")
+container_name = "cult coffer"
+contents = {
+"steel_ingot": 1,
+"moth_wing": 2
+}
+gold = 90
+lock_level = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="CultCoffer"]
+mesh = SubResource("Mesh_29")
+
+[node name="Shape" type="CollisionShape3D" parent="CultCoffer"]
+shape = SubResource("Shape_29")
+
 [node name="EmptyCage1" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9, 0.4, -64.9)
 

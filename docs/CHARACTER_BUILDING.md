@@ -67,7 +67,9 @@ ten that exist get theirs filled in along the way).
      coats and 21 perks (`docs/godot-starter/ALCHEMY.md`).
    - ✅ Smithing: a forge, 18 recipes for the game's weapons and armour, six qualities of
      improvement and 21 perks (`docs/godot-starter/SMITHING.md`).
-   - Lockpicking, Survival.
+   - ✅ Lockpicking: a pin-setting minigame, locked containers in three places, lockpicks
+     and 21 perks (`docs/godot-starter/LOCKPICKING.md`).
+   - Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
 6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.

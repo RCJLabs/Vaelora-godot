@@ -106,6 +106,7 @@ The tree scrolls both ways and scrolls to the perk you pick, so a skill can hold
 | Drawing | 21 perks: taking, the stain, fuel, the Touch: see DRAWING.md |
 | Alchemy | 21 perks: potency, healing, poison, gathering, brewing: see ALCHEMY.md |
 | Smithing | 21 perks: materials, mastery, weapons, armour, thrift: see SMITHING.md |
+| Lockpicking | 21 perks: the spot, picks, locks, quiet: see LOCKPICKING.md |
 
 ### Respec
 

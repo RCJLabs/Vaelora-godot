@@ -23,7 +23,7 @@ const DARK_MULT := 0.75             # at the dead of night (daylight 0)
 const AWARE_RATE := 1.0             # awareness per second: x1.6 right beside them, x0.4 at the edge
 const AWARE_DECAY := 0.3            # per second out of range or sight
 const SNEAK_ATTACK := {"melee": 3.0, "archery": 2.0}
-const NOISE := {"melee": 6.0, "spell": 8.0, "archery": 3.0, "kill": 8.0}   # metres heard at
+const NOISE := {"melee": 6.0, "spell": 8.0, "archery": 3.0, "kill": 8.0, "lockpick": 5.0}   # metres heard at
 const SNEAK_XP_PER_SECOND := 0.5    # crouched inside an unaware enemy's usual range
 const SNEAK_ATTACK_XP := 6.0
 const LOSE_TRACK_SECONDS := 4.0     # Master of Shadows
@@ -103,7 +103,7 @@ func awareness(enemy: Node) -> float:
 	return _awareness.get(enemy.get_instance_id(), 0.0)
 
 
-## A noise at `where` while you sneak ("melee", "spell", "archery", "kill"): every
+## A noise at `where` while you sneak ("melee", "spell", "archery", "kill", "lockpick"): every
 ## watching enemy within its reach (less with perks) gets most of the way to noticing.
 func make_noise(where: Vector3, kind: String) -> void:
 	if not is_sneaking():

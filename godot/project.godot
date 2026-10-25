@@ -59,6 +59,8 @@ Alchemy="*res://systems/alchemy.gd"
 AlchemyScreen="*res://ui/alchemy_screen.gd"
 Smithing="*res://systems/smithing.gd"
 SmithingScreen="*res://ui/smithing_screen.gd"
+Lockpicking="*res://systems/lockpicking.gd"
+LockpickScreen="*res://ui/lockpick_screen.gd"
 
 [editor_plugins]
 

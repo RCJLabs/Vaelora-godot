@@ -58,7 +58,7 @@ func _ready() -> void:
 
 # _input (not _unhandled_input) so Tab works even when a button has focus.
 func _input(event: InputEvent) -> void:
-	if BookReader.is_open or AlchemyScreen.is_open or SmithingScreen.is_open:
+	if BookReader.is_open or AlchemyScreen.is_open or SmithingScreen.is_open or LockpickScreen.is_open:
 		return   # the reader (or brewing) handles its own keys, over the menu or not
 	if not is_open and (DialogueManager.is_active or PauseMenu.is_open or RestMenu.is_open):
 		return   # leave the keys to the conversation / pause menu
