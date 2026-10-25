@@ -29,6 +29,8 @@ RUNTIME_FLAGS = {
     "taken:": "interactables/pickup.gd sets taken:<level>/<node> when picked up",
     "opening_": "systems/openings.gd sets opening_<background>",
     "shrine_blessed_day_": "props/shrine.gd sets one per day",
+    "read_": "ui/book_reader.gd sets read_<item id> when a book is opened",
+    "left_you_": "systems/companions.gd sets left_you_<id> when a companion walks out",
 }
 
 

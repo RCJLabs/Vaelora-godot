@@ -41,6 +41,13 @@
 					"next": "order"
 				},
 				{
+					"text": "You carry a hedge-witch's notebook. Ilse Marrow's. I want it.",
+					"next": "notebook",
+					"requires_flag": "zora_notebook_started",
+					"requires_not_item": "book_ilse_notebook",
+					"requires_not_flag": "zora_notebook_done"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -52,6 +59,13 @@
 				{
 					"text": "What does the Lantern Order do, exactly?",
 					"next": "order"
+				},
+				{
+					"text": "You carry a hedge-witch's notebook. Ilse Marrow's. I want it.",
+					"next": "notebook",
+					"requires_flag": "zora_notebook_started",
+					"requires_not_item": "book_ilse_notebook",
+					"requires_not_flag": "zora_notebook_done"
 				},
 				{
 					"text": "Goodbye.",
@@ -136,6 +150,46 @@
 				"met_inquisitor",
 				"inquisitor_hostile"
 			],
+			"choices": [
+				{
+					"text": "(Fight.)",
+					"next": "end"
+				}
+			]
+		},
+		"notebook": {
+			"text": "His hand goes to his coat, where something book-shaped sits over his heart. \"Evidence. The Order doesn't sell evidence.\" A pause. \"The Order does accept donations to the lamp fund. A hundred, say.\"",
+			"choices": [
+				{
+					"text": "(Donate 100 gold.)",
+					"next": "notebook_sold",
+					"requires_gold": 100
+				},
+				{
+					"text": "Then I'll take it.",
+					"next": "notebook_draw"
+				},
+				{
+					"text": "Never mind.",
+					"next": "end"
+				}
+			]
+		},
+		"notebook_sold": {
+			"text": "He counts it twice, then hands the notebook over as if it might bite. \"The witch's words were evidence of nothing in the end. Keep your lantern lit.\"",
+			"take_gold": 100,
+			"give_item": "book_ilse_notebook",
+			"set_flag": "zora_notebook_bought",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"notebook_draw": {
+			"text": "He sighs, as if you've disappointed him personally, and draws. \"For a witch's diary. The things people die for.\"",
+			"set_flag": "inquisitor_hostile",
 			"choices": [
 				{
 					"text": "(Fight.)",

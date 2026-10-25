@@ -15,6 +15,8 @@ class_name Conditions
 #   "requires_reputation_below": {"riverwatch": 0}   less than this
 #   "requires_corruption": 2          corruption tier at least this (1 Touched, 2 Stained, 3 Hollowing)
 #   "requires_corruption_below": 2    corruption tier lower than this
+#   "requires_approval": {"brannoc": 20}        a companion's approval at least this
+#   "requires_approval_below": {"zora": 0}      less than this
 # An empty Dictionary always passes.
 
 
@@ -50,6 +52,12 @@ static func met(entry: Dictionary) -> bool:
 		return false
 	if entry.has("requires_corruption_below") and Corruption.tier() >= int(entry["requires_corruption_below"]):
 		return false
+	for id in entry.get("requires_approval", {}):
+		if Companions.approval.get(id, 0) < int(entry["requires_approval"][id]):
+			return false
+	for id in entry.get("requires_approval_below", {}):
+		if Companions.approval.get(id, 0) >= int(entry["requires_approval_below"][id]):
+			return false
 	return true
 
 

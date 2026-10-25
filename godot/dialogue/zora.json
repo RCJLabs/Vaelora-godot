@@ -99,7 +99,8 @@
 					"requires_not_flag": [
 						"companion_zora",
 						"companion_brannoc",
-						"inquisitor_told_zora"
+						"inquisitor_told_zora",
+						"left_you_zora"
 					]
 				},
 				{
@@ -280,7 +281,8 @@
 					"requires_not_flag": [
 						"companion_zora",
 						"companion_brannoc",
-						"inquisitor_told_zora"
+						"inquisitor_told_zora",
+						"left_you_zora"
 					]
 				},
 				{

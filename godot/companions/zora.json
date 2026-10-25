@@ -1,0 +1,79 @@
+{
+	"leave_line": "No. I've kept my head down for thirty years by knowing when to leave a room. This is that. Goodbye.",
+	"reactions": {
+		"took_wisp_essence": {
+			"approval": -10,
+			"line": "I felt that from here. Like a scream through a wall. Don't make a habit of it."
+		},
+		"released_wisp": {
+			"approval": 10,
+			"line": "That's the first kind thing anyone's done at that circle in a very long time."
+		},
+		"freed_wisp": {
+			"approval": 5,
+			"line": "Off it goes. Good. Somebody should get to leave."
+		},
+		"inquisitor_hostile": {
+			"approval": 10,
+			"line": "One fewer white coat on the road. I won't pretend I'm sad. I'll pretend I'm surprised, though."
+		},
+		"mercy_let_go": {
+			"approval": 5,
+			"line": "They're wrong, but they're frightened. Frightened people deserve a door, sometimes."
+		},
+		"mercy_cell_fight": {
+			"approval": -5,
+			"line": "They were cruel, but they were sick. I hope it was quick."
+		},
+		"hollow_wolf_killed": {
+			"approval": 3,
+			"line": "Poor thing. There was nothing left in it but the shape."
+		},
+		"bandits_cleared": {
+			"approval": 0,
+			"line": "Bandits. Well. They never bothered me; I had nothing they could carry."
+		},
+		"strongbox_kept": {
+			"approval": 3,
+			"line": "Finders keepers. The garrison would say otherwise, which is why we don't ask the garrison."
+		},
+		"shrine_rekindled": {
+			"approval": 5,
+			"line": "Somebody kept that flame going for a reason. Nice to see it kept."
+		},
+		"wolves_cleared": {
+			"approval": 0,
+			"line": "The wolves used to sing at night. I'll miss it, a little."
+		}
+	},
+	"banter": [
+		{
+			"id": "trees",
+			"line": "You'd think after thirty years the trees would have something new to say. They don't. Neither do I, but I try."
+		},
+		{
+			"id": "order",
+			"line": "The Lantern Order burned my teacher. They called it a mercy. I called it something else, very quietly, for a very long time."
+		},
+		{
+			"id": "glamour",
+			"line": "Glamour isn't lying. It's showing someone what they already wanted to see. Lying is much less work.",
+			"requires_flag": "zora_taught_glamour"
+		},
+		{
+			"id": "stain",
+			"line": "You're greyer than you were. I'm not going to scold you. I'm just going to look at you like this.",
+			"requires_corruption": 2
+		},
+		{
+			"id": "wisps",
+			"line": "Do you hear them, at night? No? Good. Don't start.",
+			"requires_flag": "saw_drain_line"
+		},
+		{
+			"id": "lanternfast",
+			"line": "One lantern in the window facing north. That's all. My gran said that's the way home.",
+			"requires_flag": "lanternfast_now"
+		}
+	]
+}

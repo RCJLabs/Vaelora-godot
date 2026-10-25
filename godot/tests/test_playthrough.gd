@@ -5,6 +5,9 @@ extends "res://tests/test_base.gd"
 # (including one inside the dungeon). It drives the game through the same calls
 # a key press would make (interact, dialogue choices, doors), and fights by
 # dealing damage directly: the fights themselves are tested elsewhere.
+# Brannoc travels with you from quest 3 to the Greyfang Pack (into the barrow,
+# where you read the Riverwatch Roll), and Zora from Licence to Burn on; their
+# quests are done the way their approval allows.
 # At the end every quest in quests.json must be completed, and stay so after a
 # last save and load.
 # Argument: normal (default) or hardcore. Hardcore saves only by resting, and
@@ -130,6 +133,10 @@ func _plan() -> void:
 	# --- quest 3, and Thieves by the Fire --------------------------------------
 	step(1, func():
 		say("brannoc"); pick("Anything else I should know about out here?")
+		# Brannoc comes along from here.
+		say("brannoc"); pick("What will you do, after all this?")
+		say("brannoc"); pick("Come with me.")
+		ok(autoload("Companions").active() == "brannoc", "Brannoc joins you")
 		say("mirela"); pick("Something's drawing magic"); pick("A wolf by Greyfang Hollow"); pick("Then help me find who's doing it.")
 		DM.end()
 		for bandit in n("BanditCamp").get_children():
@@ -150,6 +157,9 @@ func _plan() -> void:
 	step(20, func():
 		ok(current_scene.scene_file_path == DUNGEON, "into the barrow")
 		ok(state("the_barrow") == "active", "still on The Barrow")
+		ok(autoload("Companions").body() != null, "Brannoc comes into the barrow")
+		n("RiverwatchRoll").interact(p)
+		autoload("BookReader").close()
 		at(Vector3(0, 0.05, -53)))   # into the arena: the Guardian wakes
 	step(10, func():
 		var guardian = n("Guardian")
@@ -193,6 +203,13 @@ func _plan() -> void:
 	step(10, func():
 		say("maren"); pick("The Greyfang pack is dead.")
 		ok(state("greyfang") == "completed", "The Greyfang Pack done")
+		# What Riverwatch Was Founded On, now that he trusts you enough.
+		ok(autoload("Companions").approval["brannoc"] >= 10, "Brannoc's approval by now", autoload("Companions").approval)
+		say("companion_brannoc"); pick("Your father's story"); pick("Then let's go and read it.")
+		say("companion_brannoc"); pick("I read the roll in the barrow."); pick("The truth")
+		ok(state("brannoc_founded") == "completed", "What Riverwatch Was Founded On done")
+		say("companion_brannoc"); pick("Go home.")
+		DM.end()
 		# The Lost Wagon.
 		n("LostWagon").interact(p); pick("Look for tracks.")
 		say("jory_caged")
@@ -209,6 +226,10 @@ func _plan() -> void:
 		say("zora"); pick("What do you know"); pick("The garrison wants you arrested."); pick("Teach me something")
 		say("brannoc"); pick("I never found her.")
 		ok(state("licence_to_burn") == "completed", "Licence to Burn done")
+		# Zora comes along from here.
+		say("zora"); pick("Would you ever leave this place?")
+		say("zora"); pick("Come with me.")
+		ok(autoload("Companions").active() == "zora", "Zora joins you")
 		# The Merciful (Brannoc's lead, with the bandits): let them go.
 		say("halina"); pick("What are you doing to the wisps?"); pick("Go in peace.")
 		DM.end()
@@ -244,6 +265,13 @@ func _plan() -> void:
 			n("ReadingStone").interact(p)
 		say("aurel"); pick("North.")
 		ok(state("readings") == "completed", "Readings Under the Wanderer done")
+		# Her Teacher's Notebook: bought back from Inquisitor Hale.
+		ok(autoload("Companions").approval["zora"] >= 10, "Zora's approval by now", autoload("Companions").approval)
+		say("companion_zora"); pick("You said the Order burned your teacher."); pick("I'll get it.")
+		ok(I.gold >= 100, "gold for the lamp fund", I.gold)
+		say("inquisitor"); pick("You carry a hedge-witch's notebook."); pick("(Donate 100 gold.)")
+		say("companion_zora"); pick("I have Ilse's notebook.")
+		ok(state("zora_notebook") == "completed", "Her Teacher's Notebook done")
 		DM.end()
 		# The Hollow Oak.
 		at(Vector3(22, 0.05, -38)))
