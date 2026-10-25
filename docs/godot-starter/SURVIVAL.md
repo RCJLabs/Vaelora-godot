@@ -27,8 +27,7 @@
   (`WorldClock.ilun_phase()`: full on the night of day 1, dark a week later). The 14 days is
   a game choice, not from the lore. The night light comes from Ilun (`levels/day_night.gd`,
   `night_moon_path`), a little dimmer when it's a sliver; it no longer draws its own disc in
-  the sky. Tidecraft being strongest when Ilun is full (docs/lore/MAGIC.md) isn't in the
-  game yet.
+  the sky. Tidecraft is stronger or weaker by both moons (MAGIC.md, "Tidecraft").
 - **Lanternfast** is that night, from **18:00 until 2:00** (`WorldClock.is_lanternfast()`).
   `systems/lanternfast.gd` (autoload **Lanternfast**) keeps the flag `lanternfast_now` set for
   exactly that long (and sets `saw_lanternfast` the first time, with a message). Everything

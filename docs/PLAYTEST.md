@@ -101,6 +101,10 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 - [ ] **Glamour** (Zora teaches it: "What do you really do?"): a **Mirror Image** in front of the
       wolves, then **Fear**, then **Charm** one wolf of the pack. Readable? Fun, or fiddly?
       Then her second lesson: **Frenzy** one wolf, and **Invisibility** while they hunt you.
+- [ ] **Tidecraft** (Magister Aurel sells it: "The Tide College. Do you teach?"): **Pull** a
+      wolf out of the pack, **Shove** the rest off you, and drop a **Gravity Well** on them
+      (after his readings). Try it at high tide and at low tide (the rest menu says which):
+      can you feel the difference? Is high tide too common?
 - [ ] **A companion** (Brannoc after Wrong Things, or Zora): "Come with me." Do they keep up,
       get stuck, or get in your way in a fight? Try Wait here / Follow me / Go home.
       Do the wolves split between you and them in a way that reads? Let one go down and help

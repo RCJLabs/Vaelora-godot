@@ -181,6 +181,11 @@ func _release() -> void:
 			if spell.glamour != "":
 				Glamour.cast(spell, _aim_point(), power, player)
 				Skills.add_xp(spell.skill, cost / 5.0)
+			elif spell.tide != "":
+				for target in Tidecraft.cast(spell, _aim_point(), power, player, dual):
+					if spell.damage > 0.0:
+						_show_target(target)
+				Skills.add_xp(spell.skill, cost / 5.0)
 			else:
 				_burst(spell.damage * power * player.stats.modifier("damage_dealt"))
 		SpellData.Style.SELF:
@@ -252,7 +257,8 @@ func _burst(damage: float) -> void:
 
 func _power_mult() -> float:
 	return Skills.spell_power_mult(spell.skill) * Attributes.spell_mult() \
-			* player.stats.modifier("spell_power") * player.stats.modifier("spell_power_" + spell.skill)
+			* player.stats.modifier("spell_power") * player.stats.modifier("spell_power_" + spell.skill) \
+			* (WorldClock.tide_mult() if spell.tide != "" else 1.0)   # Tidecraft: by the moons
 
 
 func _cost_mult() -> float:

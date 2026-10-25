@@ -226,7 +226,8 @@ func set_left_hand(text: String) -> void:
 func set_spell(spell: SpellData, known_count: int, both_hands: bool = false) -> void:
 	var hand := "Block"
 	if spell:
-		hand = "%s (%s%s)" % [spell.display_name, spell.cast_hint(), ", both hands to dual-cast" if both_hands and spell.can_dual_cast else ""]
+		hand = "%s (%s%s%s)" % [spell.display_name, spell.cast_hint(), ", both hands to dual-cast" if both_hands and spell.can_dual_cast else "",
+				", tide %s" % WorldClock.tide_word() if spell.tide != "" else ""]
 	spell_label.text = hand + ("   [%s] switch" % InputHints.label("switch_spell") if known_count > 0 else "")
 
 

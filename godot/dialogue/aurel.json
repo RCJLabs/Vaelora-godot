@@ -27,7 +27,7 @@
 	],
 	"nodes": {
 		"greet": {
-			"text": "Ah, a pair of legs. Magister Aurel, of the Collegium, temporarily of Maren's back room. I'm supposed to be measuring the stones by night, and my knees have voted against it. Would you take some readings for me? Three nights, at the circle. I pay.",
+			"text": "Ah, a pair of legs. Magister Aurel, of the Collegium's Tide College, temporarily of Maren's back room. I'm supposed to be measuring the stones by night, and my knees have voted against it. Would you take some readings for me? Three nights, at the circle. I pay.",
 			"choices": [
 				{
 					"text": "I'll do it.",
@@ -38,13 +38,17 @@
 					"next": "what"
 				},
 				{
+					"text": "The Tide College. Do you teach?",
+					"next": "teach"
+				},
+				{
 					"text": "Not now.",
 					"next": "end"
 				}
 			]
 		},
 		"greet_scholar": {
-			"text": "You'll be the one they sent with the letter. Good. Magister Aurel; I've been here a week and my knees have resigned. Three readings at the stones, three separate nights. Then we write it up and the Collegium ignores it, as is traditional.",
+			"text": "You'll be the one they sent with the letter. Good. Magister Aurel, Tide College; I've been here a week and my knees have resigned. Three readings at the stones, three separate nights. Then we write it up and the Collegium ignores it, as is traditional.",
 			"choices": [
 				{
 					"text": "Give me the glass.",
@@ -53,6 +57,10 @@
 				{
 					"text": "What are you measuring?",
 					"next": "what"
+				},
+				{
+					"text": "The Tide College. Do you teach?",
+					"next": "teach"
 				}
 			]
 		},
@@ -87,6 +95,10 @@
 					"text": "I lost the glass.",
 					"next": "lost",
 					"requires_not_item": "rune_glass"
+				},
+				{
+					"text": "The Tide College. Do you teach?",
+					"next": "teach"
 				},
 				{
 					"text": "Still working on it.",
@@ -143,6 +155,10 @@
 			"text": "I've written to three people at the Collegium. Two haven't answered. Interesting, isn't it?",
 			"choices": [
 				{
+					"text": "The Tide College. Do you teach?",
+					"next": "teach"
+				},
+				{
 					"text": "(Leave)",
 					"next": "end"
 				}
@@ -152,6 +168,117 @@
 			"text": "Aurel looks at you over his spectacles for slightly too long. \"Your pupils don't shrink in the lamplight. The Collegium has a word for that, and it isn't a polite one.\" He writes something down. \"Whatever you've been drinking, stop. And don't tell anyone in a robe.\"",
 			"set_flag": "aurel_saw_stain",
 			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"teach": {
+			"text": "To anyone who pays, which the College finds vulgar and I find necessary. Tidecraft: the pull of the moons. Pull a thing to you, shove it away, open a well and hold it down. Mind the sky: it's strongest when Ilun is full or the Wanderer is dark, and feeble when Ilun is dark and the Wanderer bright. Plan your fights by the moons, as sailors do.",
+			"choices": [
+				{
+					"text": "Pull. (80 gold)",
+					"next": "sold_pull",
+					"requires_gold": 80,
+					"requires_not_flag": "bought_tome_pull"
+				},
+				{
+					"text": "Tide's Shove. (100 gold)",
+					"next": "sold_shove",
+					"requires_gold": 100,
+					"requires_not_flag": "bought_tome_shove"
+				},
+				{
+					"text": "Gravity Well. (160 gold)",
+					"next": "sold_well",
+					"requires_gold": 160,
+					"requires_not_flag": "bought_tome_well",
+					"requires_flag": "readings_delivered"
+				},
+				{
+					"text": "Gravity Well?",
+					"next": "well_later",
+					"requires_not_flag": "readings_delivered"
+				},
+				{
+					"text": "Why the moons?",
+					"next": "why_moons"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"sold_pull": {
+			"text": "He hands over a thin primer, its margins full of moon tables. \"Read it twice. The first time you'll pull your own boots off.\"",
+			"take_gold": 80,
+			"give_item": "tome_pull",
+			"set_flag": "bought_tome_pull",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"sold_shove": {
+			"text": "\"Push from the stomach, not the hand. And never in a library.\" He sounds like he speaks from experience.",
+			"take_gold": 100,
+			"give_item": "tome_tides_shove",
+			"set_flag": "bought_tome_shove",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"sold_well": {
+			"text": "\"For the one who walked to those stones three nights running. A well holds whatever falls into it. Don't stand in your own.\"",
+			"take_gold": 160,
+			"give_item": "tome_gravity_well",
+			"set_flag": "bought_tome_well",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"well_later": {
+			"text": "\"The well is the deep end. I teach it to people who've done the College a favour. Three nights at the stones, say.\" He taps the rune-glass case meaningfully.",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"why_moons": {
+			"text": "\"Every tide in the world answers them. The sea, the sap, the blood in your ears. The College says the moons are only stones in the sky and we measure their weight.\" He hesitates. \"The Wanderer pulls harder than a stone that size should. Nobody at the College likes that question.\"",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
 				{
 					"text": "(Leave)",
 					"next": "end"

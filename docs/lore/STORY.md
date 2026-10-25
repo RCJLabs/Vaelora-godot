@@ -178,7 +178,7 @@ song-keeper from the Choir.** **Romance with some of them.**
 | **Mirela** | Companion. Leads the Thornwood Free's questline. Cold if you're hollowing, as in the demo |
 | **Zora** | Companion. Unlicensed, and the Lantern Order's favourite target. Teaches Glamour |
 | **Dunya** | Companion. Hollowed, hears the wisps, and wants the cure the Mercy promised. She could be offered as a vessel, and can refuse |
-| **Magister Aurel** | The player's way into the Collegium, and the first scholar to notice that the founders' rules don't make sense |
+| **Magister Aurel** | The player's way into the Collegium, and the first scholar to notice that the founders' rules don't make sense. *(suggested)* Of the Tide College, so he teaches Tidecraft in the demo and has noticed the Wanderer pulls harder than it should |
 | **Jory Vell** | Joins the River Compact and turns up all over the world, usually in trouble |
 | **Ostap** | Still on lookout, still singing |
 | **Magister Vessa** | Redeemable; the player decides |

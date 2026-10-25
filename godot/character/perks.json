@@ -29,5 +29,8 @@
 	"ward_mastery": { "name": "Ward Mastery", "skill": "restoration", "level": 30, "requires": "recovery", "description": "Wards stop 20% more of a hit and cost less to hold.", "modifiers": { "ward_strength": 1.2, "spell_cost_restoration": 0.9 } },
 
 	"efficient_glamour": { "name": "Efficient Glamour", "skill": "glamour", "level": 20, "description": "Glamour spells cost 25% less.", "modifiers": { "spell_cost_glamour": 0.75 } },
-	"long_shadows": { "name": "Long Shadows", "skill": "glamour", "level": 35, "requires": "efficient_glamour", "description": "Glamour spells last 30% longer.", "modifiers": { "spell_power_glamour": 1.3 } }
+	"long_shadows": { "name": "Long Shadows", "skill": "glamour", "level": 35, "requires": "efficient_glamour", "description": "Glamour spells last 30% longer.", "modifiers": { "spell_power_glamour": 1.3 } },
+
+	"efficient_tidecraft": { "name": "Efficient Tidecraft", "skill": "tidecraft", "level": 20, "description": "Tidecraft spells cost 25% less.", "modifiers": { "spell_cost_tidecraft": 0.75 } },
+	"spring_tide": { "name": "Spring Tide", "skill": "tidecraft", "level": 35, "requires": "efficient_tidecraft", "description": "Tidecraft spells are 30% stronger: further, harder, longer.", "modifiers": { "spell_power_tidecraft": 1.3 } }
 }

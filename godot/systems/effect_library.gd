@@ -23,6 +23,7 @@ const EFFECT_FILES := [
 	"res://effects/mending.tres",
 	"res://effects/stoneflesh.tres",
 	"res://effects/candlelight.tres",
+	"res://effects/pinned.tres",
 	# survival (systems/survival.gd) and resting
 	"res://effects/survival_peckish.tres",
 	"res://effects/survival_hungry.tres",

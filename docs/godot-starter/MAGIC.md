@@ -48,6 +48,9 @@ the right hand and Flames in the left is the classic spellsword.
 | Charm | Glamour | Area, 1.0 s | 45 | The enemy nearest where you aim (within 2 m) fights for you for 15 s; its packmates within 10 m turn on it. Hitting it yourself breaks the charm | Zora, after Fear |
 | Frenzy | Glamour | Area, 0.9 s | 40 | The enemy nearest where you aim attacks whoever's nearest for 12 s, its own pack included (you, if nobody else is near); its packmates turn on it. Your hits don't break it | Zora's second lesson ("Teach me more of it.") |
 | Invisibility | Glamour | Self, 0.8 s | 50 | For 20 s wolves and bandits lose you: they head home, or go for your companion. Attacking or casting ends it. Wisps see through it | Zora's second lesson |
+| Pull | Tidecraft | Area, 0.7 s | 30 | The enemy nearest where you aim (up to 20 m, within 2 m of the aim) is dragged to 2.2 m in front of you, takes 6, and reels for 1.2 s | Aurel, 80 gold |
+| Tide's Shove | Tidecraft | Area, 0.6 s | 32 | Everything within 7 m and 70° of where you face takes 10, is thrown about 8 m away, and reels for 1.5 s | Aurel, 100 gold |
+| Gravity Well | Tidecraft | Area, 1.0 s | 55 | A well on the ground where you aim (up to 18 m) drags everything within 4 m to its middle and pins it (30% speed) for 6 s. No damage | Aurel, 160 gold, after his readings |
 
 **Spell tomes** are items. Use one from Tab → Inventory to learn its spell (the tome is
 used up). Maren's tomes are under "Let's trade."
@@ -77,6 +80,27 @@ perks, and ×2.2 dual-cast). `systems/glamour.gd` (autoload **Glamour**) does th
 - Companions leave charmed enemies alone. Enemies choose between you and a companion
   after Glamour has had its say (`systems/targeting.gd`).
 
+### Tidecraft (the fifth school)
+
+The pull of the two moons (docs/lore/MAGIC.md). Its three spells are **Area** spells whose
+`tide` field (`pull`, `shove`, `well`) says what they do; `systems/tidecraft.gd` (autoload
+**Tidecraft**) moves enemies by calling their `shove()` each physics frame, which sets their
+knockback.
+
+- **By the moons.** `WorldClock.tide()` (0 to 1) is the stronger of Ilun's fullness and the
+  Wanderer's darkness. Tidecraft power is ×0.6 at the lowest tide and ×1.4 at the highest
+  (`tide_mult()`), on top of skill, Intellect, perks and dual-casting. It scales damage, how
+  far Tide's Shove throws and how long a well lasts. It doesn't care whether it's day.
+  - It repeats every 14 days. At night: high (0.8+) on days 1 to 3, 6 to 7 and 13 to 14;
+    low (under 0.45) on days 9 to 11, when Ilun is dark and the Wanderer full; middling
+    otherwise. With two moons to lean on, it's high more often than low.
+  - The ready spell's line above the Magicka bar says the tide ("Pull (charge, release,
+    tide high)"), and so does the rest menu once you know a Tidecraft spell.
+- **Who it moves:** anything with `shove()`: wolves, bandit-kind and wisps. The stone
+  guardian and The First are too heavy.
+- **Who teaches it:** Magister Aurel, of the Collegium's Tide College, at the waystation
+  ("The Tide College. Do you teach?").
+
 ## Skills
 
 Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point above 10).
@@ -84,11 +108,14 @@ Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point
 - **Restoration XP:** 1 per 5 health actually restored, and 1 per 4 damage a ward stops.
 - **Alteration XP:** 1 per 6 Magicka spent on Alteration spells.
 - **Glamour XP:** 1 per 5 Magicka spent on Glamour spells. Glamour levels make them last longer.
+- **Tidecraft XP:** 1 per 5 Magicka spent on Tidecraft spells.
 
 Alteration perks: **Efficient Alteration** (20, −25% cost), **Arcane Reserve** (25, +25 max
 Magicka), **Focused Mind** (35, after Arcane Reserve: Magicka +25% faster). Restoration
 gained **Ward Mastery** (30, after Recovery: wards stop 20% more and cost 10% less). Glamour:
 **Efficient Glamour** (20, −25% cost) and **Long Shadows** (35, after it: +30% duration).
+Tidecraft: **Efficient Tidecraft** (20, −25% cost) and **Spring Tide** (35, after it: +30%
+power).
 
 **Magicka** refills 5/s (more with Willpower), starting 1 s after you stop casting.
 
@@ -96,7 +123,7 @@ gained **Ward Mastery** (30, after Recovery: wards stop 20% more and cost 10% le
 
 1. Duplicate the spell closest to what you want in `spells/` (each style has one).
 2. Edit **Id**, **Display Name**, **Description**, **Style**, **Skill** (`destruction` /
-   `restoration` / `alteration` / `glamour`), **Color**, and the numbers in its style's group
+   `restoration` / `alteration` / `glamour` / `tidecraft`), **Color**, and the numbers in its style's group
    (Stream and ward, or Charged).
 3. Self spells give a status effect: make one in `effects/` and add it to `EFFECT_FILES` in
    `systems/effect_library.gd`.
@@ -116,4 +143,7 @@ The casting code is in `player/player_magic.gd`; projectiles and bursts are
 - Glamour (greybox): the decoy is a translucent capsule; you look the same to yourself while
   invisible (only the effect in the HUD says so); the mastery spell (a whole camp charmed)
   isn't in; and people you can talk to can't be glamoured.
+- Tidecraft (greybox): no moon-crush and no mastery tide yet; things are moved flat along
+  the ground (nothing is lifted into the air); a well is a turning ring, nothing more; and
+  thrown enemies take no damage from hitting walls.
 - Saved with the game: known spells and the ready spell (Block saves as no spell).

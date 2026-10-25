@@ -411,6 +411,14 @@ func frighten(seconds: float) -> void:
 	_pose("rest", 0.2)
 
 
+## Tidecraft moves it (systems/tidecraft.gd): `push` (metres a second, flat)
+## replaces whatever knockback it has this frame.
+func shove(push: Vector3) -> void:
+	if state != State.DEAD:
+		push.y = 0.0
+		_knockback = push
+
+
 func stagger(seconds: float) -> void:
 	if state == State.DEAD:
 		return

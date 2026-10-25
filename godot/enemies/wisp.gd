@@ -97,6 +97,7 @@ func _physics_process(delta: float) -> void:
 	# Hover: hold a height above whatever is below (lower while knocked down).
 	var ground := _ground_height()
 	var want_y := ground + (0.35 if state == State.STAGGER else hover_height + sin(_time * 1.7) * 0.15)
+	target_velocity *= Vector3(stats.modifier("move_speed"), 1.0, stats.modifier("move_speed"))   # chilled, pinned
 	target_velocity.y = clampf((want_y - global_position.y) * 4.0, -6.0, 4.0)
 	velocity = velocity.lerp(target_velocity, minf(delta * 4.0, 1.0)) + _knockback
 	move_and_slide()
@@ -286,6 +287,14 @@ func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0, poi
 
 func add_effect(id: String) -> void:
 	effects.apply(id)
+
+
+## Tidecraft moves it (systems/tidecraft.gd): `push` (metres a second, flat)
+## replaces whatever knockback it has this frame.
+func shove(push: Vector3) -> void:
+	if state != State.DEAD:
+		push.y = 0.0
+		_knockback = push
 
 
 ## Knocked out of the air: drops low and dims, can't cast.
