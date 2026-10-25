@@ -142,9 +142,9 @@ for nine hundred years (more below).
 | Take it | The heart of the gathering at the Gate, as the Vael pour into you | A fight against Aeviro and the gathered Vael |
 | Lantern Night | The Hall of Spears in Ilunhall, on Lanternfast | A reading, with no fight at all |
 
-- *(suggested)* **Who you fight in Aeviro's way,** since you're on Aeviro's side there: the
-  Lantern Order (or the Legion) arriving to stop the gathering, held off while Aeviro works; or,
-  without a fight, a last conversation in which Aeviro tells you about the Hunt. Then the cards.
+- **Who you fight in Aeviro's way** (decided): you're on Aeviro's side there, so the fight is
+  against **the Lantern Order**, arriving to stop the gathering. You hold them off while Aeviro
+  works. Then the last hand of cards.
 
 ### The final image, ending by ending *(decided, round six)*
 
@@ -168,22 +168,14 @@ for nine hundred years (more below).
   - That fits the rest of the lore: ordinary magic runs on the Vael's residue, and the residue is
     running out (the Dimming). Their secret is magic that doesn't need the dead. It also makes
     "The Gift", the official lie about the Arrival, come true at the very end.
-- **Still open: how the secret gets back down.** The vessel ending says you go up and don't come
-  back, so you can't pass it on yourself. *(suggested options)*
-  - **Your companion carries it down:** they climb with you, and the Vael sends them back with
-    it. That's why your companion stands in your place in the final image, and the last line
-    spoken to you can be about it.
-  - **The light is the message:** the one light moving away in the final image leaves something
-    behind at the stone circle: a last stone that hums, which mages will spend generations
-    learning to read.
-  - **You come back down** in this ending after all. That changes round five's "the only ending
-    where anyone goes up, and you don't come back".
-  - **No companion with you:** Maren could receive it, as she receives the last line.
+- **How the secret gets back down** (decided): **your companion carries it.** They climb with
+  you, and the Vael sends them back down with it. That's why your companion stands in your
+  place in the final image, and the last line spoken to you can be about it. If you came alone,
+  **Maren** receives it, as she gets the last line. You still don't come back.
 
 ### Still open
 
-- How the aboard Vael's secret gets back down (above).
-- Who you fight in Aeviro's way, if it's a fight (above).
+Nothing from rounds five and six.
 
 ## Companions
 

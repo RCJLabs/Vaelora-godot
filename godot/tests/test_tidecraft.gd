@@ -4,8 +4,10 @@ extends "res://tests/test_base.gd"
 # are x0.6 to x1.4 by it; Pull, cast for real, drags a wolf to just in front of
 # you and it reels; Tide's Shove hurls what's in front of you away and leaves
 # what's behind; a Gravity Well drags wolves to its middle and pins them, then
-# closes; the stone guardian can't be moved; the HUD shows the tide; and
-# Magister Aurel sells the tomes (Gravity Well only after his readings).
+# closes; the stone guardian can't be moved; Moon-Crush hits what's in its
+# radius (hardest at the middle) and knocks it down; the HUD shows the tide; and
+# Magister Aurel sells the tomes (Gravity Well only after his readings,
+# Moon-Crush only after the well).
 var f := 0
 var step := 0
 var wait := 0
@@ -77,7 +79,7 @@ func _physics_process(_d: float) -> bool:
 			w3.set_physics_process(false)
 			park(w3, base + Vector3(80, 0, 0))
 			park(w2, base + Vector3(60, 0, 0))
-			for id in ["pull", "tides_shove", "gravity_well"]:
+			for id in ["pull", "tides_shove", "gravity_well", "moon_crush"]:
 				autoload("Spellbook").learn(id)
 			wait = 5
 		1:
@@ -170,13 +172,31 @@ func _physics_process(_d: float) -> bool:
 			var guardian = load("res://enemies/stone_guardian.gd").new()
 			ok(not guardian.has_method("shove"), "stone guardians can't be moved")
 			guardian.free()
+			# Moon-Crush on the two wolves: one at the middle, one 2.5 m out.
+			p.stats.magicka = p.stats.max_magicka
+			var middle: Vector3 = get_meta("middle")
+			park(w1, middle); park(w2, middle + Vector3(2.5, 0, 0))
+			w1.stagger(0.05); w2.stagger(0.05)
+			wait = 2
+		9:
+			for w in [w1, w2]:
+				w.stats.health = w.stats.max_health   # fresh: earlier spells wore them down
+				w.set_meta("h", w.stats.health)
+			cast("moon_crush")
+			var lost1: float = w1.get_meta("h") - w1.stats.health
+			var lost2: float = w2.get_meta("h") - w2.stats.health
+			ok(lost1 > 0.0 and lost2 > 0.0, "Moon-Crush hits both", [lost1, lost2])
+			ok(lost1 > lost2, "harder at the middle", [lost1, lost2])
+			ok(w1.state in [w1.State.STAGGER, w1.State.DEAD], "the one at the middle is down (at high tide, likely dead)", w1.State.keys()[w1.state])
+			ok(w2.state == w2.State.STAGGER, "the one further out is knocked down", w2.State.keys()[w2.state])
+			ok(lost2 <= 32.0 * power_high + 0.5 and lost2 >= 32.0 * power_high * 0.5 - 0.5, "between half and all of 32, by the tide", [lost2, 32.0 * power_high])
 			# The HUD says which way the tide is.
 			autoload("Spellbook").select("pull")
 			wait = 3
-		9:
+		10:
 			ok(p.hud.spell_label.text.contains("tide high"), "the HUD shows the tide", p.hud.spell_label.text)
 			# Aurel sells the tomes.
-			autoload("Inventory").add_gold(400)
+			autoload("Inventory").add_gold(800)
 			DM.start("res://dialogue/aurel.json", "Aurel")
 			ok(DM.line_label.text.contains("Tide College"), "Aurel is of the Tide College")
 			pick("The Tide College. Do you teach?")
@@ -193,8 +213,12 @@ func _physics_process(_d: float) -> bool:
 			autoload("GameState").set_flag("readings_delivered")
 			DM.start("res://dialogue/aurel.json", "Aurel")
 			pick("The Tide College. Do you teach?")
+			ok(not offered("Moon-Crush. (220 gold)") and offered("Moon-Crush?"), "Moon-Crush waits for the well")
 			pick("Gravity Well. (160 gold)")
 			ok(I.count("tome_gravity_well") == 1, "after the readings: Gravity Well")
+			pick("Something else.")
+			pick("Moon-Crush. (220 gold)")
+			ok(I.count("tome_moon_crush") == 1, "then Moon-Crush")
 			DM.end()
 			autoload("SaveSystem").delete_save()
 			return done()

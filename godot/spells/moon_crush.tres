@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "moon_crush"
+display_name = "Moon-Crush"
+description = "Charge, then release: the moons' weight comes down where you're aiming (up to 18 m). Everything within 3 m takes up to 32 (most at the middle) and is knocked down. Even what's too heavy to move can be crushed. Stronger or weaker by the moons: strongest when Ilun is full or the Wanderer is dark."
+style = 2
+skill = "tidecraft"
+color = Color(0.7, 0.72, 1, 1)
+can_dual_cast = true
+charge_time = 1.2
+magicka_cost = 60.0
+damage = 32.0
+max_distance = 18.0
+radius = 3.0
+tide = "crush"
