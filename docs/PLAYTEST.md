@@ -116,6 +116,7 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
       Zora's ("You said the Order burned your teacher") and Brannoc's ("Your father's story").
 - [ ] **Lanternfast** (rest until 18:00 on day 7; the rest menu says how many days are left):
       do the lanterns read as a festival? Talk to Maren and Zora. Do the wisps leave you be?
+      Look north after dark: is the one small light in the sky noticeable, without explanation?
       Stand by the fire for the song; talk to the crowd (and the woman sitting in the dark).
       On other nights: can you see the green moon change from night to night?
 

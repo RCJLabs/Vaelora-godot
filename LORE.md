@@ -392,12 +392,13 @@ Round two's 29 answers and round three's 33 are folded in above and in `docs/lor
 
 ## Still open
 
-Round four's answers (`docs/lore/questionnaire-4-answers-2026-10-24.txt`) and round five's
-(`docs/lore/questionnaire-5-answers-2026-10-25.txt`, the last scene) are folded into
-`docs/lore/STORY.md`. Still to settle:
-- **The last scene's details** (STORY.md, "Still open from round five"): which place and shape
-  for each ending, Maren at the final image, the last line without a companion, who is still
-  aboard the Wanderer, and the final image itself.
+Round four's answers (`docs/lore/questionnaire-4-answers-2026-10-24.txt`), round five's
+(`docs/lore/questionnaire-5-answers-2026-10-25.txt`, the last scene) and round six's
+(`docs/lore/questionnaire-6-answers-2026-10-25.txt`: places and shapes, the one aboard the
+Wanderer, the final images) are folded into `docs/lore/STORY.md`. Still to settle:
+- **How the aboard Vael's secret gets back down** in the vessel ending, where you don't come
+  back (STORY.md, "The one aboard the Wanderer").
+- **Who you fight in Aeviro's way,** if it opens with a fight.
 - **Built:** switching between first and third person, all game (V; see
   `docs/godot-starter/CONTROLS.md`).
 - **My suggestions in STORY.md:** the hidden fourth ending (Lantern Night), the wisps in each

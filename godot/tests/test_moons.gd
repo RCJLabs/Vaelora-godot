@@ -4,7 +4,8 @@ extends "res://tests/test_base.gd"
 # it is (full: up all night; dark: up only by day). Full Ilun on the first night
 # rises at dusk, is high at midnight and low in the west by dawn; the waxing
 # Wanderer is up in the evening and gone after midnight; on Lanternfast it's
-# not in the night sky at all. The disc is drawn where the moon is. The night
+# not in the night sky at all, but one light hangs in the north, keeping watch
+# (only that night). The disc is drawn where the moon is. The night
 # light comes from Ilun while it's up (never lower than 15 degrees) and is
 # dimmer while it's down.
 var f := 0
@@ -66,13 +67,20 @@ func _physics_process(_d: float) -> bool:
 			# Lanternfast: dark, and not in the night sky.
 			W.day = 7; W.hour = 20.5
 			ok(not wanderer.is_up(), "on Lanternfast it's not in the night sky")
-			wait = 2
+			wait = 6   # (physics frames can run before the next _process)
 		2:
 			ok(not wanderer._disc.visible, "so no disc")
+			# But one light in the north: whoever is aboard, keeping watch.
+			var cam: Camera3D = root.get_camera_3d()
+			var to_light: Vector3 = (wanderer._watch.global_position - cam.global_position).normalized()
+			ok(wanderer.watch_shown() and wanderer._watch.visible, "one light in the sky on Lanternfast")
+			ok(to_light.z < -0.8 and to_light.y > 0.3, "in the north, a third of the way up", to_light)
+			ok(ilun._watch == null, "only the Wanderer has one")
 			# The disc is drawn where the moon is.
 			W.day = 2; W.hour = 0.0
-			wait = 2
+			wait = 6
 		3:
+			ok(not wanderer._watch.visible, "no watch light on an ordinary night")
 			var cam: Camera3D = root.get_camera_3d()
 			var drawn: Vector3 = (ilun._disc.global_position - cam.global_position).normalized()
 			ok(ilun._disc.visible and rad_to_deg(drawn.angle_to(ilun.direction)) < 1.0, "the disc is where Ilun is", [drawn, ilun.direction])

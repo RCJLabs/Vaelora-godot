@@ -97,13 +97,14 @@ you made.
 own of both.
 
 **The last scene you play**
-- **Where and what shape: different for each ending.** The gathering happens at the Pale Gate
-  on the dark of the Wanderer; Lantern Night happens in Ilunhall instead. Which place and shape
-  go with which ending is still open (my suggestion is below).
+- **Where and what shape: different for each ending** (decided in round six; the table is
+  below). The gathering happens at the Pale Gate on the dark of the Wanderer; Lantern Night
+  happens in Ilunhall instead.
 - **Who's there:** Aeviro, and the companions you brought.
 - **The ending is chosen there, at the last moment.** You can still change your mind.
-- **First, Aeviro deals one last hand of cards:** the card player's game from the very start.
-  You can play or not. Aeviro cheats, and says so.
+- **Aeviro deals one last hand of cards:** the card player's game from the very start. You can
+  play or not. Aeviro cheats, and says so. In Aeviro's way the cards are the **last part** of
+  the encounter, after a fight or a conversation (round six).
 - **Aeviro's last words are a joke,** the funniest line in the game, and then quiet.
 - **Aeviro dies in every ending.** Nine hundred years is long enough.
 - You speak through dialogue choices, as everywhere else.
@@ -112,46 +113,77 @@ own of both.
 
 **The final image**
 - **Where:** wherever your opening began (your background's starting place).
-- **When:** the next Lanternfast, a year later.
+- **When:** the next Lanternfast, a year later, at dusk.
+- **What everyone is doing:** lighting lanterns at dusk, then looking north as the song starts.
 - **What has changed tells you which ending you got:** the hum of the stones, the Wanderer in
   the sky or gone, the wisps there or not.
-- **Maren is there, with one lantern facing north.**
-- **The last line belongs to your companion,** whoever you brought.
+- **Maren is there, with one lantern facing north.** She comes to find you every Lanternfast,
+  wherever you are.
+- **The last line belongs to your companion,** whoever you brought; **Maren's** if you came
+  alone.
 - **The last thing you hear:** "Hallam and the Hundred Lights", sung the Passengers' way.
 - **The feeling depends on the ending.**
-- The picture itself isn't decided yet: these are its rules.
+- **The picture for each ending** is in the table below (decided in round six).
 
-**The last twist: the Wanderer isn't empty. Someone is still aboard.**
+**The last twist: the Wanderer isn't empty. A Vael stayed aboard,** keeping the ship waiting
+for nine hundred years (more below).
 
 **After the credits, you keep playing in the changed world.**
 
 **Camera: first and third person, switchable all game** (built: V, or Settings).
 
-### Still open from round five
-
-- **Which place, and which shape, for each ending.** Round five kept "the Pale Gate (Ilunhall
-  on Lantern Night)" and also chose "a different place for each ending"; the table below
-  reconciles them, to approve or change.
-- **Maren at the final image.** It's wherever *your* opening began, which is the Greywater for
-  only some backgrounds. *(suggested)* She comes to find you each Lanternfast; she writes to you
-  after the first act anyway. Or, for openings far away, it's her letter and a lantern she sent.
-- **The last line when you have no companion.** *(suggested)* Then it's Maren's.
-- **Who is aboard the Wanderer**, and when you find out. *(suggested options)* A Vael who stayed
-  aboard to keep the ship waiting for nine hundred years; the Vael Aeviro loved, whole (the wisp
-  companion is only a piece of them); a Passenger left behind at the Arrival; or the ship
-  itself, awake. You meet them only in the vessel ending (the only one that goes up), and every
-  other ending's final image shows one light in the dark moon.
-- **The final image itself.**
-
-### Places and shapes for each ending *(suggested)*
+### Places and shapes for each ending *(decided, round six)*
 
 | Ending | Where | Shape |
 |---|---|---|
-| Aeviro's way | The Pale Gate, on the dark of the Wanderer | The gathering: a ritual you take part in, with the card game first |
-| You, as the vessel | The Pale Gate, then up to the Wanderer: the game's only scene aboard, where you meet whoever is still there | A climb, and a conversation |
+| Aeviro's way | The Pale Gate, on the dark of the Wanderer | A fight or a conversation first, then the last hand of cards as the encounter's final part |
+| You, as the vessel | The Pale Gate, then up to the Wanderer: the game's only scene aboard, where you meet the Vael who stayed | A climb, and a conversation |
 | Stop them | Aeviro's hut on the Pale Gate's shore, the night before the gathering | A conversation that can turn into a fight |
 | Take it | The heart of the gathering at the Gate, as the Vael pour into you | A fight against Aeviro and the gathered Vael |
 | Lantern Night | The Hall of Spears in Ilunhall, on Lanternfast | A reading, with no fight at all |
+
+- *(suggested)* **Who you fight in Aeviro's way,** since you're on Aeviro's side there: the
+  Lantern Order (or the Legion) arriving to stop the gathering, held off while Aeviro works; or,
+  without a fight, a last conversation in which Aeviro tells you about the Hunt. Then the cards.
+
+### The final image, ending by ending *(decided, round six)*
+
+| Ending | The picture |
+|---|---|
+| Aeviro's way | The green moon is gone and the stones are quiet. Maren lights her lantern facing north anyway: "Habit," she says. When the Passengers sing the last line their way, nobody corrects them |
+| You, as the vessel | You aren't there. Your companion stands with Maren in your place. Where the Wanderer was, one light moves away into the dark. The last line is spoken to you |
+| Stop them | The Wanderer is still in the sky, with one light in it. Wisps hang at the edge of the lantern light. Maren's lantern faces north, "so they know someone's still waiting" |
+| Take it | Every lantern is lit, and yours isn't needed: you glow. You can hear every wisp. Your companion keeps a step further away than they used to. The last line is a question |
+| Lantern Night | Every lantern in the Empire faces north. Lanternfast has become a remembrance, and the sky is clean. Everyone sings the song the Passengers' way |
+
+### The one aboard the Wanderer *(decided, round six)*
+
+- **A Vael who stayed aboard** to keep the ship waiting for nine hundred years.
+- **You meet them only in the vessel ending,** the only one that goes up. Every other ending's
+  final image shows one light in the dark moon. On Lanternfast, every year, that one light is
+  in the northern sky: whoever is aboard, keeping watch (built).
+- **What they want:** they've been watching, and they think **magic should stay in Vaelora**,
+  because in the right hands it does real good. They want the wisps released, but magic kept:
+  they give you **the secret of how the Vael learned magic**, so you can pass it on.
+  - That fits the rest of the lore: ordinary magic runs on the Vael's residue, and the residue is
+    running out (the Dimming). Their secret is magic that doesn't need the dead. It also makes
+    "The Gift", the official lie about the Arrival, come true at the very end.
+- **Still open: how the secret gets back down.** The vessel ending says you go up and don't come
+  back, so you can't pass it on yourself. *(suggested options)*
+  - **Your companion carries it down:** they climb with you, and the Vael sends them back with
+    it. That's why your companion stands in your place in the final image, and the last line
+    spoken to you can be about it.
+  - **The light is the message:** the one light moving away in the final image leaves something
+    behind at the stone circle: a last stone that hums, which mages will spend generations
+    learning to read.
+  - **You come back down** in this ending after all. That changes round five's "the only ending
+    where anyone goes up, and you don't come back".
+  - **No companion with you:** Maren could receive it, as she receives the last line.
+
+### Still open
+
+- How the aboard Vael's secret gets back down (above).
+- Who you fight in Aeviro's way, if it's a fight (above).
 
 ## Companions
 
@@ -178,7 +210,7 @@ song-keeper from the Choir.** **Romance with some of them.**
 | **Mirela** | Companion. Leads the Thornwood Free's questline. Cold if you're hollowing, as in the demo |
 | **Zora** | Companion. Unlicensed, and the Lantern Order's favourite target. Teaches Glamour |
 | **Dunya** | Companion. Hollowed, hears the wisps, and wants the cure the Mercy promised. She could be offered as a vessel, and can refuse |
-| **Magister Aurel** | The player's way into the Collegium, and the first scholar to notice that the founders' rules don't make sense. *(suggested)* Of the Tide College, so he teaches Tidecraft in the demo and has noticed the Wanderer pulls harder than it should |
+| **Magister Aurel** | The player's way into the Collegium, and the first scholar to notice that the founders' rules don't make sense. Of the Tide College (round six), so he teaches Tidecraft in the demo and has noticed the Wanderer pulls harder than it should |
 | **Jory Vell** | Joins the River Compact and turns up all over the world, usually in trouble |
 | **Ostap** | Still on lookout, still singing |
 | **Magister Vessa** | Redeemable; the player decides |

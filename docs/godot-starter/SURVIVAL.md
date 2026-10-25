@@ -32,6 +32,10 @@
   and waning, it rises around midnight; dark, it's up only by day. So on Lanternfast the
   Wanderer isn't in the night sky at all. `direction` is where a moon is right now,
   `is_up()` whether it's above the horizon.
+- **Except one light.** On Lanternfast night (`WorldClock.is_lanternfast()`, after dark) a
+  single small pale light hangs due north, a third of the way up the sky, where the lanterns
+  face: the Vael who stayed aboard the Wanderer, keeping watch (docs/lore/STORY.md, round
+  six). The `WandererMoon` node draws it (`watch_shown()`); it pulses slowly.
 - **The night light** comes from Ilun while it's up (`levels/day_night.gd`,
   `night_moon_path`), never from lower than 15° (or the shadows would be a mile long), a
   little dimmer when it's a sliver. While Ilun is down it's half as bright, from high in the
