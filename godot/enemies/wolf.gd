@@ -199,6 +199,11 @@ func _lost(delta: float) -> void:
 
 # Start chasing, and tell the pack (the WolfPack parent, if any) so the
 # others join in instead of wandering while their packmates fight.
+## Reeling from a broken guard or a heavy blow (Knockout, Unarmed).
+func is_staggered() -> bool:
+	return state == State.STAGGER
+
+
 ## Hasn't noticed you: a sneak attack lands (systems/stealth.gd).
 func is_unaware() -> bool:
 	return state == State.IDLE
