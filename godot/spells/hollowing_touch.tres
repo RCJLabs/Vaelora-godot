@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "hollowing_touch"
+display_name = "Hollowing Touch"
+description = "Forbidden. Charge, then release on an enemy within arm's reach (3.5 m): it takes 25 and is hollowed for 10 seconds (60% speed, takes a quarter more), and you take 25 Health from it. It stains you."
+style = 2
+skill = "drawing"
+color = Color(0.5, 0.55, 0.5, 1)
+charge_time = 0.8
+magicka_cost = 35.0
+damage = 25.0
+max_distance = 3.5
+radius = 1.5
+drawing = "touch"

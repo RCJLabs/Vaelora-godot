@@ -107,6 +107,11 @@ const SKILLS := {
 		"name": "Glamour",
 		"description": "+1% to how long Glamour spells (decoys, fear, charm) last per level. Improves as you cast them.",
 	},
+	"drawing": {
+		"attribute": "willpower",
+		"name": "Drawing",
+		"description": "Forbidden. +1% to Drawing spells per level, and more the more corrupted you are. Improves with life taken. Everything you take stains you.",
+	},
 	"tidecraft": {
 		"attribute": "willpower",
 		"name": "Tidecraft",

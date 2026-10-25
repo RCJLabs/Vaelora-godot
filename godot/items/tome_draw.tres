@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_draw"
+display_name = "Halina's Lesson"
+description = "A few pages in a careful hand, the ink faintly grey. What Sister Halina showed you, written down so you'd remember. Use it to learn Draw."
+type = 1
+value = 0
+weight = 0.5
+teaches_spell = "draw"

@@ -476,6 +476,8 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `got_lantern_cake` | lf_hettie: greet | lf_hettie (start → again) |
 | `got_riverwatch_gift` | brannoc: gift | brannoc (start → gift) |
 | `got_supply_crate` | brannoc: crate | brannoc: after_given, "I need a crate of the garrison's supp..."<br>brannoc: after_restored, "I need a crate of the garrison's supp..."<br>brannoc: greet, "I need a crate of the garrison's supp..."<br>brannoc: greet_again, "I need a crate of the garrison's supp..."<br>brannoc: progress, "I need a crate of the garrison's supp..."<br>brannoc: waiting_on_stones, "I need a crate of the garrison's supp..." |
+| `halina_taught_draw` | halina: teach_draw | halina: again, "Teach me the rest."<br>halina: again, "Teach me to do what you do."<br>halina: same, "Teach me the rest."<br>halina: same, "Teach me to do what you do." |
+| `halina_taught_touch` | halina: teach_touch | halina: again, "Teach me the rest."<br>halina: same, "Teach me the rest." |
 | `heard_about_bandits` | brannoc: bandits_info | brannoc: after_given, "Anything else I should know about out..."<br>brannoc: after_restored, "Anything else I should know about out..."<br>brannoc: greet, "Anything else I should know about out..."<br>brannoc: greet_again, "Anything else I should know about out..."<br>brannoc: progress, "Anything else I should know about out..."<br>brannoc: waiting_on_stones, "Anything else I should know about out..."<br>quest bandit_camp |
 | `heard_about_mercy` | brannoc: bandits_info<br>halina: greet | quest the_merciful |
 | `heard_about_wolves` | maren: wolves | maren: greet_again, "I'll deal with the Greyfang pack." |

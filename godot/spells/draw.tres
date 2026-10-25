@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "draw"
+display_name = "Draw"
+description = "Forbidden. A thin grey beam (up to 6 m) that takes life from what it touches: half of what it takes comes back to you as Health. Everything you take stains you. Hold to cast."
+effect = 2
+skill = "drawing"
+magicka_per_second = 12.0
+power_per_second = 14.0
+range = 6.0
+color = Color(0.55, 0.7, 0.55, 1)

@@ -54,6 +54,7 @@ Speech="*res://systems/speech.gd"
 Binding="*res://systems/binding.gd"
 Runecraft="*res://systems/runecraft.gd"
 Sight="*res://systems/sight.gd"
+Drawing="*res://systems/drawing.gd"
 
 [editor_plugins]
 

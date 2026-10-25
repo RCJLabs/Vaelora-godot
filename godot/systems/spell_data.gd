@@ -23,7 +23,7 @@ extends Resource
 
 enum Style { STREAM, BOLT, AREA, WARD, SELF }
 ## What a STREAM does.
-enum Effect { DAMAGE_STREAM, HEAL_SELF }
+enum Effect { DAMAGE_STREAM, HEAL_SELF, DRAIN_STREAM, SIPHON_STREAM }   # (the last two: Drawing)
 
 ## Unique name used in code and save files. Don't change it once saves exist.
 @export var id: String = ""
@@ -86,6 +86,11 @@ enum Effect { DAMAGE_STREAM, HEAL_SELF }
 ## "weak_point" or "ill_fortune": an area spell that marks or curses the enemy nearest
 ## your aim for `duration` (systems/sight.gd). Sight's self spells use self_effect.
 @export var sight: String = ""
+
+@export_group("Drawing")
+## "touch" (Hollowing Touch, the enemy nearest your aim) or "great" (the Great Drawing,
+## everything around you): systems/drawing.gd. Draw and Siphon Magic are streams.
+@export var drawing: String = ""
 
 
 func is_charged() -> bool:

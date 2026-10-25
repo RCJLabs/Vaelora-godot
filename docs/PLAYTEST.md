@@ -151,6 +151,7 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 - [ ] Buy Maren's Binding tomes and clear the bandit camp with a wolf-spirit, then a stone echo. Do they keep up with you, and do they feel like help or like babysitting?
 - [ ] Rune the path into the bandit camp, then pull them onto it. Is setting a trap worth the setup, and can you see the runes well enough?
 - [ ] Fight the bandit leader with Foresight up and parry. Does the wider window feel like seeing ahead, or just easier? (A real time-slow is possible later.)
+- [ ] Get Stained, learn Draw from Halina and fight with it. Does the pull toward Hollowing feel like a temptation you can resist, or a trap you fall into without noticing?
 - [ ] Try **Settings → Accessibility → Toggle sprint / Toggle block**: better or worse than holding?
 - [ ] Any button that felt wrong where it is? (Rebind it in Settings → Controls, then tell me
       the new layout.)

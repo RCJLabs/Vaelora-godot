@@ -62,6 +62,19 @@
 					"next": "leave"
 				},
 				{
+					"text": "Teach me to do what you do.",
+					"requires_corruption": 2,
+					"requires_not_flag": "halina_taught_draw",
+					"next": "teach_draw"
+				},
+				{
+					"text": "Teach me the rest.",
+					"requires_corruption": 3,
+					"requires_flag": "halina_taught_draw",
+					"requires_not_flag": "halina_taught_touch",
+					"next": "teach_touch"
+				},
+				{
 					"text": "I'm stopping you.",
 					"next": "fight"
 				},
@@ -139,6 +152,19 @@
 					"next": "peace"
 				},
 				{
+					"text": "Teach me to do what you do.",
+					"requires_corruption": 2,
+					"requires_not_flag": "halina_taught_draw",
+					"next": "teach_draw"
+				},
+				{
+					"text": "Teach me the rest.",
+					"requires_corruption": 3,
+					"requires_flag": "halina_taught_draw",
+					"requires_not_flag": "halina_taught_touch",
+					"next": "teach_touch"
+				},
+				{
 					"text": "I'm stopping you.",
 					"next": "fight"
 				}
@@ -187,6 +213,41 @@
 			"choices": [
 				{
 					"text": "(Let her go.)",
+					"next": "end"
+				}
+			]
+		},
+		"teach_draw": {
+			"text": "She studies you, then nods, as if you'd confirmed something she'd already been told. \"It isn't a spell, not really. You've been doing it already, every time you swallowed one of them. This just lets you choose who.\" She shows you, slowly, on a moth caught in her hands. It goes still. Her fingertips are a shade greyer when she's done.",
+			"set_flag": "halina_taught_draw",
+			"give_item": "tome_draw",
+			"choices": [
+				{
+					"text": "Who taught you?",
+					"next": "teach_who"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"teach_who": {
+			"text": "\"The ones before me. And the ones before them.\" She looks north, the way the stones lean. \"We're told it's how it was done, once. Before the lanterns.\"",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"teach_touch": {
+			"text": "\"You're further along than I am.\" She doesn't sound pleased. She takes your wrist and presses two grey fingers to the inside of it, and you feel something leave you, then come back. \"Like that. Up close, it takes more.\"",
+			"set_flag": "halina_taught_touch",
+			"give_item": "tome_hollowing_touch",
+			"choices": [
+				{
+					"text": "(Leave)",
 					"next": "end"
 				}
 			]
