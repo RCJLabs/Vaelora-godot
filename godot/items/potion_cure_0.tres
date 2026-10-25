@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "potion_cure_0"
+display_name = "Weak Potion of Cure"
+description = "Ends bleeding, poison, burning and every other harmful effect on you. (Brewed.)"
+type = 1
+value = 25
+weight = 0.3
+potion_effect = "cure"
+potion_tier = 0

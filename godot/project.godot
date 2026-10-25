@@ -55,6 +55,8 @@ Binding="*res://systems/binding.gd"
 Runecraft="*res://systems/runecraft.gd"
 Sight="*res://systems/sight.gd"
 Drawing="*res://systems/drawing.gd"
+Alchemy="*res://systems/alchemy.gd"
+AlchemyScreen="*res://ui/alchemy_screen.gd"
 
 [editor_plugins]
 

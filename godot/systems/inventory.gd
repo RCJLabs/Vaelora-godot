@@ -40,6 +40,42 @@ const ITEM_FILES := [
 	"res://items/hunting_dagger.tres",
 	"res://items/leather_cuirass.tres",
 	"res://items/leather_boots.tres",
+	"res://items/mountain_flower.tres",
+	"res://items/red_cap.tres",
+	"res://items/blue_moss.tres",
+	"res://items/nightshade.tres",
+	"res://items/wolf_fang.tres",
+	"res://items/river_reed.tres",
+	"res://items/grave_dust.tres",
+	"res://items/moth_wing.tres",
+	"res://items/potion_restore_health_0.tres",
+	"res://items/potion_restore_health_1.tres",
+	"res://items/potion_restore_health_2.tres",
+	"res://items/potion_restore_stamina_0.tres",
+	"res://items/potion_restore_stamina_1.tres",
+	"res://items/potion_restore_stamina_2.tres",
+	"res://items/potion_restore_magicka_0.tres",
+	"res://items/potion_restore_magicka_1.tres",
+	"res://items/potion_restore_magicka_2.tres",
+	"res://items/potion_regeneration_0.tres",
+	"res://items/potion_regeneration_1.tres",
+	"res://items/potion_regeneration_2.tres",
+	"res://items/potion_swiftness_0.tres",
+	"res://items/potion_swiftness_1.tres",
+	"res://items/potion_swiftness_2.tres",
+	"res://items/potion_might_0.tres",
+	"res://items/potion_might_1.tres",
+	"res://items/potion_might_2.tres",
+	"res://items/potion_resist_0.tres",
+	"res://items/potion_resist_1.tres",
+	"res://items/potion_resist_2.tres",
+	"res://items/potion_cure_0.tres",
+	"res://items/potion_cure_1.tres",
+	"res://items/potion_cure_2.tres",
+	"res://items/potion_poison_0.tres",
+	"res://items/potion_poison_1.tres",
+	"res://items/potion_poison_2.tres",
+	"res://items/mortar_and_pestle.tres",
 	"res://items/leather_cap.tres",
 	"res://items/leather_gloves.tres",
 	"res://items/iron_cuirass.tres",
@@ -174,8 +210,15 @@ func use(id: String) -> bool:
 		if item.teaches_a_skill() and first_time:
 			Skills.raise(item.teaches_skill)   # a skill book: the first reading teaches you something
 		return true
+	if item != null and item.tool == "alchemy" and count(id) > 0:
+		AlchemyScreen.open.call_deferred()   # a mortar and pestle: brew, wherever you are
+		return true
 	if item == null or item.type != ItemData.Type.CONSUMABLE or player == null or count(id) == 0:
 		return false
+	if item.potion_effect != "":
+		if Alchemy.drink(item, player):
+			remove(id)
+			return true
 	if item.teaches_spell != "":
 		if Spellbook.knows(item.teaches_spell):
 			player.hud.notify("You already know %s" % Spellbook.get_spell(item.teaches_spell).display_name)

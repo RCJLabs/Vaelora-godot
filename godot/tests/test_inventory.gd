@@ -74,7 +74,7 @@ func _physics_process(_d: float) -> bool:
 			m.get_node("%Tabs").current_tab = 1
 			var rows := []
 			for i in m.item_list.item_count: rows.append(m.item_list.get_item_text(i))
-			ok(rows == ["Iron Sword   (equipped)", "Leather Boots   (equipped)", "Leather Cuirass   (equipped)", "Minor Healing Potion", "Raw Wolf Meat", "Wolf Pelt  (2)"], "inventory tab rows", rows)
+			ok(rows == ["Iron Sword   (equipped)", "Leather Boots   (equipped)", "Leather Cuirass   (equipped)", "Minor Healing Potion", "Raw Wolf Meat", "Wolf Fang", "Wolf Pelt  (2)"], "inventory tab rows", rows)
 			ok(m.get_node("%GoldLabel").text.begins_with("Gold: 20"), "gold label", m.get_node("%GoldLabel").text)
 			var potion_row = m._item_ids.find("minor_healing_potion")
 			m.item_list.select(potion_row); m._show_selected_item()

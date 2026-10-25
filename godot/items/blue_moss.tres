@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "blue_moss"
+display_name = "Blue Moss"
+description = "It glows faintly in the dark, like a coal that's nearly out. (An alchemy ingredient.)"
+value = 6
+weight = 0.1
+alchemy_effects = Array[String](["restore_magicka", "regeneration", "cure"])

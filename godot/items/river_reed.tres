@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "river_reed"
+display_name = "River Reed"
+description = "A green reed from the Mill-race. Bitter to chew. (An alchemy ingredient.)"
+value = 3
+weight = 0.1
+alchemy_effects = Array[String](["restore_stamina", "swiftness", "cure"])

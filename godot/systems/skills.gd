@@ -82,6 +82,11 @@ const SKILLS := {
 		"name": "Binding",
 		"description": "+1% to how long Binding spells (called things, the dead raised, enemies held) last per level. Improves as you cast them.",
 	},
+	"alchemy": {
+		"attribute": "intellect",
+		"name": "Alchemy",
+		"description": "Brew potions from two or three ingredients that share an effect. Standard potions at 40, strong at 75. Improves with every potion brewed.",
+	},
 	"runecraft": {
 		"attribute": "intellect",
 		"name": "Runecraft",

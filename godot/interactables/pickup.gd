@@ -30,7 +30,10 @@ func _ready() -> void:
 
 func interact(_player: Node) -> void:
 	if item_id != "":
-		Inventory.add(item_id, item_count)
+		var amount := item_count
+		if "green_thumb" in Character.perks and not Inventory.get_item(item_id).alchemy_effects.is_empty():
+			amount *= 2   # Green Thumb (Alchemy)
+		Inventory.add(item_id, amount)
 		if Inventory.get_item(item_id).is_readable():
 			BookReader.open(item_id)   # read it on the spot; it stays in your pack
 	if gold > 0:

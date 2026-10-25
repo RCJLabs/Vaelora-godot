@@ -62,7 +62,10 @@ ten that exist get theirs filled in along the way).
      (`docs/godot-starter/SIGHT.md`).
    - ✅ Drawing: the forbidden school, four spells, 21 perks, learned from Halina, the Barrow
      or Hollowing itself (`docs/godot-starter/DRAWING.md`).
-4. **Making things:** Alchemy, Smithing, Lockpicking, Survival.
+4. **Making things:**
+   - ✅ Alchemy: nine effects, nine ingredients, 27 potions, a brewing screen, venom
+     coats and 21 perks (`docs/godot-starter/ALCHEMY.md`).
+   - Smithing, Lockpicking, Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
 6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.

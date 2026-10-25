@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "grave_dust"
+display_name = "Grave Dust"
+description = "Grey dust from the floor of the Barrow. It clings. (An alchemy ingredient.)"
+value = 10
+weight = 0.1
+alchemy_effects = Array[String](["regeneration", "poison", "resist"])

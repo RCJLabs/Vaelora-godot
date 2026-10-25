@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "potion_resist_1"
+display_name = "Potion of Resistance"
+description = "Blows do 20% less to you for 72 s. (Brewed.)"
+type = 1
+value = 40
+weight = 0.3
+potion_effect = "resist"
+potion_tier = 1
