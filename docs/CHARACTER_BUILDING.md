@@ -60,7 +60,8 @@ ten that exist get theirs filled in along the way).
      (`docs/godot-starter/RUNECRAFT.md`).
    - ✅ Sight: marks, curses, Foresight, True Sight, Moment of Clarity and 21 perks
      (`docs/godot-starter/SIGHT.md`).
-   - Drawing (with its 20 perks).
+   - ✅ Drawing: the forbidden school, four spells, 21 perks, learned from Halina, the Barrow
+     or Hollowing itself (`docs/godot-starter/DRAWING.md`).
 4. **Making things:** Alchemy, Smithing, Lockpicking, Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
 6. **Classes** (defined below).

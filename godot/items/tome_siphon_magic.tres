@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_siphon_magic"
+display_name = "A Drawer's Litany"
+description = "A small black book with no title, every page a list of names and what was taken from each. Use it to learn Siphon Magic."
+type = 1
+value = 0
+weight = 0.5
+teaches_spell = "siphon_magic"

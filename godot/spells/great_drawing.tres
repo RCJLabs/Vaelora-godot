@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "great_drawing"
+display_name = "The Great Drawing"
+description = "Drawing's mastery. Charge, then release: every living enemy within 8 m gives up 20 Health, and all of it is yours. It stains you deeply."
+style = 2
+skill = "drawing"
+color = Color(0.6, 0.75, 0.6, 1)
+charge_time = 2.0
+magicka_cost = 90.0
+damage = 20.0
+max_distance = 2.0
+radius = 8.0
+drawing = "great"

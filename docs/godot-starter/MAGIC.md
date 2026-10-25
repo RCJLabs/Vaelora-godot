@@ -131,6 +131,14 @@ The duellist-seer: Weak Point and Ill Fortune on an enemy, Foresight, True Sight
 marked through walls) and the mastery, Moment of Clarity. All five are sold by Maren as Glass
 College primers. The full write-up is SIGHT.md.
 
+### Drawing (the ninth school, forbidden)
+
+Taking life and power from living things: Draw (a beam that heals you), Siphon Magic (Magicka),
+Hollowing Touch and the Great Drawing. It's the only school that corrupts you (0.05 per point
+taken), and it grows stronger as you're corrupted (+15% a tier). Nobody sells it. You learn
+it from Halina when you're Stained, from a book in the Barrow, or on its own at Hollowing. The
+full write-up is DRAWING.md.
+
 ## Skills
 
 Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point above 10).
@@ -142,6 +150,7 @@ Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point
 - **Binding XP:** 1 per 5 Magicka spent on Binding spells. Binding levels make them last longer.
 - **Runecraft XP:** 1 per 5 Magicka spent, plus 2 + damage ÷ 5 each time a rune goes off.
 - **Sight XP:** 1 per 5 Magicka spent on aimed Sight spells, 1 per 6 on its self spells.
+- **Drawing XP:** 1 per 5 damage the streams deal, plus 1 per 5 Magicka for the charged spells.
 
 Alteration perks: **Efficient Alteration** (20, −25% cost), **Arcane Reserve** (25, +25 max
 Magicka), **Focused Mind** (35, after Arcane Reserve: Magicka +25% faster). Restoration

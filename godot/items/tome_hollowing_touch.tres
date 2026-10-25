@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_hollowing_touch"
+display_name = "The Second Lesson"
+description = "Halina's hand again, shakier this time. Use it to learn Hollowing Touch."
+type = 1
+value = 0
+weight = 0.5
+teaches_spell = "hollowing_touch"

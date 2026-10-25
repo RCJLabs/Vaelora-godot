@@ -4,6 +4,10 @@
 swallowing Wisp Essence corrupts. Corruption changes the ending. No Draw spell (option D)
 for now. Built in `systems/corruption.gd` (autoload `Corruption`).
 
+**Update 25 October 2026:** option D came back as a whole school, **Drawing**
+(`docs/godot-starter/DRAWING.md`). Every point it takes adds 0.05 corruption, and it grows
+stronger with your tier. It's the only school that corrupts.
+
 ## How it works
 
 A value from 0 to 100 that only corrupt acts raise and only cleansing lowers. It shows at
@@ -40,7 +44,7 @@ outlaws are talking NPCs, not fighters, in the demo.
 **Saves:** version 11 stores it. An older save that had taken the caged wisp's light starts
 at 35 (Touched).
 
-**Not built:** the Draw spell (option D), drinking from the cult's jars, visible changes to
+**Not built:** drinking from the cult's jars, visible changes to
 your hands (the first-person view has no hands yet), animals reacting.
 
 ---

@@ -6,6 +6,7 @@ extends Node
 const EFFECT_FILES := [
 	"res://effects/bleeding.tres",
 	"res://effects/bound.tres",
+	"res://effects/hollowed.tres",
 	"res://effects/weak_point.tres",
 	"res://effects/weak_point_deep.tres",
 	"res://effects/ill_fortune.tres",

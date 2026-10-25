@@ -122,25 +122,35 @@ func _channel(delta: float) -> void:
 	match spell.effect:
 		SpellData.Effect.DAMAGE_STREAM:
 			_damage_stream(power * player.stats.modifier("damage_dealt"))
+		SpellData.Effect.DRAIN_STREAM, SpellData.Effect.SIPHON_STREAM:   # Drawing: take it, keep it
+			Drawing.drained(_damage_stream(power * player.stats.modifier("damage_dealt")), spell, player)
 		SpellData.Effect.HEAL_SELF:
 			var healed := minf(power, player.stats.max_health - player.stats.health)
 			player.stats.heal(healed)
 			Skills.add_xp(spell.skill, healed / 5.0)   # 1 XP per 5 health actually restored
 
 
-func _damage_stream(damage: float) -> void:
+## Hurts everything in the stream; returns the Health it actually took.
+func _damage_stream(damage: float) -> float:
+	var dealt := 0.0
 	var cast_shape: ShapeCast3D = player.spell_cast
 	cast_shape.target_position = Vector3(0, 0, -spell.range)
 	cast_shape.force_shapecast_update()
 	for i in cast_shape.get_collision_count():
 		var target := cast_shape.get_collider(i)
-		if target and target.has_method("take_hit"):
+		if target and target.has_method("take_hit") and not Binding.is_bound(target):
+			var stats = target.get("stats")
+			var before: float = stats.health if stats else damage
 			target.take_hit(damage, player.global_position, 0.0)
+			dealt += before - stats.health if stats else damage
+			if stats and stats.is_dead and spell.skill == "drawing":
+				Drawing.killed(player)
 			Glamour.struck(target, player)
 			if spell.applies_effect != "" and target.has_method("add_effect"):
 				target.add_effect(spell.applies_effect)
 			Skills.add_xp(spell.skill, damage / 5.0)   # 1 XP per 5 damage dealt
 			_show_target(target)
+	return dealt
 
 
 # --- charged spells: bolts, areas, self -----------------------------------------------
@@ -183,6 +193,9 @@ func _release() -> void:
 		SpellData.Style.AREA:
 			if spell.glamour != "":
 				Glamour.cast(spell, _aim_point(), power, player)
+				Skills.add_xp(spell.skill, cost / 5.0)
+			elif spell.drawing != "":
+				Drawing.cast(spell, _aim_point(), power, player)
 				Skills.add_xp(spell.skill, cost / 5.0)
 			elif spell.sight != "":
 				Sight.cast(spell, _aim_point(), power, player)
@@ -270,7 +283,8 @@ func _burst(damage: float) -> void:
 func _power_mult() -> float:
 	return Skills.spell_power_mult(spell.skill) * Attributes.spell_mult() \
 			* player.stats.modifier("spell_power") * player.stats.modifier("spell_power_" + spell.skill) \
-			* (WorldClock.tide_mult() if spell.tide != "" else 1.0)   # Tidecraft: by the moons
+			* (WorldClock.tide_mult() if spell.tide != "" else 1.0) \
+			* (Drawing.power_mult() if spell.skill == "drawing" else 1.0)   # Tidecraft by the moons, Drawing by your corruption
 
 
 func _cost_mult() -> float:
