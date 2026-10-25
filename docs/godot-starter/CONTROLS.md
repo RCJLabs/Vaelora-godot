@@ -17,6 +17,7 @@ layout; PlayStation and Switch pads map to the same positions.
 | Shield bash | Left-click while blocking | RT while blocking |
 | Dodge | Alt | B |
 | Switch spell / Block | Q | Y |
+| First / third person | V | R3 (press the right stick) |
 | Race power / background power | Z / X | LB / RB |
 | Character menu (skills, inventory, magic, journal, map...) | Tab (J opens the journal, M the map) | View |
 | Switch menu tabs | Click the tab, or Z / X | LB / RB |
@@ -31,6 +32,25 @@ Prefer tapping to holding? **Settings → Accessibility** has toggle sprint and 
 Look speed for both the mouse and the right stick is **Settings → Mouse sensitivity**, and
 **Invert Y** applies to both. The stick is curved: small tilts aim finely, full tilt turns
 about 180° a second.
+
+## First and third person
+
+**V** (R3 on a gamepad) switches between first and third person, any time you're not in a
+menu or a conversation. **Settings → Third-person view** does the same, and the game
+remembers your choice for every character (`Settings.third_person`).
+
+How it works (`player/player_view.gd`, the player's `View` node):
+- The **eye camera** (Head/Camera3D) stays where it is in both views, and everything still
+  aims from it: the interact ray, melee and spell casts, bolts and bursts. So switching never
+  changes what your attacks can reach.
+- **Third person** adds a camera on a spring arm 3.2 m behind your right shoulder. Walls pull
+  it in, and your body hides when the camera gets very close.
+- **The crosshair is what you hit.** In third person the eye is turned each frame towards
+  whatever is under the crosshair (up to 60 m), so the middle of the screen is what you'll
+  take, talk to, hit or cast at.
+- **Render layers** keep each camera to its own things. The first-person hands, weapons and
+  spell glow are on layer 11, which the third-person camera doesn't draw. Your body is on
+  layer 12, which the eye camera doesn't draw.
 
 ## Climbing (mantle and vault)
 - **Jump facing a ledge** 0.45–2.1 m high (from your feet) to climb onto it. Higher than that,
@@ -76,5 +96,8 @@ gamepad buttons for them).
 
 ## Known limits
 - No aim assist for the stick yet.
+- Third person (greybox): your body is a capsule with no animation, and it shows nothing in
+  your hands, so you can't see your weapon, shield or spell in third person. Camera shake
+  only moves the first-person view.
 - Typing a name in the character creator needs a keyboard (leave it blank for "Traveller").
 - Gamepad was tested with simulated input; it hasn't been tried with a real controller.

@@ -185,6 +185,7 @@ func _build_settings() -> void:
 	_slider("Field of view", "fov", 60.0, 100.0, 1.0, "%d")
 	_slider("Volume", "master_volume", 0.0, 1.0, 0.05, "%.0f%%", 100.0)
 	_checkbox("Tutorial hints", "show_hints")
+	_checkbox("Third-person view (%s switches it in play)" % InputHints.label("toggle_view"), "third_person")
 	_button("Graphics...", _show.bind("graphics"))
 	_button("Controls...", _show.bind("controls"))
 	_button("Accessibility...", _show.bind("accessibility"))
