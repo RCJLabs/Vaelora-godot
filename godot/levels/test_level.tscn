@@ -1,4 +1,4 @@
-[gd_scene load_steps=99 format=3]
+[gd_scene load_steps=101 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -38,6 +38,8 @@
 [ext_resource type="Script" path="res://enemies/inquisitor.gd" id="200_inquisitor"]
 [ext_resource type="Script" path="res://props/mercy_cell.gd" id="201_mercy_cell"]
 [ext_resource type="Script" path="res://props/festival_lantern.gd" id="202_lantern"]
+[ext_resource type="Script" path="res://levels/wanderer_moon.gd" id="203_moon"]
+[ext_resource type="Script" path="res://props/lanternfast_song.gd" id="204_song"]
 [ext_resource type="Script" path="res://interactables/examine.gd" id="84_examine"]
 [ext_resource type="Script" path="res://props/reading_stone.gd" id="83_reading"]
 
@@ -1903,7 +1905,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -6.5)
 script = ExtResource("202_lantern")
 
 [node name="LanternPost3" type="Node3D" parent="Lanternfast"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -1.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -1.8)
 script = ExtResource("202_lantern")
 
 [node name="LanternPost4" type="Node3D" parent="Lanternfast"]
@@ -1933,3 +1935,66 @@ script = ExtResource("202_lantern")
 [node name="LanternPost5" type="Node3D" parent="Lanternfast"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 0, -4.0)
 script = ExtResource("202_lantern")
+
+[node name="Pim" type="StaticBody3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 1.0)
+script = ExtResource("4_npc")
+display_name = "Pim"
+dialogue_file = "res://dialogue/lf_pim.json"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lanternfast/Pim"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.540, 0)
+mesh = SubResource("CapsuleMesh_npc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lanternfast/Pim"]
+transform = Transform3D(1, 0, 0, 0, 0.6, 0, 0, 0, 1, 0, 0.540, 0)
+shape = SubResource("CapsuleShape_npc")
+
+[node name="Hettie" type="StaticBody3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3, 0, 1.0)
+script = ExtResource("4_npc")
+display_name = "Hettie Kettlewick"
+dialogue_file = "res://dialogue/lf_hettie.json"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lanternfast/Hettie"]
+transform = Transform3D(0.7, 0, 0, 0, 0.65, 0, 0, 0, 0.7, 0, 0.585, 0)
+mesh = SubResource("CapsuleMesh_npc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lanternfast/Hettie"]
+transform = Transform3D(1, 0, 0, 0, 0.65, 0, 0, 0, 1, 0, 0.585, 0)
+shape = SubResource("CapsuleShape_npc")
+
+[node name="Orrin" type="StaticBody3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0, 0, 4.8)
+script = ExtResource("4_npc")
+display_name = "Orrin of the Mill Lane"
+dialogue_file = "res://dialogue/lf_orrin.json"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lanternfast/Orrin"]
+transform = Transform3D(0.85, 0, 0, 0, 1.12, 0, 0, 0, 0.85, 0, 1.008, 0)
+mesh = SubResource("CapsuleMesh_npc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lanternfast/Orrin"]
+transform = Transform3D(1, 0, 0, 0, 1.12, 0, 0, 0, 1, 0, 1.008, 0)
+shape = SubResource("CapsuleShape_npc")
+
+[node name="Moss" type="StaticBody3D" parent="Lanternfast"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 14.0, 0, 7.0)
+script = ExtResource("4_npc")
+display_name = "Moss"
+dialogue_file = "res://dialogue/lf_moss.json"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lanternfast/Moss"]
+transform = Transform3D(1.0, 0, 0, 0, 0.62, 0, 0, 0, 1.0, 0, 0.558, 0)
+mesh = SubResource("CapsuleMesh_npc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lanternfast/Moss"]
+transform = Transform3D(1, 0, 0, 0, 0.62, 0, 0, 0, 1, 0, 0.558, 0)
+shape = SubResource("CapsuleShape_npc")
+
+[node name="Song" type="Node3D" parent="Lanternfast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 2.5)
+script = ExtResource("204_song")
+
+[node name="WandererMoon" type="Node3D" parent="."]
+script = ExtResource("203_moon")

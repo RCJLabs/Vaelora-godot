@@ -1,0 +1,36 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Outside the lantern-light, a grey-skinned woman sits alone on a stone, facing north. She has no lantern. She doesn't look up.",
+			"choices": [
+				{
+					"text": "No lantern?",
+					"next": "why"
+				},
+				{
+					"text": "(Leave her be.)",
+					"next": "end"
+				}
+			]
+		},
+		"why": {
+			"text": "\"We don't light them,\" she says at last. \"We remember instead.\" A long pause. \"Moss. That's my name. Somebody should say it tonight.\"",
+			"choices": [
+				{
+					"text": "Remember what?",
+					"next": "what"
+				}
+			]
+		},
+		"what": {
+			"text": "\"What everyone singing over there forgot.\" She nods towards the fire, the song, the children. \"Go and have your cake. It isn't your fault. Not yet.\"",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

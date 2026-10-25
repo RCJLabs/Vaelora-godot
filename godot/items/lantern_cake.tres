@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "lantern_cake"
+display_name = "Lantern Cake"
+description = "A honey cake baked in a lantern-shaped tin, for Lanternfast. Sticky, and gone too soon."
+type = 1
+value = 4
+weight = 0.3
+restore_health = 10.0
+ease_hunger = 25.0

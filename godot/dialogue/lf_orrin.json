@@ -1,0 +1,36 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "A tall, thin man with eyes a shade too pale, singing under his breath with the others but not quite the same words. \"Orrin, of the Mill Lane. You're wondering why I sing it differently.\"",
+			"choices": [
+				{
+					"text": "Why do you?",
+					"next": "why"
+				},
+				{
+					"text": "Not really.",
+					"next": "end"
+				}
+			]
+		},
+		"why": {
+			"text": "\"Everyone here lights a lantern to keep the lights out. My people light one so the lost ones can find their way home.\" He shrugs, carefully. \"We don't say that loudly. People already think we brought the Hollowing.\"",
+			"choices": [
+				{
+					"text": "Home where?",
+					"next": "home"
+				}
+			]
+		},
+		"home": {
+			"text": "He looks up, at the place in the sky where the Wanderer should be and tonight isn't. He doesn't answer.",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}
