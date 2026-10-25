@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "iron_boots"
+display_name = "Iron Boots"
+description = "Heavy, loud, and nothing short of a cart wheel is getting through them."
+type = 3
+value = 30
+weight = 5.0
+slot = 6
+armor = 10.0
+armor_class = 2

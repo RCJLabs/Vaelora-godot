@@ -108,7 +108,9 @@ func take_damage(amount: float, over_time: bool = false) -> void:
 	if is_dead or amount <= 0.0:
 		return
 	amount *= modifier("damage_taken")
-	if not over_time:
+	if over_time:
+		amount *= modifier("dot_damage_taken")
+	else:
 		amount *= 1.0 - armor_rating / (armor_rating + 100.0)
 	health = maxf(health - amount, 0.0)
 	damaged.emit(amount)

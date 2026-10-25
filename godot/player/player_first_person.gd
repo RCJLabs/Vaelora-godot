@@ -120,6 +120,9 @@ func _ready() -> void:
 	Inventory.item_added.connect(_on_item_added)
 	Inventory.gold_added.connect(_on_gold_added)
 	Inventory.equipment_changed.connect(_apply_equipment)
+	Skills.changed.connect(_update_armor)      # Light / Heavy Armour levels
+	Character.changed.connect(_update_armor)   # armour perks
+	Inventory.equipment_changed.connect(_update_encumbrance)   # weightless armour perks
 	Inventory.changed.connect(func(): if combat.is_bow(): _on_spell_changed())   # arrow count
 	Inventory.changed.connect(_update_encumbrance)
 	Attributes.changed.connect(_update_encumbrance)
@@ -227,7 +230,7 @@ func _physics_process(delta: float) -> void:
 			and not _exhausted and combat.allows_sprint() and not is_over_encumbered()
 	if sprinting:
 		stats.use_stamina(sprint_stamina_per_second * Skills.athletics_stamina_mult()
-				* stats.modifier("sprint_stamina") * delta)
+				* stats.modifier("sprint_stamina") * Armor.sprint_mult() * delta)
 		Skills.add_xp("athletics", Vector2(velocity.x, velocity.z).length() * delta / 5.0)   # 1 XP per 5 m
 	var target_speed := (sprint_speed if sprinting else walk_speed) * stats.modifier("move_speed") * combat.move_mult()
 	if is_sneaking:
@@ -307,8 +310,12 @@ func _apply_equipment() -> void:
 	if shield and shield.held_scene:
 		off_hand.add_child(shield.held_scene.instantiate())
 	combat.set_shield(shield)
-	stats.armor_rating = Inventory.armor_total()
+	_update_armor()
 	_on_spell_changed()   # what the left hand shows depends on the gear
+
+
+func _update_armor() -> void:
+	stats.armor_rating = Inventory.armor_total()
 
 
 # Gamepad right stick. Mouse look is in _unhandled_input.
