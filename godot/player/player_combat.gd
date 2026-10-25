@@ -78,6 +78,7 @@ var main_item: ItemData
 var shield_item: ItemData
 var base_damage := 4.0
 var base_stamina_cost := 5.0
+var _from_sprint := false   # this attack began at a sprint (Arms "charge")
 var weapon_skill := "one_handed"
 var light_attacks: Array[AttackData] = []
 var heavy_attack: AttackData
@@ -222,7 +223,7 @@ func dodge_pressed(input_dir: Vector2) -> void:
 func _physics_process(delta: float) -> void:
 	if Settings.toggle_block and Input.is_action_just_pressed("cast") and player.can_fight():
 		_block_toggled = not _block_toggled   # Settings → Accessibility → Toggle block
-	_state_time += delta
+	_state_time += delta * (player.stats.modifier("attack_speed") if state in [State.WINDUP, State.ACTIVE, State.RECOVERY] else 1.0)
 	_dodge_cooldown_left -= delta
 	_iframes_left -= delta
 	_riposte_left -= delta
@@ -275,7 +276,7 @@ func _physics_process(delta: float) -> void:
 				_combo_grace_left = COMBO_GRACE
 		State.DODGING:
 			if _state_time >= DODGE_TIME:
-				_dodge_cooldown_left = DODGE_COOLDOWN
+				_dodge_cooldown_left = DODGE_COOLDOWN * player.stats.modifier("dodge_cooldown")
 				_to_ready()
 		State.STAGGERED:
 			_stagger_left -= delta
@@ -301,6 +302,7 @@ func _start_charging() -> void:
 		player.hud.flash_tired()
 		return
 	_set_state(State.CHARGING)
+	_from_sprint = player.sprinting_now   # a charge (Arms): begun at a sprint
 	is_heavy = true
 	charge = 0.0
 	combo_index = 0
@@ -309,7 +311,7 @@ func _start_charging() -> void:
 
 func _start_bash() -> void:
 	var bash: AttackData = shield_item.bash_attack
-	if not player.stats.try_use_stamina(shield_item.stamina_cost * bash.stamina_mult * player.stats.modifier("attack_stamina")):
+	if not player.stats.try_use_stamina(shield_item.stamina_cost * bash.stamina_mult * player.stats.modifier("attack_stamina") * player.stats.modifier("bash_stamina")):
 		player.hud.flash_tired()
 		return
 	current_attack = bash
@@ -323,10 +325,14 @@ func _start_bash() -> void:
 
 ## Returns false if there isn't enough stamina.
 func _start_attack(attack: AttackData, heavy: bool) -> bool:
-	if not player.stats.try_use_stamina(_stamina_cost(attack, heavy)):
+	if not Arms.free_swing() and not player.stats.try_use_stamina(_stamina_cost(attack, heavy)):   # Blade Dance
 		player.hud.flash_tired()
 		_to_ready()
 		return false
+	if not heavy:
+		_from_sprint = player.sprinting_now
+	if main_item:
+		attack_cast.target_position = Vector3(0, 0, -main_item.reach * player.stats.modifier("reach"))   # Wide Arcs
 	current_attack = attack
 	is_heavy = heavy
 	is_bash = false
@@ -430,11 +436,14 @@ func _land_hit(target: Node) -> void:
 	if main_item == null and not is_bash:
 		damage = _unarmed_damage(target, damage)
 	damage *= Sight.damage_mult(player)   # Moment of Clarity, Read the Fight
+	damage *= Arms.hit_mult(target, player, _from_sprint and not is_bash)   # crits, executions, momentum...
+	if is_bash:
+		damage *= Arms.prod("bash_damage")   # Deadly Bash (Block)
 	var rune_blade: bool = not is_bash and player.effects.has("rune_blade")   # Enchant Weapon (Runecraft)
 	if rune_blade:
 		damage += Runecraft.BLADE_DAMAGE * stats.modifier("enchant_damage")
 	var poise := current_attack.poise_damage * _charge_mult() * stats.modifier("poise_dealt") \
-			* (1.0 if is_bash else Smithing.poise_mult(main_item))   # Heavy Hand
+			* (Arms.prod("bash_poise") if is_bash else Smithing.poise_mult(main_item))   # Power Bash, Heavy Hand
 	var heavy := is_heavy
 	var sneak := Stealth.sneak_attack_mult(target, "melee", null if is_bash else main_item)
 	if sneak > 1.0:
@@ -449,6 +458,9 @@ func _land_hit(target: Node) -> void:
 		return
 	if sneak > 1.0:
 		Stealth.sneak_attack_landed(target, sneak)
+	Arms.landed(target, damage, player, heavy or (is_bash and Arms.any("bash_stagger")))
+	if Arms.crit_landed:
+		player.hud.notify("Critical!")
 	if current_attack.applies_effect != "" and randf() < current_attack.effect_chance and target.has_method("add_effect"):
 		target.add_effect(current_attack.applies_effect)
 	if main_item == null and not is_bash:
@@ -556,20 +568,24 @@ func _loose_arrow() -> void:
 		_to_ready()
 		return
 	Inventory.remove(main_item.ammo, 1)
-	var power := lerpf(0.3, 1.0, (charge - MIN_DRAW) / (1.0 - MIN_DRAW))
+	var power := lerpf(minf(0.3 + Arms.sum("snap_power"), 1.0), 1.0, (charge - MIN_DRAW) / (1.0 - MIN_DRAW))   # Snapshot
 	var stats: Stats = player.stats
 	var arrow: Arrow = ARROW_SCENE.instantiate()
 	arrow.shooter = player
 	arrow.damage = base_damage * power * Skills.weapon_damage_mult("archery") \
 			* stats.modifier("damage_dealt") * stats.modifier("weapon_damage_archery")
-	arrow.poise_damage = lerpf(3.0, 15.0, power)
+	arrow.poise_damage = lerpf(3.0, 15.0, power) * stats.modifier("poise_dealt")
+	var full_draw := charge >= 0.99
+	arrow.damage_for = func(target: Node, base: float) -> float:   # crits, long shots... (Arms)
+		var dist: float = target.global_position.distance_to(player.global_position) if target is Node3D else 0.0
+		return base * Arms.hit_mult(target, player, false, dist) * (Arms.prod("deadeye") if full_draw else 1.0)
 	arrow.sneaking = player.is_sneaking
 	Stealth.make_noise(player.global_position, "archery")
 	arrow.hit.connect(_on_arrow_hit)
 	player.get_parent().add_child(arrow)
 	var camera: Camera3D = player.camera
 	var forward := -camera.global_transform.basis.z
-	arrow.launch(camera.global_position + forward * 0.6, forward, main_item.arrow_speed * lerpf(0.55, 1.0, power))
+	arrow.launch(camera.global_position + forward * 0.6, forward, main_item.arrow_speed * lerpf(0.55, 1.0, power) * stats.modifier("arrow_speed"))
 	Sfx.play("bow_release", -3.0)
 	player.camera_kick(Vector3(-0.8, 0.0, 0.0))
 	animator.kick(Vector3(0.0, 0.0, 0.05))
@@ -584,8 +600,13 @@ func _loose_arrow() -> void:
 	animator.go("bow_rest", BOW_RECOVERY)
 
 
-func _on_arrow_hit(target: Node, _damage: float) -> void:
+func _on_arrow_hit(target: Node, damage: float) -> void:
 	Skills.add_xp("archery", 4.0)
+	Arms.landed(target, damage, player, false)
+	if randf() < Arms.sum("arrow_recovery"):
+		Inventory.add("arrow")   # Arrow Recovery
+	if target.has_method("add_effect") and randf() < Arms.sum("pin"):
+		target.add_effect("arrow_pinned")   # Pinning Shot
 	player.hud.flash_hit()
 	_show_target_health(target)
 
@@ -650,13 +671,16 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 		return "blocked"
 	if state == State.BLOCKING and _facing(attacker):
 		if _state_time <= PARRY_WINDOW * stats.modifier("parry_window"):
-			_parried()
+			_parried(attacker)
 			return "parried"
-		var share := Skills.block_share(guard_share())
+		var share := minf(Skills.block_share(guard_share()) * stats.modifier("block_share"), 0.95)   # Shield Wall
+		if Arms.any("last_guard") and stats.health < stats.max_health * 0.25:
+			share = 1.0   # Last Guard (Block)
 		var stopped := damage * share
 		var cost := stopped * BLOCK_STAMINA_PER_DAMAGE * stats.modifier("block_stamina")
 		Skills.add_xp("block", stopped / 4.0)
-		if stats.stamina < cost:
+		Arms.blocked()   # Retaliation
+		if stats.stamina < cost and not Arms.any("bulwark"):   # Bulwark: your guard never breaks
 			stats.use_stamina(stats.stamina)
 			stats.take_damage(damage - stopped)
 			stagger(GUARD_BREAK_TIME)
@@ -678,16 +702,21 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 		return outcome.get("result", "dodged")
 	Armor.hit_taken(damage)   # trains Light / Heavy Armour
 	stats.take_damage(taken)
+	Arms.hurt()   # momentum lost
 	player.camera_kick(Vector3(-2.0, randf_range(-1.5, 1.5), randf_range(-3.0, 3.0)))
-	stats.take_poise_damage(poise_damage)
+	var attacking := state in [State.WINDUP, State.ACTIVE, State.RECOVERY, State.CHARGING]
+	stats.take_poise_damage(poise_damage * (Arms.prod("poise_guard") if attacking else 1.0))   # Unstoppable
 	return "hit"
 
 
-func _parried() -> void:
+func _parried(attacker: Node3D = null) -> void:
 	Skills.add_xp("block", 6.0)
+	if attacker and Arms.any("parry_stagger"):
+		Arms._stagger(attacker, player)   # Counterweight (Block)
+	player.stats.heal(Arms.sum("parry_heal"))   # Aegis
 	if player.effects.has("foresight") and "counterseer" in Character.perks:
 		player.stats.magicka = minf(player.stats.magicka + 20.0, player.stats.max_magicka)
-	player.stats.stamina = minf(player.stats.stamina + 10.0, player.stats.max_stamina)
+	player.stats.stamina = minf(player.stats.stamina + 10.0 + Arms.sum("parry_stamina"), player.stats.max_stamina)   # Perfect Timing
 	player.stats.changed.emit()
 	_riposte_left = RIPOSTE_TIME
 	if left_hand() == Hand.SHIELD:

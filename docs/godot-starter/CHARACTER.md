@@ -88,14 +88,14 @@ The tree scrolls both ways and scrolls to the perk you pick, so a skill can hold
 
 | Skill | Perks (skill level needed) |
 |---|---|
-| One-Handed | Armsman +20% damage (15) · Fighting Rhythm, swings −25% Stamina (25) · Armsman II +20% (35, needs Armsman) |
-| Athletics | Wind Runner, sprint −25% Stamina (20) · Sure-Footed, half fall damage (25) · Marathon +20 max Stamina (30, needs Wind Runner) |
+| One-Handed | 21 perks, by weapon (swords crit, axes bleed, maces stagger, daggers are quick): see COMBAT.md, "Martial perk trees" |
+| Athletics | 21 perks: sprinting, Stamina, dodging, jumping, carrying: see COMBAT.md |
 | Destruction | Augmented Flames +25% (20) · Efficient Destruction −20% cost (25) · Searing +25% (35, needs Augmented Flames) |
 | Restoration | Recovery, Magicka +25% faster (20) · Potent Healing +30% (25) · Efficient Restoration −20% cost (30, needs Potent Healing) · Ward Mastery, wards +20% (30, needs Recovery) |
-| Block | Steady Guard, blocking −25% Stamina (20) · Deflection, parry window +50% (25) · Riposte, +50% damage for 2 s after a parry (35, needs Deflection) |
-| Two-Handed | Barbarian +20% (15) · Reaver, heavy attacks −25% Stamina (25) · Barbarian II +20% (35, needs Barbarian) |
+| Block | 21 perks: guarding, parrying, the shield bash: see COMBAT.md |
+| Two-Handed | 21 perks: heavy blows, Cleave and Earthshaker, Berserker: see COMBAT.md |
 | Alteration | Efficient Alteration −25% cost (20) · Arcane Reserve +25 max Magicka (25) · Focused Mind, Magicka +25% faster (35, needs Arcane Reserve) |
-| Archery | Overdraw +20% (15) · Quick Draw, bows draw 30% faster (25) · Overdraw II +20% (35, needs Overdraw) |
+| Archery | 21 perks: draw, crits, Deadeye, pinning, beasts and long shots: see COMBAT.md |
 | Sneak | 22 perks in five branches: see SNEAK.md |
 | Light Armour, Heavy Armour | 21 perks each, some only in armour or a full set: see ARMOUR.md |
 | Speech | 22 perks: haggling, check bonuses (`check_bonus`), bribes, trainers, companions: see SPEECH.md |

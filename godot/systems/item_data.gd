@@ -80,6 +80,8 @@ enum ArmorClass { NONE, LIGHT, HEAVY }
 @export var stamina_cost: float = 10.0
 ## Skill that improves with hits and boosts damage.
 @export var weapon_skill: String = "one_handed"
+## "sword", "dagger", "axe", "mace", "greatsword", "bow": for perks that want one ("when_weapon").
+@export var weapon_type: String = ""
 ## A dagger: sneak attacks with it gain the dagger perks (Assassin's Blade).
 @export var dagger: bool = false
 ## First-person model shown in the right hand (a scene with meshes).

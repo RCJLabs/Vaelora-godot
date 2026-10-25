@@ -22,3 +22,4 @@ arrow_speed = 45.0
 block_reduction = 0.0
 held_scene = ExtResource("2_model")
 material = "wood"
+weapon_type = "bow"

@@ -82,7 +82,7 @@ func stamina_regen_mult() -> float: return maxf(1.0 + above_base("agility") * 0.
 func magicka_regen_mult() -> float: return maxf(1.0 + above_base("willpower") * 0.05, 0.1)
 func reputation_mult() -> float: return maxf(1.0 + above_base("presence") * 0.03, 0.1)
 ## How much you can carry before you're over-encumbered.
-func carry_capacity() -> float: return maxf(CARRY_BASE + above_base("strength") * CARRY_PER_POINT, 20.0)
+func carry_capacity() -> float: return maxf(CARRY_BASE + above_base("strength") * CARRY_PER_POINT, 20.0) + Character.stat_bonus("carry")
 ## Harmful effects on you last this share of their time (Willpower).
 func harmful_duration_mult() -> float: return clampf(1.0 - above_base("willpower") * 0.04, 0.4, 1.6)
 ## Heavy weapons (over 10 weight) want Strength: 10, plus 1 per 2 weight over 10

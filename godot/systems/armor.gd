@@ -59,6 +59,14 @@ func perk_applies(perk: Dictionary) -> bool:
 		return false
 	if perk.get("when_unarmed", false) and Inventory.equipped_item("main_hand") != null:
 		return false   # Unarmed perks: only with bare fists
+	if perk.has("when_skill") or perk.has("when_weapon"):   # martial perks: what's in your hand
+		var weapon := Inventory.equipped_item("main_hand")
+		if perk.has("when_skill") and (weapon.weapon_skill if weapon else "unarmed") != perk["when_skill"]:
+			return false
+		if perk.has("when_weapon") and (weapon.weapon_type if weapon else "") != perk["when_weapon"]:
+			return false
+	if perk.get("when_shield", false) and Inventory.equipped_item("off_hand") == null:
+		return false
 	return true
 
 
