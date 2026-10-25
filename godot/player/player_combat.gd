@@ -455,6 +455,7 @@ func _land_hit(target: Node) -> void:
 		_unarmed_landed(target)
 	if not is_bash:
 		Alchemy.blade_hit(target)   # a poisoned blade
+	Command.player_hit(target)   # Coordinated Strike
 	if rune_blade and target.has_method("add_effect") and randf() < (1.0 if "searing_edge" in Character.perks else 0.3):
 		target.add_effect("burning")
 	Skills.add_xp(skill, 5.0 if is_heavy else 3.0)

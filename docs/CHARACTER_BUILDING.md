@@ -71,6 +71,8 @@ ten that exist get theirs filled in along the way).
      and 21 perks (`docs/godot-starter/LOCKPICKING.md`).
    - ✅ Survival: cooking meals with buffs, forage plants that regrow, making camp from
      firewood, slower needs in Survival mode, and 21 perks (`docs/godot-starter/SURVIVAL.md`).
+   - ✅ Command (an addition, Presence): companions stronger by level, the Command key to point
+     out a target, and 21 perks (`docs/godot-starter/COMPANIONS.md`).
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
 6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.

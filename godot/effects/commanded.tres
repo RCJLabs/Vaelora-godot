@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "commanded"
+display_name = "Marked Target"
+description = "Pointed out: takes 15% more from everyone."
+is_harmful = true
+duration = 10.0
+modifiers = {
+"damage_taken": 1.15
+}

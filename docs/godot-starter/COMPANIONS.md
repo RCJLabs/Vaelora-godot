@@ -29,6 +29,37 @@ Talk to them (E) for `dialogue/companion_<id>.json`:
 The orders are command flags (`companion_cmd_wait`, `_follow`, `_dismiss`, `_talk`) that
 Companions acts on and clears at once (`GameState.clear_flag`, which StoryPresence also listens for).
 
+**Point it out:** aim at an enemy and press **Command** (G, or D-pad up) and they go for it,
+even one that hasn't noticed you (an ambush) and even if they were told to wait. It's the
+Command skill's key (below).
+
+## The Command skill
+
+Presence's fourth skill, one of my two additions in `docs/CHARACTER_BUILDING.md`. The code is
+`systems/command.gd` (the autoload `Command`).
+
+- **Your companion** does +1% damage and has +1% health per Command level above 15 (Brannoc's
+  150 health is 225 at Command 65). It's worked out live, so a level-up mid-fight counts.
+- **The Command key** picks the enemy nearest your aim (within 12° and 40 m) and sends your
+  companion at it. With Pack Leader, things you've called (Binding) go for it too.
+- **XP:** a tenth of the damage your companion deals, and 1 per order.
+- A hint explains the key the first time someone joins you.
+
+| Branch | Perks (level) |
+|---|---|
+| Their blows | Leadership (15) → II (35) → III (60): +15% damage each → **Vanguard** (70): their blows stagger twice as hard · Battle Drill (30): attack 20% faster |
+| Their health | Steadfast (20) → II (45): +20% health each → **Commander's Aura** (80): they take a quarter less · Hardened (40): health back twice as fast · Battlefield Aid (25): helping them up gives full health → **Unbowed** (50): up on their own in 8 s |
+| Orders | **Marked Target** (25): what you point out takes 15% more for 10 s → **Coordinated Strike** (45): hit it yourself and their next blow doubles · **Pack Leader** (35): called things obey too · Swift Escort (20): they run 25% faster → **Hold the Line** (45): waiting, they take half |
+| Together | **Bodyguard** (40): with them up and within 6 m, you take 10% less → **Battle-Brothers** (55): while they're down, your blows do 25% more |
+| Loyalty | Inspiring (20): approval rises half as fast again → **Beloved** (60): they only leave at −80 |
+| — | Command Presence (15): +25% XP |
+
+New modifiers: `ally_damage`, `ally_health` (and Inspiring uses Speech's `approval_gain`).
+New effects: `commanded`, `guarded`, `avenging`.
+
+Not yet: two companions at once (the Binder class's "two bound creatures" is the nearest
+thing); orders by a radial menu (wait / follow by key, not only by talking).
+
 ## Fighting
 
 While following, they fight the nearest enemy within 15 m of you or them that's in the

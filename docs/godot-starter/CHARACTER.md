@@ -108,6 +108,7 @@ The tree scrolls both ways and scrolls to the perk you pick, so a skill can hold
 | Smithing | 21 perks: materials, mastery, weapons, armour, thrift: see SMITHING.md |
 | Lockpicking | 21 perks: the spot, picks, locks, quiet: see LOCKPICKING.md |
 | Survival | 21 perks: cooking, foraging, camp, needs: see SURVIVAL.md |
+| Command | 21 perks: their blows, their health, orders, together, loyalty: see COMPANIONS.md |
 
 ### Respec
 

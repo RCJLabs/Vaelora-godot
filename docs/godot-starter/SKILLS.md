@@ -31,6 +31,7 @@ attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult
 | Sight | Presence | Casting Sight spells | +1% to how long Weak Point and Ill Fortune last per level (SIGHT.md) |
 | Speech | Presence | Checks passed, trading | +1 to persuade and intimidate checks per level, cheaper bribes, better prices (SPEECH.md) |
 | Glamour | Presence | Casting Glamour spells | +1% duration per level |
+| Command | Presence | Your companion's damage, orders given | Your companion +1% damage and health per level; the Command key (COMPANIONS.md) |
 | Drawing | Willpower | Life taken | Forbidden: +1% per level, more with corruption; it corrupts you (DRAWING.md) |
 | Tidecraft | Willpower | Casting Tidecraft spells | +1% power per level (and the moons) |
 
@@ -75,7 +76,7 @@ Four skills to each attribute (your note: an even number per attribute). Bold on
 | Agility | **Archery**, **Light Armour**, **Sneak**, **Lockpicking** |
 | Intellect | **Ruin**, **Shaping**, **Runecraft**, **Alchemy** |
 | Willpower | **Mending**, **Binding**, **Tidecraft**, **Drawing** |
-| Presence | **Speech**, **Glamour**, **Sight**, *Command* (companions) |
+| Presence | **Speech**, **Glamour**, **Sight**, ***Command*** (companions) |
 
 See `docs/CHARACTER_BUILDING.md` for the order they'll be built in.
 

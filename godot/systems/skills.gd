@@ -122,6 +122,11 @@ const SKILLS := {
 		"name": "Sight",
 		"description": "+1% to how long Weak Point and Ill Fortune last per level. Improves as you cast Sight spells.",
 	},
+	"command": {
+		"attribute": "presence",
+		"name": "Command",
+		"description": "Your companion does +1% damage and has +1% health per level. Press Command aiming at an enemy to send them at it. Improves with the damage your companion deals and the orders you give.",
+	},
 	"glamour": {
 		"attribute": "presence",
 		"name": "Glamour",

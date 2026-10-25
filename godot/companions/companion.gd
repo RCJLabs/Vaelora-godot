@@ -41,6 +41,9 @@ var attack_interval := 1.2
 var ranged := false
 var bolt_color := Color(1, 0.5, 0.15)
 var max_health := 100.0
+var base_max_health := 100.0   # before Command (systems/command.gd) raises it
+var next_blow_mult := 1.0      # Coordinated Strike: the next blow lands harder
+var _ordered_enemy: Node3D = null   # pointed out (Command): goes for it, even if it hasn't noticed
 var health := 100.0
 var state := State.FOLLOW
 var target: Node3D = null
@@ -69,7 +72,8 @@ func setup(id: String, def: Dictionary) -> void:
 	reach = def.get("reach", reach)
 	attack_interval = def.get("attack_interval", attack_interval)
 	ranged = def.get("ranged", false)
-	max_health = def.get("health", max_health)
+	base_max_health = def.get("health", max_health)
+	max_health = base_max_health * Command.health_mult()
 	health = max_health
 	name = "Companion_" + id
 
@@ -105,7 +109,7 @@ func _ready() -> void:
 
 func interact(_player: Node) -> void:
 	if is_down:
-		_get_up(HELPED_UP)
+		_get_up(1.0 if "battlefield_aid" in Character.perks else HELPED_UP)   # Battlefield Aid (Command)
 	else:
 		DialogueManager.start(dialogue_file, display_name)
 
@@ -114,6 +118,10 @@ func interact(_player: Node) -> void:
 func receive_attack(amount: float, attacker: Node3D, _poise: float = 0.0) -> String:
 	if is_down:
 		return "hit"
+	if state == State.WAIT and "hold_the_line" in Character.perks:
+		amount *= 0.5
+	if "commanders_aura" in Character.perks:
+		amount *= 0.75
 	health = maxf(health - amount, 0.0)
 	_since_hit = 0.0
 	_last_attacker = attacker
@@ -121,6 +129,13 @@ func receive_attack(amount: float, attacker: Node3D, _poise: float = 0.0) -> Str
 		_go_down()
 	_update_label()
 	return "hit"
+
+
+## The Command key: go for `enemy`.
+func attack_order(enemy: Node3D) -> void:
+	_ordered_enemy = enemy
+	if state == State.WAIT:
+		order(State.FOLLOW)   # an order to fight is an order to move
 
 
 ## Wait or follow (from their dialogue). While they're down, it's what they'll do when they get up.
@@ -133,7 +148,7 @@ func order(new_state: State) -> void:
 func _go_down() -> void:
 	_ordered = State.WAIT if state == State.WAIT else State.FOLLOW
 	state = State.DOWN
-	_down_left = DOWN_SECONDS
+	_down_left = 8.0 if "unbowed" in Character.perks else DOWN_SECONDS   # Unbowed (Command)
 	target = null
 	_body.rotation.x = deg_to_rad(80)
 	_body.position.y = 0.35
@@ -174,8 +189,10 @@ func _physics_process(delta: float) -> void:
 			_get_up(GOT_UP)
 		move_and_slide()
 		return
+	max_health = base_max_health * Command.health_mult()   # Command can change mid-fight
+	health = minf(health, max_health)
 	if _since_hit > REGEN_DELAY and health < max_health:
-		health = minf(health + REGEN_PER_SECOND * delta, max_health)
+		health = minf(health + REGEN_PER_SECOND * (2.0 if "hardened" in Character.perks else 1.0) * delta, max_health)
 		_update_label()
 	if state == State.WAIT:
 		# Waiting, but not standing there to be bitten: hit back at what's in reach.
@@ -191,14 +208,14 @@ func _physics_process(delta: float) -> void:
 			if dist > CATCH_UP_DISTANCE:
 				arrive_behind(player)
 			elif dist > FOLLOW_DISTANCE:
-				_move(player.global_position, RUN_SPEED if dist > FOLLOW_DISTANCE * 2.0 else RUN_SPEED * 0.6)
+				_move(player.global_position, _run_speed() if dist > FOLLOW_DISTANCE * 2.0 else _run_speed() * 0.6)
 			else:
 				_move(Vector3.ZERO, 0.0)
 		State.WAIT:
 			_move(Vector3.ZERO, 0.0)
 		State.FIGHT:
 			if _flat_distance(target) > reach:
-				_move(target.global_position, RUN_SPEED)
+				_move(target.global_position, _run_speed())
 			else:
 				_strike(target)
 	move_and_slide()
@@ -209,22 +226,31 @@ func _strike(enemy: Node3D) -> void:
 	_face(enemy.global_position)
 	if _attack_left > 0.0:
 		return
-	_attack_left = attack_interval
+	_attack_left = attack_interval * (0.8 if "battle_drill" in Character.perks else 1.0)
+	var dealt := damage * Command.damage_mult() * next_blow_mult
+	next_blow_mult = 1.0
 	if ranged:
-		_throw_bolt(enemy)
+		_throw_bolt(enemy, dealt)
 		return
-	enemy.take_hit(damage, global_position, 3.0, 8.0)
+	enemy.take_hit(dealt, global_position, 3.0, 16.0 if "vanguard" in Character.perks else 8.0)
+	Command.ally_dealt(dealt)
 	Targeting.provoke(enemy, self)
 
 
+func _run_speed() -> float:
+	return RUN_SPEED * (1.25 if "swift_escort" in Character.perks else 1.0)
+
+
 # A bolt of fire from chest height at the enemy's middle; it does the damage when it lands.
-func _throw_bolt(enemy: Node3D) -> void:
+func _throw_bolt(enemy: Node3D, dealt: float) -> void:
 	var bolt: SpellBolt = BOLT_SCENE.instantiate()
 	bolt.shooter = self
-	bolt.damage = damage
-	bolt.poise_damage = 4.0
+	bolt.damage = dealt
+	bolt.poise_damage = 8.0 if "vanguard" in Character.perks else 4.0
 	bolt.color = bolt_color
-	bolt.hit.connect(func(target, _dealt): Targeting.provoke(target, self))
+	bolt.hit.connect(func(target, landed):
+		Command.ally_dealt(landed)
+		Targeting.provoke(target, self))
 	get_parent().add_child(bolt)
 	var from := global_position + Vector3(0, 1.3, 0)
 	bolt.launch(from, (enemy.global_position + Vector3(0, 0.6, 0)) - from, 22.0, 0.7)
@@ -245,6 +271,9 @@ func arrive_behind(player: Node3D) -> void:
 # The nearest living enemy that's in the fight (not idle, not heading home, not
 # fleeing, not charmed onto your side), within FIGHT_RADIUS of the player or of them.
 func _find_target(player: Node3D) -> Node3D:
+	if is_instance_valid(_ordered_enemy) and not Glamour._dead(_ordered_enemy) and _ordered_enemy.is_visible_in_tree():
+		return _ordered_enemy   # pointed out: that one, wherever it is and whatever it's doing
+	_ordered_enemy = null
 	var best: Node3D = null
 	var best_dist := INF
 	for enemy in get_tree().get_nodes_in_group("enemy"):
