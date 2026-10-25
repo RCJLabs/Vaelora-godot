@@ -147,6 +147,7 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 - [ ] Buy Maren's iron set and fight the bandits in it, then in leather. Is the heavy set worth the sprint cost and weight at the start?
 - [ ] Speech checks show your score next to what they need. Does seeing "[Persuade 60 · you 23]" feel fair, or does it take the tension out? (The alternative is a hidden roll.)
 - [ ] Get Stained and meet the inquisitor: are the three ways out (talk, threaten, pay) priced right?
+- [ ] Fight the bandits bare-handed with a few Unarmed perks (Flurry, Combination). Is a fist build viable, or still a joke next to a sword?
 - [ ] Try **Settings → Accessibility → Toggle sprint / Toggle block**: better or worse than holding?
 - [ ] Any button that felt wrong where it is? (Rebind it in Settings → Controls, then tell me
       the new layout.)

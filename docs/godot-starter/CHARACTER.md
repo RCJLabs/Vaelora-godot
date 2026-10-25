@@ -99,6 +99,7 @@ The tree scrolls both ways and scrolls to the perk you pick, so a skill can hold
 | Sneak | 22 perks in five branches: see SNEAK.md |
 | Light Armour, Heavy Armour | 21 perks each, some only in armour or a full set: see ARMOUR.md |
 | Speech | 22 perks: haggling, check bonuses (`check_bonus`), bribes, trainers, companions: see SPEECH.md |
+| Unarmed | 21 perks, most bare-handed only (`when_unarmed`): see UNARMED.md |
 
 ### Respec
 
@@ -142,7 +143,8 @@ from Speech, `buy_price`, `sell_price`, `bribe_cost`, `merchant_gold`, `training
 or `all`) adds to Speech checks.
 
 A perk can be limited to armour with `"when_wearing": "light"` (any light piece) or
-`"when_full": "heavy"` (all four pieces); see ARMOUR.md.
+`"when_full": "heavy"` (all four pieces); see ARMOUR.md. `"when_unarmed": true` limits it to
+bare hands (UNARMED.md).
 
 ## Dialogue that reacts to who you are
 

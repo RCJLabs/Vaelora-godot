@@ -51,7 +51,8 @@ ten that exist get theirs filled in along the way).
      (`docs/godot-starter/ARMOUR.md`).
    - ✅ Speech: persuade, intimidate and bribe checks in dialogue, haggling, and 22 perks
      (`docs/godot-starter/SPEECH.md`).
-   - Unarmed.
+   - ✅ Unarmed: fists train their own skill, 21 perks that work bare-handed
+     (`docs/godot-starter/UNARMED.md`).
 3. **Magic:** Binding, then Runecraft, Sight and Drawing (each with its 20 perks).
 4. **Making things:** Alchemy, Smithing, Lockpicking, Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.

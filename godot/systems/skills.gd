@@ -32,6 +32,11 @@ const SKILLS := {
 		"name": "Two-Handed",
 		"description": "+1% greatsword damage per level. Improves when your swings land.",
 	},
+	"unarmed": {
+		"attribute": "strength",
+		"name": "Unarmed",
+		"description": "+1% damage with your fists per level. Improves when your punches land.",
+	},
 	"archery": {
 		"attribute": "agility",
 		"name": "Archery",

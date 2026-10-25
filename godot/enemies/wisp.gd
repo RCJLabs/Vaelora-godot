@@ -311,6 +311,11 @@ func lift(height: float, seconds: float) -> void:
 	stagger(seconds + 0.6)
 
 
+## Reeling from a broken guard or a heavy blow (Knockout, Unarmed).
+func is_staggered() -> bool:
+	return state == State.STAGGER
+
+
 ## Hasn't noticed you: a sneak attack lands (systems/stealth.gd).
 func is_unaware() -> bool:
 	return state == State.IDLE

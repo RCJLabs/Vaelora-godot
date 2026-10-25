@@ -11,7 +11,8 @@ extends Node
 # away (and can make the armour weigh nothing).
 #
 # Perks can apply only in armour: "when_wearing": "light" (at least one light
-# piece on) or "when_full": "heavy" (head, body, hands and feet all heavy).
+# piece on) or "when_full": "heavy" (head, body, hands and feet all heavy); or
+# only bare-handed: "when_unarmed": true (the Unarmed skill's perks).
 # Character.modifier() and stat_bonus() check it (perk_applies).
 
 const SLOTS := ["head", "body", "hands", "feet"]
@@ -56,6 +57,8 @@ func perk_applies(perk: Dictionary) -> bool:
 		return false
 	if perk.has("when_full") and not is_full(perk["when_full"]):
 		return false
+	if perk.get("when_unarmed", false) and Inventory.equipped_item("main_hand") != null:
+		return false   # Unarmed perks: only with bare fists
 	return true
 
 

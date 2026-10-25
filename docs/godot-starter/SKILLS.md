@@ -5,13 +5,14 @@ pauses).
 
 ## Skills
 
-Fourteen so far, each rising by use from 15 (plus race bonuses) to 100. Each has a **governing
+Fifteen so far, each rising by use from 15 (plus race bonuses) to 100. Each has a **governing
 attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult()`).
 
 | Skill | Attribute | Improves by | Effect |
 |---|---|---|---|
 | One-Handed | Strength | Hits with swords, axes, maces, daggers | +1% damage per level |
 | Two-Handed | Strength | Greatsword hits | +1% damage per level |
+| Unarmed | Strength | Punches that land | +1% fist damage per level (UNARMED.md) |
 | Archery | Agility | Arrow hits | +1% bow damage per level |
 | Sneak | Agility | Sneaking near unaware enemies, sneak attacks | Crouched, enemies notice you closer and slower (SNEAK.md) |
 | Light Armour | Agility | Being hit in light armour | +1% armour from light pieces per level (ARMOUR.md) |
@@ -61,7 +62,7 @@ Four skills to each attribute (your note: an even number per attribute). Bold on
 
 | Attribute | Skills |
 |---|---|
-| Strength | **One-Handed**, **Two-Handed**, Smithing, *Unarmed* |
+| Strength | **One-Handed**, **Two-Handed**, Smithing, ***Unarmed*** |
 | Endurance | **Block**, **Heavy Armour**, **Athletics**, Survival |
 | Agility | **Archery**, **Light Armour**, **Sneak**, Lockpicking |
 | Intellect | **Ruin**, **Shaping**, Runecraft, Alchemy |

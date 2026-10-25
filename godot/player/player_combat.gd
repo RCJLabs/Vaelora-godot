@@ -102,6 +102,9 @@ var _block_toggled := false   # Settings.toggle_block: guard latched up
 var _stagger_left := 0.0
 var _riposte_left := 0.0
 var _counter_left := 0.0   # Counter-Strike (Light Armour): after a dodge, the next hit is harder
+var _combo_target: Node = null   # Combination (Unarmed): who the run of punches is on
+var _combo_hits := 0
+var _combo_left := 0.0
 var _hit_stops := 0
 
 
@@ -130,7 +133,7 @@ func set_weapon(item: ItemData) -> void:
 	else:
 		base_damage = player.unarmed_damage
 		base_stamina_cost = player.unarmed_stamina_cost
-		weapon_skill = "one_handed"   # until there's a Hand-to-Hand skill
+		weapon_skill = "unarmed"
 		block_reduction = 0.3
 		light_attacks = [_fist_jab()]
 		heavy_attack = _fist_heavy()
@@ -224,6 +227,7 @@ func _physics_process(delta: float) -> void:
 	_iframes_left -= delta
 	_riposte_left -= delta
 	_counter_left -= delta
+	_combo_left -= delta
 	if _combo_grace_left > 0.0:
 		_combo_grace_left -= delta
 		if _combo_grace_left <= 0.0:
@@ -423,6 +427,8 @@ func _land_hit(target: Node) -> void:
 		var hands := Inventory.equipped_item("hands")
 		if Armor.kind_of(hands) == "heavy":
 			damage += hands.armor   # gauntlets as knuckles
+	if main_item == null and not is_bash:
+		damage = _unarmed_damage(target, damage)
 	var poise := current_attack.poise_damage * _charge_mult() * stats.modifier("poise_dealt")
 	var heavy := is_heavy
 	var sneak := Stealth.sneak_attack_mult(target, "melee", null if is_bash else main_item)
@@ -440,6 +446,8 @@ func _land_hit(target: Node) -> void:
 		Stealth.sneak_attack_landed(target, sneak)
 	if current_attack.applies_effect != "" and randf() < current_attack.effect_chance and target.has_method("add_effect"):
 		target.add_effect(current_attack.applies_effect)
+	if main_item == null and not is_bash:
+		_unarmed_landed(target)
 	Skills.add_xp(skill, 5.0 if is_heavy else 3.0)
 	player.hud.flash_hit()
 	_show_target_health(target)
@@ -447,6 +455,35 @@ func _land_hit(target: Node) -> void:
 	Sfx.play("hit_heavy" if is_heavy or is_bash else "hit_flesh")
 	hit_stop(HIT_STOP_HEAVY if is_heavy else HIT_STOP_LIGHT)
 	attack_landed.emit(target, damage)
+
+
+# --- fists (the Unarmed skill's perks, docs/godot-starter/UNARMED.md) ------------------
+
+func _unarmed_damage(target: Node, damage: float) -> float:
+	if Armor.has_perk("combination"):   # each punch in a run on one target: +15%, up to +60%
+		_combo_hits = mini(_combo_hits + 1, 4) if target == _combo_target and _combo_left > 0.0 else 0
+		_combo_target = target
+		_combo_left = 1.5
+		damage *= 1.0 + 0.15 * _combo_hits
+	if is_heavy and Armor.has_perk("knockout") and target.has_method("is_staggered") and target.is_staggered():
+		damage *= 3.0
+	if is_heavy and Armor.has_perk("elemental_fist") and Spellbook.current() != null and Spellbook.current().skill == "destruction":
+		damage *= 1.5   # the readied Ruin spell rides the punch
+	return damage
+
+
+func _unarmed_landed(target: Node) -> void:
+	if Armor.has_perk("open_wounds") and randf() < 0.2 and target.has_method("add_effect"):
+		target.add_effect("bleeding")
+	if Armor.has_perk("brawlers_recovery"):
+		player.stats.stamina = minf(player.stats.stamina + 2.0, player.stats.max_stamina)
+	if Armor.has_perk("spirit_fist"):
+		player.stats.magicka = minf(player.stats.magicka + 3.0, player.stats.max_magicka)
+	var stats = target.get("stats")
+	if is_heavy and Armor.has_perk("quivering_palm") and stats != null and not stats.is_dead \
+			and stats.health < stats.max_health * 0.15:
+		stats.take_damage(stats.health * 10.0, true)   # finished: a heavy punch on the nearly beaten
+		player.hud.notify("Quivering Palm")
 
 
 # The enemy blocked (you're stuck a moment) or parried (you stagger).
@@ -573,7 +610,11 @@ func is_blocking() -> bool:
 
 ## Share of a hit the current block stops (before the Block skill).
 func guard_share() -> float:
-	return shield_item.block_reduction if left_hand() == Hand.SHIELD else block_reduction
+	if left_hand() == Hand.SHIELD:
+		return shield_item.block_reduction
+	if main_item == null:
+		return minf(block_reduction * player.stats.modifier("fist_block"), 0.8)   # Martial Guard
+	return block_reduction
 
 
 ## Enemies call this when their attack lands. Returns "hit", "blocked",
