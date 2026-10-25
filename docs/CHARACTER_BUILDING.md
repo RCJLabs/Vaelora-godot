@@ -23,7 +23,7 @@ the order it gets built in. Built pieces are documented in `docs/godot-starter/`
 - **Perk trees: at least 20 perks per skill.** Numbers early, new mechanics deeper in.
 - **Active powers** are earned through play too: shrines, quests, the stones.
 - **Respec** for a price at a shrine or a teacher.
-- **Real classes** (details still open: below).
+- **Real classes** (below).
 - **Fights get deeper** with weapon arts, spell combinations, sneak attacks, dual-wielding and
   spell-blades. **Hybrid builds are encouraged**: perks that reward mixing.
 
@@ -49,15 +49,36 @@ ten that exist get theirs filled in along the way).
 3. **Magic:** Binding, then Runecraft, Sight and Drawing (each with its 20 perks).
 4. **Making things:** Alchemy, Smithing, Lockpicking, Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.
-6. **Classes**, once they're defined.
+6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.
 
-## Still open: classes
+## Classes (decided, after the questionnaire)
 
-Real classes need answers before they can be built:
-- When do you pick one: at creation, next to your background, or later in the game?
-- What does a class give: skill bonuses, faster XP in its skills, its own perks or passive, a
-  class power, or limits on what you can learn?
-- How many, and which (one per attribute, or named mixes like Spellsword and Ranger)?
-- Can you change class (a respec covers it?), and how do classes sit with "hybrids
-  encouraged"?
+- **Chosen at creation**, a third choice next to race and background.
+- **A class gives faster XP in its skills** (+20%, my number) **and a class power** only it has.
+  It never stops you learning anything else (hybrids stay encouraged).
+- **About 9 to 12 named mixes**, hybrids included.
+- **You can change class** with the paid respec.
+- Built after phase 2, since most classes lean on skills that don't exist yet (the creation
+  step itself can come earlier).
+
+### The classes *(suggested: names, skills and powers to approve or change)*
+
+Five skills each, drawn from the 24 so every skill belongs to at least one class.
+
+| Class | Skills | Class power |
+|---|---|---|
+| Warrior | One-Handed, Two-Handed, Block, Heavy Armour, Smithing | War Cry: nearby enemies reel |
+| Ranger | Archery, Sneak, Light Armour, Survival, Athletics | Hunter's Mark: one target takes more from everything |
+| Thief | Sneak, Lockpicking, Light Armour, Speech, One-Handed | Vanish: unseen for a few seconds |
+| Mage | Ruin, Shaping, Mending, Runecraft, Alchemy | Arcane Surge: spells cost nothing for a few seconds |
+| Spellsword | One-Handed, Ruin, Shaping, Block, Light Armour | Charged Blade: your weapon carries your ready spell |
+| Nightblade | Sneak, One-Handed, Glamour, Drawing, Light Armour | Shadow Feast: a sneak attack drains life |
+| Tide-Warden | Tidecraft, Two-Handed, Heavy Armour, Mending, Sight | Moon's Favour: the tide is high for a minute |
+| Battlemage | Ruin, Heavy Armour, Two-Handed, Binding, Athletics | Storm Mantle: harm around you as you fight |
+| Binder | Binding, Command, Runecraft, Sight, Glamour | Call the Host: two bound creatures at once |
+| Wayfarer | Unarmed, Athletics, Survival, Mending, Sight | Second Breath: Health and Stamina back |
+| Herald | Speech, Command, Glamour, Archery, Light Armour | Rally: you and your companions fight harder |
+| Hedge Witch | Drawing, Alchemy, Binding, Glamour, Mending | Old Bargain: trade Health for Magicka |
+
+Together they cover all 24 skills.
