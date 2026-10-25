@@ -53,6 +53,7 @@ Armor="*res://systems/armor.gd"
 Speech="*res://systems/speech.gd"
 Binding="*res://systems/binding.gd"
 Runecraft="*res://systems/runecraft.gd"
+Sight="*res://systems/sight.gd"
 
 [editor_plugins]
 

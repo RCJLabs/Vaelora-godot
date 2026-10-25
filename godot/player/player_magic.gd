@@ -184,6 +184,9 @@ func _release() -> void:
 			if spell.glamour != "":
 				Glamour.cast(spell, _aim_point(), power, player)
 				Skills.add_xp(spell.skill, cost / 5.0)
+			elif spell.sight != "":
+				Sight.cast(spell, _aim_point(), power, player)
+				Skills.add_xp(spell.skill, cost / 5.0)
 			elif spell.rune != "":
 				Runecraft.cast(spell, _aim_point(), power, player)
 				Skills.add_xp(spell.skill, cost / 5.0)

@@ -82,6 +82,11 @@ enum Effect { DAMAGE_STREAM, HEAL_SELF }
 ## stand): systems/runecraft.gd. Runes do `damage`; the ward lasts `duration`.
 @export var rune: String = ""
 
+@export_group("Sight")
+## "weak_point" or "ill_fortune": an area spell that marks or curses the enemy nearest
+## your aim for `duration` (systems/sight.gd). Sight's self spells use self_effect.
+@export var sight: String = ""
+
 
 func is_charged() -> bool:
 	return style == Style.BOLT or style == Style.AREA or style == Style.SELF

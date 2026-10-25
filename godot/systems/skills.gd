@@ -97,6 +97,11 @@ const SKILLS := {
 		"name": "Speech",
 		"description": "Persuade and intimidate in conversation (+1 to the check per level), cheaper bribes, and better prices (-0.3% buying, +0.2% selling per level). Improves with checks passed and with trading.",
 	},
+	"sight": {
+		"attribute": "presence",
+		"name": "Sight",
+		"description": "+1% to how long Weak Point and Ill Fortune last per level. Improves as you cast Sight spells.",
+	},
 	"glamour": {
 		"attribute": "presence",
 		"name": "Glamour",

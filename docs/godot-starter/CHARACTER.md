@@ -102,6 +102,7 @@ The tree scrolls both ways and scrolls to the perk you pick, so a skill can hold
 | Unarmed | 21 perks, most bare-handed only (`when_unarmed`): see UNARMED.md |
 | Binding | 21 perks: how many you hold, how long, how tough, Bind, the raised dead: see BINDING.md |
 | Runecraft | 21 perks: rune damage and reach, more runes, Living and Chain Runes, wards, the blade: see RUNECRAFT.md |
+| Sight | 21 perks: Foresight, the mark, bad luck, True Sight, Prescience: see SIGHT.md |
 
 ### Respec
 

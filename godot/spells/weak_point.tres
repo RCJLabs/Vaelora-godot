@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "weak_point"
+display_name = "Weak Point"
+description = "Charge, then release on an enemy (up to 25 m): you see where it's weak. It takes 50% more damage for 10 seconds."
+style = 2
+skill = "sight"
+color = Color(1, 0.88, 0.5, 1)
+charge_time = 0.7
+magicka_cost = 30.0
+max_distance = 25.0
+radius = 2.0
+duration = 10.0
+sight = "weak_point"

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "foresight"
+display_name = "Foresight"
+description = "You see blows coming: the parry window is three times as long and dodges stay untouchable twice as long."
+is_harmful = false
+duration = 8.0
+modifiers = {
+"parry_window": 3.0,
+"dodge_iframes": 2.0
+}

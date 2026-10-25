@@ -429,6 +429,7 @@ func _land_hit(target: Node) -> void:
 			damage += hands.armor   # gauntlets as knuckles
 	if main_item == null and not is_bash:
 		damage = _unarmed_damage(target, damage)
+	damage *= Sight.damage_mult(player)   # Moment of Clarity, Read the Fight
 	var rune_blade: bool = not is_bash and player.effects.has("rune_blade")   # Enchant Weapon (Runecraft)
 	if rune_blade:
 		damage += Runecraft.BLADE_DAMAGE * stats.modifier("enchant_damage")
@@ -628,6 +629,9 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 	var stats: Stats = player.stats
 	if stats.is_dead:
 		return "hit"
+	if Sight.blow_misses(attacker, player):   # Ill Fortune, Prescience, Moment of Clarity
+		defended.emit("dodged")
+		return "dodged"
 	if _iframes_left > 0.0:
 		if Armor.has_perk("counter_strike"):
 			_counter_left = Armor.COUNTER_TIME
@@ -677,6 +681,8 @@ func receive_attack(damage: float, attacker: Node3D, poise_damage: float = 0.0) 
 
 func _parried() -> void:
 	Skills.add_xp("block", 6.0)
+	if player.effects.has("foresight") and "counterseer" in Character.perks:
+		player.stats.magicka = minf(player.stats.magicka + 20.0, player.stats.max_magicka)
 	player.stats.stamina = minf(player.stats.stamina + 10.0, player.stats.max_stamina)
 	player.stats.changed.emit()
 	_riposte_left = RIPOSTE_TIME

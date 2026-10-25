@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_weak_point"
+display_name = "Tome: Weak Point"
+description = "A Glass College primer, its pages edged with a thin line of fused glass. Use it to learn Weak Point."
+type = 1
+value = 80
+weight = 1.0
+teaches_spell = "weak_point"
