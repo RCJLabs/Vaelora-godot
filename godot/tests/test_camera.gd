@@ -3,8 +3,9 @@ extends "res://tests/test_base.gd"
 # only its own things (first-person hands and weapons, or the body); in third
 # person the eye turns to what's under the crosshair, so you can take a potion
 # you're pointing at; a wall behind you pulls the camera in (and hides the body
-# when it's that close); the choice survives a level load (Settings); V again goes
-# back; and V does nothing mid-conversation.
+# when it's that close); what you hold is on the body, posed like the first-person
+# model and rebuilt when you change weapons; the choice survives a level load
+# (Settings); V again goes back; and V does nothing mid-conversation.
 var f := 0
 var step := 0
 var wait := 0
@@ -60,6 +61,12 @@ func _physics_process(_d: float) -> bool:
 			ok(V.third_person and V.camera.current and not p.camera.current, "V: third person")
 			ok(autoload("Settings").third_person, "remembered in Settings")
 			ok(V.body.visible, "and there you are")
+			# What you hold, on the body.
+			var sword: Node3D = V.held_copy("Weapon")
+			var parts: Array = sword.find_children("*", "GeometryInstance3D", true, false) if sword else []
+			ok(parts.size() > 0 and parts.all(func(m): return m.layers == V.BODY_LAYER), "your sword is on the body (body layer)", parts.size())
+			var hand: Node3D = V.held_copy("SpellHand")
+			ok(hand != null and hand.find_children("*", "Light3D", true, false).is_empty(), "the spell hand too, without a second light")
 			var local: Vector3 = p.get_node("Head").global_transform.affine_inverse() * V.camera.global_position
 			ok(local.z > 2.0 and local.x > 0.3, "the camera is behind your right shoulder", local)
 			# Aim: the eye looks where the crosshair points.
@@ -73,6 +80,18 @@ func _physics_process(_d: float) -> bool:
 			wait = 3
 		3:
 			ok(p.hud.prompt_label.text == "[E] Take Minor Healing Potion", "take what the crosshair is on, in third person", p.hud.prompt_label.text)
+			# The copy takes the first-person model's pose (here, raised overhead).
+			p.weapon.go("overhead", 0.01)
+			var I = autoload("Inventory")
+			I.add("iron_mace")
+			I.equip("iron_mace")
+			wait = 3
+			step += 1
+			return false
+		4:
+			var held: Node3D = V.held_copy("Weapon")
+			ok(held.transform.origin.is_equal_approx(p.weapon.transform.origin * V.REACH_SCALE) and held.transform.basis.is_equal_approx(p.weapon.transform.basis), "the body's weapon follows the first-person pose", [held.transform.origin, p.weapon.transform.origin])
+			ok(held.get_child_count() == p.weapon.get_child_count() and held.get_child(0).name == p.weapon.get_child(0).name, "and changes with your weapon", [held.get_child(0).name, p.weapon.get_child(0).name])
 			# A wall right behind you pulls the camera in.
 			n("Potion").global_position = Vector3(100, -50, 100)
 			wall = StaticBody3D.new()
@@ -84,7 +103,7 @@ func _physics_process(_d: float) -> bool:
 			current_scene.add_child(wall)
 			wall.global_position = p.get_node("Head").global_position + Vector3(0, 0, 1.2)
 			wait = 3
-		4:
+		5:
 			var dist: float = V.camera.global_position.distance_to(p.get_node("Head").global_position)
 			ok(dist < 1.3, "a wall behind you pulls the camera in", dist)
 			ok(not V.body.visible, "and the body hides that close", V.arm.get_hit_length())
@@ -92,11 +111,11 @@ func _physics_process(_d: float) -> bool:
 			# Still third person after loading another level (and back).
 			change_scene_to_file("res://levels/waystation_cellar.tscn")
 			wait = 30
-		5:
+		6:
 			ok(V != null and V.third_person and V.camera.current, "still third person in the next level")
 			key(KEY_V)
 			wait = 3
-		6:
+		7:
 			ok(not V.third_person and p.camera.current, "V again: first person")
 			ok(V.aim_rotation == Vector3.ZERO and not V.body.visible, "the eye looks straight ahead again, and no body")
 			ok(not autoload("Settings").third_person, "remembered")
@@ -107,13 +126,13 @@ func _physics_process(_d: float) -> bool:
 			wait = 3
 			step += 1
 			return false
-		7:
+		8:
 			var axe: Array = p.camera.get_node("Weapon").find_children("*", "GeometryInstance3D", true, false)
 			ok(axe.size() > 0 and axe.all(func(m): return m.layers == V.VIEWMODEL_LAYER), "a weapon equipped later goes on the first-person layer too", axe.size())
 			autoload("DialogueManager").start("res://dialogue/maren.json", "Maren")
 			key(KEY_V)
 			wait = 3
-		8:
+		9:
 			ok(not V.third_person, "V does nothing mid-conversation")
 			autoload("DialogueManager").end()
 			autoload("SaveSystem").delete_save()
