@@ -282,6 +282,8 @@ func _on_spell_changed() -> void:
 	match combat.left_hand():
 		PlayerCombat.Hand.SHIELD:
 			hud.set_left_hand("Shield   (%s while blocking: bash)" % InputHints.label("attack"))
+		PlayerCombat.Hand.DUAL:
+			hud.set_left_hand("%s   (%s swings it; hold it as you attack: both)" % [Inventory.equipped_item("off_hand").display_name, InputHints.label("cast")])
 		PlayerCombat.Hand.TWO_HANDED:
 			hud.set_left_hand("Two-handed   (%s blocks)" % InputHints.label("cast"))
 		PlayerCombat.Hand.BOW:

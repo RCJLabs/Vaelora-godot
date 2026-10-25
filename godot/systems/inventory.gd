@@ -181,6 +181,8 @@ func remove(id: String, amount: int = 1) -> bool:
 	if count(id) < amount:
 		return false
 	items[id] -= amount
+	if items[id] == 1 and equipped.get("main_hand", "") == id and equipped.get("off_hand", "") == id:
+		unequip("off_hand")   # one left: it can't be in both hands
 	if items[id] == 0:
 		items.erase(id)
 		Smithing.forget(id)   # an improved item's quality goes with the last copy
@@ -275,6 +277,34 @@ func equip(id: String) -> bool:
 	elif item.slot_name() == "off_hand" and equipped_item("main_hand") and equipped_item("main_hand").two_handed:
 		equipped.erase("main_hand")
 	equipped[item.slot_name()] = id
+	if item.slot_name() == "main_hand" and equipped.get("off_hand", "") == id and count(id) < 2:
+		equipped.erase("off_hand")   # one of it can't be in both hands
+	equipment_changed.emit()
+	changed.emit()
+	return true
+
+
+## Why `id` can't go in the left hand (dual-wielding), or "".
+func why_not_off_hand(id: String) -> String:
+	var item := get_item(id)
+	if item == null or item.type != ItemData.Type.WEAPON or item.weapon_kind != ItemData.WeaponKind.MELEE or item.two_handed:
+		return "Only a one-handed weapon goes in the off hand."
+	if count(id) == 0:
+		return "You don't have it."
+	if equipped.get("main_hand", "") == id and count(id) < 2:
+		return "You'd need two of them."
+	return ""
+
+
+## A one-handed weapon in the left hand, for dual-wielding (a two-handed one in
+## the right comes off).
+func equip_off_hand(id: String) -> bool:
+	if why_not_off_hand(id) != "":
+		return false
+	var main := equipped_item("main_hand")
+	if main and main.two_handed:
+		equipped.erase("main_hand")
+	equipped["off_hand"] = id
 	equipment_changed.emit()
 	changed.emit()
 	return true

@@ -26,7 +26,7 @@ signal attack_landed(target: Node, damage: float)
 signal defended(result: String)   # "blocked", "parried", "dodged", "guard_broken", "warded"
 
 enum State { READY, WINDUP, ACTIVE, RECOVERY, CHARGING, BLOCKING, DODGING, STAGGERED, DRAWING }
-enum Hand { BLOCK, SPELL, SHIELD, TWO_HANDED, BOW }
+enum Hand { BLOCK, SPELL, SHIELD, TWO_HANDED, BOW, DUAL }   # DUAL: a weapon in each hand
 
 ## Holding attack longer than this starts a heavy attack instead of a light one.
 const TAP_TIME := 0.2
@@ -76,6 +76,11 @@ var attack_cast: ShapeCast3D
 # From the equipped weapon (set_weapon) and shield (set_shield).
 var main_item: ItemData
 var shield_item: ItemData
+var off_item: ItemData          # a one-handed weapon in the left hand (dual-wielding)
+var is_off := false             # this swing is the off-hand weapon's
+var _off_combo := 0
+var _twin_pending := false      # a main swing with the left button held: both weapons land
+const OFF_HAND_MULT := 0.75     # off-hand blows, until Dual Savagery
 var base_damage := 4.0
 var base_stamina_cost := 5.0
 var _from_sprint := false   # this attack began at a sprint (Arms "charge")
@@ -146,7 +151,10 @@ func set_weapon(item: ItemData) -> void:
 
 ## The off-hand shield, or null.
 func set_shield(item: ItemData) -> void:
-	shield_item = item
+	var weapon := item != null and item.type == ItemData.Type.WEAPON
+	shield_item = null if weapon else item
+	off_item = item if weapon else null
+	(off_animator as ShieldAnimator).holds_weapon = weapon   # mirrored sword poses, not a shield's
 	off_animator.visible = item != null
 	if state != State.READY:
 		_to_ready()
@@ -158,6 +166,8 @@ func left_hand() -> Hand:
 		return Hand.BOW
 	if main_item and main_item.two_handed:
 		return Hand.TWO_HANDED
+	if off_item:
+		return Hand.DUAL
 	if shield_item:
 		return Hand.SHIELD
 	return Hand.SPELL if Spellbook.current() else Hand.BLOCK
@@ -312,7 +322,7 @@ func attack_pressed() -> void:
 			if left_hand() == Hand.SHIELD and shield_item.bash_attack:
 				_start_bash()
 		State.WINDUP, State.ACTIVE, State.RECOVERY:
-			_queued = not is_heavy and not is_bash and not is_bow()   # heavies and bashes don't combo
+			_queued = not is_heavy and not is_bash and not is_off and not is_bow()   # heavies and bashes don't combo
 
 
 func attack_released() -> void:
@@ -336,7 +346,7 @@ func dodge_pressed(input_dir: Vector2) -> void:
 	_iframes_left = DODGE_IFRAMES * player.stats.modifier("dodge_iframes")
 	_press_held = false
 	animator.go("dodge" if not is_bow() else "bow_rest", 0.08, 0.5)
-	if shield_item:
+	if shield_item or off_item:
 		off_animator.go("dodge", 0.08, 0.5)
 	Sfx.play("dodge", -4.0)
 	player.camera_kick(Vector3(0.0, 0.0, -signf(input_dir.x) * 4.0))
@@ -347,6 +357,8 @@ func dodge_pressed(input_dir: Vector2) -> void:
 func _physics_process(delta: float) -> void:
 	if Settings.toggle_block and Input.is_action_just_pressed("cast") and player.can_fight():
 		_block_toggled = not _block_toggled   # Settings → Accessibility → Toggle block
+	if left_hand() == Hand.DUAL and Input.is_action_just_pressed("cast") and player.can_fight() and state == State.READY:
+		_start_off()   # the left button swings the left-hand weapon
 	_state_time += delta * (player.stats.modifier("attack_speed") if state in [State.WINDUP, State.ACTIVE, State.RECOVERY] else 1.0)
 	_dodge_cooldown_left -= delta
 	_iframes_left -= delta
@@ -433,6 +445,27 @@ func _start_charging() -> void:
 	animator.go(heavy_attack.windup_pose, maxf(heavy_attack.charge_time * 0.5, 0.15), 0.5)
 
 
+## A swing of the off-hand weapon (dual-wielding): the left button.
+func _start_off() -> void:
+	var attacks: Array = off_item.light_attacks if not off_item.light_attacks.is_empty() else [_simple_attack(off_item.attack_cooldown)]
+	var attack: AttackData = attacks[_off_combo % attacks.size()]
+	if not Arms.free_swing() and not player.stats.try_use_stamina(off_item.stamina_cost * attack.stamina_mult * player.stats.modifier("attack_stamina")):
+		player.hud.flash_tired()
+		return
+	_off_combo += 1
+	attack_cast.target_position = Vector3(0, 0, -off_item.reach * player.stats.modifier("reach"))
+	current_attack = attack
+	is_heavy = false
+	is_bash = false
+	is_off = true
+	_twin_pending = false
+	charge = 0.0
+	_queued = false
+	_from_sprint = player.sprinting_now
+	_set_state(State.WINDUP)
+	off_animator.go(attack.windup_pose, attack.windup, 0.5)
+
+
 func _start_bash() -> void:
 	var bash: AttackData = shield_item.bash_attack
 	if not player.stats.try_use_stamina(shield_item.stamina_cost * bash.stamina_mult * player.stats.modifier("attack_stamina") * player.stats.modifier("bash_stamina")):
@@ -460,6 +493,10 @@ func _start_attack(attack: AttackData, heavy: bool) -> bool:
 	current_attack = attack
 	is_heavy = heavy
 	is_bash = false
+	is_off = false
+	# Dual-wielding with the left button held: the off-hand weapon strikes too (a twin strike).
+	_twin_pending = left_hand() == Hand.DUAL and Input.is_action_pressed("cast") \
+			and player.stats.try_use_stamina(off_item.stamina_cost * player.stats.modifier("attack_stamina"))
 	if not heavy:
 		charge = 0.0
 	_queued = false
@@ -475,7 +512,9 @@ func _begin_active() -> void:
 	_set_state(State.ACTIVE)
 	_hit_this_swing = []
 	Stealth.make_noise(player.global_position, "melee")
-	if is_bash:
+	if _twin_pending:
+		off_animator.go(current_attack.strike_pose, current_attack.active, 2.2)
+	if is_bash or is_off:
 		off_animator.go(current_attack.strike_pose, current_attack.active, 2.0)
 		player.camera_kick(Vector3(-0.8, 0.0, 0.0))
 		Sfx.play("swing_light", -8.0)
@@ -490,7 +529,12 @@ func _begin_active() -> void:
 
 func _begin_recovery() -> void:
 	_set_state(State.RECOVERY)
-	if is_bash:
+	if _twin_pending:
+		off_animator.go("rest", current_attack.recovery, -1.6)
+		_twin_pending = false
+	if is_off:
+		off_animator.go("rest", current_attack.recovery, -1.6)
+	elif is_bash:
 		off_animator.go("block" if _wants_block() else "rest", current_attack.recovery, -1.6)
 	else:
 		animator.go(_rest_pose(), current_attack.recovery, -1.6)
@@ -538,14 +582,18 @@ func _targets_in_reach() -> Array:
 
 func _land_hit(target: Node) -> void:
 	var stats: Stats = player.stats
-	var skill := "block" if is_bash else weapon_skill
-	var damage := (shield_item.damage * Smithing.damage_mult(shield_item) if is_bash else base_damage) * current_attack.damage_mult * _charge_mult()
+	var skill := "block" if is_bash else (off_item.weapon_skill if is_off else weapon_skill)
+	var swung: ItemData = off_item if is_off else main_item   # which weapon this blow is
+	var base := base_damage
+	if is_off:
+		base = off_item.damage * Smithing.damage_mult(off_item) * (1.0 if Arms.any("off_full") else OFF_HAND_MULT)   # Dual Savagery
+	var damage := (shield_item.damage * Smithing.damage_mult(shield_item) if is_bash else base) * current_attack.damage_mult * _charge_mult()
 	damage *= Attributes.melee_mult() * stats.modifier("damage_dealt")
 	if not is_bash:
 		damage *= GameState.race_data.melee_damage_mult * Skills.weapon_damage_mult(skill) \
 				* stats.modifier("weapon_damage_" + skill)
-		if main_item:
-			damage *= Attributes.heavy_damage_mult(main_item.weight)   # heavy, without the Strength for it
+		if swung:
+			damage *= Attributes.heavy_damage_mult(swung.weight)   # heavy, without the Strength for it
 	if _riposte_left > 0.0:
 		damage *= stats.modifier("riposte_damage")
 	if _counter_left > 0.0:
@@ -553,11 +601,12 @@ func _land_hit(target: Node) -> void:
 		_counter_left = 0.0
 	if is_heavy:
 		damage *= stats.modifier("heavy_attack_damage")   # Momentum (Heavy Armour)
-	if main_item == null and not is_bash and Armor.has_perk("fists_of_steel"):
+	var unarmed := swung == null and not is_bash
+	if unarmed and Armor.has_perk("fists_of_steel"):
 		var hands := Inventory.equipped_item("hands")
 		if Armor.kind_of(hands) == "heavy":
 			damage += hands.armor   # gauntlets as knuckles
-	if main_item == null and not is_bash:
+	if unarmed:
 		damage = _unarmed_damage(target, damage)
 	damage *= Sight.damage_mult(player)   # Moment of Clarity, Read the Fight
 	damage *= Arms.hit_mult(target, player, _from_sprint and not is_bash)   # crits, executions, momentum...
@@ -567,9 +616,9 @@ func _land_hit(target: Node) -> void:
 	if rune_blade:
 		damage += Runecraft.BLADE_DAMAGE * stats.modifier("enchant_damage")
 	var poise := current_attack.poise_damage * _charge_mult() * stats.modifier("poise_dealt") \
-			* (Arms.prod("bash_poise") if is_bash else Smithing.poise_mult(main_item))   # Power Bash, Heavy Hand
+			* (Arms.prod("bash_poise") if is_bash else Smithing.poise_mult(swung))   # Power Bash, Heavy Hand
 	var heavy := is_heavy
-	var sneak := Stealth.sneak_attack_mult(target, "melee", null if is_bash else main_item)
+	var sneak := Stealth.sneak_attack_mult(target, "melee", null if is_bash else swung)
 	if sneak > 1.0:
 		damage *= sneak
 		if Stealth.has_perk("poised_strike"):
@@ -587,7 +636,7 @@ func _land_hit(target: Node) -> void:
 		player.hud.notify("Critical!")
 	if current_attack.applies_effect != "" and randf() < current_attack.effect_chance and target.has_method("add_effect"):
 		target.add_effect(current_attack.applies_effect)
-	if main_item == null and not is_bash:
+	if unarmed:
 		_unarmed_landed(target)
 	if not is_bash:
 		Alchemy.blade_hit(target)   # a poisoned blade
@@ -597,7 +646,14 @@ func _land_hit(target: Node) -> void:
 	Skills.add_xp(skill, 5.0 if is_heavy else 3.0)
 	player.hud.flash_hit()
 	_show_target_health(target)
-	(off_animator if is_bash else animator).kick(Vector3(0.0, 0.0, 0.04))
+	(off_animator if is_bash or is_off else animator).kick(Vector3(0.0, 0.0, 0.04))
+	if _twin_pending and not is_off and not is_bash and Glamour._dead(target) == false:
+		_twin_pending = false   # the off-hand weapon lands too
+		is_off = true
+		_land_hit(target)
+		is_off = false
+		if Arms.any("twin_stagger"):
+			Arms._stagger(target, player)   # Twin Strike
 	Sfx.play("hit_heavy" if is_heavy or is_bash else "hit_flesh")
 	hit_stop(HIT_STOP_HEAVY if is_heavy else HIT_STOP_LIGHT)
 	attack_landed.emit(target, damage)
@@ -886,7 +942,7 @@ func stagger(seconds: float) -> void:
 	animator.set_charge(0.0)
 	player.hud.set_charge(0.0)
 	animator.go("stagger" if not is_bow() else "bow_rest", 0.1, 0.5)
-	if shield_item:
+	if shield_item or off_item:
 		off_animator.go("stagger", 0.1, 0.5)
 
 
@@ -946,13 +1002,15 @@ func _to_ready() -> void:
 	_set_state(State.READY)
 	is_heavy = false
 	is_bash = false
+	is_off = false
+	_twin_pending = false
 	charge = 0.0
 	_queued = false
 	animator.set_charge(0.0)
 	player.hud.set_charge(0.0)
 	if animator.pose_name() != _rest_pose():
 		animator.go(_rest_pose(), 0.15 if was_blocking else 0.25)
-	if shield_item and off_animator.pose_name() != "rest":
+	if (shield_item or off_item) and off_animator.pose_name() != "rest":
 		off_animator.go("rest", 0.15)
 
 

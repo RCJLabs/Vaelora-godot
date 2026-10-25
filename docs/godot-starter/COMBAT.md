@@ -294,8 +294,35 @@ does is `PlayerCombat.weapon_art_pressed()`.
 | Shield (while blocking) | **Shield Charge** | A rush; everything in a 70° cone within 3.5 m takes double a bash and is staggered |
 | Fists | **Palm Strike** | 150%, hurls them back and staggers them |
 
+## Dual-wielding
+
+Phase 5 (`docs/CHARACTER_BUILDING.md`). Any one-handed melee weapon can go in the left hand:
+select it in Tab → Inventory and press **Off hand** (press it again to take it out). Two of the
+same weapon need two copies; a two-handed weapon in the right hand comes off. The rules are in
+`Inventory.equip_off_hand()` / `why_not_off_hand()`; the fighting is `PlayerCombat` (`Hand.DUAL`).
+
+- **The left button swings the off-hand weapon** (its own combo, reach and Stamina cost).
+  Off-hand blows do **three-quarters** damage and train that weapon's skill.
+- **Hold the left button as you attack** and both weapons land together: a **twin strike**,
+  the main blow then the off-hand one, for both weapons' Stamina.
+- **You give up the left hand's other uses:** no blocking, parrying or casting. A dodge is
+  your defence.
+- An empty right hand with a weapon in the left still counts as dual: the right fist punches.
+- The left weapon is drawn with the right hand's poses, mirrored (`ShieldAnimator.holds_weapon`).
+
+One-Handed perks (`when_dual`: only with a weapon in each hand):
+
+| Perk | Level | What it does |
+|---|---|---|
+| Dual Flurry | 30 | Attacks 20% faster |
+| Dual Savagery | 50 | Off-hand blows at full damage |
+| Twin Strike | 70 | A twin strike staggers |
+
 ## Known limits
 
+- Dual-wielding: the off-hand blow of a twin strike uses the main weapon's attack (its
+  damage multiplier and knockback) and lands on the main blow's target even if the off-hand
+  weapon is shorter.
 - Wolves don't jump or climb. Anything over 0.5 m tall (like the stone block) is a wall to
   them, so standing on top of it keeps you out of reach.
 - Animation is procedural poses (see above), and the sounds are synthesised placeholders

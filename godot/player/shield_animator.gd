@@ -14,5 +14,17 @@ const SHIELD_POSES := {
 }
 
 
+## A one-handed weapon in the left hand (dual-wielding): the right hand's poses, mirrored.
+var holds_weapon := false
+var _mirrored := {}
+
+
 func _poses() -> Dictionary:
-	return SHIELD_POSES
+	if not holds_weapon:
+		return SHIELD_POSES
+	if _mirrored.is_empty():
+		for name in POSES:
+			var pose: Dictionary = POSES[name]
+			_mirrored[name] = {"pos": Vector3(-pose["pos"].x, pose["pos"].y, pose["pos"].z),
+					"rot": Vector3(pose["rot"].x, -pose["rot"].y, -pose["rot"].z)}
+	return _mirrored
