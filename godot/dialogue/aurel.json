@@ -218,7 +218,18 @@
 					"next": "sold_lift",
 					"requires_gold": 400,
 					"requires_not_flag": "bought_tome_lift",
-					"requires_flag": "bought_tome_crush"
+					"requires_flag": "bought_tome_crush",
+					"requires_skill": {
+						"tidecraft": 50
+					}
+				},
+				{
+					"text": "The Lifting Tide?",
+					"next": "lift_later",
+					"requires_flag": "bought_tome_crush",
+					"requires_skill_below": {
+						"tidecraft": 50
+					}
 				},
 				{
 					"text": "Why the moons?",
@@ -338,6 +349,19 @@
 			"take_gold": 400,
 			"give_item": "tome_lifting_tide",
 			"set_flag": "bought_tome_lift",
+			"choices": [
+				{
+					"text": "Something else.",
+					"next": "teach"
+				},
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"lift_later": {
+			"text": "\"The mastery primer?\" He looks at your hands as if they were already in the air. \"Not yet. When the tide comes when you call it, every time (Tidecraft 50, the College would say), come back and ask me again.\"",
 			"choices": [
 				{
 					"text": "Something else.",

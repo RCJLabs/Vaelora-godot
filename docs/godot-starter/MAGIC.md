@@ -52,7 +52,7 @@ the right hand and Flames in the left is the classic spellsword.
 | Tide's Shove | Tidecraft | Area, 0.6 s | 32 | Everything within 7 m and 70° of where you face takes 10, is thrown about 8 m away, and reels for 1.5 s | Aurel, 100 gold |
 | Gravity Well | Tidecraft | Area, 1.0 s | 55 | A well on the ground where you aim (up to 18 m) drags everything within 4 m to its middle and pins it (30% speed) for 6 s. No damage | Aurel, 160 gold, after his readings |
 | Moon-Crush | Tidecraft | Area, 1.2 s | 60 | Where you aim (up to 18 m, on the ground), everything within 3 m takes 32 at the middle down to 16 at the edge and is knocked down for 2.5 s. Hits what's too heavy to move, too | Aurel, 220 gold, after Gravity Well |
-| The Lifting Tide | Tidecraft (mastery) | Area, 1.6 s | 90 | Where you aim (up to 20 m), everything within 6 m that can be moved rises 3 m and hangs there helpless for 4 s, then falls and takes 18 from the landing | Aurel, 400 gold, after Moon-Crush |
+| The Lifting Tide | Tidecraft (mastery) | Area, 1.6 s | 90 | Where you aim (up to 20 m), everything within 6 m that can be moved rises 3 m and hangs there helpless for 4 s, then falls and takes 18 from the landing | Aurel, 400 gold, after Moon-Crush, at Tidecraft 50 |
 
 **Spell tomes** are items. Use one from Tab → Inventory to learn its spell (the tome is
 used up). Maren's tomes are under "Let's trade."

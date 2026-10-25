@@ -8,7 +8,8 @@ extends "res://tests/test_base.gd"
 # radius (hardest at the middle) and knocks it down; the Lifting Tide raises two
 # wolves into the air, holds them helpless, and the landing hurts; the HUD shows
 # the tide; and Magister Aurel sells the tomes (Gravity Well only after his
-# readings, Moon-Crush only after the well, the Lifting Tide after Moon-Crush).
+# readings, Moon-Crush only after the well, the Lifting Tide after Moon-Crush and
+# at Tidecraft 50: requires_skill).
 var f := 0
 var step := 0
 var wait := 0
@@ -254,8 +255,12 @@ func _physics_process(_d: float) -> bool:
 			pick("Moon-Crush. (220 gold)")
 			ok(I.count("tome_moon_crush") == 1, "then Moon-Crush")
 			pick("Something else.")
+			ok(not offered("The Lifting Tide. (400 gold)") and offered("The Lifting Tide?"), "the mastery primer waits for Tidecraft 50", autoload("Skills").levels["tidecraft"])
+			autoload("Skills").levels["tidecraft"] = 50
+			pick("The Lifting Tide?")
+			pick("Something else.")
 			pick("The Lifting Tide. (400 gold)")
-			ok(I.count("tome_lifting_tide") == 1, "then the Lifting Tide, his mastery primer")
+			ok(I.count("tome_lifting_tide") == 1, "at Tidecraft 50: the Lifting Tide, his mastery primer")
 			DM.end()
 			autoload("SaveSystem").delete_save()
 			return done()
