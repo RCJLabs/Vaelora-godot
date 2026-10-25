@@ -392,9 +392,13 @@ Round two's 29 answers and round three's 33 are folded in above and in `docs/lor
 
 ## Still open
 
-Round four's answers (`docs/lore/questionnaire-4-answers-2026-10-24.txt`) are folded into
+Round four's answers (`docs/lore/questionnaire-4-answers-2026-10-24.txt`) and round five's
+(`docs/lore/questionnaire-5-answers-2026-10-25.txt`, the last scene) are folded into
 `docs/lore/STORY.md`. Still to settle:
-- **The game's last scene.**
+- **The last scene's details** (STORY.md, "Still open from round five"): which place and shape
+  for each ending, Maren at the final image, the last line without a companion, who is still
+  aboard the Wanderer, and the final image itself.
+- **To build:** switching between first and third person, all game.
 - **My suggestions in STORY.md:** the hidden fourth ending (Lantern Night), the wisps in each
   ending, the companions' names (Still, Saelie), the demo characters' later roles, the naming
   styles, and the playable order.
