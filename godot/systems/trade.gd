@@ -4,10 +4,13 @@ extends Node
 # Autoloaded as "Trade". The buy and sell screen is ui/trade_screen.gd; a
 # dialogue choice opens it with "open_trade": "<merchant id>".
 #
-# Prices come from an item's value and your Presence: you buy at x1.25 of the
-# value (2.5% less per point above 10, never under x1.0) and sell at x0.45
-# (2% more per point, never over x0.7), so selling never pays more than buying.
-# Speech will feed in too, once it exists.
+# Prices come from an item's value, your Presence and your Speech: you buy at
+# x1.25 of the value (2.5% less per Presence point above 10, 0.3% less per
+# Speech level above 15, never under x1.0) and sell at x0.45 (2% more per point,
+# 0.2% per level, never over x0.7). Speech perks (Haggling) then take a little
+# more off, but buying never drops under x0.85 and selling never tops x0.8, so
+# selling never pays more than buying. A merchant you've talked round
+# ("discount_flag") takes another 10% off. Trading teaches Speech.
 #
 # Each merchant has a purse: they can't buy more than they have, and it fills
 # back up, with their stock, every RESTOCK_DAYS days. Things marked unique (the
@@ -19,6 +22,11 @@ const BUY_BASE := 1.25
 const BUY_PER_POINT := 0.025
 const SELL_BASE := 0.45
 const SELL_PER_POINT := 0.02
+const BUY_PER_SPEECH := 0.003
+const SELL_PER_SPEECH := 0.002
+const BUY_FLOOR := 0.85     # with perks and discounts
+const SELL_CEILING := 0.8
+const DISCOUNT := 0.9       # a merchant's discount_flag
 
 ## id -> {"name", "gold": purse, "stock": {item: count}, "unique": [items that don't restock]}
 const MERCHANTS := {
@@ -32,6 +40,7 @@ const MERCHANTS := {
 		"unique": ["hunting_bow", "tome_candlelight", "tome_stoneflesh", "tome_healing_ward",
 				"book_swordsmans_rest", "book_tide_table"],
 		# Bought before the trading screen existed (a dialogue flag); kept set when bought now.
+		"discount_flag": "maren_discount",   # talked round (Speech, dialogue/maren.json)
 		"flags": {"hunting_bow": "bought_maren_bow", "tome_candlelight": "bought_tome_candlelight",
 				"tome_stoneflesh": "bought_tome_stoneflesh", "tome_healing_ward": "bought_tome_healing_ward"},
 	},
@@ -53,10 +62,15 @@ func reset() -> void:
 	_stock.clear(); _gold.clear(); _sold_out.clear(); _restocked.clear()
 
 
-## What you pay for one of `id`.
-func buy_price(id: String) -> int:
+## What you pay `merchant` (or anyone, "") for one of `id`.
+func buy_price(id: String, merchant: String = "") -> int:
 	var item := Inventory.get_item(id)
-	return maxi(roundi(item.value * buy_mult()), 1) if item else 0
+	if item == null:
+		return 0
+	var price := item.value * buy_mult(merchant)
+	if item.teaches_spell != "" or item.teaches_skill != "" or item.book_text != "":
+		price *= Character.modifier("book_price")   # Price of Knowledge (Speech)
+	return maxi(roundi(price), 1)
 
 
 ## What a merchant pays you for one of `id` (0: they won't buy it).
@@ -67,12 +81,23 @@ func sell_price(id: String) -> int:
 	return roundi(item.value * sell_mult())
 
 
-func buy_mult() -> float:
-	return clampf(BUY_BASE - Attributes.above_base("presence") * BUY_PER_POINT, 1.0, 1.6)
+func buy_mult(merchant: String = "") -> float:
+	var mult := clampf(BUY_BASE - Attributes.above_base("presence") * BUY_PER_POINT
+			- _speech_above() * BUY_PER_SPEECH, 1.0, 1.6) * Character.modifier("buy_price")
+	var flag: String = MERCHANTS.get(merchant, {}).get("discount_flag", "")
+	if flag != "" and GameState.has_flag(flag):
+		mult *= DISCOUNT
+	return maxf(mult, BUY_FLOOR)
 
 
 func sell_mult() -> float:
-	return clampf(SELL_BASE + Attributes.above_base("presence") * SELL_PER_POINT, 0.25, 0.7)
+	var mult := clampf(SELL_BASE + Attributes.above_base("presence") * SELL_PER_POINT
+			+ _speech_above() * SELL_PER_SPEECH, 0.25, 0.7) * Character.modifier("sell_price")
+	return minf(mult, SELL_CEILING)
+
+
+func _speech_above() -> int:
+	return Skills.levels.get("speech", Skills.START_LEVEL) - Skills.START_LEVEL
 
 
 ## The merchant's stock right now (restocked if it's been long enough).
@@ -90,7 +115,7 @@ func gold(merchant: String) -> int:
 func why_not_buy(merchant: String, id: String) -> String:
 	if stock(merchant).get(id, 0) <= 0:
 		return "None left."
-	if Inventory.gold < buy_price(id):
+	if Inventory.gold < buy_price(id, merchant):
 		return "You can't afford it."
 	return ""
 
@@ -112,9 +137,10 @@ func why_not_sell(merchant: String, id: String) -> String:
 func buy(merchant: String, id: String) -> bool:
 	if why_not_buy(merchant, id) != "":
 		return false
-	var price := buy_price(id)
+	var price := buy_price(id, merchant)
 	Inventory.add_gold(-price)
 	_gold[merchant] += price
+	Speech.traded(price)
 	_stock[merchant][id] -= 1
 	if _stock[merchant][id] <= 0:
 		_stock[merchant].erase(id)
@@ -134,6 +160,7 @@ func sell(merchant: String, id: String) -> bool:
 	var price := sell_price(id)
 	Inventory.remove(id)
 	Inventory.add_gold(price)
+	Speech.traded(price)
 	_gold[merchant] -= price
 	if not id in MERCHANTS[merchant].get("unique", []):
 		_stock[merchant][id] = _stock[merchant].get(id, 0) + 1   # it's theirs now
@@ -148,10 +175,11 @@ func _restock_if_due(merchant: String) -> void:
 		for id in def.get("flags", {}):   # bought in an older version, through dialogue
 			if GameState.has_flag(def["flags"][id]):
 				_sold_out[merchant].append(id)
-	if _restocked.has(merchant) and WorldClock.day - int(_restocked[merchant]) < RESTOCK_DAYS:
+	var every := 1 if "master_trader" in Character.perks else RESTOCK_DAYS   # Master Trader (Speech)
+	if _restocked.has(merchant) and WorldClock.day - int(_restocked[merchant]) < every:
 		return
 	_restocked[merchant] = WorldClock.day
-	_gold[merchant] = int(def["gold"])
+	_gold[merchant] = roundi(int(def["gold"]) * Character.modifier("merchant_gold"))   # Fat Purses (Speech)
 	var fresh := {}
 	for id in def["stock"]:
 		if not id in _sold_out[merchant]:

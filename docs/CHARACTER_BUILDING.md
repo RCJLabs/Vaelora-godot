@@ -49,7 +49,9 @@ ten that exist get theirs filled in along the way).
    - ✅ Sneak, with sneak attacks, noise and a 22-perk tree (`docs/godot-starter/SNEAK.md`).
    - ✅ Light and Heavy Armour, 21 perks each, with perks that work only in armour or a full set
      (`docs/godot-starter/ARMOUR.md`).
-   - Speech (persuasion checks and haggling), Unarmed.
+   - ✅ Speech: persuade, intimidate and bribe checks in dialogue, haggling, and 22 perks
+     (`docs/godot-starter/SPEECH.md`).
+   - Unarmed.
 3. **Magic:** Binding, then Runecraft, Sight and Drawing (each with its 20 perks).
 4. **Making things:** Alchemy, Smithing, Lockpicking, Survival.
 5. **Fighting deeper:** weapon arts, dual-wielding, spell-blades, spell combinations.

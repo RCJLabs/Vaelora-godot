@@ -98,6 +98,7 @@ The tree scrolls both ways and scrolls to the perk you pick, so a skill can hold
 | Archery | Overdraw +20% (15) · Quick Draw, bows draw 30% faster (25) · Overdraw II +20% (35, needs Overdraw) |
 | Sneak | 22 perks in five branches: see SNEAK.md |
 | Light Armour, Heavy Armour | 21 perks each, some only in armour or a full set: see ARMOUR.md |
+| Speech | 22 perks: haggling, check bonuses (`check_bonus`), bribes, trainers, companions: see SPEECH.md |
 
 ### Respec
 
@@ -135,7 +136,10 @@ Fury) multiply in too. Names you can use in traits, perks or effects:
 `armor_light` / `armor_heavy`, `dodge_stamina`, `dodge_iframes`, `parry_window`,
 `block_stamina`, `dot_damage_taken`, `harmful_duration`, `heavy_attack_damage`,
 `poise_dealt`, `poise_damage_taken`, `detection` (and `_still`, `_moving`, `_night`),
-`awareness_rate`, `sneak_speed`, `sneak_attack_<melee|archery|dagger>`, `noise_<kind>`.
+`awareness_rate`, `sneak_speed`, `sneak_attack_<melee|archery|dagger>`, `noise_<kind>`;
+from Speech, `buy_price`, `sell_price`, `bribe_cost`, `merchant_gold`, `training_cost`,
+`book_price`, `approval_gain`. A perk's `"check_bonus": {"persuade": 10}` (or `intimidate`,
+or `all`) adds to Speech checks.
 
 A perk can be limited to armour with `"when_wearing": "light"` (any light piece) or
 `"when_full": "heavy"` (all four pieces); see ARMOUR.md.

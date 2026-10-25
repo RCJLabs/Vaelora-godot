@@ -67,6 +67,14 @@ They're listed in **Project → Project Settings → Globals → Autoload** (alr
   sell screen once the conversation closes (INVENTORY.md, "Trading").
 - **Lessons:** `"open_training": "brannoc"` likewise opens a trainer's lesson screen
   (SKILLS.md, "Skill books and trainers").
+- **Speech checks:** a choice with
+  `"check": {"id": "maren_discount", "kind": "persuade", "difficulty": 30}` goes to `"next"`
+  if you pass and to `"fail_next"` if you don't. Its actions only run on a pass.
+  - `kind` is `persuade` (Speech + Presence), `intimidate` (Speech + Strength) or `bribe` (with
+    `"gold": 150`; it always works if you can pay, and costs less with Speech).
+  - The choice shows "[Persuade 30 · you 23]". A failed check isn't offered again. See SPEECH.md.
+- **Walking away:** `"on_leave": {<actions>}` on a node runs if the player Escs out of it. The
+  inquisitor uses it so leaving when he's drawn still starts the fight.
 - **Skills:** `requires_skill` / `requires_skill_below` (`{"tidecraft": 50}`: a skill's level,
   by its id in `systems/skills.gd`). Aurel keeps his mastery primer for Tidecraft 50.
 - **Actions**, on a node (run when the line is shown) or a choice (run when picked):

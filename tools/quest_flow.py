@@ -96,6 +96,8 @@ def scan_dialogue(index):
             where = "%s: %s" % (name, node_id)
             for flag in as_list(node.get("set_flag")):
                 index.set_by[flag].add(where)
+            for flag in as_list(node.get("on_leave", {}).get("set_flag")):
+                index.set_by[flag].add(where + " (walking away)")
             index.conditions(node, where)
             for choice in node.get("choices", []):
                 said = choice.get("text", "")

@@ -24,7 +24,7 @@ const TRAINERS := {
 
 ## What the next lesson in `skill` costs.
 func cost(skill: String) -> int:
-	return COST_BASE + COST_PER_LEVEL * int(Skills.levels[skill])
+	return roundi((COST_BASE + COST_PER_LEVEL * int(Skills.levels[skill])) * Character.modifier("training_cost"))
 
 
 func lessons_left() -> int:

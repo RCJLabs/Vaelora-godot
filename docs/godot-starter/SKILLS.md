@@ -5,7 +5,7 @@ pauses).
 
 ## Skills
 
-Thirteen so far, each rising by use from 15 (plus race bonuses) to 100. Each has a **governing
+Fourteen so far, each rising by use from 15 (plus race bonuses) to 100. Each has a **governing
 attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult()`).
 
 | Skill | Attribute | Improves by | Effect |
@@ -21,6 +21,7 @@ attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult
 | Ruin (`destruction`) | Intellect | Spell damage dealt | +1% Ruin damage per level |
 | Shaping (`alteration`) | Intellect | Casting Shaping spells | +1% to Shaping spells per level |
 | Mending (`restoration`) | Willpower | Health restored | +1% healing per level |
+| Speech | Presence | Checks passed, trading | +1 to persuade and intimidate checks per level, cheaper bribes, better prices (SPEECH.md) |
 | Glamour | Presence | Casting Glamour spells | +1% duration per level |
 | Tidecraft | Willpower | Casting Tidecraft spells | +1% power per level (and the moons) |
 
@@ -65,7 +66,7 @@ Four skills to each attribute (your note: an even number per attribute). Bold on
 | Agility | **Archery**, **Light Armour**, **Sneak**, Lockpicking |
 | Intellect | **Ruin**, **Shaping**, Runecraft, Alchemy |
 | Willpower | **Mending**, Binding, **Tidecraft**, Drawing |
-| Presence | Speech, **Glamour**, Sight, *Command* (companions) |
+| Presence | **Speech**, **Glamour**, Sight, *Command* (companions) |
 
 See `docs/CHARACTER_BUILDING.md` for the order they'll be built in.
 

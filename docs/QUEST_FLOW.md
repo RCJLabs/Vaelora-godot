@@ -424,10 +424,12 @@ flowchart TD
   o0 --> o1
   done(["Done<br/><i>zora_notebook_done</i>"])
   o1 --> done
-  r0["I bought Ilse Marrow's notebook back from Inquisitor Hale with a 'donation' to the lamp fu…"]
-  done -. "zora_notebook_bought" .-> r0
-  r1["I took Ilse Marrow's notebook from Inquisitor Hale, the hard way, and gave it to Zora."]
-  done -. "zora_notebook_done" .-> r1
+  r0["I talked Inquisitor Hale into giving me Ilse Marrow's notebook for nothing, and gave it to…"]
+  done -. "zora_notebook_persuaded" .-> r0
+  r1["I bought Ilse Marrow's notebook back from Inquisitor Hale with a 'donation' to the lamp fu…"]
+  done -. "zora_notebook_bought" .-> r1
+  r2["I took Ilse Marrow's notebook from Inquisitor Hale, the hard way, and gave it to Zora."]
+  done -. "zora_notebook_done" .-> r2
 ```
 
 | Step | Done when | Marker |
@@ -486,7 +488,8 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `hollow_wolf_killed` | enemies/hollow_wolf.gd:66<br>hollow_wolf: mercy | enemies/hollow_wolf.gd:31<br>quest wrong_things |
 | `hollow_wolf_spared` (never checked) | hollow_wolf: leave | – |
 | `hunter_read_tracks` | hollow_wolf: tracks | brannoc: drain_line, "(Hunter) Same way the hollow wolf's t..."<br>brannoc: mark, "(Hunter) Its tracks came out of the f..." |
-| `inquisitor_hostile` | inquisitor: marked<br>inquisitor: notebook_draw | levels/test_level.tscn (InquisitorDrawn)<br>levels/test_level.tscn (InquisitorOnRoad) |
+| `inquisitor_hostile` | inquisitor: draws<br>inquisitor: marked (walking away)<br>inquisitor: marked, "(Fight.)"<br>inquisitor: notebook_draw | inquisitor (start → spared_again)<br>levels/test_level.tscn (InquisitorDrawn)<br>levels/test_level.tscn (InquisitorOnRoad) |
+| `inquisitor_spared` | inquisitor: spared<br>inquisitor: spared_afraid<br>inquisitor: spared_bribed | inquisitor (start → spared_again) |
 | `inquisitor_told_zora` | inquisitor: told | zora (start → betrayed)<br>zora (start → lanternfast)<br>zora: again, "Come with me."<br>zora: again, "Teach me more of it."<br>zora: again, "What do you really do? Not the fire."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "Teach me more of it."<br>zora: taught, "What do you really do? Not the fire."<br>zora: taught, "Would you ever leave this place?" |
 | `inquisitor_warned` | inquisitor: suspicious | inquisitor (start → suspicious) |
 | `jory_cheated` | jory: merchant_cheat | quest lost_wagon |
@@ -505,6 +508,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `left_you_zora` | systems/companions.gd sets left_you_<id> when a companion walks out | zora: again, "Come with me."<br>zora: taught, "Come with me." |
 | `licence_started` | brannoc: licence | brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?"<br>quest licence_to_burn<br>zora: again, "The garrison wants you arrested."<br>zora: drain, "The garrison wants you arrested."<br>zora: greet, "The garrison wants you arrested."<br>zora: scholar, "The garrison wants you arrested." |
 | `lost_wagon_started` | jory_caged: freed<br>jory_caged: locked<br>maren: report_merchant<br>wagon: look<br>wagon: merchant | quest lost_wagon |
+| `maren_discount` | maren: discount_yes | maren: greet_again, "Any chance of a better price for a re..."<br>maren: greet_hero, "Any chance of a better price for a re..." |
 | `maren_wrong_things` | maren: wrong_things | maren: greet, "I'm tracking a Greyfang that walks wr..."<br>maren: greet, "I've come to tend the roadside shrine..."<br>maren: greet, "My wagon never reached Riverwatch. Ye..."<br>maren: greet, "Sergeant Holt sent me from Riverwatch..."<br>maren: greet, "The Collegium sent me to study the st..."<br>maren: greet, "You saw me sleeping behind your wayst..."<br>maren: greet_again, "Anything strange around here lately?"<br>maren: greet_hero, "Anything strange around here lately?"<br>quest wrong_things |
 | `mercy_cell_done` | halina: leave<br>halina: peace | halina (start → after)<br>levels/test_level.tscn (Merciful)<br>quest the_merciful |
 | `mercy_cell_fight` | halina: after<br>halina: fight | levels/test_level.tscn (HalinaHere)<br>props/mercy_cell.gd:10 |
@@ -584,6 +588,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `zora_left` | zora: arrested<br>zora: warned | levels/test_level.tscn (ZoraHere) |
 | `zora_notebook_bought` | inquisitor: notebook_sold | quest zora_notebook |
 | `zora_notebook_done` | companion_zora: notebook | companion_zora: cold, "I have Ilse's notebook."<br>companion_zora: greet, "I have Ilse's notebook."<br>companion_zora: warm, "I have Ilse's notebook."<br>inquisitor: again, "You carry a hedge-witch's notebook. I..."<br>inquisitor: greet, "You carry a hedge-witch's notebook. I..."<br>quest zora_notebook |
+| `zora_notebook_persuaded` | inquisitor: notebook_given | quest zora_notebook |
 | `zora_notebook_started` | companion_zora: teacher | companion_zora: cold, "I have Ilse's notebook."<br>companion_zora: cold, "You said the Order burned your teacher."<br>companion_zora: greet, "I have Ilse's notebook."<br>companion_zora: greet, "You said the Order burned your teacher."<br>companion_zora: warm, "I have Ilse's notebook."<br>companion_zora: warm, "You said the Order burned your teacher."<br>inquisitor: again, "You carry a hedge-witch's notebook. I..."<br>inquisitor: greet, "You carry a hedge-witch's notebook. I..."<br>quest zora_notebook |
 | `zora_saw_stain` | zora: sees_stain | zora (start → sees_stain) |
 | `zora_scholar` | zora: scholar | zora: again, "(Scholar) You trained at the Collegiu..."<br>zora: drain, "(Scholar) You trained at the Collegiu..."<br>zora: greet, "(Scholar) You trained at the Collegiu..."<br>zora: scholar, "(Scholar) You trained at the Collegiu..."<br>zora: taught, "(Scholar) You trained at the Collegiu..." |

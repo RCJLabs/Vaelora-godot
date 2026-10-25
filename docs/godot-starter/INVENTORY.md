@@ -23,9 +23,14 @@ Maren's **"Let's trade."** opens the buy and sell screen (`ui/trade_screen.gd`, 
 yours on the right; click a row (or A / Enter) to buy or sell one, Esc to leave. The game
 pauses while it's open.
 
-- **Prices** come from an item's **Value** and your **Presence**: you buy at ×1.25 (2.5% less
-  per point above 10, never under ×1.0) and sell at ×0.45 (2% more per point, never over ×0.7).
-  The top line shows both. Speech will add to it once it exists.
+- **Prices** come from an item's **Value**, your **Presence** and your **Speech**:
+  - **Buying:** ×1.25, with 2.5% less per Presence point above 10 and 0.3% less per Speech
+    level above 15, never under ×1.0.
+  - **Selling:** ×0.45, with 2% more per point and 0.2% per level, never over ×0.7.
+  - **Haggling perks** (Speech) take a little more off. Even so, buying never drops under ×0.85
+    and selling never tops ×0.8.
+  - **Maren's discount:** talk her round (a Speech check) and she takes 10% off.
+  - The top line shows all of it. Trading teaches Speech (SPEECH.md).
 - **Her purse:** Maren has 250 gold and can't pay more than she has.
 - **Restocking:** every 3 days her stock and purse come back. The bow on her wall and the tomes
   are one of a kind: once bought, gone.
@@ -71,5 +76,5 @@ Inventory.use("minor_healing_potion")
 ## Known limits
 
 - No dropping items. Carry weight is in FOUNDATIONS.md.
-- Only Maren trades so far; there's no haggling (Speech) yet.
+- Only Maren trades so far. Haggling is passive (prices by Speech and perks), not a minigame.
 - Saved with the game (save version 3; older saves load with an empty inventory).

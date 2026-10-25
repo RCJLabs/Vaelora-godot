@@ -145,6 +145,8 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 - [ ] Sneak (C): crouch toward the Greyfang wolves by day, then at night. Does getting close feel fair, and does the marker under the compass warn you in time?
 - [ ] A sneak attack on an idle bandit with the dagger, then with the bow. Does x3 / x2 feel right, or too strong for a level-1 character?
 - [ ] Buy Maren's iron set and fight the bandits in it, then in leather. Is the heavy set worth the sprint cost and weight at the start?
+- [ ] Speech checks show your score next to what they need. Does seeing "[Persuade 60 · you 23]" feel fair, or does it take the tension out? (The alternative is a hidden roll.)
+- [ ] Get Stained and meet the inquisitor: are the three ways out (talk, threaten, pay) priced right?
 - [ ] Try **Settings → Accessibility → Toggle sprint / Toggle block**: better or worse than holding?
 - [ ] Any button that felt wrong where it is? (Rebind it in Settings → Controls, then tell me
       the new layout.)

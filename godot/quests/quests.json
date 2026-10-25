@@ -739,6 +739,12 @@
 		"outcomes": [
 			{
 				"when": {
+					"requires_flag": "zora_notebook_persuaded"
+				},
+				"text": "I talked Inquisitor Hale into giving me Ilse Marrow's notebook for nothing, and gave it to Zora."
+			},
+			{
+				"when": {
 					"requires_flag": "zora_notebook_bought"
 				},
 				"text": "I bought Ilse Marrow's notebook back from Inquisitor Hale with a 'donation' to the lamp fund, and gave it to Zora."

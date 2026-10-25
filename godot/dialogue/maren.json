@@ -180,6 +180,17 @@
 					"next": "end"
 				},
 				{
+					"text": "Any chance of a better price for a regular?",
+					"requires_not_flag": "maren_discount",
+					"check": {
+						"id": "maren_discount",
+						"kind": "persuade",
+						"difficulty": 30
+					},
+					"next": "discount_yes",
+					"fail_next": "discount_no"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -283,6 +294,17 @@
 					"text": "Let's trade.",
 					"open_trade": "maren",
 					"next": "end"
+				},
+				{
+					"text": "Any chance of a better price for a regular?",
+					"requires_not_flag": "maren_discount",
+					"check": {
+						"id": "maren_discount",
+						"kind": "persuade",
+						"difficulty": 30
+					},
+					"next": "discount_yes",
+					"fail_next": "discount_no"
 				},
 				{
 					"text": "Goodbye.",
@@ -567,6 +589,35 @@
 			"choices": [
 				{
 					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"discount_yes": {
+			"text": "Maren laughs. \"A regular. You've been up and down this road more than most this season.\" She shakes her head, still smiling. \"Fine. A tenth off, while you keep coming back. Don't tell the garrison.\"",
+			"set_flag": "maren_discount",
+			"choices": [
+				{
+					"text": "Let's trade.",
+					"open_trade": "maren",
+					"next": "end"
+				},
+				{
+					"text": "Thanks, Maren.",
+					"next": "end"
+				}
+			]
+		},
+		"discount_no": {
+			"text": "\"You and every carter from here to the coast.\" She doesn't look up from her ledger. \"Prices are prices, love.\"",
+			"choices": [
+				{
+					"text": "Let's trade.",
+					"open_trade": "maren",
+					"next": "end"
+				},
+				{
+					"text": "Fair enough.",
 					"next": "end"
 				}
 			]
