@@ -159,11 +159,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return   # the dialogue box owns the mouse and keys while talking
 
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		var sensitivity := mouse_sensitivity * Settings.mouse_sensitivity
-		var vertical := -1.0 if Settings.invert_y else 1.0
-		rotate_y(-event.relative.x * sensitivity)                # body turns left/right
-		head.rotate_x(-event.relative.y * sensitivity * vertical)  # head tilts up/down
-		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-85), deg_to_rad(85))
+		look(event.relative * mouse_sensitivity)
 
 	if event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED   # this click only grabs the mouse
@@ -286,6 +282,8 @@ func _on_spell_changed() -> void:
 	match combat.left_hand():
 		PlayerCombat.Hand.SHIELD:
 			hud.set_left_hand("Shield   (%s while blocking: bash)" % InputHints.label("attack"))
+		PlayerCombat.Hand.DUAL:
+			hud.set_left_hand("%s   (%s swings it; hold it as you attack: both)" % [Inventory.equipped_item("off_hand").display_name, InputHints.label("cast")])
 		PlayerCombat.Hand.TWO_HANDED:
 			hud.set_left_hand("Two-handed   (%s blocks)" % InputHints.label("cast"))
 		PlayerCombat.Hand.BOW:
@@ -323,6 +321,16 @@ func _apply_equipment() -> void:
 
 func _update_armor() -> void:
 	stats.armor_rating = Inventory.armor_total()
+
+
+## Turns the view by `radians` (x: left/right, y: up/down), before sensitivity and
+## invert-Y. The mouse (in _unhandled_input) and touch (ui/touch_controls.gd) use it.
+func look(radians: Vector2) -> void:
+	var sensitivity := Settings.mouse_sensitivity
+	var vertical := -1.0 if Settings.invert_y else 1.0
+	rotate_y(-radians.x * sensitivity)                # body turns left/right
+	head.rotate_x(-radians.y * sensitivity * vertical)  # head tilts up/down
+	head.rotation.x = clamp(head.rotation.x, deg_to_rad(-85), deg_to_rad(85))
 
 
 # Gamepad right stick. Mouse look is in _unhandled_input.

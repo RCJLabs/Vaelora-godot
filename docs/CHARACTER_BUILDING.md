@@ -81,7 +81,9 @@ ten that exist get theirs filled in along the way).
    - ✅ Weapon arts: one for each weapon (and the shield, and fists), learned at 25
      (`docs/godot-starter/COMBAT.md`, "Weapon arts").
    - ✅ Spell combinations: Shatter, Undertow, Riptide (`docs/godot-starter/MAGIC.md`).
-   - Dual-wielding and spell-blades next.
+   - ✅ Dual-wielding: a one-handed weapon in the left hand, twin strikes, three One-Handed
+     perks (`docs/godot-starter/COMBAT.md`, "Dual-wielding").
+   - Spell-blades next.
 6. **Classes** (defined below).
 7. **Earned powers:** shrines, quests and the stones.
 

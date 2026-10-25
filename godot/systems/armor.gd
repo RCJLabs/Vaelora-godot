@@ -65,8 +65,10 @@ func perk_applies(perk: Dictionary) -> bool:
 			return false
 		if perk.has("when_weapon") and (weapon.weapon_type if weapon else "") != perk["when_weapon"]:
 			return false
-	if perk.get("when_shield", false) and Inventory.equipped_item("off_hand") == null:
+	if perk.get("when_shield", false) and (Inventory.equipped_item("off_hand") == null or Inventory.equipped_item("off_hand").type == ItemData.Type.WEAPON):
 		return false
+	if perk.get("when_dual", false) and (Inventory.equipped_item("off_hand") == null or Inventory.equipped_item("off_hand").type != ItemData.Type.WEAPON):
+		return false   # dual-wielding perks: a weapon in each hand
 	return true
 
 

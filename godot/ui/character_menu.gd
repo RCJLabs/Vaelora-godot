@@ -13,6 +13,7 @@ extends CanvasLayer
 @onready var skill_list: GridContainer = %SkillList
 @onready var item_list: ItemList = %ItemList
 @onready var use_button: Button = %UseButton
+var off_hand_button: Button     # a one-handed weapon into the left hand (dual-wielding)
 @onready var spell_list: ItemList = %SpellList
 @onready var quest_list: ItemList = %QuestList
 @onready var tabs: TabContainer = %Tabs
@@ -50,6 +51,11 @@ func _ready() -> void:
 	item_list.item_selected.connect(func(_i): _show_selected_item())
 	item_list.item_activated.connect(func(_i): _use_selected())   # Enter / gamepad A
 	use_button.pressed.connect(_use_selected)
+	off_hand_button = Button.new()
+	off_hand_button.custom_minimum_size = use_button.custom_minimum_size
+	off_hand_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	off_hand_button.pressed.connect(_off_hand_selected)
+	use_button.add_sibling(off_hand_button)
 	Spellbook.changed.connect(_refresh_magic)
 	spell_list.item_selected.connect(func(row): Spellbook.select(Spellbook.known[row]))
 	quest_list.item_selected.connect(func(_row): _show_selected_quest())
@@ -282,6 +288,12 @@ func _show_selected_item() -> void:
 		use_button.text = "Coat blade"
 	else:
 		use_button.text = "Drink"
+	var in_left: bool = item != null and Inventory.equipped.get("off_hand", "") == id
+	off_hand_button.visible = item != null and (in_left \
+			or (item.type == ItemData.Type.WEAPON and item.weapon_kind == ItemData.WeaponKind.MELEE and not item.two_handed))
+	off_hand_button.disabled = not in_left and Inventory.why_not_off_hand(id) != ""
+	off_hand_button.tooltip_text = Inventory.why_not_off_hand(id) if off_hand_button.disabled else ""
+	off_hand_button.text = "Off hand: take out" if in_left else "Off hand"
 
 
 func _use_selected() -> void:
@@ -290,12 +302,24 @@ func _use_selected() -> void:
 		return
 	var item := Inventory.get_item(id)
 	if item.is_equipment():
-		if Inventory.is_equipped(id):
+		if Inventory.equipped.get(item.slot_name(), "") == id:
 			Inventory.unequip(item.slot_name())
+		elif Inventory.is_equipped(id):
+			Inventory.unequip("off_hand")   # a weapon held only in the left hand
 		else:
 			Inventory.equip(id)
 	else:
 		Inventory.use(id)
+
+
+func _off_hand_selected() -> void:
+	var id := _selected_id()
+	if id == "":
+		return
+	if Inventory.equipped.get("off_hand", "") == id:
+		Inventory.unequip("off_hand")
+	else:
+		Inventory.equip_off_hand(id)
 
 
 func _refresh_magic() -> void:

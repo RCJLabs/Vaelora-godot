@@ -98,7 +98,7 @@ func _physics_process(_d: float) -> bool:
 			var PM = autoload("PauseMenu")
 			ok(PM.title_label.text == "Accessibility", "Settings → Accessibility page opens")
 			var boxes = PM.content.find_children("*", "CheckBox", true, false)
-			ok(boxes.size() == 2, "two toggles on the page", boxes.size())
+			ok(boxes.size() == 3, "three toggles on the page (sprint, block, touch controls)", boxes.size())
 			PM.close()
 			return done()
 	step += 1
