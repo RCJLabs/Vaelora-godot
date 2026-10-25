@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "frenzy"
+display_name = "Frenzy"
+description = "Charge, then release on a wolf or bandit (up to 20 m): for 12 seconds it attacks whoever is nearest, its own pack included (you, if nobody else is near), and its pack turns on it. Hitting it doesn't break it."
+style = 2
+skill = "glamour"
+color = Color(1, 0.3, 0.15, 1)
+charge_time = 0.9
+magicka_cost = 40.0
+max_distance = 20.0
+radius = 2.0
+glamour = "frenzy"
+duration = 12.0

@@ -135,6 +135,7 @@ func _damage_stream(damage: float) -> void:
 		var target := cast_shape.get_collider(i)
 		if target and target.has_method("take_hit"):
 			target.take_hit(damage, player.global_position, 0.0)
+			Glamour.struck(target, player)
 			if spell.applies_effect != "" and target.has_method("add_effect"):
 				target.add_effect(spell.applies_effect)
 			Skills.add_xp(spell.skill, damage / 5.0)   # 1 XP per 5 damage dealt
@@ -238,6 +239,7 @@ func _burst(damage: float) -> void:
 		hits.append(target)
 		var falloff := lerpf(1.0, 0.5, clampf(target.global_position.distance_to(center) / radius, 0.0, 1.0))
 		target.take_hit(damage * falloff, center, 5.0, 12.0 if not dual else 20.0)
+		Glamour.struck(target, player)
 		if spell.applies_effect != "" and target.has_method("add_effect"):
 			target.add_effect(spell.applies_effect)
 		Skills.add_xp(spell.skill, damage * falloff / 5.0)

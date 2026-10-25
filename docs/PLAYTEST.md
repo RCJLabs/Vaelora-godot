@@ -97,6 +97,7 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
       their charge-up and parry a bolt back at them?
 - [ ] **Glamour** (Zora teaches it: "What do you really do?"): a **Mirror Image** in front of the
       wolves, then **Fear**, then **Charm** one wolf of the pack. Readable? Fun, or fiddly?
+      Then her second lesson: **Frenzy** one wolf, and **Invisibility** while they hunt you.
 - [ ] **A companion** (Brannoc after Wrong Things, or Zora): "Come with me." Do they keep up,
       get stuck, or get in your way in a fight? Try Wait here / Follow me / Go home.
       Do the wolves split between you and them in a way that reads? Let one go down and help

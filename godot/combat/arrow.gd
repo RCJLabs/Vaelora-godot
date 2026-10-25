@@ -50,6 +50,7 @@ func _physics_process(delta: float) -> void:
 	if target.has_method("take_hit"):
 		var origin := shooter.global_position if is_instance_valid(shooter) else from
 		target.take_hit(damage, origin, 1.5, poise_damage)
+		Glamour.struck(target, shooter)
 		hit.emit(target, damage)
 		Sfx.play_at("hit_flesh", global_position, -4.0)
 		queue_free()

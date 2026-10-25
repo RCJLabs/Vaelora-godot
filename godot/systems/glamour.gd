@@ -8,44 +8,65 @@ extends Node
 #   fear   enemies in the radius run from you for a while, then come back
 #   charm  the enemy nearest where you aim fights for you: it goes for the
 #          nearest other enemy, and its packmates turn on it. When it wears
-#          off, it remembers whose side it's on.
+#          off, it remembers whose side it's on. Hitting it yourself breaks it.
+#   frenzy the enemy nearest where you aim attacks whoever's nearest, its own
+#          or another pack's (you, when nobody else is near), and its packmates
+#          turn on it. Hitting it doesn't break it.
+# And one self spell, Invisibility (effects/invisible.tres): enemies lose you
+# (systems/targeting.gd) and head home, or go for your companion. Attacking or
+# casting anything ends it.
 # The Vael's own kind (wisps), stone guardians and The First aren't fooled:
 # it's Vael magic to begin with, and the guardians have no minds to fool. Nor is
 # anything with `glamour_proof` true (the hollow wolf: nothing left in it to fool).
 #
 # Enemies ask target_for() each frame for who to go after. With no decoys and
-# nobody charmed (almost always), that's the player, at once.
+# nobody charmed or frenzied (almost always), that's the player, at once.
 
 const DECOY_HITS := 3
 ## How far a decoy draws enemies from, and how far a charmed enemy looks for a fight.
 const DECOY_PULL := 18.0
 const CHARM_SEEK := 16.0
-## Packmates this close to a charmed enemy turn on it.
+## Packmates this close to a charmed or frenzied enemy turn on it.
 const TURN_ON_TRAITOR := 10.0
-const CHARM_COLOR := Color(0.95, 0.45, 0.9)
+const COLORS := {"charm": Color(0.95, 0.45, 0.9), "frenzy": Color(1.0, 0.3, 0.15)}
 const DECOY_SCRIPT := preload("res://glamour/decoy.gd")
 
-var _charmed := {}   # enemy -> seconds left
-var _marks := {}     # enemy -> the light over its head while charmed
+var _spells := {}   # enemy -> {"kind": "charm" or "frenzy", "left": seconds}
+var _marks := {}    # enemy -> the light over its head while it lasts
 
 
 ## Who `enemy` should go after: the player, a decoy, or another enemy (when
-## charmed, or when a packmate has been charmed). null: nobody (charmed, with
-## no one to fight), so it stands where it is.
+## charmed or frenzied, or when a packmate is). null: nobody (charmed, with no
+## one to fight).
 func target_for(enemy: Node3D, player: Node3D) -> Node3D:
-	if _charmed.is_empty() and get_tree().get_nodes_in_group("decoy").is_empty():
+	if _spells.is_empty() and get_tree().get_nodes_in_group("decoy").is_empty():
 		return player
-	if _charmed.has(enemy):
-		return _nearest(enemy, _foes_of(enemy), CHARM_SEEK)
-	var traitor := _nearest(enemy, _charmed.keys().filter(func(e): return is_instance_valid(e) and e.get_parent() == enemy.get_parent()), TURN_ON_TRAITOR)
+	match kind_of(enemy):
+		"charm":
+			return _nearest(enemy, _foes_of(enemy), CHARM_SEEK)
+		"frenzy":
+			var anyone := _nearest(enemy, _others(enemy), CHARM_SEEK)
+			return anyone if anyone else player
+	var traitor := _nearest(enemy, _spells.keys().filter(func(e): return is_instance_valid(e) and e.get_parent() == enemy.get_parent()), TURN_ON_TRAITOR)
 	if traitor:
 		return traitor
 	var decoy := _nearest(enemy, get_tree().get_nodes_in_group("decoy"), DECOY_PULL)
 	return decoy if decoy else player
 
 
+## "charm", "frenzy" or "".
+func kind_of(enemy: Node) -> String:
+	return _spells[enemy]["kind"] if _spells.has(enemy) else ""
+
+
 func is_charmed(enemy: Node) -> bool:
-	return _charmed.has(enemy)
+	return kind_of(enemy) == "charm"
+
+
+## Something hit `target`. If it was you and it's charmed, the charm breaks.
+func struck(target, by) -> void:   # untyped: an arrow's shooter may be gone
+	if is_instance_valid(target) and is_charmed(target) and is_instance_valid(by) and by.is_in_group("player"):
+		_end(target)
 
 
 ## Can Glamour touch it at all?
@@ -77,42 +98,54 @@ func cast(spell: SpellData, center: Vector3, power: float, caster: Node3D) -> in
 			for enemy in touched:
 				enemy.frighten(seconds)
 			return touched.size()
-		"charm":
+		"charm", "frenzy":
 			var touched := _in_radius(caster, center, spell.radius)
 			var enemy := _nearest_to_point(center, touched)
 			if enemy:
-				charm(enemy, seconds)
+				enthrall(enemy, spell.glamour, seconds)
 				return 1
 	return 0
 
 
-## Makes `enemy` fight for you for `seconds`.
-func charm(enemy: Node3D, seconds: float) -> void:
+## Makes `enemy` fight for you ("charm") or fight anyone ("frenzy") for `seconds`.
+func enthrall(enemy: Node3D, kind: String, seconds: float) -> void:
 	if not susceptible(enemy):
 		return
-	_charmed[enemy] = seconds
-	if not _marks.has(enemy):
-		var mark := OmniLight3D.new()
-		mark.name = "CharmMark"
-		mark.light_color = CHARM_COLOR
-		mark.light_energy = 2.0
-		mark.omni_range = 2.5
-		mark.position = Vector3(0, 2.2, 0)
-		enemy.add_child(mark)
-		_marks[enemy] = mark
+	_spells[enemy] = {"kind": kind, "left": seconds}
+	if _marks.has(enemy) and is_instance_valid(_marks[enemy]):
+		_marks[enemy].queue_free()
+	var mark := OmniLight3D.new()
+	mark.name = "CharmMark" if kind == "charm" else "FrenzyMark"
+	mark.light_color = COLORS[kind]
+	mark.light_energy = 2.0
+	mark.omni_range = 2.5
+	mark.position = Vector3(0, 2.2, 0)
+	enemy.add_child(mark)
+	_marks[enemy] = mark
 	if enemy.has_method("join_hunt"):
 		enemy.join_hunt()   # idle or not, it's in the fight now
 
 
+## Makes `enemy` fight for you for `seconds`.
+func charm(enemy: Node3D, seconds: float) -> void:
+	enthrall(enemy, "charm", seconds)
+
+
 func _physics_process(delta: float) -> void:
-	for enemy in _charmed.keys():
-		_charmed[enemy] -= delta
-		if not is_instance_valid(enemy) or _charmed[enemy] <= 0.0 or _dead(enemy):
-			_end_charm(enemy)
+	for enemy in _spells.keys():
+		_spells[enemy]["left"] -= delta
+		if not is_instance_valid(enemy) or _spells[enemy]["left"] <= 0.0 or _dead(enemy):
+			_end(enemy)
+	# Invisibility ends when you attack or cast.
+	var player := get_tree().get_first_node_in_group("player")
+	if player and player.get("effects") and player.effects.has("invisible"):
+		Hints.show_once("invisible", "Invisible: enemies lose you, but attacking or casting ends it. The wisps see straight through it.")
+		if Input.is_action_just_pressed("attack") or Input.is_action_just_pressed("cast"):
+			player.effects.remove("invisible")
 
 
-func _end_charm(enemy) -> void:
-	_charmed.erase(enemy)
+func _end(enemy) -> void:
+	_spells.erase(enemy)
 	if _marks.has(enemy):
 		if is_instance_valid(_marks[enemy]):
 			_marks[enemy].queue_free()
@@ -121,13 +154,18 @@ func _end_charm(enemy) -> void:
 
 ## Forget everyone (a new level, or a load).
 func reset() -> void:
-	for enemy in _charmed.keys():
-		_end_charm(enemy)
+	for enemy in _spells.keys():
+		_end(enemy)
 
 
 # Enemies (that Glamour works on) other than `enemy`, and not charmed themselves.
 func _foes_of(enemy: Node) -> Array:
-	return get_tree().get_nodes_in_group("enemy").filter(func(e): return e != enemy and susceptible(e) and not _charmed.has(e) and e.is_visible_in_tree())
+	return _others(enemy).filter(func(e): return not is_charmed(e))
+
+
+# Every other living enemy Glamour works on.
+func _others(enemy: Node) -> Array:
+	return get_tree().get_nodes_in_group("enemy").filter(func(e): return e != enemy and susceptible(e) and e.is_visible_in_tree())
 
 
 func _in_radius(caster: Node3D, center: Vector3, radius: float) -> Array:

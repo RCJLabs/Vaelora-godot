@@ -150,7 +150,7 @@ func _physics_process(_d: float) -> bool:
 		9:
 			ok(w1.stats.health < w1.get_meta("h"), "the charmed wolf bites its packmate", [w1.get_meta("h"), w1.stats.health])
 			ok(p.stats.health == p.stats.max_health, "and nobody bites you", p.stats.health)
-			G._charmed[w2] = 0.01   # skip to the end of the charm
+			G._spells[w2]["left"] = 0.01   # skip to the end of the charm
 			wait = 3
 		10:
 			ok(not G.is_charmed(w2) and w2.get_node_or_null("CharmMark") == null, "the charm wears off")

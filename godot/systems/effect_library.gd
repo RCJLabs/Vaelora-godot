@@ -12,6 +12,7 @@ const EFFECT_FILES := [
 	"res://effects/innate_focus.tres",
 	"res://effects/battle_fury.tres",
 	"res://effects/shadowstep.tres",
+	"res://effects/invisible.tres",
 	"res://effects/hunters_focus.tres",
 	"res://effects/blessing.tres",
 	"res://effects/steady_nerves.tres",

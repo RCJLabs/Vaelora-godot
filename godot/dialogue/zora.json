@@ -111,6 +111,15 @@
 					]
 				},
 				{
+					"text": "Teach me more of it.",
+					"next": "glamour_more",
+					"requires_flag": "zora_taught_glamour",
+					"requires_not_flag": [
+						"zora_taught_glamour_more",
+						"inquisitor_told_zora"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -283,6 +292,15 @@
 					]
 				},
 				{
+					"text": "Teach me more of it.",
+					"next": "glamour_more",
+					"requires_flag": "zora_taught_glamour",
+					"requires_not_flag": [
+						"zora_taught_glamour_more",
+						"inquisitor_told_zora"
+					]
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -379,6 +397,27 @@
 		"lanternfast": {
 			"text": "Zora has one lantern, in the window facing north. \"Everyone in the valley says they're to keep the lights out. My gran said they're for finding: so the lost ones know the way home.\" She doesn't look away from the window. \"I know which one I'd rather be true.\"",
 			"set_flag": "lanternfast_zora",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		},
+		"glamour_more": {
+			"text": "\"Greedy. Good.\" She hands you a book with a scorched cover. \"Frenzy. Charm asks a mind to be your friend; this one just takes the friends away. It'll bite whoever's closest, so don't be closest.\"",
+			"give_item": "tome_frenzy",
+			"set_flag": "zora_taught_glamour_more",
+			"choices": [
+				{
+					"text": "And the last?",
+					"next": "glamour_vanish"
+				}
+			]
+		},
+		"glamour_vanish": {
+			"text": "The last book she doesn't hand you; it's simply in your hands, and you never saw her move. \"Not being there. The Order's hounds can't find what they can't see. The moment you raise a hand to anyone, though, everyone sees you again.\" She smiles. \"And the wisps never stop seeing you. Remember that.\"",
+			"give_item": "tome_invisibility",
 			"choices": [
 				{
 					"text": "(Leave)",

@@ -45,7 +45,9 @@ the right hand and Flames in the left is the classic spellsword.
 | Candlelight | Alteration | Self, 0.4 s | 15 | A light floats above you for 3 minutes | Scholars start with it; Maren sells the tome (25 gold) |
 | Mirror Image | Glamour | Area, 0.7 s | 30 | A decoy of you where you aim (up to 20 m). Enemies within 18 m of it go for it instead, until 3 hits or 12 s | Zora ("What do you really do?") |
 | Fear | Glamour | Area, 0.9 s | 40 | Enemies within 5 m of where you aim run from you for 8 s, then come back | Zora, after Mirror Image |
-| Charm | Glamour | Area, 1.0 s | 45 | The enemy nearest where you aim (within 2 m) fights for you for 15 s; its packmates within 10 m turn on it | Zora, after Fear |
+| Charm | Glamour | Area, 1.0 s | 45 | The enemy nearest where you aim (within 2 m) fights for you for 15 s; its packmates within 10 m turn on it. Hitting it yourself breaks the charm | Zora, after Fear |
+| Frenzy | Glamour | Area, 0.9 s | 40 | The enemy nearest where you aim attacks whoever's nearest for 12 s, its own pack included (you, if nobody else is near); its packmates turn on it. Your hits don't break it | Zora's second lesson ("Teach me more of it.") |
+| Invisibility | Glamour | Self, 0.8 s | 50 | For 20 s wolves and bandits lose you: they head home, or go for your companion. Attacking or casting ends it. Wisps see through it | Zora's second lesson |
 
 **Spell tomes** are items. Use one from Tab → Inventory to learn its spell (the tome is
 used up). Maren's tomes are under "Let's trade."
@@ -53,15 +55,21 @@ used up). Maren's tomes are under "Let's trade."
 ### Glamour (the fourth school)
 
 Glamour changes what minds see. It rarely deals damage itself: your enemies do it to each
-other. All three spells are **Area** spells whose `glamour` field (`decoy`, `fear`, `charm`)
-replaces the damage; `duration` is how long it lasts, scaled by spell power (skill, Intellect,
+other. Four of its spells are **Area** spells whose `glamour` field (`decoy`, `fear`, `charm`,
+`frenzy`) replaces the damage; Invisibility is a **Self** spell (the `invisible` effect).
+For the Area ones, `duration` is how long it lasts, scaled by spell power (skill, Intellect,
 perks, and ×2.2 dual-cast). `systems/glamour.gd` (autoload **Glamour**) does the work:
 
 - **Who enemies go after.** Wolves and bandit-kind (bandits, cultists, the inquisitor, the
-  Mercy) ask `Glamour.target_for(self, player)` every frame. With no decoys and nobody
-  charmed, that's the player straight away. Otherwise: a charmed enemy goes for the nearest
-  other enemy (within 16 m; none means it stands still); its own packmates within 10 m turn
-  on it; anyone else within 18 m of a decoy goes for the decoy.
+  Mercy) ask `Targeting.foe_for()`, which asks `Glamour.target_for()` first. With no decoys
+  and nobody charmed or frenzied, that's the player straight away. Otherwise: a charmed enemy
+  goes for the nearest other enemy that isn't charmed (within 16 m; none means it heads
+  home); a frenzied one goes for the nearest other enemy of any kind, or you; packmates
+  within 10 m of either turn on it; anyone else within 18 m of a decoy goes for the decoy.
+- **Invisible**, you're not a target: enemies after you give up and head home (or go for
+  your companion), and idle ones don't notice you. Pressing attack or cast ends it.
+- **Your hits** (melee, arrows, bolts, streams, bursts) call `Glamour.struck()`, which
+  breaks a charm. Companions' hits and enemies' don't.
 - **Who it works on:** anything with a `frighten()` method (wolves, bandits), unless
   `glamour_proof` is true (the hollow wolf). Wisps, the stone guardian and The First aren't
   touched: the wisps are Vael and this was their magic first.
@@ -105,7 +113,7 @@ The casting code is in `player/player_magic.gd`; projectiles and bursts are
 - Flames go through walls (the stream only checks enemies); bursts and bolts don't.
 - Spells can't hurt you or friendly NPCs (no friendly fire), and enemies don't cast yet.
 - Candlelight is one light that follows you; it doesn't cast shadows.
-- Glamour (greybox): the decoy is a translucent capsule; there's no invisibility or frenzy
-  yet (the lore's other Glamour spells); hitting a charmed enemy doesn't break the charm; and
-  people you can talk to can't be charmed.
+- Glamour (greybox): the decoy is a translucent capsule; you look the same to yourself while
+  invisible (only the effect in the HUD says so); the mastery spell (a whole camp charmed)
+  isn't in; and people you can talk to can't be glamoured.
 - Saved with the game: known spells and the ready spell (Block saves as no spell).

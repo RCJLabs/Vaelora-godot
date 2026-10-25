@@ -66,6 +66,7 @@ func _physics_process(delta: float) -> void:
 	elif target.has_method("take_hit"):
 		var origin := shooter.global_position if is_instance_valid(shooter) else from
 		target.take_hit(damage, origin, 2.0, poise_damage)
+		Glamour.struck(target, shooter)
 		if applies_effect != "" and target.has_method("add_effect"):
 			target.add_effect(applies_effect)
 		hit.emit(target, damage)

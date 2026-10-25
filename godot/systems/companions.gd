@@ -43,8 +43,12 @@ func body() -> Node3D:
 
 
 func _process(_delta: float) -> void:
-	# Arriving in a level (or loading a save) with someone following: bring them along.
 	var id := active()
+	# No longer following (the flag was cleared some other way than "Go home"): gone.
+	for companion in get_tree().get_nodes_in_group("companion"):
+		if companion.companion_id != id and not companion.is_queued_for_deletion():
+			companion.queue_free()
+	# Arriving in a level (or loading a save) with someone following: bring them along.
 	var player := get_tree().get_first_node_in_group("player") as Node3D
 	if id != "" and player and body() == null:
 		var companion := COMPANION_SCRIPT.new()

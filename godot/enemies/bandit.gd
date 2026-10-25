@@ -123,8 +123,10 @@ func _physics_process(delta: float) -> void:
 	var paused: bool = player == null or player.is_dead or DialogueManager.is_active
 	# Who it's after: the player or a companion, unless Glamour says otherwise.
 	var foe: Node3D = null if paused else Targeting.foe_for(self, player)
-	if foe == null:
+	if paused:
 		_move(Vector3.ZERO, 0.0, delta)
+	elif foe == null:
+		_lost(delta)
 	else:
 		_think(foe, delta)
 	var push := _knockback
@@ -240,6 +242,23 @@ func _attackers() -> int:
 		if other != self and other.get("state") == State.ATTACK:
 			count += 1
 	return count
+
+
+# Nobody to go after (you've turned invisible, say): back home.
+func _lost(delta: float) -> void:
+	match state:
+		State.IDLE:
+			_move(Vector3.ZERO, 0.0, delta)
+		State.STAGGER, State.FLEE:
+			_think(self, delta)   # these don't need a target to play out
+		_:
+			if state == State.ATTACK or state == State.GUARD:
+				_pose("rest", 0.2)
+			if Vector2(global_position.x - home.x, global_position.z - home.z).length() < 1.0:
+				state = State.IDLE
+			else:
+				state = State.RETURN
+				_move(home, run_speed * 0.7, delta)
 
 
 func _start_fight() -> void:
