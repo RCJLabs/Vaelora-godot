@@ -3,13 +3,14 @@ extends HBoxContainer
 
 # The Perks tab of the Tab menu (ui/character_menu.gd adds it): every skill on
 # the left with how many of its perks you have; on the right, the chosen skill's
-# perks as a tree. Rows are the skill level a perk needs (lowest at the top), a
-# line joins a perk to the one it requires, and the colour says where you stand:
+# perks as a tree: a perk sits one row under the perk it requires, each branch
+# gets its own columns, and an elbow line joins them (so no line crosses another
+# perk or line). The label says the level it needs; the colour where you stand:
 # gold taken, bright ready to take, dim locked. Click a perk for its details and
-# Take it there. Built to hold 20+ perks a skill (it scrolls).
+# Take it there. Built to hold 20+ perks a skill (it scrolls both ways).
 
-const NODE_SIZE := Vector2(190, 46)
-const GAP := Vector2(28, 34)
+const NODE_SIZE := Vector2(204, 46)
+const GAP := Vector2(20, 34)
 const TAKEN := Color(0.95, 0.78, 0.35)
 const READY := Color(0.85, 0.92, 1.0)
 const LOCKED := Color(0.45, 0.47, 0.52)
@@ -28,10 +29,10 @@ var _buttons := {}   # perk id -> its button on the canvas
 
 ## The drawing surface: lines between perks, under their buttons.
 class _Canvas extends Control:
-	var lines := []   # [from: Vector2, to: Vector2, color: Color]
+	var lines := []   # [points: PackedVector2Array, color: Color]
 	func _draw() -> void:
 		for line in lines:
-			draw_line(line[0], line[1], line[2], 3.0, true)
+			draw_polyline(line[0], line[1], 3.0, true)
 
 
 func _init() -> void:
@@ -94,36 +95,36 @@ func perks_of(id: String) -> Array:
 	return ids
 
 
-## Where each perk sits: {perk: Vector2i(column, row)}. Rows are the distinct levels
-## needed. A perk goes straight under the one it requires when nothing sits between
-## them; otherwise (and for a perk that requires nothing) it opens a new column, so
-## a line never runs behind an unrelated perk.
+## Where each perk sits: {perk: Vector2i(column, row)}. A tidy tree: a perk is one
+## row under the perk it requires; its first follow-on (lowest level) continues its
+## column, each other one opens the next free column, and every branch keeps its
+## columns to itself.
 func layout(id: String) -> Dictionary:
 	var perks := perks_of(id)
-	var levels := []
+	var children := {}
+	var roots := []
 	for p in perks:
-		var level := int(Character.perk_list[p]["level"])
-		if not level in levels:
-			levels.append(level)
-	levels.sort()
-	var spots := {}
-	var used := {}   # Vector2i -> true
-	var next_col := 0
-	for p in perks:
-		var row := levels.find(int(Character.perk_list[p]["level"]))
 		var parent: String = Character.perk_list[p].get("requires", "")
-		var col := next_col
-		if spots.has(parent):
-			var above: Vector2i = spots[parent]
-			var clear := row > above.y   # same level as its parent: beside it, not on it
-			for r in range(above.y + 1, row + 1):
-				clear = clear and not used.has(Vector2i(above.x, r))
-			if clear:
-				col = above.x
-		spots[p] = Vector2i(col, row)
-		used[Vector2i(col, row)] = true
-		next_col = maxi(next_col, col + 1)
+		if parent != "" and parent in perks:
+			if not children.has(parent):
+				children[parent] = []
+			children[parent].append(p)
+		else:
+			roots.append(p)
+	var spots := {}
+	var next_col := [0]   # in an array so _place can move it on
+	for root in roots:
+		_place(root, 0, children, spots, next_col)
 	return spots
+
+
+func _place(perk: String, row: int, children: Dictionary, spots: Dictionary, next_col: Array) -> void:
+	spots[perk] = Vector2i(next_col[0], row)
+	var kids: Array = children.get(perk, []).filter(func(k): return not spots.has(k))   # (a loop in the data stops here)
+	if kids.is_empty():
+		next_col[0] += 1
+	for kid in kids:
+		_place(kid, row + 1, children, spots, next_col)
 
 
 func show_skill(id: String) -> void:
@@ -164,7 +165,9 @@ func show_skill(id: String) -> void:
 			continue
 		var from: Vector2 = _buttons[parent].position + Vector2(NODE_SIZE.x / 2.0, NODE_SIZE.y)
 		var to: Vector2 = _buttons[p].position + Vector2(NODE_SIZE.x / 2.0, 0.0)
-		_canvas.lines.append([from, to, TAKEN if parent in Character.perks else LOCKED])
+		var elbow := from.y + GAP.y / 2.0   # down, across in the gap under the row, down
+		_canvas.lines.append([PackedVector2Array([from, Vector2(from.x, elbow), Vector2(to.x, elbow), to]),
+				TAKEN if parent in Character.perks else LOCKED])
 	_canvas.queue_redraw()
 	if not selected_perk in spots:
 		selected_perk = spots.keys()[0] if not spots.is_empty() else ""
@@ -180,6 +183,7 @@ func select(perk_id: String) -> void:
 		_details.text = "No perks for this skill yet."
 		_take.disabled = true
 		return
+	_reveal.call_deferred(perk_id)
 	var perk: Dictionary = Character.perk_list[perk_id]
 	var blocker := Character.perk_blocker(perk_id)
 	var needs := "%s %d" % [Skills.SKILLS[perk["skill"]]["name"], int(perk["level"])]
@@ -189,6 +193,14 @@ func select(perk_id: String) -> void:
 			"  You have it." if blocker == "taken" else ("" if blocker == "" else "  (%s)" % blocker)]
 	_take.disabled = blocker != ""
 	_take.text = "Take %s" % perk["name"] if blocker == "" else "Take perk"
+
+
+## Scrolls the selected perk into view (deferred: after the tree is laid out, and
+## only if it's still the one on screen).
+func _reveal(perk_id: String) -> void:
+	var button: Button = _buttons.get(perk_id)
+	if button != null and is_instance_valid(button) and button.get_parent() == _canvas and _scroll.is_inside_tree():
+		_scroll.ensure_control_visible(button)
 
 
 func _box(color: Color, shade: float, alpha: float, width: int) -> StyleBoxFlat:

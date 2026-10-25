@@ -42,6 +42,8 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node) -> void:
+	if body.is_in_group("player") and Stealth.is_sneaking() and Stealth.has_perk("light_foot"):
+		return   # Light Foot (Sneak): a careful step doesn't press it
 	if body.is_in_group("player") or body.is_in_group("enemy"):
 		fire()
 

@@ -26,12 +26,12 @@ func _physics_process(_d: float) -> bool:
 		ok(M.get_node("%PerksButton").text == "Perks  -  1 point to spend  >", "perk points button on the Skills tab", M.get_node("%PerksButton").text)
 		ok(M.tabs.get_tab_control(M.PERKS_TAB) == T and M.tabs.get_tab_title(M.PERKS_TAB) == "Perks", "a Perks tab, last")
 		var skills: Array = range(T._skills.item_count).map(func(i): return T._skills.get_item_text(i))
-		ok(skills.size() == 10 and skills[0] == "One-Handed  0/3  •" and skills.back().begins_with("Tidecraft"), "ten skills with counts; • where a perk is ready", skills)
-		ok(T._skills.get_item_text(3) == "Block  0/3", "nothing ready in Block", T._skills.get_item_text(3))
+		ok(skills.size() == autoload("Skills").SKILLS.size() and skills[0] == "One-Handed  0/3  •" and skills.back().begins_with("Tidecraft"), "every skill with counts; • where a perk is ready", skills)
+		ok(skills.has("Block  0/3"), "nothing ready in Block", skills)
 		# One-Handed: Armsman, Fighting Rhythm beside it a row down, Armsman II under Armsman.
 		ok(T.skill_id == "one_handed", "One-Handed shown first")
-		ok(T.layout("one_handed") == {"armsman_1": Vector2i(0, 0), "fighting_rhythm": Vector2i(1, 1), "armsman_2": Vector2i(0, 2)},
-				"by level, Armsman II under Armsman with nothing between", T.layout("one_handed"))
+		ok(T.layout("one_handed") == {"armsman_1": Vector2i(0, 0), "armsman_2": Vector2i(0, 1), "fighting_rhythm": Vector2i(1, 0)},
+				"Armsman II under Armsman; Fighting Rhythm its own column", T.layout("one_handed"))
 		ok(T._buttons["armsman_1"].text == "Armsman  (15)", "a perk shows its name and level", T._buttons["armsman_1"].text)
 		ok(T._buttons["armsman_1"].get_theme_color("font_color") == T.READY and T._buttons["armsman_2"].get_theme_color("font_color") == T.LOCKED, "ready bright, locked dim")
 		ok(T._canvas.lines.size() == 1, "one line: Armsman to Armsman II", T._canvas.lines.size())
@@ -56,7 +56,7 @@ func _physics_process(_d: float) -> bool:
 		ok(T._skills.get_item_text(0) == "One-Handed  1/3", "1 of 3, nothing more to take now", T._skills.get_item_text(0))
 		ok(T._buttons["armsman_1"].text.begins_with("✓") and T._buttons["armsman_1"].get_theme_color("font_color") == T.TAKEN, "taken: ✓ and gold")
 		ok(T.selected_perk == "armsman_1" and T._details.text.contains("You have it."), "still selected, and says so", T._details.text)
-		ok(T._canvas.lines[0][2] == T.TAKEN, "the line from a taken perk is gold")
+		ok(T._canvas.lines[0][1] == T.TAKEN, "the line from a taken perk is gold")
 		# A big tree: 22 perks in Athletics (8 roots, chains and branches, shared levels).
 		var saved: Dictionary = C.perk_list.duplicate(true)
 		for i in 22:
@@ -68,17 +68,29 @@ func _physics_process(_d: float) -> bool:
 		T.show_skill("athletics")
 		var spots: Dictionary = T.layout("athletics")
 		ok(spots.size() == 25 and spots.values().size() == _unique(spots.values()).size(), "25 perks, no two in one spot", spots.size())
-		var crossed := []
+		var bad := []
 		for p in spots:
 			var parent: String = C.perk_list[p].get("requires", "")
-			if parent == "":
+			if parent != "" and (spots[p].y != spots[parent].y + 1 or spots[p].x < spots[parent].x):
+				bad.append([parent, p])
+		ok(bad.is_empty(), "each perk one row under, and not left of, what it requires", bad)
+		# A column only ever holds one chain, so a straight line never passes another perk...
+		var broken := []
+		for p in spots:
+			for q in spots:
+				if spots[q].x == spots[p].x and spots[q].y == spots[p].y + 1 and C.perk_list[q].get("requires", "") != p:
+					broken.append([p, q])
+		ok(broken.is_empty(), "every column is one chain", broken)
+		# ...and a branch's elbow runs in the gap under its row, over columns its own branch owns.
+		var crossing := []
+		for p in spots:
+			var parent: String = C.perk_list[p].get("requires", "")
+			if parent == "" or spots[p].x == spots[parent].x:
 				continue
-			ok(spots[p].y > spots[parent].y, "%s sits below %s" % [p, parent])
-			if spots[p].x == spots[parent].x:
-				for q in spots:
-					if spots[q].x == spots[p].x and spots[q].y > spots[parent].y and spots[q].y < spots[p].y:
-						crossed.append([parent, q, p])
-		ok(crossed.is_empty(), "no line runs behind another perk", crossed)
+			for q in spots:
+				if spots[q].y == spots[parent].y and spots[q].x > spots[parent].x and spots[q].x <= spots[p].x:
+					crossing.append([parent, p, q])
+		ok(crossing.is_empty(), "no elbow crosses another perk's line", crossing)
 		ok(T._canvas.custom_minimum_size.x > T._scroll.size.x, "wider than the view: it scrolls", [T._canvas.custom_minimum_size, T._scroll.size])
 		C.perk_list = saved
 		M.close()

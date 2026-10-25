@@ -122,12 +122,12 @@ func _think(player: Node3D, delta: float) -> void:
 
 	match state:
 		State.IDLE:
-			if dist < aggro_range:
+			if Stealth.notices(self, player, aggro_range, dist, delta):
 				_start_hunt()
 			else:
 				_wander(delta)
 		State.CHASE:
-			if from_home > leash_range:
+			if from_home > leash_range or Stealth.lost_track(self, delta):
 				state = State.RETURN
 			elif dist <= bite_range:
 				state = State.ATTACK
@@ -175,7 +175,7 @@ func _think(player: Node3D, delta: float) -> void:
 			if from_home < 1.0:
 				state = State.IDLE
 				stats.refill()
-			elif dist < aggro_range * 0.5:
+			elif Stealth.notices(self, player, aggro_range * 0.5, dist, delta):
 				state = State.CHASE   # you followed it back: fight on
 			else:
 				_move_toward(home, run_speed * 0.7, delta)
@@ -199,6 +199,16 @@ func _lost(delta: float) -> void:
 
 # Start chasing, and tell the pack (the WolfPack parent, if any) so the
 # others join in instead of wandering while their packmates fight.
+## Hasn't noticed you: a sneak attack lands (systems/stealth.gd).
+func is_unaware() -> bool:
+	return state == State.IDLE
+
+
+## After you (or a companion), for the HUD's eye.
+func is_hunting() -> bool:
+	return state in [State.CHASE, State.ATTACK, State.STAGGER, State.FLEE]
+
+
 func _start_hunt() -> void:
 	state = State.CHASE
 	Hints.show_once("wolves", "Wolves crouch and their eyes flare before they bite. Block with %s just before it lands to parry, or dodge with %s." % [Hints.key("cast"), Hints.key("dodge")])

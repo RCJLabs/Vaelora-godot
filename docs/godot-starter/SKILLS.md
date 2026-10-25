@@ -5,7 +5,7 @@ pauses).
 
 ## Skills
 
-Ten so far, each rising by use from 15 (plus race bonuses) to 100. Each has a **governing
+Eleven so far, each rising by use from 15 (plus race bonuses) to 100. Each has a **governing
 attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult()`).
 
 | Skill | Attribute | Improves by | Effect |
@@ -13,6 +13,7 @@ attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult
 | One-Handed | Strength | Hits with swords, axes, maces, daggers | +1% damage per level |
 | Two-Handed | Strength | Greatsword hits | +1% damage per level |
 | Archery | Agility | Arrow hits | +1% bow damage per level |
+| Sneak | Agility | Sneaking near unaware enemies, sneak attacks | Crouched, enemies notice you closer and slower (SNEAK.md) |
 | Block | Endurance | Blocking and parrying | +0.5% of a hit blocked per level |
 | Athletics | Endurance | Sprinting (1 XP per 5 m) | −0.5% sprint stamina cost per level |
 | Ruin (`destruction`) | Intellect | Spell damage dealt | +1% Ruin damage per level |
@@ -59,7 +60,7 @@ Four skills to each attribute (your note: an even number per attribute). Bold on
 |---|---|
 | Strength | **One-Handed**, **Two-Handed**, Smithing, *Unarmed* |
 | Endurance | **Block**, Heavy Armour, **Athletics**, Survival |
-| Agility | **Archery**, Light Armour, Sneak, Lockpicking |
+| Agility | **Archery**, Light Armour, **Sneak**, Lockpicking |
 | Intellect | **Ruin**, **Shaping**, Runecraft, Alchemy |
 | Willpower | **Mending**, Binding, **Tidecraft**, Drawing |
 | Presence | Speech, **Glamour**, Sight, *Command* (companions) |

@@ -86,6 +86,12 @@ var _sprint_toggled := false   # Settings.toggle_sprint: sprint is latched on
 var last_attacker: Node        # who last hit you (systems/defeat.gd: who beat you)
 var _last_hit_at := -100000
 var is_casting := false
+## Crouched, sneaking (C / D-pad down toggles it): slower, lower, harder to notice
+## (systems/stealth.gd). Sprinting, jumping or dodging stands you up.
+var is_sneaking := false
+const SNEAK_SPEED := 0.55   # of walking speed
+const SNEAK_HEAD := 1.05    # camera height crouched (standing: the Head node's own height)
+var _head_height := 1.6
 var _camera_kick := Vector3.ZERO   # degrees, springs back to zero
 var _lunge_velocity := Vector3.ZERO
 var _lunge_left := 0.0
@@ -96,6 +102,7 @@ var _orb_material: StandardMaterial3D
 func _ready() -> void:
 	add_to_group("player")
 	spawn_position = global_position
+	_head_height = head.position.y
 	stats.permanent = Character
 	_base = {"walk": walk_speed, "sprint": sprint_speed, "jump": jump_velocity,
 			"stamina_regen": stats.stamina_regen, "magicka_regen": stats.magicka_regen}
@@ -161,7 +168,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			combat.attack_pressed()
 	elif event.is_action_released("attack"):
 		combat.attack_released()
+	elif event.is_action_pressed("crouch"):
+		set_sneaking(not is_sneaking)
 	elif event.is_action_pressed("dodge"):
+		if not Stealth.has_perk("shadow_step"):
+			set_sneaking(false)
 		combat.dodge_pressed(Input.get_vector("move_left", "move_right", "move_forward", "move_back"))
 	elif event.is_action_pressed("switch_spell"):
 		Spellbook.cycle()
@@ -189,6 +200,7 @@ func _physics_process(delta: float) -> void:
 	# Holding jump in the air grabs a ledge within reach.
 	var can_climb := not talking and combat.state in [PlayerCombat.State.READY, PlayerCombat.State.RECOVERY]
 	if Input.is_action_just_pressed("jump") and is_on_floor() and not talking:
+		set_sneaking(false)
 		var running := sprint_input() and Vector2(velocity.x, velocity.z).length() > walk_speed * 1.1
 		if not (can_climb and traversal.try_start(false, running)):
 			velocity.y = jump_velocity
@@ -209,6 +221,8 @@ func _physics_process(delta: float) -> void:
 		_exhausted = false
 	if Settings.toggle_sprint and (direction == Vector3.ZERO or _exhausted):
 		_sprint_toggled = false   # stopping (or running out of breath) ends a toggled sprint
+	if is_sneaking and sprint_input() and direction != Vector3.ZERO:
+		set_sneaking(false)   # breaking into a run stands you up
 	var sprinting := sprint_input() and direction != Vector3.ZERO and is_on_floor() and moving \
 			and not _exhausted and combat.allows_sprint() and not is_over_encumbered()
 	if sprinting:
@@ -216,6 +230,9 @@ func _physics_process(delta: float) -> void:
 				* stats.modifier("sprint_stamina") * delta)
 		Skills.add_xp("athletics", Vector2(velocity.x, velocity.z).length() * delta / 5.0)   # 1 XP per 5 m
 	var target_speed := (sprint_speed if sprinting else walk_speed) * stats.modifier("move_speed") * combat.move_mult()
+	if is_sneaking:
+		target_speed *= SNEAK_SPEED * stats.modifier("sneak_speed")
+	head.position.y = move_toward(head.position.y, SNEAK_HEAD if is_sneaking else _head_height, 3.0 * delta)
 	var accel := ground_accel if is_on_floor() else air_accel
 
 	var horizontal := Vector3(velocity.x, 0, velocity.z)
@@ -325,6 +342,14 @@ func can_fight() -> bool:
 
 
 ## Nudges the view (degrees: pitch, yaw, roll); it springs back by itself.
+func set_sneaking(on: bool) -> void:
+	if on == is_sneaking or (on and is_dead):
+		return
+	is_sneaking = on
+	if on:
+		Hints.show_once("sneak", "Sneaking: enemies notice you closer and slower, and need to see you. The word under the compass says how close one is to spotting you. A sneak attack on one that hasn't does triple damage (%s again to stand)." % Hints.key("crouch"))
+
+
 ## Whether the player is asking to sprint: holding the key, or (with Toggle sprint
 ## on) having pressed it once since they last stopped.
 func sprint_input() -> bool:
@@ -392,6 +417,7 @@ func _on_gold_added(amount: int) -> void:
 
 func _on_died() -> void:
 	is_dead = true
+	set_sneaking(false)
 	Engine.time_scale = 1.0   # in case a hit stop was running
 	hud.set_prompt("")
 	var killer: Node = last_attacker if Time.get_ticks_msec() - _last_hit_at < Defeat.KILLER_MEMORY_MS else null

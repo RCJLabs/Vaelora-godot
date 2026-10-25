@@ -77,13 +77,14 @@ point), on top of the existing +10 Health/Stamina/Magicka choice. Spend them in
 **Tab → Skills** (a **+** next to each attribute; the **Perks** button there jumps to the tree) and **Tab → Perks** (`ui/perk_tree.gd`).
 
 The Perks tab lists every skill with how many of its perks you have (`One-Handed 1/3`, and a
-**•** when one is ready to take). The chosen skill's perks are drawn as a tree: one row per
-skill level needed, lowest at the top, with a line from a perk down to each perk that requires
-it. Gold is taken, bright is ready (or would be, with a point), dim is locked. Click a perk to
+**•** when one is ready to take). The chosen skill's perks are drawn as a tree: a perk sits
+one row under the perk it requires, with its level on the label. Its first follow-on carries
+on down its column; each other follow-on opens the next column to the right, joined by an
+elbow line. Every branch keeps its columns to itself, so no line crosses another perk or
+line. Gold is taken, bright is ready (or would be, with a point), dim is locked. Click a perk to
 see what it does and what it needs ("needs One-Handed 35", "needs Armsman"), then **Take** it.
-A perk sits straight under the one it requires when nothing is in between; otherwise it gets
-its own column, so a line never runs behind an unrelated perk. The tree scrolls, so a skill
-can hold 20+ perks (the test lays out 25).
+The tree scrolls both ways and scrolls to the perk you pick, so a skill can hold 20+ perks
+(Sneak has 22; the test also lays out 25).
 
 | Skill | Perks (skill level needed) |
 |---|---|
@@ -95,6 +96,7 @@ can hold 20+ perks (the test lays out 25).
 | Two-Handed | Barbarian +20% (15) · Reaver, heavy attacks −25% Stamina (25) · Barbarian II +20% (35, needs Barbarian) |
 | Alteration | Efficient Alteration −25% cost (20) · Arcane Reserve +25 max Magicka (25) · Focused Mind, Magicka +25% faster (35, needs Arcane Reserve) |
 | Archery | Overdraw +20% (15) · Quick Draw, bows draw 30% faster (25) · Overdraw II +20% (35, needs Overdraw) |
+| Sneak | 22 perks in five branches: see SNEAK.md |
 
 ### Respec
 
