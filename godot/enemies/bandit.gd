@@ -156,18 +156,18 @@ func _think(player: Node3D, delta: float) -> void:
 	match state:
 		State.IDLE:
 			_move(Vector3.ZERO, 0.0, delta)
-			if dist < aggro_range:
+			if Stealth.notices(self, player, aggro_range, dist, delta):
 				_start_fight()
 		State.RETURN:
 			if from_home < 1.0:
 				state = State.IDLE
 				stats.refill()
-			elif dist < aggro_range * 0.5:
+			elif Stealth.notices(self, player, aggro_range * 0.5, dist, delta):
 				state = State.CHASE
 			else:
 				_move(home, run_speed * 0.7, delta)
 		State.CHASE:
-			if from_home > leash_range:
+			if from_home > leash_range or Stealth.lost_track(self, delta):
 				state = State.RETURN
 			elif dist <= fight_range + 0.4:
 				state = State.ENGAGE
@@ -431,6 +431,16 @@ func lift(height: float, seconds: float) -> void:
 	_lift_to = global_position.y + height
 	_lift_left = seconds
 	stagger(seconds + 0.6)
+
+
+## Hasn't noticed you: a sneak attack lands (systems/stealth.gd).
+func is_unaware() -> bool:
+	return state == State.IDLE
+
+
+## After you (or a companion), for the HUD's eye.
+func is_hunting() -> bool:
+	return state in [State.CHASE, State.ENGAGE, State.ATTACK, State.GUARD, State.STAGGER]
 
 
 func is_lifted() -> bool:

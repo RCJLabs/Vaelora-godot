@@ -32,5 +32,27 @@
 	"long_shadows": { "name": "Long Shadows", "skill": "glamour", "level": 35, "requires": "efficient_glamour", "description": "Glamour spells last 30% longer.", "modifiers": { "spell_power_glamour": 1.3 } },
 
 	"efficient_tidecraft": { "name": "Efficient Tidecraft", "skill": "tidecraft", "level": 20, "description": "Tidecraft spells cost 25% less.", "modifiers": { "spell_cost_tidecraft": 0.75 } },
-	"spring_tide": { "name": "Spring Tide", "skill": "tidecraft", "level": 35, "requires": "efficient_tidecraft", "description": "Tidecraft spells are 30% stronger: further, harder, longer.", "modifiers": { "spell_power_tidecraft": 1.3 } }
+	"spring_tide": { "name": "Spring Tide", "skill": "tidecraft", "level": 35, "requires": "efficient_tidecraft", "description": "Tidecraft spells are 30% stronger: further, harder, longer.", "modifiers": { "spell_power_tidecraft": 1.3 } },
+	"stealthy_1": { "name": "Stealthy", "skill": "sneak", "level": 15, "description": "Sneaking, enemies notice you at 10% less range.", "modifiers": { "detection": 0.9 } },
+	"stealthy_2": { "name": "Stealthy II", "skill": "sneak", "level": 30, "requires": "stealthy_1", "description": "Another 10% less range.", "modifiers": { "detection": 0.9 } },
+	"stealthy_3": { "name": "Stealthy III", "skill": "sneak", "level": 50, "requires": "stealthy_2", "description": "Another 10% less range.", "modifiers": { "detection": 0.9 } },
+	"stealthy_4": { "name": "Stealthy IV", "skill": "sneak", "level": 70, "requires": "stealthy_3", "description": "Another 10% less range.", "modifiers": { "detection": 0.9 } },
+	"stealthy_5": { "name": "Stealthy V", "skill": "sneak", "level": 90, "requires": "stealthy_4", "description": "Another 10% less range.", "modifiers": { "detection": 0.9 } },
+	"low_profile": { "name": "Low Profile", "skill": "sneak", "level": 20, "description": "Move 25% faster while sneaking.", "modifiers": { "sneak_speed": 1.25 } },
+	"muffled_steps": { "name": "Muffled Steps", "skill": "sneak", "level": 30, "requires": "low_profile", "description": "Moving while sneaking is noticed at 20% less range.", "modifiers": { "detection_moving": 0.8 } },
+	"light_foot": { "name": "Light Foot", "skill": "sneak", "level": 40, "requires": "muffled_steps", "description": "Sneaking, you don't set off pressure plates." },
+	"shadow_step": { "name": "Shadow Step", "skill": "sneak", "level": 60, "requires": "light_foot", "description": "Dodging doesn't stand you up." },
+	"patient_hunter": { "name": "Patient Hunter", "skill": "sneak", "level": 25, "description": "Standing still while sneaking, you're noticed at a further 25% less range.", "modifiers": { "detection_still": 0.75 } },
+	"night_prowler": { "name": "Night Prowler", "skill": "sneak", "level": 35, "requires": "patient_hunter", "description": "In the dark, you're noticed at a further 20% less range (full effect at night).", "modifiers": { "detection_night": 0.8 } },
+	"slip_away": { "name": "Slip Away", "skill": "sneak", "level": 55, "requires": "night_prowler", "description": "Enemies take 30% longer to notice you.", "modifiers": { "awareness_rate": 0.7 } },
+	"master_of_shadows": { "name": "Master of Shadows", "skill": "sneak", "level": 80, "requires": "slip_away", "description": "Sneaking out of sight for 4 seconds, enemies hunting you lose your trail and go home." },
+	"backstab": { "name": "Backstab", "skill": "sneak", "level": 25, "description": "Melee sneak attacks do x6 instead of x3.", "modifiers": { "sneak_attack_melee": 2.0 } },
+	"poised_strike": { "name": "Poised Strike", "skill": "sneak", "level": 40, "requires": "backstab", "description": "Melee sneak attacks stagger: triple poise damage, and they hit heavy." },
+	"assassins_blade": { "name": "Assassin's Blade", "skill": "sneak", "level": 50, "requires": "backstab", "description": "Sneak attacks with a dagger do x15.", "modifiers": { "sneak_attack_dagger": 2.5 } },
+	"thrill_of_the_hunt": { "name": "Thrill of the Hunt", "skill": "sneak", "level": 60, "requires": "poised_strike", "description": "Killing with a sneak attack gives back 25 Stamina." },
+	"deadly_aim": { "name": "Deadly Aim", "skill": "sneak", "level": 30, "description": "Arrow sneak attacks do x3 instead of x2.", "modifiers": { "sneak_attack_archery": 1.5 } },
+	"soft_release": { "name": "Soft Release", "skill": "sneak", "level": 40, "requires": "deadly_aim", "description": "Loosing an arrow while sneaking makes no sound.", "modifiers": { "noise_archery": 0.0 } },
+	"quiet_blade": { "name": "Quiet Blade", "skill": "sneak", "level": 35, "description": "Swinging a weapon while sneaking is heard at 40% of the distance.", "modifiers": { "noise_melee": 0.4 } },
+	"silent_casting": { "name": "Silent Casting", "skill": "sneak", "level": 45, "requires": "quiet_blade", "description": "Casting while sneaking is heard at a quarter of the distance.", "modifiers": { "noise_spell": 0.25 } },
+	"quiet_kill": { "name": "Quiet Kill", "skill": "sneak", "level": 65, "requires": "silent_casting", "description": "A sneak-attack kill makes no noise: the others don't hear it." }
 }

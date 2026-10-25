@@ -117,7 +117,7 @@ func _think(player: Node3D, delta: float) -> Vector3:
 	var from_home := Vector2(global_position.x - home.x, global_position.z - home.z).length()
 	match state:
 		State.IDLE:
-			if dist < aggro_range * Corruption.wisp_aggro_scale() and _sees(player) and not _graced(player):
+			if not _graced(player) and Stealth.notices(self, player, aggro_range * Corruption.wisp_aggro_scale(), dist, delta) and _sees(player):
 				_start_fight()
 				if Corruption.tier() > 0:
 					Hints.show_once("wisps_corruption", "Wisps go for anyone carrying stolen light. The more corrupted you are, the further away they notice you, and the more of them come out at night.")
@@ -126,13 +126,13 @@ func _think(player: Node3D, delta: float) -> Vector3:
 			if from_home < 1.5:
 				state = State.IDLE
 				stats.refill()
-			elif dist < aggro_range * 0.5:
+			elif Stealth.notices(self, player, aggro_range * 0.5, dist, delta):
 				state = State.ENGAGE
 			var back := home - global_position
 			back.y = 0.0
 			return back.normalized() * speed
 		State.ENGAGE:
-			if from_home > leash_range:
+			if from_home > leash_range or Stealth.lost_track(self, delta):
 				state = State.RETURN
 				return Vector3.ZERO
 			if dist < min_range and _blink_left <= 0.0:
@@ -309,6 +309,16 @@ func lift(height: float, seconds: float) -> void:
 	_lift_to = global_position.y + height
 	_lift_left = seconds
 	stagger(seconds + 0.6)
+
+
+## Hasn't noticed you: a sneak attack lands (systems/stealth.gd).
+func is_unaware() -> bool:
+	return state == State.IDLE
+
+
+## After you, for the HUD's eye.
+func is_hunting() -> bool:
+	return state in [State.ENGAGE, State.CHARGE, State.STAGGER]
 
 
 func is_lifted() -> bool:

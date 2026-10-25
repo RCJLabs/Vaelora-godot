@@ -37,6 +37,11 @@ const SKILLS := {
 		"name": "Archery",
 		"description": "+1% bow damage per level. Improves when your arrows hit.",
 	},
+	"sneak": {
+		"attribute": "agility",
+		"name": "Sneak",
+		"description": "Crouched, enemies notice you closer and slower: -0.5% of their range per level. Sneak attacks on the unaware do x3 (arrows x2). Improves as you sneak near enemies and with sneak attacks.",
+	},
 	"block": {
 		"attribute": "endurance",
 		"name": "Block",

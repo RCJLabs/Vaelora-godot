@@ -9,6 +9,7 @@ layout; PlayStation and Switch pads map to the same positions.
 | Move | W A S D | Left stick (partial tilt = slower) |
 | Look | Mouse | Right stick |
 | Sprint | Shift | L3 (click the left stick) |
+| Sneak (crouch, toggles) | C | D-pad down |
 | Jump / climb a ledge / vault | Space | A |
 | Interact / talk / loot | E | X |
 | Attack (tap) / heavy attack or draw a bow (hold) | Left-click | RT |

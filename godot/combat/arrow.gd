@@ -15,6 +15,7 @@ var velocity := Vector3.ZERO
 var damage := 10.0
 var poise_damage := 5.0
 var shooter: Node3D
+var sneaking := false   # loosed while sneaking: a sneak attack if it hits an unaware enemy
 
 var _life := LIFETIME
 var _stuck := false
@@ -49,8 +50,12 @@ func _physics_process(delta: float) -> void:
 	var target: Object = result["collider"]
 	if target.has_method("take_hit"):
 		var origin := shooter.global_position if is_instance_valid(shooter) else from
+		var sneak := Stealth.sneak_attack_mult(target, "archery") if sneaking and Stealth.is_sneaking() else 1.0
+		damage *= sneak
 		target.take_hit(damage, origin, 1.5, poise_damage)
 		Glamour.struck(target, shooter)
+		if sneak > 1.0:
+			Stealth.sneak_attack_landed(target, sneak)
 		hit.emit(target, damage)
 		Sfx.play_at("hit_flesh", global_position, -4.0)
 		queue_free()

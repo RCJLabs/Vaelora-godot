@@ -58,6 +58,8 @@ enum WeaponKind { MELEE, BOW }
 @export var stamina_cost: float = 10.0
 ## Skill that improves with hits and boosts damage.
 @export var weapon_skill: String = "one_handed"
+## A dagger: sneak attacks with it gain the dagger perks (Assassin's Blade).
+@export var dagger: bool = false
 ## First-person model shown in the right hand (a scene with meshes).
 @export var held_scene: PackedScene
 ## The light combo, in order (click, click, click). Empty = one simple swing.

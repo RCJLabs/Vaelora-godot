@@ -338,6 +338,7 @@ func _start_attack(attack: AttackData, heavy: bool) -> bool:
 func _begin_active() -> void:
 	_set_state(State.ACTIVE)
 	_hit_this_swing = []
+	Stealth.make_noise(player.global_position, "melee")
 	if is_bash:
 		off_animator.go(current_attack.strike_pose, current_attack.active, 2.0)
 		player.camera_kick(Vector3(-0.8, 0.0, 0.0))
@@ -412,11 +413,20 @@ func _land_hit(target: Node) -> void:
 	if _riposte_left > 0.0:
 		damage *= stats.modifier("riposte_damage")
 	var poise := current_attack.poise_damage * _charge_mult()
-	var result = target.take_hit(damage, player.global_position, current_attack.knockback, poise, is_heavy)
+	var heavy := is_heavy
+	var sneak := Stealth.sneak_attack_mult(target, "melee", null if is_bash else main_item)
+	if sneak > 1.0:
+		damage *= sneak
+		if Stealth.has_perk("poised_strike"):
+			poise *= 3.0
+			heavy = true
+	var result = target.take_hit(damage, player.global_position, current_attack.knockback, poise, heavy)
 	Glamour.struck(target, player)
 	if result == "blocked" or result == "parried":
 		_bounced(result == "parried")
 		return
+	if sneak > 1.0:
+		Stealth.sneak_attack_landed(target, sneak)
 	if current_attack.applies_effect != "" and randf() < current_attack.effect_chance and target.has_method("add_effect"):
 		target.add_effect(current_attack.applies_effect)
 	Skills.add_xp(skill, 5.0 if is_heavy else 3.0)
@@ -495,6 +505,8 @@ func _loose_arrow() -> void:
 	arrow.damage = base_damage * power * Skills.weapon_damage_mult("archery") \
 			* stats.modifier("damage_dealt") * stats.modifier("weapon_damage_archery")
 	arrow.poise_damage = lerpf(3.0, 15.0, power)
+	arrow.sneaking = player.is_sneaking
+	Stealth.make_noise(player.global_position, "archery")
 	arrow.hit.connect(_on_arrow_hit)
 	player.get_parent().add_child(arrow)
 	var camera: Camera3D = player.camera

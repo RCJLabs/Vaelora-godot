@@ -117,6 +117,7 @@ func _channel(delta: float) -> void:
 	player.is_casting = true
 	if spell.style == SpellData.Style.WARD:
 		return   # the ward works when something hits it (ward_share)
+	Stealth.make_noise(player.global_position, "spell")   # a stream is loud the whole time
 	var power := spell.power_per_second * delta * _power_mult() * (DUAL_POWER if dual else 1.0)
 	match spell.effect:
 		SpellData.Effect.DAMAGE_STREAM:
@@ -173,6 +174,7 @@ func _release() -> void:
 	if not player.stats.try_use_magicka(cost):
 		player.hud.flash_magicka()
 		return
+	Stealth.make_noise(player.global_position, "spell")
 	var power := _power_mult() * (DUAL_POWER if dual else 1.0)
 	match spell.style:
 		SpellData.Style.BOLT:

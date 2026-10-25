@@ -26,6 +26,7 @@ var _boss_bar: ProgressBar
 
 var compass: Compass
 var corruption_label: Label   # "Corruption: Stained", above the effects row; hidden at none
+var sneak_label: Label        # while sneaking: HIDDEN / NOTICED / SEEN under the compass
 
 
 func _ready() -> void:
@@ -46,6 +47,17 @@ func _ready() -> void:
 	$Bars.add_child(corruption_label)
 	Corruption.changed.connect(_refresh_corruption)
 	_refresh_corruption()
+	sneak_label = Label.new()
+	sneak_label.label_settings = prompt_label.label_settings.duplicate()
+	sneak_label.label_settings.font_size = 18
+	sneak_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sneak_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	sneak_label.offset_left = -120.0
+	sneak_label.offset_right = 120.0
+	sneak_label.offset_top = 64.0
+	sneak_label.offset_bottom = 90.0
+	sneak_label.visible = false
+	add_child(sneak_label)
 
 
 ## The bar row is 940 px wide; on a narrow screen (or a big Interface size) shrink it
@@ -62,6 +74,7 @@ func _fit_bars() -> void:
 
 func _process(delta: float) -> void:
 	_update_powers()
+	_update_sneak()
 	if _message_time_left > 0.0:
 		_message_time_left -= delta
 		if _message_time_left <= 0.0:
@@ -198,6 +211,26 @@ func show_enemy_health(stats: Stats) -> void:
 	enemy_bar.max_value = stats.max_health
 	enemy_bar.value = stats.health
 	enemy_bar.visible = true
+
+
+## While sneaking: how close the most watchful enemy is to noticing you
+## (systems/stealth.gd), white through amber, or red once something's after you.
+func _update_sneak() -> void:
+	var player := get_parent()
+	sneak_label.visible = player != null and player.get("is_sneaking") == true
+	if not sneak_label.visible:
+		return
+	var status := Stealth.status()
+	var level: float = status["awareness"]
+	if status["hunted"]:
+		sneak_label.text = "[  SEEN  ]"
+		sneak_label.label_settings.font_color = Color(1.0, 0.35, 0.3)
+	elif level > 0.02:
+		sneak_label.text = "[  NOTICED  ]" if level > 0.5 else "[  hidden?  ]"
+		sneak_label.label_settings.font_color = Color(1.0, 0.95, 0.85).lerp(Color(1.0, 0.6, 0.2), level)
+	else:
+		sneak_label.text = "[  HIDDEN  ]"
+		sneak_label.label_settings.font_color = Color(0.85, 0.88, 0.95, 0.75)
 
 
 ## Short top-left notice that fades out by itself, e.g. a skill increase.
