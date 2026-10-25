@@ -62,6 +62,11 @@ const SKILLS := {
 		"name": "Athletics",
 		"description": "-0.5% sprint stamina cost per level. Improves as you sprint.",
 	},
+	"smithing": {
+		"attribute": "strength",
+		"name": "Smithing",
+		"description": "Forge weapons and armour at a forge, and improve what you have: Fine at the start, one quality higher every 25 levels. Improves as you forge and improve things.",
+	},
 	"heavy_armor": {
 		"attribute": "endurance",
 		"name": "Heavy Armour",

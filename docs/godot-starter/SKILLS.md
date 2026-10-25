@@ -18,6 +18,7 @@ attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult
 | Light Armour | Agility | Being hit in light armour | +1% armour from light pieces per level (ARMOUR.md) |
 | Block | Endurance | Blocking and parrying | +0.5% of a hit blocked per level |
 | Athletics | Endurance | Sprinting (1 XP per 5 m) | −0.5% sprint stamina cost per level |
+| Smithing | Strength | Forging and improving (SMITHING.md) | Improve one quality higher every 25 levels (Fine at the start) |
 | Heavy Armour | Endurance | Being hit in heavy armour | +1% armour from heavy pieces per level (ARMOUR.md) |
 | Ruin (`destruction`) | Intellect | Spell damage dealt | +1% Ruin damage per level |
 | Shaping (`alteration`) | Intellect | Casting Shaping spells | +1% to Shaping spells per level |
@@ -67,7 +68,7 @@ Four skills to each attribute (your note: an even number per attribute). Bold on
 
 | Attribute | Skills |
 |---|---|
-| Strength | **One-Handed**, **Two-Handed**, Smithing, ***Unarmed*** |
+| Strength | **One-Handed**, **Two-Handed**, **Smithing**, ***Unarmed*** |
 | Endurance | **Block**, **Heavy Armour**, **Athletics**, Survival |
 | Agility | **Archery**, **Light Armour**, **Sneak**, Lockpicking |
 | Intellect | **Ruin**, **Shaping**, **Runecraft**, **Alchemy** |

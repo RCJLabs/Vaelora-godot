@@ -58,7 +58,7 @@ func _ready() -> void:
 
 # _input (not _unhandled_input) so Tab works even when a button has focus.
 func _input(event: InputEvent) -> void:
-	if BookReader.is_open or AlchemyScreen.is_open:
+	if BookReader.is_open or AlchemyScreen.is_open or SmithingScreen.is_open:
 		return   # the reader (or brewing) handles its own keys, over the menu or not
 	if not is_open and (DialogueManager.is_active or PauseMenu.is_open or RestMenu.is_open):
 		return   # leave the keys to the conversation / pause menu
@@ -229,7 +229,8 @@ func _refresh_inventory() -> void:
 	for id in _item_ids:
 		var count: int = Inventory.items[id]
 		var item := Inventory.get_item(id)
-		var text := item.display_name if count == 1 else "%s  (%d)" % [item.display_name, count]
+		var shown := Smithing.display_name(id)   # "Iron Sword (Fine)"
+		var text := shown if count == 1 else "%s  (%d)" % [shown, count]
 		if Inventory.is_equipped(id):
 			text += "   (equipped)"
 		item_list.add_item(text)
@@ -250,13 +251,15 @@ func _selected_id() -> String:
 func _show_selected_item() -> void:
 	var id := _selected_id()
 	var item := Inventory.get_item(id) if id != "" else null
-	%ItemName.text = item.display_name if item else ""
+	%ItemName.text = Smithing.display_name(id) if item else ""
 	%ItemDescription.text = item.description if item else ""
 	var details := ""
 	if item:
 		if item.type == ItemData.Type.WEAPON:
-			details = "Damage %d   -   %.2f s per swing   -   Reach %.1f m   -   %d stamina per swing\n" % [
-				item.damage, item.attack_cooldown, item.reach, item.stamina_cost]
+			var damage := item.damage * Smithing.damage_mult(item)
+			details = "Damage %d%s   -   %.2f s per swing   -   Reach %.1f m   -   %d stamina per swing\n" % [
+				roundi(damage), "" if is_equal_approx(damage, item.damage) else " (base %d)" % item.damage,
+				item.attack_cooldown, item.reach, item.stamina_cost]
 		elif item.type == ItemData.Type.ARMOR:
 			var kind := Armor.kind_of(item)
 			details = "Armor %d%s   -   %s%s\n" % [roundi(Armor.piece_armor(item)), "" if is_equal_approx(Armor.piece_armor(item), item.armor) else " (base %d)" % item.armor,
@@ -273,6 +276,8 @@ func _show_selected_item() -> void:
 		use_button.text = "Read"
 	elif item and item.tool == "alchemy":
 		use_button.text = "Brew"
+	elif item and item.tool == "smithing":
+		use_button.text = "Improve"
 	elif item and item.potion_effect == "poison":
 		use_button.text = "Coat blade"
 	else:

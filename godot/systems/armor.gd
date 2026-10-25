@@ -70,10 +70,11 @@ func has_perk(id: String) -> bool:
 ## One piece's armour now: its own, times its skill and perks.
 func piece_armor(item: ItemData) -> float:
 	var kind := kind_of(item)
+	var base := item.armor * Smithing.armor_mult(item) + Smithing.armor_bonus(item)   # improved at a forge
 	if kind == "":
-		return item.armor
+		return base
 	var level: int = Skills.levels.get(SKILL_FOR[kind], Skills.START_LEVEL)
-	return item.armor * (1.0 + PER_LEVEL * (level - Skills.START_LEVEL)) * Character.modifier("armor_" + kind)
+	return base * (1.0 + PER_LEVEL * (level - Skills.START_LEVEL)) * Character.modifier("armor_" + kind)
 
 
 ## Everything you wear, added up (Stats.armor_rating).
