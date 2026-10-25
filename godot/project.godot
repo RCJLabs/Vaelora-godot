@@ -67,6 +67,7 @@ Arms="*res://systems/arms.gd"
 Spellcraft="*res://systems/spellcraft.gd"
 WeaponArts="*res://systems/weapon_arts.gd"
 Combos="*res://systems/combos.gd"
+TouchControls="*res://ui/touch_controls.gd"
 
 [editor_plugins]
 

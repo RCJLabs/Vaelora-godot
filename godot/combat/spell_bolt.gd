@@ -27,6 +27,8 @@ var _life := LIFETIME
 ## Set by whoever threw it: (target, damage) -> damage, for perks that depend on the target.
 var damage_for: Callable
 
+var _dodged: Array[RID] = []   # targets that dodged it (one dodge per bolt)
+
 func launch(from: Vector3, direction: Vector3, speed: float, size: float = 1.0) -> void:
 	global_position = from
 	velocity = direction.normalized() * speed
@@ -51,8 +53,10 @@ func _physics_process(delta: float) -> void:
 	var from := global_position
 	var to := from + velocity * delta
 	var query := PhysicsRayQueryParameters3D.create(from, to, 1 | (2 if hits_player else 4))
+	var exclude: Array[RID] = _dodged.duplicate()   # whoever dodged it: it's past them
 	if shooter is CollisionObject3D and is_instance_valid(shooter):
-		query.exclude = [shooter.get_rid()]
+		exclude.append(shooter.get_rid())
+	query.exclude = exclude
 	var result := get_world_3d().direct_space_state.intersect_ray(query)
 	if result.is_empty():
 		global_position = to
@@ -64,7 +68,9 @@ func _physics_process(delta: float) -> void:
 			_reflect(target)
 			return
 		if outcome == "dodged":
-			global_position = to   # flies on past
+			global_position = to   # flies on past, and doesn't find them again next frame
+			if target is CollisionObject3D:
+				_dodged.append(target.get_rid())
 			return
 	elif target.has_method("take_hit"):
 		var origin := shooter.global_position if is_instance_valid(shooter) else from

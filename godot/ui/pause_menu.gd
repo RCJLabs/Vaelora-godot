@@ -195,6 +195,7 @@ func _build_settings() -> void:
 func _build_accessibility() -> void:
 	title_label.text = "Accessibility"
 	_checkbox("Toggle sprint (press once while moving; stopping ends it)", "toggle_sprint")
+	_checkbox("Touch controls (on-screen stick and buttons)", "touch_controls")
 	_checkbox("Toggle block (press to raise your guard, again to lower it)", "toggle_block")
 	_slider("Camera shake", "camera_shake", 0.0, 1.0, 0.05, "%.0f%%", 100.0)
 	_choice("Interface size", "ui_scale", Settings.UI_SCALES.map(func(v): return "%d%%" % roundi(v * 100.0)), Settings.UI_SCALES)

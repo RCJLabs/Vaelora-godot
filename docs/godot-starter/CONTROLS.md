@@ -108,3 +108,25 @@ gamepad buttons for them).
   to read from the eye can look odd from behind.
 - Typing a name in the character creator needs a keyboard (leave it blank for "Traveller").
 - Gamepad was tested with simulated input; it hasn't been tried with a real controller.
+
+## Touch
+
+For phones and tablets (`ui/touch_controls.gd`). On by default on a touch screen; switch it
+in **Esc > Settings > Accessibility > Touch controls**.
+
+- **Move:** put your thumb anywhere on the left half of the screen and push; the stick appears
+  where you touched. It keeps you moving while you press buttons.
+- **Look:** drag anywhere on the right half that isn't a button.
+- **Buttons** (right side): ⚔ attack (hold for a heavy), ✋ left hand (cast, block, aim), ⤒ jump,
+  ↷ dodge, E use/talk, ▼ sneak, » sprint (tap on, tap off), ★ weapon art, ✦ switch spell, ⚑
+  command, ☰ character menu, Esc pause. Top left: Ⅰ race power, Ⅱ background power.
+- **Menus:** tap as you would click. A ✕ at the top right closes whatever's open.
+- Sizes scale with the screen's height, so they're the same physical size on a phone with many
+  pixels.
+
+The buttons send the same input actions as the keyboard and gamepad, so the game doesn't know
+the difference. A touch also arrives as a mouse click; in play that click is swallowed so a tap
+isn't also an attack.
+
+Not yet: hints still name keys ("press [M]"); there's no way to move or resize buttons; the
+look sensitivity is the mouse's (Settings > Mouse sensitivity) and hasn't been tuned on a phone.

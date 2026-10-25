@@ -24,9 +24,10 @@ var toggle_block := false       # press once to raise your guard, again to lower
 var camera_shake := 1.0         # 0..1: how much hits, swings and landings jolt the view
 var ui_scale := 1.0             # menus, HUD and text; the 3D view isn't affected
 var third_person := false       # the view (V switches it in play; player/player_view.gd)
+var touch_controls := DisplayServer.is_touchscreen_available()   # on-screen stick and buttons (ui/touch_controls.gd)
 
 const KEYS := ["mouse_sensitivity", "invert_y", "fov", "master_volume", "fullscreen", "vsync", "show_hints",
-		"graphics_quality", "render_scale", "show_fps", "toggle_sprint", "toggle_block", "camera_shake", "ui_scale", "third_person"]
+		"graphics_quality", "render_scale", "show_fps", "toggle_sprint", "toggle_block", "camera_shake", "ui_scale", "third_person", "touch_controls"]
 const UI_SCALES := [1.0, 1.15, 1.3, 1.5]
 
 ## Graphics presets. Effects only ever get switched off relative to how a scene was
