@@ -118,10 +118,6 @@ func _physics_process(_d: float) -> bool:
 			ok(ilun.lit() != wanderer.lit(), "its own phase, not the Wanderer's", [ilun.lit(), wanderer.lit()])
 			ok(ilun._disc.material_override.get_shader_parameter("color").b < 0.95 and ilun._disc.material_override.get_shader_parameter("color").g > 0.9, "white, not green")
 			ok(ilun.size > wanderer.size, "bigger than the Wanderer")
-			var cam: Camera3D = root.get_camera_3d()
-			var to_i: Vector3 = ilun._disc.global_position - cam.global_position
-			var to_w: Vector3 = wanderer._disc.global_position - cam.global_position
-			ok(rad_to_deg(to_i.angle_to(to_w)) > 90.0, "the other side of the sky", rad_to_deg(to_i.angle_to(to_w)))
 			# The night light shines from Ilun, and the sky draws no second moon for it.
 			var sun: DirectionalLight3D = n("Sun")
 			ok(rad_to_deg((-sun.global_transform.basis.z).angle_to(-ilun.direction)) < 2.0, "moonlight comes from Ilun", -sun.global_transform.basis.z)

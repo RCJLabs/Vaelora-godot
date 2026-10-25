@@ -2,9 +2,10 @@ extends Node
 
 # Day and night for an outdoor level: moves the sun (a moon at night), and
 # blends the sky, sun and ambient colours through night -> dawn -> day -> dusk
-# by the WorldClock. At night the light comes from Ilun (the level's IlunMoon,
-# if it has one: levels/wanderer_moon.gd), brighter the fuller it is, and the
-# sky draws no disc for it, since IlunMoon draws the moon itself. Add one to an outdoor level and point it at the Sun and
+# by the WorldClock. At night, while Ilun is up (the level's IlunMoon, if it has
+# one: levels/wanderer_moon.gd), the light comes from Ilun, brighter the fuller it
+# is; while it's down, a dimmer light from high in the south. The sky never draws
+# a disc for the night light: IlunMoon draws the moon itself. Add one to an outdoor level and point it at the Sun and
 # the WorldEnvironment. Interiors don't need one.
 #
 # Dawn and dusk use the colours the test level was first tuned with. The other
@@ -21,6 +22,9 @@ extends Node
 ## Where the night light comes from (its direction and phase). Empty or missing: a
 ## plain moonlight at 35 degrees opposite the sun.
 @export var night_moon_path: NodePath = ^"../IlunMoon"
+
+## The night light while Ilun is below the horizon, as a share of a full Ilun's.
+const NO_MOON_LIGHT := 0.5
 
 # hour: sun colour, sun energy, sky top, sky horizon, ground horizon, ambient energy, fog light
 const KEYS := [
@@ -83,10 +87,19 @@ func apply(hour: float) -> void:
 		sun.rotation_degrees = Vector3(-elevation, azimuth, 0.0)
 		sun.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_AND_SKY
 		if day_part <= 0.0 and night_moon:
-			# Shining from Ilun, a little dimmer when it's a sliver.
-			sun.basis = Basis.looking_at(-night_moon.direction, Vector3.UP)
-			sun.light_energy *= lerpf(0.6, 1.0, night_moon.lit())
 			sun.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
+			var from: Vector3 = night_moon.direction
+			if from.y > 0.0:
+				# Shining from Ilun (never from lower than 15 degrees: shadows a mile long),
+				# a little dimmer when it's a sliver.
+				var flat := Vector3(from.x, 0.0, from.z).normalized()
+				var lowest := deg_to_rad(15.0)
+				if asin(from.y) < lowest:
+					from = flat * cos(lowest) + Vector3.UP * sin(lowest)
+				sun.basis = Basis.looking_at(-from, Vector3.UP)
+				sun.light_energy *= lerpf(0.6, 1.0, night_moon.lit())
+			else:
+				sun.light_energy *= NO_MOON_LIGHT   # Ilun is down: starlight
 	if _sky:
 		_sky.sky_top_color = a[3].lerp(b[3], t)
 		_sky.sky_horizon_color = a[4].lerp(b[4], t)

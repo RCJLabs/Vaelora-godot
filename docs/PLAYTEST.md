@@ -96,6 +96,9 @@ Every sound is a synthesised placeholder, and nobody has listened to them yet.
 
 - [ ] Flames on a wolf, then a **Firebolt** (hold to charge, release): satisfying?
 - [ ] Dual-cast (both buttons with nothing in the right hand): does it feel worth the Magicka?
+- [ ] **The moons** over a few nights: Ilun (white) and the Wanderer (green) rise in the east,
+      cross the south and set in the west, at different times as their phases change. Does
+      the sky read? Are nights with Ilun down too dark?
 - [ ] Night (rest at a fire until 21:00, or wait): **wisps** at the stone circle. Can you read
       their charge-up and parry a bolt back at them?
 - [ ] **Glamour** (Zora teaches it: "What do you really do?"): a **Mirror Image** in front of the
