@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "moment_of_clarity"
+display_name = "Moment of Clarity"
+description = "Sight's mastery. Charge, then release: for 6 seconds you know everything that's about to happen. Nothing lands on you, and your blows do double."
+style = 4
+skill = "sight"
+color = Color(1, 0.88, 0.5, 1)
+charge_time = 2.0
+magicka_cost = 120.0
+self_effect = "moment_of_clarity"

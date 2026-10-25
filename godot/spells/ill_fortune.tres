@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "ill_fortune"
+display_name = "Ill Fortune"
+description = "Charge, then release on an enemy (up to 20 m): bad luck follows it for 15 seconds. A third of its blows at you go astray, and it stumbles (85% speed)."
+style = 2
+skill = "sight"
+color = Color(1, 0.88, 0.5, 1)
+charge_time = 0.8
+magicka_cost = 35.0
+max_distance = 20.0
+radius = 2.0
+duration = 15.0
+sight = "ill_fortune"

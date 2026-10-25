@@ -6,6 +6,13 @@ extends Node
 const EFFECT_FILES := [
 	"res://effects/bleeding.tres",
 	"res://effects/bound.tres",
+	"res://effects/weak_point.tres",
+	"res://effects/weak_point_deep.tres",
+	"res://effects/ill_fortune.tres",
+	"res://effects/bad_omen.tres",
+	"res://effects/foresight.tres",
+	"res://effects/true_sight.tres",
+	"res://effects/moment_of_clarity.tres",
 	"res://effects/rune_ward.tres",
 	"res://effects/rune_ward_steady.tres",
 	"res://effects/rune_ward_renewal.tres",

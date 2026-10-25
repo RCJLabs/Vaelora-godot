@@ -125,6 +125,12 @@ primers. The full write-up is RUNECRAFT.md. Fire, Frost and Binding Runes wait o
 for an enemy to step close; Ward-Circle cuts the blows you take while you stand in it;
 Enchant Weapon adds 8 to every blow for a minute.
 
+### Sight (the eighth school)
+
+The duellist-seer: Weak Point and Ill Fortune on an enemy, Foresight, True Sight (enemies
+marked through walls) and the mastery, Moment of Clarity. All five are sold by Maren as Glass
+College primers. The full write-up is SIGHT.md.
+
 ## Skills
 
 Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point above 10).
@@ -135,6 +141,7 @@ Spell power gets **+1% per skill level** above 15, plus Intellect (+2% per point
 - **Tidecraft XP:** 1 per 5 Magicka spent on Tidecraft spells.
 - **Binding XP:** 1 per 5 Magicka spent on Binding spells. Binding levels make them last longer.
 - **Runecraft XP:** 1 per 5 Magicka spent, plus 2 + damage ÷ 5 each time a rune goes off.
+- **Sight XP:** 1 per 5 Magicka spent on aimed Sight spells, 1 per 6 on its self spells.
 
 Alteration perks: **Efficient Alteration** (20, −25% cost), **Arcane Reserve** (25, +25 max
 Magicka), **Focused Mind** (35, after Arcane Reserve: Magicka +25% faster). Restoration

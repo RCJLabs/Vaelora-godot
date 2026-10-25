@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "true_sight"
+display_name = "True Sight"
+description = "Charge, then release: for 30 seconds every enemy within 40 m is marked, through walls and hills."
+style = 4
+skill = "sight"
+color = Color(1, 0.88, 0.5, 1)
+charge_time = 1.0
+magicka_cost = 35.0
+self_effect = "true_sight"

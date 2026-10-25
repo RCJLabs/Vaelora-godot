@@ -38,10 +38,12 @@ const MERCHANTS := {
 				"book_swordsmans_rest": 1, "book_tide_table": 1,
 				"leather_cap": 1, "leather_gloves": 1, "iron_cuirass": 1, "iron_gauntlets": 1, "iron_boots": 1,
 				"tome_call_wolf": 1, "tome_bind": 1, "tome_summon_guardian": 1, "tome_raise_dead": 1,
-				"tome_fire_rune": 1, "tome_frost_rune": 1, "tome_binding_rune": 1, "tome_ward_circle": 1, "tome_enchant_weapon": 1},
+				"tome_fire_rune": 1, "tome_frost_rune": 1, "tome_binding_rune": 1, "tome_ward_circle": 1, "tome_enchant_weapon": 1,
+				"tome_weak_point": 1, "tome_ill_fortune": 1, "tome_foresight": 1, "tome_true_sight": 1, "tome_moment_of_clarity": 1},
 		"unique": ["hunting_bow", "tome_candlelight", "tome_stoneflesh", "tome_healing_ward",
 				"tome_call_wolf", "tome_bind", "tome_summon_guardian", "tome_raise_dead",
 				"tome_fire_rune", "tome_frost_rune", "tome_binding_rune", "tome_ward_circle", "tome_enchant_weapon",
+				"tome_weak_point", "tome_ill_fortune", "tome_foresight", "tome_true_sight", "tome_moment_of_clarity",
 				"book_swordsmans_rest", "book_tide_table"],
 		# Bought before the trading screen existed (a dialogue flag); kept set when bought now.
 		"discount_flag": "maren_discount",   # talked round (Speech, dialogue/maren.json)

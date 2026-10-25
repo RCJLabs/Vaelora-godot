@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "bad_omen"
+display_name = "Bad Omen"
+description = "Ill luck that bites: takes 20% more damage."
+is_harmful = true
+duration = 15.0
+modifiers = {
+"damage_taken": 1.2
+}
