@@ -26,8 +26,10 @@ const MERCHANTS := {
 		"name": "Maren",
 		"gold": 250,
 		"stock": {"bread": 8, "water_flask": 8, "arrow": 40, "minor_healing_potion": 2,
-				"hunting_bow": 1, "tome_candlelight": 1, "tome_stoneflesh": 1, "tome_healing_ward": 1},
-		"unique": ["hunting_bow", "tome_candlelight", "tome_stoneflesh", "tome_healing_ward"],
+				"hunting_bow": 1, "tome_candlelight": 1, "tome_stoneflesh": 1, "tome_healing_ward": 1,
+				"book_swordsmans_rest": 1, "book_tide_table": 1},
+		"unique": ["hunting_bow", "tome_candlelight", "tome_stoneflesh", "tome_healing_ward",
+				"book_swordsmans_rest", "book_tide_table"],
 		# Bought before the trading screen existed (a dialogue flag); kept set when bought now.
 		"flags": {"hunting_bow": "bought_maren_bow", "tome_candlelight": "bought_tome_candlelight",
 				"tome_stoneflesh": "bought_tome_stoneflesh", "tome_healing_ward": "bought_tome_healing_ward"},

@@ -588,7 +588,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `zora_saw_stain` | zora: sees_stain | zora (start → sees_stain) |
 | `zora_scholar` | zora: scholar | zora: again, "(Scholar) You trained at the Collegiu..."<br>zora: drain, "(Scholar) You trained at the Collegiu..."<br>zora: greet, "(Scholar) You trained at the Collegiu..."<br>zora: scholar, "(Scholar) You trained at the Collegiu..."<br>zora: taught, "(Scholar) You trained at the Collegiu..." |
 | `zora_taught` | zora: taught_now | brannoc: zora_report, "I never found her."<br>quest licence_to_burn<br>zora (start → taught) |
-| `zora_taught_glamour` | zora: glamour | zora: again, "Teach me more of it."<br>zora: again, "What do you really do? Not the fire."<br>zora: taught, "Teach me more of it."<br>zora: taught, "What do you really do? Not the fire." |
+| `zora_taught_glamour` | zora: glamour | zora: again, "Teach me more of it."<br>zora: again, "What do you really do? Not the fire."<br>zora: again, "Will you train me in Glamour? I'll pay."<br>zora: taught, "Teach me more of it."<br>zora: taught, "What do you really do? Not the fire." |
 | `zora_taught_glamour_more` | zora: glamour_more | zora: again, "Teach me more of it."<br>zora: taught, "Teach me more of it." |
 | `zora_warned` | zora: warned | quest licence_to_burn |
 | `zora_would_travel` | zora: leave_here | zora: again, "Come with me."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "Would you ever leave this place?" |

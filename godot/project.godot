@@ -44,6 +44,8 @@ Glamour="*res://systems/glamour.gd"
 Tidecraft="*res://systems/tidecraft.gd"
 Trade="*res://systems/trade.gd"
 TradeScreen="*res://ui/trade_screen.gd"
+Training="*res://systems/training.gd"
+TrainingScreen="*res://ui/training_screen.gd"
 Targeting="*res://systems/targeting.gd"
 Lanternfast="*res://systems/lanternfast.gd"
 

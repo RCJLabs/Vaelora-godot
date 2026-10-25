@@ -232,6 +232,11 @@
 					}
 				},
 				{
+					"text": "Teach me yourself, not from a book. (lessons)",
+					"open_training": "aurel",
+					"next": "end"
+				},
+				{
 					"text": "Why the moons?",
 					"next": "why_moons"
 				},

@@ -27,6 +27,11 @@
 					"next": "song"
 				},
 				{
+					"text": "Can you teach me to shoot?",
+					"open_training": "ostap",
+					"next": "end"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}

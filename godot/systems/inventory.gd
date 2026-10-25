@@ -63,6 +63,8 @@ const ITEM_FILES := [
 	"res://items/tome_gravity_well.tres",
 	"res://items/tome_moon_crush.tres",
 	"res://items/tome_lifting_tide.tres",
+	"res://items/book_swordsmans_rest.tres",
+	"res://items/book_tide_table.tres",
 	"res://items/bread.tres",
 	"res://items/lantern_cake.tres",
 	"res://items/apple.tres",
@@ -144,7 +146,10 @@ func use(id: String) -> bool:
 	var item := get_item(id)
 	var player := get_tree().get_first_node_in_group("player")
 	if item != null and item.is_readable() and count(id) > 0:
+		var first_time := not GameState.has_flag("read_" + id)   # BookReader sets it on opening
 		BookReader.open(id)   # books are read, not used up
+		if item.teaches_a_skill() and first_time:
+			Skills.raise(item.teaches_skill)   # a skill book: the first reading teaches you something
 		return true
 	if item == null or item.type != ItemData.Type.CONSUMABLE or player == null or count(id) == 0:
 		return false

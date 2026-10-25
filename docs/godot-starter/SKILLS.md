@@ -26,6 +26,30 @@ attribute**: +3% XP for that skill per point above 10 (`Attributes.skill_xp_mult
   governing attribute.
 - A top-left notice shows each increase: "One-Handed increased to 16".
 
+### Skill books and trainers
+
+Skills also rise two other ways (`Skills.raise(id)`: whole levels that count toward your
+character level, with the XP towards the next level kept).
+
+- **Skill books:** a book with **Teaches Skill** set gives +1 the first time you read it (the
+  `read_<id>` flag BookReader already sets). Today: *The Swordsman's Rest* (One-Handed) and
+  *A Tide Table, Annotated* (Tidecraft), both sold by Maren; and three of the lore books in the
+  world: the Hallam book (Archery), the Dimming book (Shaping) and the Passenger lullaby
+  (Glamour). A book read before it taught anything (an older save) doesn't teach afterwards.
+- **Trainers** (`systems/training.gd`, the screen `ui/training_screen.gd`): a lesson raises the
+  skill by one for **10 gold + 3 per level you're at**. **Five lessons per character level**,
+  from anyone, then none until your next level. Each trainer teaches up to their own level:
+
+  | Trainer | Skill | Up to | Ask |
+  |---|---|---|---|
+  | Brannoc | One-Handed | 40 | "Teach me to use a blade properly." |
+  | Ostap | Archery | 40 | "Can you teach me to shoot?" |
+  | Zora | Glamour | 50 | "Will you train me in Glamour? I'll pay." (after her first lesson) |
+  | Magister Aurel | Tidecraft | 50 | "Teach me yourself, not from a book." |
+
+  A dialogue choice with `"open_training": "<id>", "next": "end"` opens it. Lessons taken this
+  level are saved.
+
 ### The planned skills (character building, round one)
 
 Four skills to each attribute (your note: an even number per attribute). Bold ones exist;

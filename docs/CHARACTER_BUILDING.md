@@ -41,7 +41,7 @@ ten that exist get theirs filled in along the way).
    - ✅ Governing attributes; carry weight and over-encumbered; Willpower and harmful effects.
    - ✅ Heavy weapons clumsy below a Strength level.
    - ✅ The buy and sell screen, with prices by Presence.
-   - Skill books and trainers.
+   - ✅ Skill books and trainers.
    - Respec at a shrine.
    - The perk tree view, ready for 20+ perks a skill.
 2. **New skills on the body:** Sneak (and sneak attacks), Light and Heavy Armour, Speech

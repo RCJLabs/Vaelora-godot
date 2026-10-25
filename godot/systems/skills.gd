@@ -82,6 +82,8 @@ var levels: Dictionary = {}     # skill id -> level
 var xp: Dictionary = {}         # skill id -> XP towards the next level
 var character_level := 1
 var skill_ups_toward_level := 0
+## Levels bought from trainers since the last character level (systems/training.gd).
+var trained_this_level := 0
 var unspent_level_ups := 0
 var bonus := {"health": 0, "stamina": 0, "magicka": 0}   # from level-ups
 
@@ -96,6 +98,7 @@ func reset(race: RaceData) -> void:
 		levels[id] = START_LEVEL + int(race.skill_bonuses.get(id, 0))
 		xp[id] = 0.0
 	character_level = 1
+	trained_this_level = 0
 	skill_ups_toward_level = 0
 	unspent_level_ups = 0
 	bonus = {"health": 0, "stamina": 0, "magicka": 0}
@@ -122,10 +125,23 @@ func add_xp(id: String, amount: float) -> void:
 	changed.emit()
 
 
+## Raises a skill by whole levels (skill books, trainers). Counts toward your
+## character level like any other increase; XP towards the next level is kept.
+func raise(id: String, amount: int = 1) -> void:
+	for i in amount:
+		if levels[id] >= MAX_LEVEL:
+			break
+		levels[id] += 1
+		skill_increased.emit(id, levels[id])
+		_count_skill_up()
+	changed.emit()
+
+
 func _count_skill_up() -> void:
 	skill_ups_toward_level += 1
 	if skill_ups_toward_level >= SKILL_UPS_PER_LEVEL:
 		skill_ups_toward_level -= SKILL_UPS_PER_LEVEL
+		trained_this_level = 0   # a new level: trainers will teach you again
 		character_level += 1
 		unspent_level_ups += 1
 		leveled_up.emit(character_level)
@@ -180,6 +196,7 @@ func to_dict() -> Dictionary:
 		"levels": levels, "xp": xp,
 		"character_level": character_level,
 		"skill_ups_toward_level": skill_ups_toward_level,
+		"trained_this_level": trained_this_level,
 		"unspent_level_ups": unspent_level_ups,
 		"bonus": bonus,
 	}
@@ -193,6 +210,7 @@ func from_dict(data: Dictionary) -> void:
 			xp[id] = float(data["xp"][id])
 	character_level = int(data["character_level"])
 	skill_ups_toward_level = int(data["skill_ups_toward_level"])
+	trained_this_level = int(data.get("trained_this_level", 0))
 	unspent_level_ups = int(data["unspent_level_ups"])
 	for stat in bonus:
 		bonus[stat] = int(data["bonus"].get(stat, 0))

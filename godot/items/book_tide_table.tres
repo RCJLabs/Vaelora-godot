@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_tide_table"
+display_name = "A Tide Table, Annotated"
+description = "A sailor's almanac of the two moons, its margins crowded with someone's notes in purple ink. Reading it teaches Tidecraft."
+value = 40
+weight = 0.5
+book_text = "TIDES OF THE GREYWATER, for the use of boatmen
+
+Ilun, full: high water, strong pull. Mind your moorings.
+The Wanderer, dark: higher still, though the almanac does not say why.
+Ilun dark, the Wanderer full: slack water. A good night to mend nets.
+
+(In the margin, in purple ink:)
+
+The almanac doesn't say why because nobody knows why. The Wanderer is the smaller moon and pulls the harder when it's dark. A stone does not pull harder when you can't see it.
+
+(Lower, smaller:)
+
+Try it: lift a pebble with the tide on a slack night, and again on a dark Wanderer. You will feel the difference in your teeth.
+
+(Lower still, nearly illegible:)
+
+Don't tell the College I wrote in this. It's a library copy."
+teaches_skill = "tidecraft"

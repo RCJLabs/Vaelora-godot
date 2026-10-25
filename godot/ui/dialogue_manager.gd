@@ -136,6 +136,8 @@ func _run_actions(entry: Dictionary) -> void:
 	if entry.has("open_trade"):
 		# The buy and sell screen, once this conversation has closed (point the choice at "end").
 		TradeScreen.open.call_deferred(str(entry["open_trade"]))
+	if entry.has("open_training"):
+		TrainingScreen.open.call_deferred(str(entry["open_training"]))   # a trainer's lesson, likewise
 
 
 # "start" is either a node id, or a list of {"node": id, <conditions>}
