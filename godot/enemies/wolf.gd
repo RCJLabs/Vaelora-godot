@@ -95,8 +95,10 @@ func _physics_process(delta: float) -> void:
 	var paused: bool = player == null or player.is_dead or DialogueManager.is_active
 	# Who it's after: the player or a companion, unless Glamour says otherwise.
 	var foe: Node3D = null if paused else Targeting.foe_for(self, player)
-	if foe == null:
+	if paused:
 		_move_toward(global_position, 0.0, delta)   # stand still
+	elif foe == null:
+		_lost(delta)
 	else:
 		_think(foe, delta)
 
@@ -171,6 +173,22 @@ func _think(player: Node3D, delta: float) -> void:
 			elif dist < aggro_range * 0.5:
 				state = State.CHASE   # you followed it back: fight on
 			else:
+				_move_toward(home, run_speed * 0.7, delta)
+
+
+# Nobody to go after (you've turned invisible, say): back to wandering, or home.
+func _lost(delta: float) -> void:
+	match state:
+		State.IDLE:
+			_wander(delta)
+		State.STAGGER, State.FLEE:
+			_think(self, delta)   # these don't need a target to play out
+		_:
+			_windup_left = 0.0
+			if Vector2(global_position.x - home.x, global_position.z - home.z).length() < 1.0:
+				state = State.IDLE
+			else:
+				state = State.RETURN
 				_move_toward(home, run_speed * 0.7, delta)
 
 

@@ -54,6 +54,8 @@ const ITEM_FILES := [
 	"res://items/tome_mirror_image.tres",
 	"res://items/tome_fear.tres",
 	"res://items/tome_charm.tres",
+	"res://items/tome_frenzy.tres",
+	"res://items/tome_invisibility.tres",
 	"res://items/bread.tres",
 	"res://items/apple.tres",
 	"res://items/water_flask.tres",

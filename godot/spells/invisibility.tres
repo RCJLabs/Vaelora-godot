@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SpellData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/spell_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "invisibility"
+display_name = "Invisibility"
+description = "Charge, then release: for 20 seconds wolves and bandits lose you and head home (or go for your companion). Attacking or casting anything ends it. Wisps see straight through it."
+style = 4
+skill = "glamour"
+color = Color(0.85, 0.75, 1, 1)
+can_dual_cast = false
+charge_time = 0.8
+magicka_cost = 50.0
+self_effect = "invisible"

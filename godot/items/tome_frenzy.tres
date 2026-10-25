@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_frenzy"
+display_name = "Tome: Frenzy"
+description = "A slim book that seems longer from the outside. Use it to learn Frenzy."
+type = 1
+value = 90
+weight = 1.0
+teaches_spell = "frenzy"

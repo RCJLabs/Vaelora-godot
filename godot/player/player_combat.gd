@@ -411,6 +411,7 @@ func _land_hit(target: Node) -> void:
 		damage *= stats.modifier("riposte_damage")
 	var poise := current_attack.poise_damage * _charge_mult()
 	var result = target.take_hit(damage, player.global_position, current_attack.knockback, poise, is_heavy)
+	Glamour.struck(target, player)
 	if result == "blocked" or result == "parried":
 		_bounced(result == "parried")
 		return

@@ -427,7 +427,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `hollow_wolf_spared` (never checked) | hollow_wolf: leave | – |
 | `hunter_read_tracks` | hollow_wolf: tracks | brannoc: drain_line, "(Hunter) Same way the hollow wolf's t..."<br>brannoc: mark, "(Hunter) Its tracks came out of the f..." |
 | `inquisitor_hostile` | inquisitor: marked | levels/test_level.tscn (InquisitorDrawn)<br>levels/test_level.tscn (InquisitorOnRoad) |
-| `inquisitor_told_zora` | inquisitor: told | zora (start → betrayed)<br>zora (start → lanternfast)<br>zora: again, "Come with me."<br>zora: again, "What do you really do? Not the fire."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "What do you really do? Not the fire."<br>zora: taught, "Would you ever leave this place?" |
+| `inquisitor_told_zora` | inquisitor: told | zora (start → betrayed)<br>zora (start → lanternfast)<br>zora: again, "Come with me."<br>zora: again, "Teach me more of it."<br>zora: again, "What do you really do? Not the fire."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "Teach me more of it."<br>zora: taught, "What do you really do? Not the fire."<br>zora: taught, "Would you ever leave this place?" |
 | `inquisitor_warned` | inquisitor: suspicious | inquisitor (start → suspicious) |
 | `jory_cheated` | jory: merchant_cheat | quest lost_wagon |
 | `jory_found` | jory_caged: freed<br>jory_caged: locked | quest lost_wagon |
@@ -522,6 +522,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `zora_saw_stain` | zora: sees_stain | zora (start → sees_stain) |
 | `zora_scholar` | zora: scholar | zora: again, "(Scholar) You trained at the Collegiu..."<br>zora: drain, "(Scholar) You trained at the Collegiu..."<br>zora: greet, "(Scholar) You trained at the Collegiu..."<br>zora: scholar, "(Scholar) You trained at the Collegiu..."<br>zora: taught, "(Scholar) You trained at the Collegiu..." |
 | `zora_taught` | zora: taught_now | brannoc: zora_report, "I never found her."<br>quest licence_to_burn<br>zora (start → taught) |
-| `zora_taught_glamour` | zora: glamour | zora: again, "What do you really do? Not the fire."<br>zora: taught, "What do you really do? Not the fire." |
+| `zora_taught_glamour` | zora: glamour | zora: again, "Teach me more of it."<br>zora: again, "What do you really do? Not the fire."<br>zora: taught, "Teach me more of it."<br>zora: taught, "What do you really do? Not the fire." |
+| `zora_taught_glamour_more` | zora: glamour_more | zora: again, "Teach me more of it."<br>zora: taught, "Teach me more of it." |
 | `zora_warned` | zora: warned | quest licence_to_burn |
 | `zora_would_travel` | zora: leave_here | zora: again, "Come with me."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "Would you ever leave this place?" |
