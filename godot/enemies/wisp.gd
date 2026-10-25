@@ -51,6 +51,8 @@ var _stagger_left := 0.0
 var _strafe := 1.0
 var _wander_target: Vector3
 var _knockback := Vector3.ZERO
+var _lift_left := 0.0   # the Lifting Tide holds it up this much longer
+var _lift_to := 0.0
 var _core_material: StandardMaterial3D
 var _halo_material: StandardMaterial3D
 var _fading := false
@@ -97,6 +99,9 @@ func _physics_process(delta: float) -> void:
 	# Hover: hold a height above whatever is below (lower while knocked down).
 	var ground := _ground_height()
 	var want_y := ground + (0.35 if state == State.STAGGER else hover_height + sin(_time * 1.7) * 0.15)
+	if _lift_left > 0.0:
+		_lift_left -= delta
+		want_y = _lift_to   # held up by the tide
 	target_velocity *= Vector3(stats.modifier("move_speed"), 1.0, stats.modifier("move_speed"))   # chilled, pinned
 	target_velocity.y = clampf((want_y - global_position.y) * 4.0, -6.0, 4.0)
 	velocity = velocity.lerp(target_velocity, minf(delta * 4.0, 1.0)) + _knockback
@@ -295,6 +300,19 @@ func shove(push: Vector3) -> void:
 	if state != State.DEAD:
 		push.y = 0.0
 		_knockback = push
+
+## The Lifting Tide (systems/tidecraft.gd): rise `height` metres and hang there,
+## helpless, for `seconds`; then gravity has it again.
+func lift(height: float, seconds: float) -> void:
+	if state == State.DEAD:
+		return
+	_lift_to = global_position.y + height
+	_lift_left = seconds
+	stagger(seconds + 0.6)
+
+
+func is_lifted() -> bool:
+	return _lift_left > 0.0
 
 
 ## Knocked out of the air: drops low and dims, can't cast.

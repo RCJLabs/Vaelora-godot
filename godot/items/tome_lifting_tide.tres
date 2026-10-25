@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "tome_lifting_tide"
+display_name = "Tome: The Lifting Tide"
+description = "The Tide College's mastery primer, its pages tied down with string so they don't float away. Use it to learn the Lifting Tide."
+type = 1
+value = 400
+weight = 1.0
+teaches_spell = "lifting_tide"

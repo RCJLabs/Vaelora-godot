@@ -67,7 +67,7 @@ enum Effect { DAMAGE_STREAM, HEAL_SELF }
 @export var duration: float = 10.0
 
 @export_group("Tidecraft")
-## "pull", "shove", "well" or "crush": an area spell that moves or crushes enemies (systems/tidecraft.gd).
+## "pull", "shove", "well", "crush" or "lift": an area spell that moves, crushes or lifts enemies (systems/tidecraft.gd).
 @export var tide: String = ""
 
 
