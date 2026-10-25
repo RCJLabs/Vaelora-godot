@@ -18,16 +18,25 @@
 - The **Wanderer**, the small green moon, is **dark every 7th day** (days 7, 14, 21...):
   `WorldClock.wanderer_dark()`, `days_until_dark()`, and `wanderer_text()` ("The Wanderer is
   waxing. Lanternfast in 6 days.", shown in the rest menu).
-- **In the sky** (`levels/wanderer_moon.gd`, the `WandererMoon` node): a green disc far to the
-  north-west that follows the camera, lit by `WorldClock.wanderer_phase()` (0 dark at 18:00
-  on a dark day, 0.5 full, a little over three days later) through a small shader
-  (`levels/wanderer_moon.gdshader`), and faded out by day. On Lanternfast it's a faint ghost.
+- **In the sky** (`levels/wanderer_moon.gd`, the `WandererMoon` node): a green disc far off
+  that follows the camera, lit by `WorldClock.wanderer_phase()` (0 dark at 18:00 on a dark
+  day, 0.5 full, a little over three days later) through a small shader
+  (`levels/wanderer_moon.gdshader`), and faded out by day.
 - **Ilun**, the old white moon, is drawn by the same script (the `IlunMoon` node, `moon =
-  "ilun"`): bigger, white, in the south-east, on a slower 14-day cycle
-  (`WorldClock.ilun_phase()`: full on the night of day 1, dark a week later). The 14 days is
-  a game choice, not from the lore. The night light comes from Ilun (`levels/day_night.gd`,
-  `night_moon_path`), a little dimmer when it's a sliver; it no longer draws its own disc in
-  the sky. Tidecraft is stronger or weaker by both moons (MAGIC.md, "Tidecraft").
+  "ilun"`): bigger, white, on a slower 14-day cycle (`WorldClock.ilun_phase()`: full on the
+  night of day 1, dark a week later). The 14 days is a game choice, not from the lore.
+- **They rise and set.** Each is up for 12 hours: rising in the east, highest in the south
+  (`peak_elevation`: Ilun 55°, the Wanderer 35°), setting in the west. When depends on the
+  phase, as with a real moon: it rises at 6:00 + phase × 24 h. Full, it rises at 18:00 and
+  is up all night; half and waxing, it's up in the evening and sets around midnight; half
+  and waning, it rises around midnight; dark, it's up only by day. So on Lanternfast the
+  Wanderer isn't in the night sky at all. `direction` is where a moon is right now,
+  `is_up()` whether it's above the horizon.
+- **The night light** comes from Ilun while it's up (`levels/day_night.gd`,
+  `night_moon_path`), never from lower than 15° (or the shadows would be a mile long), a
+  little dimmer when it's a sliver. While Ilun is down it's half as bright, from high in the
+  south. The sky never draws a disc for it. Tidecraft is stronger or weaker by both moons
+  (MAGIC.md, "Tidecraft"); where they are in the sky doesn't matter to it.
 - **Lanternfast** is that night, from **18:00 until 2:00** (`WorldClock.is_lanternfast()`).
   `systems/lanternfast.gd` (autoload **Lanternfast**) keeps the flag `lanternfast_now` set for
   exactly that long (and sets `saw_lanternfast` the first time, with a message). Everything
@@ -47,7 +56,8 @@
 - To wait for it: rest until 18:00 on a dark day. For testing, set `WorldClock.day = 7` and
   `hour = 18`.
 - Greybox: the crowd are capsules that stand still; the song is on-screen text, not sung;
-  the moons are flat discs, fixed in the sky (they don't rise or set).
+  the moons are flat discs that aren't seen by day, and both follow the same east-south-west
+  path (at different heights), so near the horizon they can overlap.
 
 ## Survival mode (optional, chosen in the character creator)
 Four needs run from **0% (fine) to 100% (dire)**. Each passes through three stages at 25%,
