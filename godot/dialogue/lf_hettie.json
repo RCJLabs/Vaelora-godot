@@ -1,0 +1,50 @@
+{
+	"start": [
+		{
+			"node": "again",
+			"requires_flag": "got_lantern_cake"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A small woman, shorter than your elbow, with flour to hers. \"Lanternfast! The lanterns are because it's a party, whatever the big folk tell you. Here. You look like you've been fighting something.\"",
+			"give_item": "lantern_cake",
+			"set_flag": "got_lantern_cake",
+			"choices": [
+				{
+					"text": "Thank you.",
+					"next": "end"
+				},
+				{
+					"text": "What do your people say the lanterns are for?",
+					"next": "why"
+				}
+			]
+		},
+		"again": {
+			"text": "\"Only one each! I've counted. Twice.\" Hettie Kettlewick guards her tins like a dragon.",
+			"choices": [
+				{
+					"text": "What do your people say the lanterns are for?",
+					"next": "why"
+				},
+				{
+					"text": "Fair enough.",
+					"next": "end"
+				}
+			]
+		},
+		"why": {
+			"text": "\"For? For seeing the cake.\" She winks. \"My old gran played cards with somebody who said the other thing. Never told me what. Said I'd laugh.\"",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

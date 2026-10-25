@@ -69,6 +69,12 @@ func days_until_dark() -> int:
 	return posmod(-day, WANDERER_DAYS)
 
 
+## Where the Wanderer is in its cycle: 0 dark (18:00 on a dark day, when
+## Lanternfast begins), 0.5 full, then back towards 1.
+func wanderer_phase() -> float:
+	return fposmod(day + hour / 24.0 - LANTERNFAST_FROM / 24.0, WANDERER_DAYS) / WANDERER_DAYS
+
+
 ## The festival: from 18:00 on a dark day until 2:00 the next morning.
 func is_lanternfast() -> bool:
 	if wanderer_dark():

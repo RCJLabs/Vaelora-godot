@@ -1,0 +1,27 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "A boy of about seven, holding a lantern nearly as big as he is. \"Are you staying up till midnight? You have to. If you go to sleep the lights get in.\"",
+			"choices": [
+				{
+					"text": "What happens if a light gets in?",
+					"next": "get_in"
+				},
+				{
+					"text": "I'll stay up.",
+					"next": "end"
+				}
+			]
+		},
+		"get_in": {
+			"text": "\"It drinks your breath and you don't wake up.\" He says it with total confidence, then looks less sure. \"Mam says. But Mam also says the goats can hear you lying.\"",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

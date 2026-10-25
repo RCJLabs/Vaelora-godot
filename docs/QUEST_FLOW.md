@@ -470,6 +470,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `found_hidden_chamber` | props/puzzle/secret_wall.gd:7 | levels/test_dungeon.tscn (Cultist1)<br>levels/test_dungeon.tscn (Cultist2)<br>quest the_barrow |
 | `found_wagon` | wagon: look<br>wagon: merchant | quest lost_wagon<br>wagon (start → again) |
 | `freed_wisp` | caged_wisp: free | maren: end_letter, "It followed me out of the barrow. The..."<br>mirela (start → heard_freed)<br>quest the_barrow |
+| `got_lantern_cake` | lf_hettie: greet | lf_hettie (start → again) |
 | `got_riverwatch_gift` | brannoc: gift | brannoc (start → gift) |
 | `got_supply_crate` | brannoc: crate | brannoc: after_given, "I need a crate of the garrison's supp..."<br>brannoc: after_restored, "I need a crate of the garrison's supp..."<br>brannoc: greet, "I need a crate of the garrison's supp..."<br>brannoc: greet_again, "I need a crate of the garrison's supp..."<br>brannoc: progress, "I need a crate of the garrison's supp..."<br>brannoc: waiting_on_stones, "I need a crate of the garrison's supp..." |
 | `heard_about_bandits` | brannoc: bandits_info | brannoc: after_given, "Anything else I should know about out..."<br>brannoc: after_restored, "Anything else I should know about out..."<br>brannoc: greet, "Anything else I should know about out..."<br>brannoc: greet_again, "Anything else I should know about out..."<br>brannoc: progress, "Anything else I should know about out..."<br>brannoc: waiting_on_stones, "Anything else I should know about out..."<br>quest bandit_camp |
@@ -478,6 +479,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `heard_card_player` | maren: road_folk | maren: greet_again, "Who else comes up this road?" |
 | `heard_greyfang_reason` (never checked) | maren: wolves_why | – |
 | `heard_hallam` (never checked) | ostap: song | – |
+| `heard_hallam_sung` (never checked) | props/lanternfast_song.gd:38 | – |
 | `heard_of_thornwood` (never checked) | brannoc: mark_hunter | – |
 | `hint_climb` | Hints.show_once(id) sets hint_<id> (systems/hints.gd) | player/player_traversal.gd:44 |
 | `hollow_wolf_killed` | enemies/hollow_wolf.gd:66<br>hollow_wolf: mercy | enemies/hollow_wolf.gd:31<br>quest wrong_things |

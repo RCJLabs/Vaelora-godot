@@ -17,7 +17,11 @@
 ### The Wanderer and Lanternfast
 - The **Wanderer**, the small green moon, is **dark every 7th day** (days 7, 14, 21...):
   `WorldClock.wanderer_dark()`, `days_until_dark()`, and `wanderer_text()` ("The Wanderer is
-  waxing. Lanternfast in 6 days.", shown in the rest menu). Not drawn in the sky yet.
+  waxing. Lanternfast in 6 days.", shown in the rest menu).
+- **In the sky** (`levels/wanderer_moon.gd`, the `WandererMoon` node): a green disc far to the
+  north-west that follows the camera, lit by `WorldClock.wanderer_phase()` (0 dark at 18:00
+  on a dark day, 0.5 full, a little over three days later) through a small shader
+  (`levels/wanderer_moon.gdshader`), and faded out by day. On Lanternfast it's a faint ghost.
 - **Lanternfast** is that night, from **18:00 until 2:00** (`WorldClock.is_lanternfast()`).
   `systems/lanternfast.gd` (autoload **Lanternfast**) keeps the flag `lanternfast_now` set for
   exactly that long (and sets `saw_lanternfast` the first time, with a message). Everything
@@ -27,9 +31,17 @@
   - **People**: Maren, Ostap and Zora each have a `lanternfast` start node (once each,
     `lanternfast_<name>`), with their people's idea of what the lanterns are for.
   - **Wisps** leave you be for the night (`wisp.gd` `_graced`).
+  - **The crowd** at the waystation, in the same StoryPresence: Pim (a human child: "so
+    the lights can't get in"), Hettie Kettlewick (small folk: "because it's a party", and a
+    Lantern Cake, once), Orrin of the Mill Lane (a Passenger: "so the lost ones can find their
+    way home") and, outside the light, Moss (Ashen: no lantern, "we remember instead").
+  - **The song** (`props/lanternfast_song.gd`, at the fire): within 12 m, "Hallam and the
+    Hundred Lights" a verse every 10 s, then one Passenger voice singing the last line
+    differently. Sets `heard_hallam_sung`.
 - To wait for it: rest until 18:00 on a dark day. For testing, set `WorldClock.day = 7` and
   `hour = 18`.
-- Greybox: no crowd, singing or food yet; the moon in the sky is the same every night.
+- Greybox: the crowd are capsules that stand still; the song is on-screen text, not sung;
+  the main moon (Ilun) has no phases and isn't drawn.
 
 ## Survival mode (optional, chosen in the character creator)
 Four needs run from **0% (fine) to 100% (dire)**. Each passes through three stages at 25%,
