@@ -251,7 +251,8 @@ func lantern(name: String, pos: Vector3, color := Color(1, 0.75, 0.45)) -> void:
 	own(light)
 
 
-func common(level_name: String, outdoor: bool) -> void:
+## The nodes every level needs. `mood`: an outdoor level's weather (levels/moods/<mood>.tres).
+func common(level_name: String, outdoor: bool, mood := "") -> void:
 	var env := WorldEnvironment.new()
 	env.name = "WorldEnvironment"
 	if outdoor:
@@ -279,6 +280,8 @@ func common(level_name: String, outdoor: bool) -> void:
 		var dn := Node.new()
 		dn.name = "DayNight"
 		dn.set_script(DAY_NIGHT)
+		if mood != "":
+			dn.set("mood", load("res://levels/moods/%s.tres" % mood))
 		own(dn)
 	var nav := NavigationRegion3D.new()
 	nav.name = "NavigationRegion3D"

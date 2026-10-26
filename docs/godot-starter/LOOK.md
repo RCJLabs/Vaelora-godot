@@ -120,6 +120,36 @@ Ambient light is now a mix: 55% sky and 45% a fill colour. `DayNight` moves the 
 with the fog light: cool and dim at night, near-neutral by day. Shade used to be
 strongly sky-blue.
 
+## Moods: `levels/level_mood.gd`, `levels/moods/`
+
+Each outdoor region has a mood: its weather and colour, laid over the day/night cycle. The clock
+still runs; the mood only tints it and thickens it. `DayNight` applies it every time it sets the
+hour. To change one, set it as the level's **DayNight > Mood**, or edit the `.tres` in the
+inspector.
+
+| Region | Mood | Look |
+|---|---|---|
+| The Greywater Vale | `vale` | A touch cooler and crisper |
+| Weirholt and the Riverlands | `riverlands` | Damp: green-grey mist, a little cloud |
+| The Grieving Fields | `fields` | Overcast: grey sky, dim sun, soft shadows, washed-out colour, thick fog |
+| Ilunhall | `capital` | Hazy gold: a warm sun and haze, more glow, and more fill light at night from the city |
+
+A mood can set:
+- **Sky:** a tint, and cloud cover (`overcast`, which also dims the sun and softens shadows).
+- **Sun:** a tint and a brightness.
+- **Fog:** a tint, its density, and how much it glows towards the sun.
+- **Grade:** ambient light, saturation, contrast, brightness and glow.
+
+Builders pass a mood to `common()`, as in `common("Ilunhall", true, "capital")`.
+
+**Nights are brighter now.** The shade's fill colour never drops below a moonlit blue
+(`NIGHT_FILL`), and the night's ambient light is 2.2, so you can see the ground on a phone. It's
+still dark. Stealth goes by the clock, not by how bright it looks, so this changes nothing in
+play.
+
+**The light-stone** in Ilunhall's eaves lights the halls around it twice as strongly
+(`light_mult`), so at night the halls glow gold.
+
 ## Renderers (a caveat)
 
 On Android the game runs on the **Mobile** renderer. The screenshots for this pass were

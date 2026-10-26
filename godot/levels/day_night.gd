@@ -22,20 +22,26 @@ extends Node
 ## Where the night light comes from (its direction and phase). Empty or missing: a
 ## plain moonlight at 35 degrees opposite the sun.
 @export var night_moon_path: NodePath = ^"../IlunMoon"
+## The region's weather and colour over the cycle (levels/moods/). Empty: as KEYS are.
+@export var mood: LevelMood
 
 ## The night light while Ilun is below the horizon, as a share of a full Ilun's.
 const NO_MOON_LIGHT := 0.5
+## The darkest the shade's fill colour gets (at night).
+const NIGHT_FILL := Color(0.3, 0.33, 0.45)
 
 # hour: sun colour, sun energy, sky top, sky horizon, ground horizon, ambient energy, fog light
+# (night ambient 2.2, with NIGHT_FILL: dark, but you can see the ground on a phone screen; stealth goes by
+# the clock, not by this)
 const KEYS := [
-	[0.0,  Color(0.55, 0.65, 0.95), 0.4, Color(0.02, 0.035, 0.08), Color(0.08, 0.1, 0.17), Color(0.06, 0.06, 0.08), 0.5, Color(0.18, 0.21, 0.32)],
-	[5.0,  Color(0.55, 0.65, 0.95), 0.4, Color(0.02, 0.035, 0.08), Color(0.08, 0.1, 0.17), Color(0.06, 0.06, 0.08), 0.5, Color(0.18, 0.21, 0.32)],
+	[0.0,  Color(0.55, 0.65, 0.95), 0.4, Color(0.02, 0.035, 0.08), Color(0.08, 0.1, 0.17), Color(0.06, 0.06, 0.08), 2.2, Color(0.18, 0.21, 0.32)],
+	[5.0,  Color(0.55, 0.65, 0.95), 0.4, Color(0.02, 0.035, 0.08), Color(0.08, 0.1, 0.17), Color(0.06, 0.06, 0.08), 2.2, Color(0.18, 0.21, 0.32)],
 	[6.5,  Color(1, 0.84, 0.66), 1.6, Color(0.13, 0.22, 0.42), Color(0.8, 0.62, 0.5), Color(0.55, 0.46, 0.42), 1.0, Color(0.6, 0.62, 0.72)],
 	[9.0,  Color(1, 0.96, 0.9), 2.0, Color(0.2, 0.38, 0.72), Color(0.68, 0.75, 0.85), Color(0.45, 0.47, 0.42), 1.0, Color(0.72, 0.78, 0.88)],
 	[16.0, Color(1, 0.96, 0.9), 2.0, Color(0.2, 0.38, 0.72), Color(0.68, 0.75, 0.85), Color(0.45, 0.47, 0.42), 1.0, Color(0.72, 0.78, 0.88)],
 	[18.5, Color(1, 0.84, 0.66), 1.6, Color(0.13, 0.22, 0.42), Color(0.8, 0.62, 0.5), Color(0.55, 0.46, 0.42), 1.0, Color(0.6, 0.62, 0.72)],
-	[20.5, Color(0.55, 0.65, 0.95), 0.4, Color(0.02, 0.035, 0.08), Color(0.08, 0.1, 0.17), Color(0.06, 0.06, 0.08), 0.5, Color(0.18, 0.21, 0.32)],
-	[24.0, Color(0.55, 0.65, 0.95), 0.4, Color(0.02, 0.035, 0.08), Color(0.08, 0.1, 0.17), Color(0.06, 0.06, 0.08), 0.5, Color(0.18, 0.21, 0.32)],
+	[20.5, Color(0.55, 0.65, 0.95), 0.4, Color(0.02, 0.035, 0.08), Color(0.08, 0.1, 0.17), Color(0.06, 0.06, 0.08), 2.2, Color(0.18, 0.21, 0.32)],
+	[24.0, Color(0.55, 0.65, 0.95), 0.4, Color(0.02, 0.035, 0.08), Color(0.08, 0.1, 0.17), Color(0.06, 0.06, 0.08), 2.2, Color(0.18, 0.21, 0.32)],
 ]
 
 @onready var sun: DirectionalLight3D = get_node_or_null(sun_path)
@@ -52,6 +58,8 @@ func _ready() -> void:
 		var sky := world_environment.environment.sky
 		if sky and sky.sky_material is ProceduralSkyMaterial:
 			_sky = sky.sky_material
+		if mood:
+			mood.apply_static(world_environment.environment)
 	apply(_hour())
 
 
@@ -100,14 +108,27 @@ func apply(hour: float) -> void:
 				sun.light_energy *= lerpf(0.6, 1.0, night_moon.lit())
 			else:
 				sun.light_energy *= NO_MOON_LIGHT   # Ilun is down: starlight
+	if sun and mood:
+		sun.light_color = mood.sun_color(sun.light_color)
+		sun.light_energy = mood.sun_energy(sun.light_energy)
+		sun.shadow_opacity = mood.shadow_opacity()
 	if _sky:
 		_sky.sky_top_color = a[3].lerp(b[3], t)
 		_sky.sky_horizon_color = a[4].lerp(b[4], t)
 		_sky.ground_horizon_color = a[5].lerp(b[5], t)
+		if mood:
+			_sky.sky_top_color = mood.sky(_sky.sky_top_color)
+			_sky.sky_horizon_color = mood.sky(_sky.sky_horizon_color)
+			_sky.ground_horizon_color = mood.sky(_sky.ground_horizon_color)
 	if world_environment:
 		var env := world_environment.environment
 		env.ambient_light_energy = lerpf(a[6], b[6], t)
 		env.fog_light_color = a[7].lerp(b[7], t)
+		if mood:
+			env.ambient_light_energy = mood.ambient(env.ambient_light_energy)
+			env.fog_light_color = mood.fog(env.fog_light_color)
 		# The fill the sky's colour is mixed with (ambient_light_sky_contribution), so
 		# shade isn't all sky-blue: a dimmer fog light, cool at night, near-neutral by day.
-		env.ambient_light_color = (a[7].lerp(b[7], t) * 0.6).clamp(Color(0, 0, 0, 1), Color(1, 1, 1, 1))
+		# Never darker than NIGHT_FILL: moonlit blue, enough to see the ground by.
+		var fill: Color = a[7].lerp(b[7], t) * 0.6
+		env.ambient_light_color = Color(maxf(fill.r, NIGHT_FILL.r), maxf(fill.g, NIGHT_FILL.g), maxf(fill.b, NIGHT_FILL.b))

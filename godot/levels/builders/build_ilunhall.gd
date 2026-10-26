@@ -87,7 +87,7 @@ func _build_city() -> Node3D:
 	scene = Node3D.new()
 	scene.name = "Ilunhall"
 	scene.add_to_group("navmesh_source", true)
-	common("Ilunhall", true)
+	common("Ilunhall", true, "capital")
 	skirt(ROCK)
 
 	# The fjord, south of the quay; cliffs east and west; the mountain behind.

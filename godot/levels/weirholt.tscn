@@ -1,4 +1,4 @@
-[gd_scene load_steps=446 format=3]
+[gd_scene load_steps=447 format=3]
 
 [ext_resource type="Environment" path="res://levels/atmosphere.tres" id="1_lpqts"]
 [ext_resource type="Script" path="res://levels/day_night.gd" id="2_45hi4"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://levels/level_map.gd" id="23_bflru"]
 [ext_resource type="Script" path="res://props/map_marker.gd" id="24_ukb1l"]
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="25_ktkys"]
+[ext_resource type="Resource" path="res://levels/moods/riverlands.tres" id="mood_riverlands"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_p1hbv"]
 geometry_parsed_geometry_type = 1
@@ -2131,6 +2132,7 @@ enabled = true
 fixed_hour = 18.5
 sun_azimuth = 25.0
 night_moon_path = NodePath("../IlunMoon")
+mood = ExtResource("mood_riverlands")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_p1hbv")

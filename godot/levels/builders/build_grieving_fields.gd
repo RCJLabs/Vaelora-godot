@@ -24,7 +24,7 @@ func _build_fields() -> Node3D:
 	scene = Node3D.new()
 	scene.name = "GrievingFields"
 	scene.add_to_group("navmesh_source", true)
-	common("GrievingFields", true)
+	common("GrievingFields", true, "fields")
 	box("Ground", Vector3(200, 1, 200), Vector3(0, -0.5, 0), ASH_GRASS)
 	skirt(ASH_GRASS)
 	box("Road", Vector3(5, 0.04, 80), Vector3(0, 0.02, -58), Color(0.38, 0.35, 0.3))

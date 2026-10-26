@@ -28,7 +28,7 @@ func _build_town() -> Node3D:
 	scene = Node3D.new()
 	scene.name = "Weirholt"
 	scene.add_to_group("navmesh_source", true)
-	common("Weirholt", true)
+	common("Weirholt", true, "riverlands")
 
 	# Ground on both banks of the Greywater, the river between (x 22..34, flowing south).
 	box("GroundWest", Vector3(122, 1, 200), Vector3(-39, -0.5, 0), GRASS)

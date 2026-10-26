@@ -10,6 +10,9 @@ extends Node3D
 @export var night_energy := 2.6
 ## What's left once dimmed, as a share.
 @export var dimmed := 0.3
+## The lights under the stone, against their own energy at full glow: the whole
+## city glows gold at night (docs/lore/WORLD.md).
+@export var light_mult := 2.0
 
 var material: StandardMaterial3D
 var _lights := {}   # light -> its full energy
@@ -50,4 +53,4 @@ func _update() -> void:
 	var s := strength()
 	material.emission_energy_multiplier = night_energy * s
 	for light in _lights:
-		light.light_energy = _lights[light] * s
+		light.light_energy = _lights[light] * s * light_mult

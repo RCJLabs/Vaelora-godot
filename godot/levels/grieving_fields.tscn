@@ -1,4 +1,4 @@
-[gd_scene load_steps=161 format=3]
+[gd_scene load_steps=162 format=3]
 
 [ext_resource type="Environment" path="res://levels/atmosphere.tres" id="1_xft3b"]
 [ext_resource type="Script" path="res://levels/day_night.gd" id="2_84gbh"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://levels/level_map.gd" id="14_p1si1"]
 [ext_resource type="Script" path="res://props/map_marker.gd" id="15_lphta"]
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="16_h2ru7"]
+[ext_resource type="Resource" path="res://levels/moods/fields.tres" id="mood_fields"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_4w1n8"]
 geometry_parsed_geometry_type = 1
@@ -663,6 +664,7 @@ enabled = true
 fixed_hour = 18.5
 sun_azimuth = 25.0
 night_moon_path = NodePath("../IlunMoon")
+mood = ExtResource("mood_fields")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_4w1n8")

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LevelMood" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://levels/level_mood.gd" id="1_mood"]
+
+[resource]
+script = ExtResource("1_mood")
+sky_tint = Color(0.6, 0.7, 0.85, 1)
+sky_tint_amount = 0.1
+fog_tint = Color(0.62, 0.66, 0.74, 1)
+fog_tint_amount = 0.2
+contrast = 1.04

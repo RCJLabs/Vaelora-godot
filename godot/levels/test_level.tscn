@@ -1,4 +1,4 @@
-[gd_scene load_steps=103 format=3]
+[gd_scene load_steps=104 format=3]
 
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://interactables/sign.gd" id="2_sign"]
@@ -46,6 +46,7 @@
 [ext_resource type="Script" path="res://props/forge.gd" id="205_forge"]
 
 [ext_resource type="Script" path="res://props/forage_plant.gd" id="206_forage"]
+[ext_resource type="Resource" path="res://levels/moods/vale.tres" id="mood_vale"]
 
 [sub_resource type="FastNoiseLite" id="Noise_grass"]
 frequency = 0.02
@@ -523,6 +524,7 @@ directional_shadow_max_distance = 80.0
 
 [node name="DayNight" type="Node" parent="."]
 script = ExtResource("18_daynight")
+mood = ExtResource("mood_vale")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
