@@ -1,0 +1,44 @@
+{
+	"start": [
+		{
+			"node": "done",
+			"requires_flag": "weirstones_freed"
+		},
+		{
+			"node": "open",
+			"requires_flag": "weirstones_cleared"
+		},
+		{
+			"node": "shut"
+		}
+	],
+	"nodes": {
+		"shut": {
+			"text": "Something the size of a barrel, wrapped in oilcloth and humming, with the standing stones' light bending towards it. You'd have to get past whoever tends it to look closer.",
+			"choices": []
+		},
+		"open": {
+			"text": "Under the oilcloth: a cage of rune-iron around a lump of pale seam-stone, drinking the circle's light. Tucked in the bindings, a letter: \"The Weir-site is near spent. Move the harvest to the Fields: the Grieving Fields site runs deeper, and the Ashen won't ask questions. Burn this. - V.\"",
+			"set_flag": "weirstones_letter",
+			"choices": [
+				{
+					"text": "Break the cage open and let the light go back to the stones.",
+					"next": "freed",
+					"set_flag": "weirstones_freed"
+				},
+				{
+					"text": "(Leave it for now)",
+					"next": "end"
+				}
+			]
+		},
+		"freed": {
+			"text": "The rune-iron gives with a crack like ice. The light runs out of the seam-stone and back into the stones, and for a moment the whole circle glows the colour of a summer evening. Then it's just stones again, and the river.",
+			"choices": []
+		},
+		"done": {
+			"text": "The broken cage and a lump of dull grey stone. The circle feels lighter.",
+			"choices": []
+		}
+	}
+}

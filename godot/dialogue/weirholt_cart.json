@@ -1,0 +1,22 @@
+{
+	"start": [
+		{
+			"node": "after",
+			"requires_flag": "toll_gang_cleared"
+		},
+		{
+			"node": "look"
+		}
+	],
+	"nodes": {
+		"look": {
+			"text": "A farm cart on its side, one wheel smashed, sacks slit open and grain everywhere. Boot prints go west into the trees, and come back heavier. Somebody's been taxing this road who isn't the Compact.",
+			"set_flag": "bounty_started",
+			"choices": []
+		},
+		"after": {
+			"text": "The overturned cart. Nobody's come back for it, but nobody's robbing the road either.",
+			"choices": []
+		}
+	}
+}

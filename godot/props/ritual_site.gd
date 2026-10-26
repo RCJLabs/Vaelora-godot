@@ -15,6 +15,8 @@ extends Node3D
 @export var require_night: bool = true
 @export var started_flag: String = "ritual_started"
 @export var slain_flag: String = "first_slain"
+## Set the first time you come by day (so the day message shows once). Each site its own.
+@export var seen_by_day_flag: String = "ritual_site_seen_by_day"
 @export_multiline var day_message: String = "A clearing around a great hollow oak: a cold fire pit, a stone slab, cage marks in the moss. Nobody here. The notes said: in the dark of the Wanderer. Come back after nightfall."
 @export_multiline var night_message: String = "Hooded figures stand around the oak, chanting. In the hollow's shadow something huge shifts, and the light leaking out of it is the colour of the wisps."
 
@@ -43,8 +45,8 @@ func _physics_process(_delta: float) -> void:
 	if player == null or player.global_position.distance_to(global_position) > radius:
 		return
 	if require_night and not WorldClock.is_night():
-		if not GameState.has_flag("ritual_site_seen_by_day"):
-			GameState.set_flag("ritual_site_seen_by_day")
+		if not GameState.has_flag(seen_by_day_flag):
+			GameState.set_flag(seen_by_day_flag)
 			player.show_message(day_message)
 		return
 	start(player)

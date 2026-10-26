@@ -37,6 +37,32 @@
 					"open_training": "varga"
 				},
 				{
+					"text": "Somebody's robbing carts on the north road.",
+					"next": "bounty",
+					"requires_not_flag": [
+						"bounty_accepted",
+						"toll_gang_cleared"
+					]
+				},
+				{
+					"text": "The camp in the woods is cleared.",
+					"next": "bounty_paid",
+					"requires_flag": "toll_gang_cleared",
+					"requires_not_flag": "bounty_paid"
+				},
+				{
+					"text": "Where does the ledger's trail go?",
+					"next": "weirstones_hint",
+					"requires_flag": "barges_resolved",
+					"requires_not_flag": "weirstones_freed"
+				},
+				{
+					"text": "The Weirstones are quiet. The Mercy's moving to the Grieving Fields.",
+					"next": "weirstones_report",
+					"requires_flag": "weirstones_letter",
+					"requires_not_flag": "weirstones_reported"
+				},
+				{
 					"text": "Goodbye.",
 					"next": "end"
 				}
@@ -67,6 +93,32 @@
 					"text": "Teach me to hold a shield line.",
 					"next": "end",
 					"open_training": "varga"
+				},
+				{
+					"text": "Somebody's robbing carts on the north road.",
+					"next": "bounty",
+					"requires_not_flag": [
+						"bounty_accepted",
+						"toll_gang_cleared"
+					]
+				},
+				{
+					"text": "The camp in the woods is cleared.",
+					"next": "bounty_paid",
+					"requires_flag": "toll_gang_cleared",
+					"requires_not_flag": "bounty_paid"
+				},
+				{
+					"text": "Where does the ledger's trail go?",
+					"next": "weirstones_hint",
+					"requires_flag": "barges_resolved",
+					"requires_not_flag": "weirstones_freed"
+				},
+				{
+					"text": "The Weirstones are quiet. The Mercy's moving to the Grieving Fields.",
+					"next": "weirstones_report",
+					"requires_flag": "weirstones_letter",
+					"requires_not_flag": "weirstones_reported"
 				},
 				{
 					"text": "Goodbye.",
@@ -113,6 +165,55 @@
 				"dace_reported",
 				"toll_settled"
 			],
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"bounty": {
+			"text": "\"I know. A gang camps in the woods west of the road, and I've thirty spears to watch a whole river. A hundred gold to whoever clears them out.\"",
+			"set_flag": [
+				"bounty_accepted",
+				"bounty_started"
+			],
+			"choices": [
+				{
+					"text": "I'll do it.",
+					"next": "end"
+				},
+				{
+					"text": "Not now.",
+					"next": "end"
+				}
+			]
+		},
+		"bounty_paid": {
+			"text": "\"So I heard. The carters are calling you all sorts of nice things.\" She counts out the coins herself.",
+			"give_gold": 100,
+			"set_flag": "bounty_paid",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"weirstones_hint": {
+			"text": "\"The last entries don't go upriver, not at first. 'Weir-site, at the dark.' There's a ring of standing stones on the east bank, past the ford. The old folk call them the Weirstones. If something's being fed, that's where.\"",
+			"set_flag": "weirstones_hinted",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"weirstones_report": {
+			"text": "She reads the letter twice. \"The Grieving Fields. Ashen country, old battlefields, and one of the old sites. V. again.\" She folds it into her coat. \"I'll write to the Fields' garrison. You, I suspect, will go yourself.\"",
+			"set_flag": "weirstones_reported",
+			"give_gold": 50,
 			"choices": [
 				{
 					"text": "Goodbye.",

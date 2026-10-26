@@ -7,8 +7,9 @@ Names and people are *(suggested)*; rename freely.
 ## Getting there
 
 - From the Vale: walk south from the waystation to the **south road** at the map's south edge
-  (a signpost, then "Take the south road to Weirholt"). You arrive at Weirholt's north road.
-- Back: the **north road** sign just outside Weirholt's north gate.
+  (a signpost, then "Take the south road to Weirholt"). You arrive at the top of the **woods
+  road**, about 60 m of forest north of Weirholt's gate.
+- Back: the **north road**, at the far (north) end of the woods road.
 - Travel uses `SaveSystem.travel` like the cellar and the barrow, so health, items and effects
   come with you and each place remembers its state (WorldState).
 
@@ -35,6 +36,18 @@ New: a **River Compact** faction (known once you meet Tarle or Jory), merchant `
 `systems/trade.gd`, trainer `varga` in `systems/training.gd`, and two quest items (Harvest
 Ledger, Toll Ledger). Dialogue can now check `"requires_night": true` / `"requires_day": true`.
 
+## The country around it
+
+The level is 200 × 200 m around the town (`_build_wilds()` in the builder):
+
+| Place | What's there |
+|---|---|
+| The woods road | 70 trees either side of the road north of the town; an overturned cart |
+| A clearing west of the road | The toll-road gang: two highwaymen and their leader, tents, a fire, a chest |
+| The ford | The easy way across the river, south-east of the town |
+| **The Weirstones** | On the east bank: a ring of eight standing stones, one of the **twelve sites**. Empty by day apart from a humming bundle; at night the Mercy's acolytes feed it, and wisps come out |
+| Ama's farm | West of the town: a farmhouse and fields |
+
 ## Quests
 
 | Quest | Giver | How it goes | Endings |
@@ -44,6 +57,9 @@ Ledger, Toll Ledger). Dialogue can now check `"requires_night": true` / `"requir
 | **Fever in the Lanes** | Teodor, in the Lanes | Look into the well (a sheen, a pipe to the mill), find the Compact's seam-stone millstone | Convince Physician Fenn (Persuade 30, or Alchemy 25) and he says it in the square, or wedge the pipe shut yourself (the fever eases, Fenn still blames the Passengers) |
 
 Their entries in `quests.json` carry `"region": "riverlands"` (the Vale's start-to-finish playthrough test checks only the Vale's).
+
+| **The Toll-Road Gang** | Captain Varga (a 100-gold bounty), or the overturned cart | Clear the gang's camp in the woods | Collect from Varga |
+| **The Weirstones** (main) | Opens when Down the Greywater ends (Varga or Jory point you across the ford) | At the stones **after dark** the rite is under way: three Mercy acolytes; then look at what they were feeding | Break the rune-iron cage and give the light back to the stones. Their letter (signed V.) moves the harvest to the **Grieving Fields**; tell Varga for 50 gold |
 
 Down the Greywater is the thread out of the demo's cliffhanger: the harvest goes upriver by
 barge, and the ledger's last page carries the circle split by three lines.
@@ -67,5 +83,9 @@ examine).
 - Nobody walks around: NPCs stand where they're placed, day and night.
 - The river is a shallow channel you can wade; the ford is the easy way across.
 - Jory is here whatever happened to him in the Vale (he greets you if you rescued him).
+- The Weirstones reuse the Vale's ritual-site script (`props/ritual_site.gd`, now with a
+  per-site "seen by day" flag) and its hooded cultists.
+- `tests/test_weirholt_wilds.gd` covers the woods, the gang and the bounty, and the Weirstones
+  by day and by night.
 - `tests/test_weirholt.gd` covers the road both ways, the people, the inn, the merchant, the
   trainer and every quest step, with all three endings of Down the Greywater.

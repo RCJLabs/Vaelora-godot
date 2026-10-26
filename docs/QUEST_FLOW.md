@@ -6,8 +6,8 @@ Each quest's state is worked out from flags (and items) every time the journal l
 
 ## Contents
 
-- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made), [Down the Greywater](#down-the-greywater)
-- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook), [The Toll of the Weir](#toll-of-the-weir), [Fever in the Lanes](#lanes-fever)
+- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made), [Down the Greywater](#down-the-greywater), [The Weirstones](#the-weirstones)
+- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook), [The Toll of the Weir](#toll-of-the-weir), [Fever in the Lanes](#lanes-fever), [The Toll-Road Gang](#toll-road-gang)
 - [Flag index](#flag-index)
 
 ## Main quests
@@ -207,6 +207,36 @@ flowchart TD
 | Look at the Heron's sealed crates on the docks, after dark, when nobody's about. | heron_inspected | HeronCrates |
 | Follow the cargo into the culvert under the docks. | has harvest_ledger | CulvertGrate |
 | Decide who gets the smugglers' ledger: Captain Varga, or Factor Tarle. | barges_resolved | Varga |
+
+<a id="the-weirstones"></a>
+
+### The Weirstones (`the_weirstones`)
+
+Given by: The smugglers' ledger. Starts when: barges_resolved. Done when: weirstones_freed.
+
+```mermaid
+flowchart TD
+  start(["The Weirstones<br/><i>starts: barges_resolved</i>"])
+  o0["Cross the ford to the Weirstones on the east bank, after dark."]
+  start --> o0
+  o1["Stop whoever is feeding on the stones."]
+  o0 --> o1
+  o2["See what they were feeding, in the middle of the circle."]
+  o1 --> o2
+  o3["(Optional) Tell Captain Varga what the letter said."]
+  o2 --> o3
+  done(["Done<br/><i>weirstones_freed</i>"])
+  o3 --> done
+  r0["The Mercy were feeding a lump of seam-stone on the Weirstones' light. I broke their cage a…"]
+  done -. "weirstones_freed" .-> r0
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Cross the ford to the Weirstones on the east bank, after dark. | weirstones_rite | Weirstones |
+| Stop whoever is feeding on the stones. | weirstones_cleared | Weirstones |
+| See what they were feeding, in the middle of the circle. | weirstones_freed | DrainFocus |
+| (Optional) Tell Captain Varga what the letter said. | weirstones_reported | Varga |
 
 ## Side quests
 
@@ -531,6 +561,30 @@ flowchart TD
 | Follow the new pipe to the mill. | millstone_found | Millstone |
 | Convince Physician Fenn it isn't the Passengers, or shut the pipe yourself. | lanes_resolved | Fenn |
 
+<a id="toll-road-gang"></a>
+
+### The Toll-Road Gang (`toll_road_gang`)
+
+Given by: Captain Varga, or an overturned cart on the north road. Starts when: bounty_started. Done when: bounty_paid.
+
+```mermaid
+flowchart TD
+  start(["The Toll-Road Gang<br/><i>starts: bounty_started</i>"])
+  o0["Find the gang's camp in the woods west of the north road."]
+  start --> o0
+  o1["Collect the bounty from Captain Varga."]
+  o0 --> o1
+  done(["Done<br/><i>bounty_paid</i>"])
+  o1 --> done
+  r0["I cleared out the gang in the woods and collected Captain Varga's hundred gold. The carter…"]
+  done -. "bounty_paid" .-> r0
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Find the gang's camp in the woods west of the north road. | toll_gang_cleared | TollRoadGang |
+| Collect the bounty from Captain Varga. | bounty_paid | Varga |
+
 ## Flag index
 
 Every flag, where it's set, and where it's checked. **⚠ never set** means nothing in the game sets it: a typo or a missing step. *(never checked)* is usually fine: a record for later, or for the tests.
@@ -543,13 +597,16 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `bandit_bounty_paid` | brannoc: bandit_bounty | brannoc: after_given, "The bandit camp south-west of here is..."<br>brannoc: after_kept, "The bandit camp south-west of here is..."<br>brannoc: after_restored, "The bandit camp south-west of here is..."<br>brannoc: greet, "The bandit camp south-west of here is..."<br>brannoc: greet_again, "The bandit camp south-west of here is..."<br>brannoc: progress, "The bandit camp south-west of here is..."<br>brannoc: waiting_on_stones, "The bandit camp south-west of here is..."<br>quest bandit_camp |
 | `bandit_cage_opened` | levels/test_level.tscn (CageDoor) | jory_caged (start → freed) |
 | `bandits_cleared` | levels/test_level.tscn (BanditCamp) | brannoc: after_given, "Anything else I should know about out..."<br>brannoc: after_given, "The bandit camp south-west of here is..."<br>brannoc: after_kept, "The bandit camp south-west of here is..."<br>brannoc: after_restored, "Anything else I should know about out..."<br>brannoc: after_restored, "The bandit camp south-west of here is..."<br>brannoc: greet, "Anything else I should know about out..."<br>brannoc: greet, "The bandit camp south-west of here is..."<br>brannoc: greet_again, "Anything else I should know about out..."<br>brannoc: greet_again, "The bandit camp south-west of here is..."<br>brannoc: progress, "Anything else I should know about out..."<br>brannoc: progress, "The bandit camp south-west of here is..."<br>brannoc: waiting_on_stones, "Anything else I should know about out..."<br>brannoc: waiting_on_stones, "The bandit camp south-west of here is..."<br>mirela (start → bandits_done)<br>mirela: terms, "I'll deal with the bandits."<br>mirela: terms, "That camp's already ash."<br>quest bandit_camp |
-| `barges_resolved` | tarle: ledger, "Deal."<br>tarle: ledger, "No. Captain Varga gets this."<br>varga: ledger | jory_weirholt (start → after)<br>quest down_the_greywater<br>tarle: again, "I found your ledger in the culvert."<br>tarle: greet, "I found your ledger in the culvert."<br>varga: again, "I have something you should see."<br>varga: greet, "I have something you should see." |
+| `barges_resolved` | tarle: ledger, "Deal."<br>tarle: ledger, "No. Captain Varga gets this."<br>varga: ledger | jory_weirholt (start → after)<br>quest down_the_greywater<br>quest the_weirstones<br>tarle: again, "I found your ledger in the culvert."<br>tarle: greet, "I found your ledger in the culvert."<br>varga: again, "I have something you should see."<br>varga: again, "Where does the ledger's trail go?"<br>varga: greet, "I have something you should see."<br>varga: greet, "Where does the ledger's trail go?" |
 | `barrow_lead` | mirela: lead | mirela (start → after_lead)<br>quest ask_forest<br>quest the_barrow |
 | `bought_tome_crush` | aurel: sold_crush | aurel: teach, "Moon-Crush. (220 gold)"<br>aurel: teach, "The Lifting Tide. (400 gold)"<br>aurel: teach, "The Lifting Tide?" |
 | `bought_tome_lift` | aurel: sold_lift | aurel: teach, "The Lifting Tide. (400 gold)" |
 | `bought_tome_pull` | aurel: sold_pull | aurel: teach, "Pull. (80 gold)" |
 | `bought_tome_shove` | aurel: sold_shove | aurel: teach, "Tide's Shove. (100 gold)" |
 | `bought_tome_well` | aurel: sold_well | aurel: teach, "Gravity Well. (160 gold)"<br>aurel: teach, "Moon-Crush. (220 gold)"<br>aurel: teach, "Moon-Crush?" |
+| `bounty_accepted` | varga: bounty | varga: again, "Somebody's robbing carts on the north..."<br>varga: greet, "Somebody's robbing carts on the north..." |
+| `bounty_paid` | varga: bounty_paid | quest toll_road_gang<br>varga: again, "The camp in the woods is cleared."<br>varga: greet, "The camp in the woods is cleared." |
+| `bounty_started` | varga: bounty<br>weirholt_cart: look | quest toll_road_gang |
 | `brannoc_founded_done` | companion_brannoc: roll_lie<br>companion_brannoc: roll_truth | companion_brannoc: cold, "I read the roll in the barrow."<br>companion_brannoc: greet, "I read the roll in the barrow."<br>companion_brannoc: warm, "I read the roll in the barrow."<br>quest brannoc_founded |
 | `brannoc_founded_started` | companion_brannoc: founded | companion_brannoc: cold, "I read the roll in the barrow."<br>companion_brannoc: cold, "Your father's story, about who founde..."<br>companion_brannoc: greet, "I read the roll in the barrow."<br>companion_brannoc: greet, "Your father's story, about who founde..."<br>companion_brannoc: warm, "I read the roll in the barrow."<br>companion_brannoc: warm, "Your father's story, about who founde..."<br>quest brannoc_founded |
 | `brannoc_knows_hunt` | companion_brannoc: roll_truth | quest brannoc_founded |
@@ -662,7 +719,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `refused_maren` (never checked) | maren: wolves, "Sounds like someone else's problem."<br>maren: wolves_why, "Sounds like someone else's problem." | – |
 | `released_wisp` (never checked) | props/floating_crystal.gd:58 | – |
 | `ritual_cultists_cleared` (never checked) | levels/test_level.tscn (RitualCultists) | – |
-| `ritual_site_seen_by_day` | props/ritual_site.gd:47 | props/ritual_site.gd:46 |
+| `ritual_site_seen_by_day` (never checked) | props/ritual_site.gd:19 | – |
 | `ritual_started` | props/ritual_site.gd:16 | levels/test_level.tscn (Cultist1)<br>levels/test_level.tscn (Cultist2)<br>levels/test_level.tscn (Cultist3)<br>quest what_they_made |
 | `saw_drain_line` | props/floating_crystal.gd:73<br>props/floating_crystal.gd:78<br>systems/save_system.gd:231 | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..."<br>props/drain_line.gd:9<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:77<br>quest ask_forest<br>quest waking_stones<br>systems/save_system.gd:230 |
 | `saw_dunya` | dunya: look | mirela: end_letter, "Dunya?" |
@@ -697,17 +754,25 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `told_mirela_end` | mirela: end_hollow<br>mirela: end_mirela<br>mirela: end_mirela_cold | quest what_they_made |
 | `told_mirela_wolf` | mirela: wolf_too | mirela: drain, "A wolf by Greyfang Hollow looked the ..." |
 | `toll_confronted` | dace: dace_two | quest toll_of_the_weir |
+| `toll_gang_cleared` | levels/weirholt.tscn (TollRoadGang) | quest toll_road_gang<br>varga: again, "Somebody's robbing carts on the north..."<br>varga: again, "The camp in the woods is cleared."<br>varga: greet, "Somebody's robbing carts on the north..."<br>varga: greet, "The camp in the woods is cleared."<br>weirholt_cart (start → after) |
 | `toll_settled` | dace: dace_two, "Here. Take this, and charge the farme..."<br>dace: dace_two, "Rates went up when you got greedy. St..."<br>varga: dace_report | ama (start → after)<br>dace: greet, "Ama's coppers come back, I hear."<br>dace: greet, "The board in the square says two."<br>quest toll_of_the_weir<br>varga: again, "Sergeant Dace is taking double toll a..."<br>varga: greet, "Sergeant Dace is taking double toll a..." |
 | `toll_started` | ama: greet | ama (start → waiting)<br>dace: greet, "The board in the square says two."<br>quest toll_of_the_weir |
 | `took_wisp_essence` | caged_wisp: take | mirela (start → heard_essence)<br>mirela: end_dunya, "What will the Free do?"<br>mirela: end_letter, "What will the Free do?"<br>quest the_barrow<br>systems/save_system.gd:209 |
 | `touched_crystal` | props/floating_crystal.gd:81<br>props/floating_crystal.gd:86 | brannoc: progress, "The crystal answered when I touched i..."<br>props/floating_crystal.gd:48<br>props/floating_crystal.gd:85<br>quest waking_stones |
+| `weirstones_cleared` | levels/weirholt.tscn (Acolytes) | levels/weirholt.tscn (Weirstones)<br>quest the_weirstones<br>weirholt_focus (start → open) |
+| `weirstones_freed` | weirholt_focus: open, "Break the cage open and let the light..." | quest the_weirstones<br>varga: again, "Where does the ledger's trail go?"<br>varga: greet, "Where does the ledger's trail go?"<br>weirholt_focus (start → done) |
+| `weirstones_hinted` (never checked) | varga: weirstones_hint | – |
+| `weirstones_letter` | weirholt_focus: open | varga: again, "The Weirstones are quiet. The Mercy's..."<br>varga: greet, "The Weirstones are quiet. The Mercy's..." |
+| `weirstones_reported` | varga: weirstones_report | quest the_weirstones<br>varga: again, "The Weirstones are quiet. The Mercy's..."<br>varga: greet, "The Weirstones are quiet. The Mercy's..." |
+| `weirstones_rite` | levels/weirholt.tscn (Weirstones) | levels/weirholt.tscn (Acolyte1)<br>levels/weirholt.tscn (Acolyte2)<br>levels/weirholt.tscn (Acolyte3)<br>quest the_weirstones |
+| `weirstones_seen_by_day` (never checked) | levels/weirholt.tscn (Weirstones) | – |
 | `well_examined` | weirholt_well: look | quest lanes_fever<br>weirholt_millstone (start → known) |
 | `wenna_discount` (never checked) | wenna: greet, "A friend's price, for a friend?" | – |
 | `wisp_choice_made` | caged_wisp: free<br>caged_wisp: take | props/caged_wisp.gd:23<br>props/caged_wisp.gd:29<br>quest the_barrow |
 | `wolf_quest_accepted` | maren: accept | maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
 | `wolf_quest_done` | maren: reward<br>maren: reward_driven | brannoc: greet, "Maren says she told Riverwatch about ..."<br>maren (start → greet_hero)<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
 | `wolves_cleared` | enemies/wolf_pack.gd:18 | maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet, "Why don't people come this way?"<br>maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: greet_again, "Tell me about the wolves again."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: hunter_line, "Tell me about the wolves."<br>maren: soldier_line, "Tell me about the wolves."<br>maren: wolf_sick, "Tell me about the rest of the pack."<br>maren: wolf_where, "Tell me about the rest of the pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
-| `wolves_driven_off` | enemies/wolf_pack.gd:23<br>levels/weirholt_culvert.tscn (Smugglers) | maren: greet, "I drove off the wolves north of here."<br>maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
+| `wolves_driven_off` | enemies/wolf_pack.gd:23<br>levels/weirholt.tscn (Acolytes)<br>levels/weirholt.tscn (TollRoadGang)<br>levels/weirholt_culvert.tscn (Smugglers) | maren: greet, "I drove off the wolves north of here."<br>maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
 | `wrong_things_done` | brannoc: mark | brannoc: after_given, "What will you do, after all this?"<br>brannoc: after_kept, "What will you do, after all this?"<br>brannoc: after_restored, "What will you do, after all this?"<br>brannoc: greet_again, "What will you do, after all this?"<br>brannoc: progress, "What will you do, after all this?"<br>brannoc: waiting_on_stones, "What will you do, after all this?"<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>quest wrong_things |
 | `wrong_things_started` | systems/save_system.gd:228 | enemies/wisp_spawner.gd:17<br>maren: greet, "I'm tracking a Greyfang that walks wr..."<br>maren: greet, "I've come to tend the roadside shrine..."<br>maren: greet, "My wagon never reached Riverwatch. Ye..."<br>maren: greet, "Sergeant Holt sent me from Riverwatch..."<br>maren: greet, "The Collegium sent me to study the st..."<br>maren: greet, "You saw me sleeping behind your wayst..."<br>maren: greet_again, "Anything strange around here lately?"<br>maren: greet_hero, "Anything strange around here lately?"<br>maren: wolves, "Why are they raiding the road at all?"<br>quest wrong_things<br>systems/save_system.gd:227<br>zora: again, "What do you know about what's drainin..."<br>zora: drain, "What do you know about what's drainin..."<br>zora: greet, "What do you know about what's drainin..."<br>zora: scholar, "What do you know about what's drainin..."<br>zora: taught, "What do you know about what's drainin..." |
 | `zora_arrested` | zora: arrested | brannoc: zora_report, "She came quietly. She says the goats ..."<br>brannoc: zora_report, "She was gone when I got there."<br>quest licence_to_burn |
