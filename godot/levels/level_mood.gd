@@ -21,6 +21,9 @@ extends Resource
 ## "pollen", "fireflies", "ash", "dust", or "" for nothing.
 @export var motes_day := "pollen"
 @export var motes_night := "fireflies"
+## Extra volumetric fog that gathers before dawn and burns off by mid-morning (0: none;
+## 0.02 is a light mist). Only on presets with volumetric fog (High and Ultra).
+@export_range(0.0, 0.2) var morning_mist := 0.0
 
 @export_group("Sun")
 @export var sun_tint := Color(1, 1, 1)
@@ -73,6 +76,11 @@ func sun_color(color: Color) -> Color:
 
 func sun_energy(energy: float) -> float:
 	return energy * sun_energy_mult * (1.0 - overcast * 0.55)
+
+
+## The morning mist's extra volumetric fog density at `hour`.
+func mist(hour: float) -> float:
+	return morning_mist * smoothstep(3.5, 5.5, hour) * (1.0 - smoothstep(7.0, 9.5, hour))
 
 
 func fog(color: Color) -> Color:

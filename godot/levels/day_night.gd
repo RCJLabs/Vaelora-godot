@@ -27,11 +27,14 @@ extends Node
 
 ## The night light while Ilun is below the horizon, as a share of a full Ilun's.
 const NO_MOON_LIGHT := 0.5
+## How wide the sun (and moon) looks, in degrees: it softens shadows the further they fall
+## from what casts them (Forward+). Clouds (LevelMood.overcast) widen it.
+const SUN_SIZE := 0.5
 ## The darkest the shade's fill colour gets (at night).
 const NIGHT_FILL := Color(0.3, 0.33, 0.45)
 
 # hour: sun colour, sun energy, sky top, sky horizon, ground horizon, ambient energy, fog light
-# (night ambient 2.2, with NIGHT_FILL: dark, but you can see the ground on a phone screen; stealth goes by
+# (night ambient 2.2, with NIGHT_FILL: dark, but you can see the ground; stealth goes by
 # the clock, not by this)
 const KEYS := [
 	[0.0,  Color(0.55, 0.65, 0.95), 0.4, Color(0.02, 0.035, 0.08), Color(0.08, 0.1, 0.17), Color(0.06, 0.06, 0.08), 2.2, Color(0.18, 0.21, 0.32)],
@@ -50,6 +53,7 @@ const KEYS := [
 var _sky: ProceduralSkyMaterial
 var _dome: SkyDome   # clouds and stars (levels/sky_dome.gd), made here for the level
 var _last_hour := -1.0
+var _fog_base := 0.0   # the level's volumetric fog density, before the morning mist
 
 
 func _ready() -> void:
@@ -61,6 +65,10 @@ func _ready() -> void:
 			_sky = sky.sky_material
 		if mood:
 			mood.apply_static(world_environment.environment)
+		_fog_base = world_environment.environment.volumetric_fog_density
+	if sun:
+		sun.directional_shadow_blend_splits = true
+		sun.light_angular_distance = SUN_SIZE + (mood.overcast * 4.0 if mood else 0.0)
 	if not Engine.is_editor_hint():
 		_dome = SkyDome.new()
 		_dome.set_motes(mood.motes_day if mood else "pollen", mood.motes_night if mood else "fireflies")
@@ -135,6 +143,7 @@ func apply(hour: float) -> void:
 		if mood:
 			env.ambient_light_energy = mood.ambient(env.ambient_light_energy)
 			env.fog_light_color = mood.fog(env.fog_light_color)
+			env.volumetric_fog_density = _fog_base + mood.mist(hour)
 		# The fill the sky's colour is mixed with (ambient_light_sky_contribution), so
 		# shade isn't all sky-blue: a dimmer fog light, cool at night, near-neutral by day.
 		# Never darker than NIGHT_FILL: moonlit blue, enough to see the ground by.

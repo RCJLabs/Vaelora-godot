@@ -143,7 +143,7 @@ A mood can set:
 Builders pass a mood to `common()`, as in `common("Ilunhall", true, "capital")`.
 
 **Nights are brighter now.** The shade's fill colour never drops below a moonlit blue
-(`NIGHT_FILL`), and the night's ambient light is 2.2, so you can see the ground on a phone. It's
+(`NIGHT_FILL`), and the night's ambient light is 2.2, so you can see the ground. It's
 still dark. Stealth goes by the clock, not by how bright it looks, so this changes nothing in
 play.
 
@@ -188,8 +188,7 @@ Changing the preset rebuilds the cover.
 
 **Cost:** the scatter is built when the level loads, in the loading frame, so it isn't a hitch a
 moment into play.
-- Weirholt, the biggest: about 25,000 pieces, 150 ms on a desktop. Expect a few times that on a
-  phone.
+- Weirholt, the biggest: about 25,000 pieces, 150 ms on a desktop.
 - Medium halves it.
 
 Builders: `ground_cover(style, area)`, plus `.add_to_group("ground_cover", true)` on the grass.
@@ -232,7 +231,7 @@ The Vale's waystation is hand-made and unchanged.
 - Cloud cover comes from the mood (`LevelMood.clouds`): Vale 0.4, Riverlands 0.55, Fields 0.85,
   Ilunhall 0.3.
 - They're not in the sky shader on purpose. A sky shader that animates recomputes the scene's
-  ambient light every frame, which phones can't spare.
+  ambient light every frame, which costs every frame for nothing.
 
 **The Vale** now has the ground skirt out to the horizon too, so there's no dark band past its
 edge.

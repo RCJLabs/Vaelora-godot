@@ -18,3 +18,4 @@ saturation = 1.1
 clouds = 0.25
 motes_day = "pollen"
 motes_night = "fireflies"
+morning_mist = 0.025

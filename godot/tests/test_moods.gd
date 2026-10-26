@@ -42,8 +42,16 @@ func _process(_d: float) -> bool:
 					dn.mood.resource_path if dn.mood else "none")
 			dn.apply(12.0)
 			sun_energy[REGIONS[path]] = n("Sun").light_energy
+			ok(n("Sun").light_angular_distance >= dn.SUN_SIZE and n("Sun").directional_shadow_blend_splits, "%s: a sun with a size (soft shadows far from what casts them)" % current_scene.name)
+			if REGIONS[path] == "riverlands":
+				var noon_fog: float = env.volumetric_fog_density
+				dn.apply(6.0)
+				ok(env.volumetric_fog_density > noon_fog + 0.02, "Riverlands: mist at dawn", [env.volumetric_fog_density, noon_fog])
+				dn.apply(12.0)
+				near(env.volumetric_fog_density, noon_fog, 0.0001, "burnt off by noon")
 			if REGIONS[path] == "fields":
 				ok(n("Sun").shadow_opacity < 0.7, "the Fields are overcast: soft shadows", n("Sun").shadow_opacity)
+				ok(n("Sun").light_angular_distance > dn.SUN_SIZE + 1.0, "and a sun hidden by cloud: blurred shadows", n("Sun").light_angular_distance)
 				ok(env.adjustment_saturation < 0.8, "and a grey grade", env.adjustment_saturation)
 			if REGIONS[path] == "capital":
 				near(env.fog_density, 0.0035, 0.0001, "Ilunhall's haze")
