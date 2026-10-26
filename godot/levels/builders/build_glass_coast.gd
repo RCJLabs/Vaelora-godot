@@ -268,6 +268,7 @@ func _build_vault() -> Node3D:
 	scene.name = "UnderGlass"
 	scene.add_to_group("navmesh_source", true)
 	common("UnderGlass", false)
+	air(0.015, Color(0.7, 0.85, 0.9))   # cold, clear: glass dust
 	var env: Environment = scene.get_node("WorldEnvironment").environment
 	env.ambient_light_color = Color(0.45, 0.6, 0.65)
 	env.ambient_light_energy = 0.9

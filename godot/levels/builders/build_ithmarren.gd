@@ -305,6 +305,7 @@ func _build_rootwell() -> Node3D:
 	scene.name = "Rootwell"
 	scene.add_to_group("navmesh_source", true)
 	common("Rootwell", false)
+	air(0.025, Color(0.75, 0.85, 0.7))   # green, close, pollen in it
 	var env: Environment = scene.get_node("WorldEnvironment").environment
 	env.ambient_light_color = Color(0.4, 0.46, 0.36)
 	env.ambient_light_energy = 0.9

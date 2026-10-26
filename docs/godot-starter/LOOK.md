@@ -265,7 +265,7 @@ every outdoor region gets it, including the hand-made Vale.
 | **Morning mist**: volumetric fog that gathers before dawn and burns off by about 9:30 | `LevelMood.morning_mist`: Riverlands 0.03, Ithmarren 0.025, Fields 0.02, Vale 0.015 | High and Ultra (it's volumetric fog) |
 
 As with the other effects, a preset only ever switches these **off** relative to how a scene was
-built: a scene built without SDFGI (every interior, for now) doesn't gain it on Ultra.
+built: a scene built without SDFGI doesn't gain it on Ultra.
 
 Weirholt at 6:30, before and after (High):
 
@@ -281,8 +281,34 @@ GPU:
 - toggle **SDFGI → Enabled** and watch the shade under the gate towers and eaves;
 - if it's too bright, lower **SDFGI → Energy** (1.0 now); if shade goes too dark, raise it.
 
-**Interiors are next.** Each generated interior has its own environment written into its scene,
-so giving them GI means changing `builder_base.common()` and rebuilding them.
+## Interiors
+
+Every interior gets the same PC look, built into its scene:
+- **SSAO**: contact shadows in corners and under things.
+- **Bounce light**: SDFGI from High, SSIL on Ultra, as outdoors. The lamps and braziers light
+  the walls round them, not just what they point at. `sdfgi_min_cell_size` is 0.1 (outdoors
+  0.2), because drifts and rooms are only a few metres wide.
+- **Air**: a little volumetric fog, so the lamps and braziers glow in it, and the rest falls
+  away into dark. High and Ultra only, like all volumetric fog.
+
+Generated interiors get it from `builder_base.common()`, and each builder sets its own air
+with `air(density, tint)`:
+
+| Interior | Air | Why |
+|---|---|---|
+| Weirholt's culvert | 0.035, green-grey | Wet |
+| Seam Nine | 0.03, warm grey | Rock dust from the cutting |
+| Ilunhall's Undercroft | 0.025, grey-green | Damp |
+| The Rootwell | 0.025, green | Close; pollen in it |
+| The Deep Ring | 0.02, grey | (the default) |
+| The Under-Glass | 0.015, cold blue | Clear: glass dust |
+| Karrowdeep | 0.012, cold blue | A huge hall, so thin (and it keeps its distance fog) |
+
+The hand-made test dungeon and waystation cellar already had SSAO and air (0.025 and 0.03), and
+now have the bounce light too.
+
+**Seen, and not:** the air renders in the cloud session's screenshots; the bounce light doesn't
+(see above). Check it on a real GPU the same way, on any interior's `WorldEnvironment`.
 
 ## Renderers (a caveat)
 

@@ -405,23 +405,52 @@ func lantern(name: String, pos: Vector3, color := Color(1, 0.75, 0.45)) -> void:
 	own(light)
 
 
+## Underground and indoors: no sky, a dim fill, and the PC look (docs/godot-starter/LOOK.md,
+## "Interiors"): contact shadows, bounce light from the lamps and braziers (SDFGI from
+## High, SSIL on Ultra: systems/settings.gd), and a little air for those lights to glow in.
+func _interior_environment() -> Environment:
+	var e := Environment.new()
+	e.background_mode = Environment.BG_COLOR
+	e.background_color = Color(0.02, 0.02, 0.025)
+	e.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	e.ambient_light_color = Color(0.3, 0.32, 0.35)
+	e.ambient_light_energy = 0.45
+	e.tonemap_mode = Environment.TONE_MAPPER_ACES
+	e.glow_enabled = true
+	e.ssao_enabled = true
+	e.ssao_radius = 1.0
+	e.sdfgi_enabled = true
+	e.sdfgi_use_occlusion = true
+	e.sdfgi_read_sky_light = false   # there's no sky down here, only the black
+	e.sdfgi_min_cell_size = 0.1      # rooms and drifts a few metres wide
+	e.sdfgi_bounce_feedback = 0.5
+	e.ssil_enabled = true
+	e.ssil_radius = 3.0
+	e.ssil_intensity = 0.8
+	e.volumetric_fog_enabled = true
+	e.volumetric_fog_anisotropy = 0.3
+	e.volumetric_fog_length = 40.0
+	e.volumetric_fog_ambient_inject = 0.1
+	e.volumetric_fog_gi_inject = 1.0
+	return e
+
+
+## An interior's air: how thick its volumetric fog is, and its colour (what the lamps light
+## up in it). common() gives every interior the default; call it after common() to change it.
+func air(density := 0.02, tint := Color(0.8, 0.8, 0.82)) -> void:
+	var e: Environment = scene.get_node("WorldEnvironment").environment
+	e.volumetric_fog_density = density
+	e.volumetric_fog_albedo = tint
+
+
 ## The nodes every level needs. `mood`: an outdoor level's weather (levels/moods/<mood>.tres).
 func common(level_name: String, outdoor: bool, mood := "") -> void:
 	var env := WorldEnvironment.new()
 	env.name = "WorldEnvironment"
-	if outdoor:
-		env.environment = ATMOSPHERE
-	else:
-		var e := Environment.new()
-		e.background_mode = Environment.BG_COLOR
-		e.background_color = Color(0.02, 0.02, 0.025)
-		e.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-		e.ambient_light_color = Color(0.3, 0.32, 0.35)
-		e.ambient_light_energy = 0.45
-		e.tonemap_mode = Environment.TONE_MAPPER_ACES
-		e.glow_enabled = true
-		env.environment = e
+	env.environment = ATMOSPHERE if outdoor else _interior_environment()
 	own(env)
+	if not outdoor:
+		air()
 	if outdoor:
 		var sun := DirectionalLight3D.new()
 		sun.name = "Sun"

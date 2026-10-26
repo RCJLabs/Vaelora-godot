@@ -134,6 +134,7 @@ func _build_deep_ring() -> Node3D:
 	scene.name = "DeepRing"
 	scene.add_to_group("navmesh_source", true)
 	common("DeepRing", false)
+	air(0.02, Color(0.75, 0.75, 0.8))
 	var stone := Color(0.24, 0.24, 0.26)
 	# A tunnel south from the ladder into a round chamber, ringed by eight stones.
 	box("TunnelFloor", Vector3(6, 0.5, 16), Vector3(0, -0.25, 6), stone, "surface_stone")
