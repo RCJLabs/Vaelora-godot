@@ -93,6 +93,13 @@ func _build_fields() -> Node3D:
 	marker("FromRiverlands", Vector3(0, 0, -92), PI)
 	signpost("RoadSign", "North: Weirholt and the Riverlands.\nSouth: Greyfold, and the Grieving Fields.", Vector3(3, 1.4, -90), PI)
 
+	# The Imperial Road east to Ilunhall.
+	box("ImperialRoadPaving", Vector3(60, 0.04, 5), Vector3(68, 0.02, 0), Color(0.4, 0.38, 0.34))
+	door("ImperialRoad", "res://levels/ilunhall.tscn", "FromFields", "Ilunhall", "Take the Imperial Road to",
+			Vector3(0.4, 3, 4), Vector3(97, 1.5, 0), Color(0.45, 0.32, 0.18))
+	marker("FromIlunhall", Vector3(92, 0, 0), PI / 2.0)
+	signpost("ImperialSign", "East: the Imperial Road, to Ilunhall.\nWest: Greyfold.", Vector3(90, 1.4, 3), PI / 2.0)
+
 	var level_map := Node.new()
 	level_map.name = "LevelMap"
 	level_map.set_script(LEVEL_MAP)

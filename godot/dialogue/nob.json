@@ -1,0 +1,118 @@
+{
+	"start": [
+		{
+			"node": "paid",
+			"requires_flag": "horn_to_nob"
+		},
+		{
+			"node": "returned",
+			"requires_flag": "horn_returned"
+		},
+		{
+			"node": "have",
+			"requires_item": "hundredth_horn"
+		},
+		{
+			"node": "again",
+			"requires_flag": "horn_started"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Small folk, smaller voice, eyes that have already priced your boots. \"Nob Ashby. I move things from where they're not wanted to where they are. You've got honest hands. Shame, that.\"",
+			"set_flag": "met_nob",
+			"choices": [
+				{
+					"text": "What kind of things?",
+					"next": "job"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"job": {
+			"text": "\"The Long Table up on the Feast Steps keeps a horn in its trophy chest. The Hundredth Horn: gold-bound, Hallam drank from it on the hundredth night, so they say, which he didn't. A buyer of mine wants it. The chest's locked and Odo never looks at it. Bring it to me and there's a hundred and fifty in it, and maybe a window without a lantern for you some dark night.\"",
+			"choices": [
+				{
+					"text": "I'll get it.",
+					"next": "accepted",
+					"set_flag": "horn_started"
+				},
+				{
+					"text": "Not my line of work.",
+					"next": "end",
+					"set_flag": "horn_started"
+				}
+			]
+		},
+		"accepted": {
+			"text": "\"Quietly. The Long Table never really empties, but nobody up there is looking at the trophies; they're looking at their cups.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "\"The horn. Trophy chest. Long Table. I'm not getting younger, and neither's my buyer.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"have": {
+			"text": "His eyes go straight to the bag where you put it. \"Now there's a sight.\"",
+			"choices": [
+				{
+					"text": "Here. A hundred and fifty, you said.",
+					"next": "paid_now",
+					"take_item": "hundredth_horn",
+					"give_gold": 150,
+					"set_flag": [
+						"horn_to_nob",
+						"lampless_friend"
+					]
+				},
+				{
+					"text": "Not yet.",
+					"next": "end"
+				}
+			]
+		},
+		"paid_now": {
+			"text": "The horn vanishes so fast you aren't sure you saw it go. \"Pleasure. If you ever want more work, look for a window with no lantern in it on the dark of the Wanderer. Knock twice.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"paid": {
+			"text": "\"Never seen you before in my life, friend. Lovely weather.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"returned": {
+			"text": "\"You gave it back. To Odo. You had it in your hands and you gave it back.\" He shakes his head, sincerely sorry for you.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

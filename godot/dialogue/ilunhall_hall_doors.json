@@ -1,0 +1,31 @@
+{
+	"start": [
+		{
+			"node": "dim",
+			"requires_flag": "conduit_broken"
+		},
+		{
+			"node": "look"
+		}
+	],
+	"nodes": {
+		"look": {
+			"text": "Doors three storeys tall, sheathed in gold and shut. Behind them, faintly, a feast that hasn't stopped in living memory. The Hall of Spears is not open to you. Not yet.",
+			"choices": [
+				{
+					"text": "(Leave them)",
+					"next": "end"
+				}
+			]
+		},
+		"dim": {
+			"text": "The doors are still gold, but the eaves above them have gone the colour of weak tea. Inside, the feast is quieter than it was.",
+			"choices": [
+				{
+					"text": "(Leave them)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

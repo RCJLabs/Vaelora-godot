@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "book_low_lane_verse"
+display_name = "The Hundred Lights (the Low Lane way)"
+description = "Saelie's copy of a verse from the Rune Bridge, written out in a Passenger's looping hand."
+value = 10
+weight = 0.2
+book_text = "Saelie's note at the top: The Order's children sing that Hallam put the lights out. The bridge remembers it differently. This is the third verse, the Choir's way. Don't sing it where the Lantern Order can hear.
+
+On the hundredth night, by the old standing stone,
+the last light was little, and frightened, and alone.
+It said, \"We were lost, and we only came by,
+and we cannot go home till you light us the sky.\"
+
+So Hallam set lanterns in every high hall,
+not to keep the lights out, but to guide them, and all
+the lost ones went up through the gold and the gold,
+and the Hundred are home, so the old verses hold.
+
+(Under it: There are more verses. The Choir has the rest, and is afraid of them.)"

@@ -1,0 +1,37 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Bruna Deepseal, of Karrowdeep and the Seamwrights' guild. Runes cut true, ingots weighed honest. The Ilunhall smiths charge double and gild the handle.",
+			"choices": [
+				{
+					"text": "Let's trade.",
+					"next": "end",
+					"open_trade": "bruna"
+				},
+				{
+					"text": "Karrowdeep?",
+					"next": "karrowdeep"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"karrowdeep": {
+			"text": "The city in the mountain. Halls round a chasm, markets on bridges, the guilds' law cut in the walls. And under the lowest gallery, the mines go down further than anyone admits. Something down there sings, my gran said. Gran said a lot.",
+			"choices": [
+				{
+					"text": "Let's trade.",
+					"next": "end",
+					"open_trade": "bruna"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

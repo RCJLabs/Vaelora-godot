@@ -1,0 +1,161 @@
+{
+	"start": [
+		{
+			"node": "busy",
+			"requires_not_flag": "undercroft_cleared"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"busy": {
+			"text": "A grey-haired woman at the desk by the cistern doesn't look up. \"Not while my people are dying in front of me. Finish it, or leave.\"",
+			"choices": [
+				{
+					"text": "(Leave her)",
+					"next": "end"
+				}
+			]
+		},
+		"greet": {
+			"text": "Magister Vessa puts down her pen. Her hands are grey to the wrist, and the grey runs up under her sleeves. \"You broke my engine in the Fields. I thought you'd be taller.\" She glances at the conduit, still humming. \"Go on, then. Ask.\"",
+			"set_flag": "met_vessa",
+			"choices": [
+				{
+					"text": "Why feed the light-stone?",
+					"next": "why"
+				}
+			]
+		},
+		"why": {
+			"text": "\"Because it's dying. Light-stone is what the lights leave behind: residue. Ilunhall burns through it like a feast burns through bread, and it's nearly gone. When the eaves go dark the city panics, and when the city panics the Lantern Order burns everyone with grey in their hands. Me. The Ashen. Anyone.\"",
+			"choices": [
+				{
+					"text": "And the wisps you drain?",
+					"next": "wisps"
+				}
+			]
+		},
+		"wisps": {
+			"text": "\"Are already dying. I'm a healer, or I was.\" She turns her grey hands over. \"A. says this is the lights I've drunk, trying to find their way out. She says she'll carry them home, north, on the dark of the Wanderer, and I'll be well, and they'll be free. All the Empire has to do is not go dark before then.\"",
+			"choices": [
+				{
+					"text": "Who is A.?",
+					"next": "a"
+				}
+			]
+		},
+		"a": {
+			"text": "\"A small woman. Old. Older than anyone should be. She deals cards, and she cheats, and she says so.\" A thin smile. \"I don't know what she is. I know she's the only one who ever offered me a cure.\"",
+			"choices": [
+				{
+					"text": "Turn on her. Help me end this properly.",
+					"next": "turned",
+					"fail_next": "not_yet",
+					"check": {
+						"id": "vessa_turn",
+						"kind": "persuade",
+						"difficulty": 45
+					},
+					"set_flag": [
+						"vessa_turned",
+						"vessa_spared",
+						"vessa_gone"
+					],
+					"give_item": "vessa_ledger"
+				},
+				{
+					"text": "Go. Find your cure some other way.",
+					"next": "spared",
+					"set_flag": [
+						"vessa_spared",
+						"vessa_gone"
+					]
+				},
+				{
+					"text": "The Lantern Order is waiting for you upstairs.",
+					"next": "handed",
+					"requires_flag": "severin_deal",
+					"set_flag": [
+						"vessa_handed",
+						"vessa_gone"
+					],
+					"give_gold": 100,
+					"add_reputation": {
+						"lantern_order": 15
+					}
+				},
+				{
+					"text": "(Attack her)",
+					"next": "end",
+					"set_flag": [
+						"vessa_fight",
+						"vessa_gone"
+					]
+				}
+			]
+		},
+		"not_yet": {
+			"text": "She laughs, tired. \"Not yet. You haven't given me a better offer than she has.\"",
+			"choices": [
+				{
+					"text": "Go. Find your cure some other way.",
+					"next": "spared",
+					"set_flag": [
+						"vessa_spared",
+						"vessa_gone"
+					]
+				},
+				{
+					"text": "The Lantern Order is waiting for you upstairs.",
+					"next": "handed",
+					"requires_flag": "severin_deal",
+					"set_flag": [
+						"vessa_handed",
+						"vessa_gone"
+					],
+					"give_gold": 100,
+					"add_reputation": {
+						"lantern_order": 15
+					}
+				},
+				{
+					"text": "(Attack her)",
+					"next": "end",
+					"set_flag": [
+						"vessa_fight",
+						"vessa_gone"
+					]
+				}
+			]
+		},
+		"turned": {
+			"text": "She looks at her hands for a long time. Then she pushes her ledger across the desk. \"Everything I've delivered, and where A. sends me next. If she's lying about the cure, I'd rather know.\" She stands. \"I'll be gone by morning. If you need the Mercy from the inside, I'll find you.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"spared": {
+			"text": "\"Mercy, from you. How strange.\" She gathers her papers and walks out past the conduit without looking back.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"handed": {
+			"text": "She hears the name of the Order and goes very still. Then she stands and holds out her grey hands to be bound. \"At least it'll be quick.\" You take her up the steps to Severin's inquisitors, who are waiting.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

@@ -29,6 +29,16 @@
 			"name": "The Ashen of the Fields",
 			"description": "The quiet grey villages of the Grieving Fields, led by their Listeners. They hear the wisps, mourn them, and trust outsiders about as far as the next cairn.",
 			"known_when": { "requires_flag": "met_ysolde" }
+		},
+		"ilunar_empire": {
+			"name": "The Ilunar Empire",
+			"description": "The crown, its legions and its nobles. Empress Corvina rules from the Hall of Spears in Ilunhall, and her Steward decides who gets near her.",
+			"known_when": { "requires_flag": "met_cassia" }
+		},
+		"lantern_order": {
+			"name": "The Lantern Order",
+			"description": "Lantern-bearing inquisitors who hunt corrupt mages and burn essence-drinkers. Their chapterhouse stands on the Long Halls of Ilunhall.",
+			"known_when": { "requires_flag": "met_severin" }
 		}
 	}
 }

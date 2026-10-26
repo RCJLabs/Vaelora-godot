@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "hundredth_horn"
+display_name = "The Hundredth Horn"
+description = "A drinking horn bound in gold, from the Long Table's trophy chest. Ilunhall says Hallam drank from it on the hundredth night. Ilunhall says a lot of things about its feast halls."
+value = 250
+weight = 1.0

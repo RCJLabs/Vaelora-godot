@@ -10,6 +10,7 @@ like Weirholt. Names and people are *(suggested)*; the region itself is in the l
 - From Weirholt: the **south road**, past the south gate and Ama's farm, to the map's south
   edge. You arrive at the top of the Fields' road.
 - Back: the north road at the Fields' north edge. Both regions are in fast travel.
+- East: the **Imperial Road**, at the Fields' east edge, to Ilunhall (`ILUNHALL.md`).
 
 ## The place
 
@@ -52,7 +53,6 @@ trees, enemies, the common level nodes); Weirholt's builder was split onto it un
 
 - Greybox, and nobody moves.
 - Wisps aren't placed on the laying grounds yet (the Ashen side of them is only in dialogue).
-- Ilunhall, where the main thread now points, isn't built.
 - `tests/test_grieving_fields.gd` plays an Ashen character through the road both ways, the
   people, the merchant and trainer, fast-travel arrival points, and every quest, with all three
   endings of The Wisp-Finder.

@@ -51,6 +51,8 @@ def describe(condition):
         parts.append(flag)
     for flag in as_list(condition.get("requires_not_flag")):
         parts.append("not " + flag)
+    if "requires_any_flag" in condition:
+        parts.append("any of " + " / ".join(as_list(condition["requires_any_flag"])))
     for item in as_list(condition.get("requires_item")):
         parts.append("has " + (item if isinstance(item, str) else "%s x%d" % (item["id"], item.get("count", 1))))
     for item in as_list(condition.get("requires_not_item")):
@@ -79,7 +81,7 @@ class Index:
         self.read_by = defaultdict(set)
 
     def conditions(self, condition, where):
-        for key in ["requires_flag", "requires_not_flag"]:
+        for key in ["requires_flag", "requires_not_flag", "requires_any_flag"]:
             for flag in as_list(condition.get(key)):
                 self.read_by[flag].add(where)
 

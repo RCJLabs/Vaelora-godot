@@ -1,0 +1,14 @@
+{
+	"start": "look",
+	"nodes": {
+		"look": {
+			"text": "An iron gate under the Market Steps, barred from the inside. Warm air breathes through it, and it smells of hot stone.",
+			"choices": [
+				{
+					"text": "(Leave it)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

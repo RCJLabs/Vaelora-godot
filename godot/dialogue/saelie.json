@@ -1,0 +1,104 @@
+{
+	"start": [
+		{
+			"node": "sung",
+			"requires_flag": "verse_sung"
+		},
+		{
+			"node": "ready",
+			"requires_flag": [
+				"verse_rune_1",
+				"verse_rune_2",
+				"verse_rune_3"
+			]
+		},
+		{
+			"node": "again",
+			"requires_flag": "verse_started"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A tall, thin Passenger in a hooded coat, sitting on a bollard with her eyes on the water. \"Saelie, of the Low Lane. Of the boats, these days.\" She looks up at the halls, gold against the mountain. \"Do you know the song about Hallam and the Hundred Lights?\"",
+			"set_flag": "met_saelie",
+			"choices": [
+				{
+					"text": "Hallam put the lights out, one a night.",
+					"next": "wrong"
+				},
+				{
+					"text": "No.",
+					"next": "ask"
+				}
+			]
+		},
+		"wrong": {
+			"text": "\"That's how the Order sings it.\" She doesn't sound angry; she sounds tired. \"There's an older way. Some of it is cut into the Rune Bridge, up on the Feast Steps, and nobody's read it aloud in a long time.\"",
+			"choices": [
+				{
+					"text": "Go on.",
+					"next": "ask"
+				}
+			]
+		},
+		"ask": {
+			"text": "\"Three rail-stones on the Rune Bridge. The runes only wake at night. Read them, and bring me the words, and I'll sing them to you the way they were meant. I can't go up there myself; the Order watches Passengers on the Steps.\"",
+			"choices": [
+				{
+					"text": "I'll read them.",
+					"next": "end",
+					"set_flag": "verse_started"
+				},
+				{
+					"text": "Maybe later.",
+					"next": "end",
+					"set_flag": "verse_started"
+				}
+			]
+		},
+		"again": {
+			"text": "\"Three stones on the Rune Bridge. At night, when the runes are lit.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"ready": {
+			"text": "You tell her the words, all three stones. She closes her eyes and mouths them, and then she sings, very quietly, so the boats don't carry it.\n\n\"...not to keep the lights out, but to guide them, and all / the lost ones went up through the gold and the gold, / and the Hundred are home, so the old verses hold.\"\n\nShe opens her eyes. \"That's the third verse. The Choir has the rest. They're afraid of them. Maybe now they'll be a little less afraid.\"",
+			"set_flag": [
+				"verse_sung",
+				"choir_verse_ilunhall"
+			],
+			"give_item": "book_low_lane_verse",
+			"choices": [
+				{
+					"text": "Why are they afraid?",
+					"next": "why"
+				}
+			]
+		},
+		"why": {
+			"text": "\"Because if the lanterns were meant to guide the lights home, then the Order has spent nine hundred years doing the opposite. And so has every child singing Hallam to sleep.\" She hands you a folded page. \"Keep it. Don't sing it on the Steps.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"sung": {
+			"text": "\"The Choir will hear about you,\" Saelie says. \"That's a good thing, I think.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

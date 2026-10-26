@@ -1,0 +1,131 @@
+{
+	"start": [
+		{
+			"node": "hostile",
+			"requires_corruption": 2
+		},
+		{
+			"node": "handed",
+			"requires_flag": "vessa_handed"
+		},
+		{
+			"node": "killed",
+			"requires_flag": "vessa_killed"
+		},
+		{
+			"node": "spared",
+			"requires_flag": "vessa_spared"
+		},
+		{
+			"node": "again",
+			"requires_flag": "met_severin"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "An inquisitor in black, a shuttered lantern at his belt and another hung on the chapterhouse door behind him. \"Inquisitor-Captain Severin, of the Lantern Order. You've come up the Imperial Road. Seen anything burn on the way? Anything that should have?\"",
+			"set_flag": "met_severin",
+			"choices": [
+				{
+					"text": "I'm looking for a mage who signs herself V.",
+					"next": "vessa"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "\"Still breathing, still clean. Good.\"",
+			"choices": [
+				{
+					"text": "About Magister Vessa.",
+					"next": "vessa",
+					"requires_not_flag": "severin_deal"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"vessa": {
+			"text": "His eyes sharpen. \"Magister Vessa. Lamp College, licence revoked, hollowing to the elbow. She's in this city and the Steward won't let me search the Steps. Too many feasts to disturb.\" He taps the lantern. \"Our lanterns gutter near the Market Steps, as though something underneath is drinking the light. There's an old cistern gate there; this warrant says the watch looks the other way while you open it.\"",
+			"choices": [
+				{
+					"text": "If I find her, what then?",
+					"next": "deal"
+				}
+			]
+		},
+		"deal": {
+			"text": "\"Bring her to me, alive, and the Order will be grateful: a hundred gold, and my word for you anywhere a lantern hangs. Kill her if you must. Let her go and I'll know.\"",
+			"choices": [
+				{
+					"text": "Alive, then. If I can.",
+					"next": "end",
+					"set_flag": [
+						"severin_deal",
+						"undercroft_lead"
+					]
+				},
+				{
+					"text": "I'll decide when I find her.",
+					"next": "end",
+					"set_flag": [
+						"severin_deal",
+						"undercroft_lead"
+					]
+				}
+			]
+		},
+		"handed": {
+			"text": "\"She came up those steps with her hands bound and her head up. I'll give her that.\" \"The Order's purse reached you, I trust. She burns at dawn on Lanternfast eve, as the Order requires. You did right.\"",
+			"choices": [
+				{
+					"text": "Did I?",
+					"next": "end"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			],
+			"set_flag": "met_severin"
+		},
+		"killed": {
+			"text": "\"Dead's less use than alive, but the Order isn't sentimental.\" A nod. \"You did the work.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			],
+			"set_flag": "met_severin"
+		},
+		"spared": {
+			"text": "He doesn't say anything at first. Then: \"My lanterns stopped guttering, and nobody came up the steps in chains. I can count.\" He turns away. \"The Order has a long memory.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			],
+			"set_flag": "met_severin"
+		},
+		"hostile": {
+			"text": "His hand goes to the lantern at his belt before you've said a word. \"I can see it in your eyes, essence-drinker. Walk back down those steps while I'm still deciding.\"",
+			"choices": [
+				{
+					"text": "(Leave)",
+					"next": "end"
+				}
+			],
+			"set_flag": "met_severin"
+		}
+	}
+}

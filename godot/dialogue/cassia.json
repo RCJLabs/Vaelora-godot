@@ -1,0 +1,160 @@
+{
+	"start": [
+		{
+			"node": "after",
+			"requires_flag": "light_reported"
+		},
+		{
+			"node": "report",
+			"requires_any_flag": [
+				"vessa_spared",
+				"vessa_handed",
+				"vessa_killed"
+			],
+			"requires_flag": "conduit_resolved"
+		},
+		{
+			"node": "again",
+			"requires_flag": "met_cassia"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A woman in imperial crimson with a ledger under one arm and the patience of a glacier. \"Cassia Varro, Steward of the Hall of Spears. The Empress receives petitions on the first day of each month, through me. You are not on my list.\"",
+			"set_flag": "met_cassia",
+			"choices": [
+				{
+					"text": "What's wrong with the light-stone?",
+					"next": "light"
+				},
+				{
+					"text": "Who decides who sees the Empress?",
+					"next": "empress"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "\"Not on my list. Still.\"",
+			"choices": [
+				{
+					"text": "What's wrong with the light-stone?",
+					"next": "light"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"light": {
+			"text": "\"Nothing is wrong with the light-stone.\" Not a flicker. \"Ilunhall has glowed gold for nine hundred years and it will glow gold for nine hundred more. Anyone who says otherwise is welcome to say it to the Lantern Order.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"empress": {
+			"text": "\"I do. The Empress has a great deal to think about, and I make sure it's the right great deal.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"report": {
+			"text": "She sees your face and dismisses her clerks with two fingers. When they've gone: \"Well?\"",
+			"choices": [
+				{
+					"text": "The light-stone was being fed. Drained wisps, through a conduit under the Market Steps. I broke it.",
+					"next": "broken",
+					"requires_flag": "conduit_broken"
+				},
+				{
+					"text": "The Mercy were feeding the light-stone, under the Market Steps. I left it running.",
+					"next": "spared",
+					"requires_flag": "conduit_spared"
+				}
+			],
+			"set_flag": "met_cassia"
+		},
+		"broken": {
+			"text": "For a long moment the Steward says nothing. Then she closes her ledger. \"I knew it was dimming. I did not know what was keeping it lit.\" She looks up at the eaves, the colour of weak tea now. \"Two hundred gold, and you speak of this to no one. The Empire can survive a dim winter. It cannot survive a panic.\"",
+			"choices": [
+				{
+					"text": "Agreed. No one hears it from me.",
+					"next": "hushed",
+					"give_gold": 200,
+					"set_flag": [
+						"light_reported",
+						"light_hushed"
+					],
+					"add_reputation": {
+						"ilunar_empire": 10
+					}
+				},
+				{
+					"text": "People should know what their light costs.",
+					"next": "told",
+					"set_flag": [
+						"light_reported",
+						"light_told"
+					],
+					"add_reputation": {
+						"ilunar_empire": -10
+					}
+				}
+			]
+		},
+		"spared": {
+			"text": "\"Then the light holds.\" Something in her shoulders comes down an inch. \"I won't ask what it costs. I suspect you'll tell me anyway, and I'd rather you didn't.\" She writes you an order on the treasury. \"A hundred and fifty, with the Empire's thanks.\"",
+			"give_gold": 150,
+			"set_flag": "light_reported",
+			"add_reputation": {
+				"ilunar_empire": 15
+			},
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"hushed": {
+			"text": "\"Thank you.\" It sounds like it cost her something. \"The Hall of Spears remembers its friends.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"told": {
+			"text": "\"Then say it, and see who listens.\" She opens the ledger again. \"You'll find Ilunhall is very good at not hearing things.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"after": {
+			"text": "\"You again. I haven't forgotten, and I'd thank you not to remind me.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

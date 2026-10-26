@@ -70,6 +70,14 @@ const MERCHANTS := {
 				"tome_true_sight": 1, "tome_foresight": 1},
 		"unique": ["tome_true_sight", "tome_foresight"],
 	},
+	"bruna": {   # rune-goods on Ilunhall's quay
+		"name": "Bruna Deepseal",
+		"gold": 600,
+		"stock": {"lockpick": 20, "minor_healing_potion": 6, "potion_restore_magicka_1": 4, "potion_restore_health_1": 4,
+				"steel_ingot": 10, "iron_helmet": 1, "iron_cuirass": 1, "steel_greatsword": 1,
+				"tome_fire_rune": 1, "tome_frost_rune": 1, "tome_binding_rune": 1, "tome_enchant_weapon": 1},
+		"unique": ["tome_fire_rune", "tome_frost_rune", "tome_binding_rune", "tome_enchant_weapon"],
+	},
 }
 
 signal changed

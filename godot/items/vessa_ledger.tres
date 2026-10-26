@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "vessa_ledger"
+display_name = "Vessa's Ledger"
+description = "Magister Vessa's working book: harvests, deliveries, and the names behind them."
+value = 0
+weight = 0.4
+quest_item = true
+book_text = "A Lamp College hand, neat at the front and ragged at the back.
+
+Weirstones: forty-one lights. Delivered.
+The Deep Ring: one hundred and twelve. Delivered (the engine holds them; the Warden brings the cores up the Imperial Road).
+Ilunhall: fed nightly, through the old cistern. The eaves held through winter. The Steward does not ask.
+
+For A., in answer to the cards she dealt me:
+The cure is not a medicine. A. says the grey in my hands is the lights I've drunk looking for the way out, and the way out is north, on the dark of the Wanderer. She says she will carry them home and I will be well. She says the Empire must not go dark before then, or the Lantern Order will burn every one of us in the panic.
+
+I asked her what she is. She dealt another hand and said, \"Older than the confession, dear, and better at cards.\"
+
+Next: Karrowdeep. The Deep Guilds have a seam under the lowest gallery that sings. A. wants it before the Guilds dig it out."

@@ -47,6 +47,7 @@ VARIANTS = {
     "test_race": [["human"], ["elf"], ["orc"], ["passenger"], ["ashen"], ["small_folk"], ["deepfolk"]],
     "test_weirholt": [["varga"], ["bribe"], ["flee"]],
     "test_grieving_fields": [["persuade"], ["pay"], ["exile"]],
+    "test_ilunhall": [["turn"], ["hand"], ["fight"]],
     "test_rep": [["human_give"], ["keep"]],
     # Broken collision setups from FIRST_PERSON_SETUP.md: the first five fall, the rest stand.
     "test_wrong_things": [["mercy"], ["spare"], ["weapon"]],

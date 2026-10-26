@@ -5,6 +5,7 @@ class_name Conditions
 # must pass:
 #   "requires_flag": "name" or ["a", "b"]       all of these flags are set
 #   "requires_not_flag": "name" or ["a", "b"]   none of these flags are set
+#   "requires_any_flag": ["a", "b"]             at least one of these flags is set
 #   "requires_race": "Orc"
 #   "requires_background": "soldier" or ["soldier", "hunter"]   any of these
 #   "requires_trait": "charming" or ["a", "b"]                   all of these
@@ -30,6 +31,8 @@ static func met(entry: Dictionary) -> bool:
 	for flag in as_list(entry.get("requires_not_flag", [])):
 		if GameState.has_flag(flag):
 			return false
+	if entry.has("requires_any_flag") and not as_list(entry["requires_any_flag"]).any(func(f): return GameState.has_flag(f)):
+		return false
 	if entry.has("requires_race") and entry["requires_race"] != GameState.race:
 		return false
 	if entry.has("requires_background") and not Character.background in as_list(entry["requires_background"]):

@@ -1,0 +1,38 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "An orc in Ember College red, built like a siege-tower, with burn scars up both forearms she clearly considers decoration. \"Magister Ignatia Rufa, Ember College. If you're here to apply, you're too late in the year. If you're here to learn to throw fire, that I'll sell you.\"",
+			"set_flag": "met_ignatia",
+			"choices": [
+				{
+					"text": "Teach me. (Destruction)",
+					"next": "end",
+					"open_training": "ignatia"
+				},
+				{
+					"text": "Is magic getting harder?",
+					"next": "dimming"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"dimming": {
+			"text": "\"Harder? A firebolt costs what two did when I was a student. The College says it's poor technique. The College says a lot.\" She jerks her chin up at the gold eaves. \"Ask the eaves-wright how many stones she replaces a year, and then tell me it's technique.\"",
+			"choices": [
+				{
+					"text": "Teach me. (Destruction)",
+					"next": "end",
+					"open_training": "ignatia"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}
