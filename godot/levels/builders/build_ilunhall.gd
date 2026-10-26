@@ -257,6 +257,9 @@ func _build_city() -> Node3D:
 	npc("Severin", "Inquisitor-Captain Severin", "res://dialogue/severin.json", Vector3(40, 4, -26.5), Color(0.2, 0.18, 0.16), PI, null, "human/inquisitor")
 	npc("Odo", "Hallmaster Odo", "res://dialogue/odo.json", Vector3(-38, 8, -59), Color(0.5, 0.35, 0.2), PI, null, "human/innkeeper")
 	npc("Cassia", "Steward Cassia Varro", "res://dialogue/cassia.json", Vector3(5, 12, -77), Color(0.45, 0.12, 0.2), PI, null, "human/official")
+	# A day by the clock for the quay and the scaffold (the rest keep their posts).
+	gathering(Vector3(-36, 8, -50))   # outside the Long Table
+	routines(["Bruna", "Karra"])
 
 	# The road back west to the Grieving Fields.
 	door("ImperialRoad", "res://levels/grieving_fields.tscn", "FromIlunhall", "the Grieving Fields", "Take the Imperial Road to",
