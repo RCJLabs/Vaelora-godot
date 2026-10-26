@@ -447,6 +447,11 @@ func _on_died() -> void:
 	Engine.time_scale = 1.0   # in case a hit stop was running
 	hud.set_prompt("")
 	var killer: Node = last_attacker if Time.get_ticks_msec() - _last_hit_at < Defeat.KILLER_MEMORY_MS else null
+	if killer and is_instance_valid(killer) and killer.is_in_group("guards_fighting"):
+		show_message("The guards beat you down...")   # the law arrests; it doesn't kill (systems/crime.gd)
+		await get_tree().create_timer(1.5).timeout
+		Crime.arrest(self)
+		return
 	if Defeat.applies():   # Hardcore: wake up wounded instead of reloading
 		show_message("You fall...")
 		await get_tree().create_timer(1.5).timeout

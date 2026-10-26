@@ -53,6 +53,12 @@ The Outlaw background starts at +10.
 Nothing reacts to the rank yet beyond Mirela's lines; it's there for quests 4 and 5 (the barrow
 choice) and the side quest Licence to Burn.
 
+## Crime
+
+A crime someone sees costs you standing with the region's people, once you've met them:
+the River Compact in the Riverlands, the Ashen in the Fields, the Empire in Ilunhall,
+Riverwatch in the Vale (CRIME.md).
+
 ## In dialogue
 
 ```json

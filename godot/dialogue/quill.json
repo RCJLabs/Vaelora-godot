@@ -1,0 +1,31 @@
+{
+	"start": [
+		{"node": "again", "requires_flag": "met_quill"},
+		{"node": "hello"}
+	],
+	"nodes": {
+		"hello": {
+			"text": "A small man in a coat with too many pockets, sitting on a crate as if he's been there since the Steps were laid. \"Quill. I buy things. Most folk on the quay ask where a thing came from. I find it rude.\"",
+			"set_flag": "met_quill",
+			"choices": [
+				{"text": "Things anyone else would ask about?", "next": "fence"},
+				{"text": "Let's see what you've got.", "open_trade": "quill", "next": "end"},
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"fence": {
+			"text": "\"A merchant won't touch a purse that went missing on their own street. I'm not a merchant. Riverlands, Fields, up the Steps: I don't care whose it was. I care what it's worth.\"",
+			"choices": [
+				{"text": "Then let's trade.", "open_trade": "quill", "next": "end"},
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "\"Back again. Nobody followed you, I hope.\"",
+			"choices": [
+				{"text": "Let's trade.", "open_trade": "quill", "next": "end"},
+				{"text": "(Leave.)", "next": "end"}
+			]
+		}
+	}
+}

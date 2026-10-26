@@ -97,11 +97,11 @@ func _physics_process(_d: float) -> bool:
 			# Banter, now and then: the first line she hasn't said whose conditions pass.
 			said.clear()
 			CO._banter_left = 0.01
-			wait = 3
+			wait = 10   # it ticks in _process: under load several physics frames can pass first
 		2:
 			ok(said.size() == 1 and said[0][1].begins_with("You'd think after thirty years"), "banter", said)
 			CO._banter_left = 0.01
-			wait = 3
+			wait = 10
 		3:
 			ok(said.size() == 2 and said[1][1].begins_with("The Lantern Order burned my teacher"), "and the next line, not the same one", said)
 			# Brannoc instead.

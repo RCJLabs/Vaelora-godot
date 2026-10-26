@@ -90,7 +90,10 @@ func _build_fields() -> Node3D:
 	# A day by the clock (Ysolde listens at the stone, day and night).
 	gathering(Vector3(3, 0, 3))   # by the Listening Stone
 	routines(["Hesk", "Corin", "Marta", "Bram"])
-	stores("MartaCrate", "Marta's crate", {"bread": 3, "apple": 4, "lockpick": 2}, 10, Vector3(11, 0.35, -24.5), "Marta Coil")   # no guards out here: see CRIME.md
+	stores("MartaCrate", "Marta's crate", {"bread": 3, "apple": 4, "lockpick": 2}, 10, Vector3(11, 0.35, -24.5), "Marta Coil")
+	# The Listeners keep one warden on the road in (CRIME.md).
+	npc("FieldsWarden", "Warden Ashlock", "res://dialogue/fields_warden.json", Vector3(-3, 0, -19), Color(0.36, 0.36, 0.4), PI, null, "ashen/guard")
+	marker("JailRelease", Vector3(-3, 0, -22), PI)
 
 	# The way back north to the Riverlands.
 	door("RiverRoad", "res://levels/weirholt.tscn", "FromFields", "the Riverlands", "Take the north road to",

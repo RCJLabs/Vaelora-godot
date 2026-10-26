@@ -945,6 +945,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `met_mirela` | mirela: greet | mirela (start → bandits_done)<br>mirela (start → greet_again)<br>mirela (start → sees_hollowing)<br>mirela (start → trusted)<br>quest ask_forest |
 | `met_nob` (never checked) | nob: greet | – |
 | `met_odo` | odo: greet | odo (start → greet_again) |
+| `met_quill` | quill: hello | quill (start → again) |
 | `met_saelie` (never checked) | saelie: greet | – |
 | `met_severin` | severin: greet<br>severin: handed<br>severin: hostile<br>severin: killed<br>severin: spared | severin (start → again) |
 | `met_tarle` | tarle: greet | tarle (start → again) |
