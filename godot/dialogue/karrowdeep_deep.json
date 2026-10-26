@@ -1,0 +1,28 @@
+{
+	"start": [
+		{"node": "again", "requires_flag": "heard_blind_choir"},
+		{"node": "rim"}
+	],
+	"nodes": {
+		"rim": {
+			"text": "A shaft in the cavern floor, roped off with guild cord gone stiff with age. No bottom you can see. From very far down comes a sound the seam's chord was only part of: voices, if voices had no throats. The blind choir.",
+			"choices": [
+				{"text": "Listen.", "next": "listen"},
+				{"text": "(Step back.)", "next": "end"}
+			]
+		},
+		"listen": {
+			"text": "It isn't a song. It's a place, sung: a sky full of slow lights, a ship that is not a ship, a long way down and a longer way home. You lose the thread of it, then find it, then lose yourself.\n\nYou come to with your hands on the rope and no idea how long you've stood here. Your throat aches as though you've been singing too.",
+			"set_flag": "heard_blind_choir",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "The shaft. The song goes on down there, and you find you'd rather not hear it twice.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		}
+	}
+}

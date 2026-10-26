@@ -298,8 +298,8 @@ func routines(names: Array) -> void:
 
 ## Something on a stall, a counter or a table that belongs to `who` (a display
 ## name): taking it is stealing (systems/crime.gd). `item` "" with `gold` is a purse.
-func goods(name: String, item: String, count: int, pos: Vector3, who: String, gold := 0, label := "") -> StaticBody3D:
-	var b := box(name, Vector3(0.35, 0.2, 0.3), pos, Color(0.55, 0.45, 0.3) if item != "" else Color(0.45, 0.32, 0.15), "", null, PICKUP)
+func goods(name: String, item: String, count: int, pos: Vector3, who: String, gold := 0, label := "", parent: Node = null) -> StaticBody3D:
+	var b := box(name, Vector3(0.35, 0.2, 0.3), pos, Color(0.55, 0.45, 0.3) if item != "" else Color(0.45, 0.32, 0.15), "", parent, PICKUP)
 	b.collision_layer = 8   # "loot": the interact ray finds it, you walk through it
 	b.set("item_id", item)
 	b.set("item_count", count)

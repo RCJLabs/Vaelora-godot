@@ -273,6 +273,11 @@ func _build_city() -> Node3D:
 	door("ImperialRoad", "res://levels/grieving_fields.tscn", "FromIlunhall", "the Grieving Fields", "Take the Imperial Road to",
 			Vector3(0.4, 3, 4), Vector3(-84, 1.5, 20), Color(0.45, 0.32, 0.18))
 	marker("FromFields", Vector3(-78, 0, 20), -PI / 2.0)
+	# The Deep Road east, into the mountains, to Karrowdeep (docs/godot-starter/KARROWDEEP.md).
+	door("DeepRoad", "res://levels/karrowdeep.tscn", "FromIlunhall", "Karrowdeep", "Take the Deep Road to",
+			Vector3(0.4, 3, 4), Vector3(84.6, 1.5, 20), Color(0.35, 0.25, 0.15))
+	marker("FromKarrowdeep", Vector3(79, 0, 20), PI / 2.0)
+	signpost("DeepRoadSign", "East: the Deep Road, to Karrowdeep under the mountain.", Vector3(80, 1.4, 16), PI / 2.0)
 
 	var level_map := Node.new()
 	level_map.name = "LevelMap"

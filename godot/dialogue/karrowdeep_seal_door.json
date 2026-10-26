@@ -1,0 +1,34 @@
+{
+	"start": [
+		{"node": "keyed", "requires_item": "seal_key"},
+		{"node": "shut"}
+	],
+	"nodes": {
+		"shut": {
+			"text": "A slab of blue-grey stone set flush in the rock, cut from edge to edge with seals, each overlapping the last. At its heart the Table's nine marks, and a keyhole you could put three fingers in. SEALED BY GUILD-LAW.\n\nYou put your ear to it. Behind it, so faint you might be imagining it, something like singing.",
+			"choices": [
+				{"text": "Read the seals and unpick them, one by one.", "next": "unpicked", "requires_skill": {"runecraft": 40}, "set_flag": ["seam_nine_open", "seal_unpicked"]},
+				{"text": "(Leave it.)", "next": "end"}
+			]
+		},
+		"keyed": {
+			"text": "The seal-key slides into the heart of the door. The nine marks around the keyhole are worn smooth where hands have turned it before, and some of those hands have been recent.",
+			"choices": [
+				{"text": "Turn the key.", "next": "opened", "set_flag": "seam_nine_open", "take_item": "seal_key"},
+				{"text": "(Not yet.)", "next": "end"}
+			]
+		},
+		"opened": {
+			"text": "Something deep in the door gives with a sound like a held breath let go. The slab grinds back into the rock. Cold air comes up the drift behind it, and with it, louder now, the singing.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		},
+		"unpicked": {
+			"text": "You trace the seals from the rim inward, the way a Seal College hand would, loosening each one in the order it was cut. It takes an hour. The last one, the Table's own, lets go with a sound like a held breath. The slab grinds back into the rock. Cold air comes up the drift behind it, and with it, louder now, the singing.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		}
+	}
+}

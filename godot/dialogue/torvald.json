@@ -1,0 +1,33 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "A big Deepfolk with a lamp-black beard, wiping down a counter cut from one block of stone. \"The Lamp and Pick. Ale, stew, a bed at the back for those who've earned it. Hewers drink first; everyone else drinks after.\"",
+			"choices": [
+				{"text": "I need a bed.", "next": "bed", "requires_not_flag": "lamp_bed"},
+				{"text": "What do the hewers talk about?", "next": "talk"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"bed": {
+			"text": "\"Ten gold and it's yours whenever you want it. Quiet, mostly. The rock hums at night. You'll get used to it.\"",
+			"choices": [
+				{"text": "Here's ten.", "next": "bed_paid", "requires_gold": 10, "take_gold": 10, "set_flag": "lamp_bed"},
+				{"text": "Not now.", "next": "end"}
+			]
+		},
+		"bed_paid": {
+			"text": "\"At the back, past the brazier.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"talk": {
+			"text": "\"Seams. Pay. Who's sleeping with whose guildmaster.\" He sets down a mug. \"And the blind ones. Below the lowest gallery, under the ninth seam, my gran said there's a choir that sings in the dark and never stops, and anyone who hears the whole song comes up quiet. Gran said a lot of things. Gran also came up quiet.\"",
+			"choices": [
+				{"text": "I need a bed.", "next": "bed", "requires_not_flag": "lamp_bed"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

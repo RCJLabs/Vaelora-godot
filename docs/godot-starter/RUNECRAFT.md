@@ -48,4 +48,5 @@ New modifiers:
 - **Enchanting is a spell, not an item.** Enchanted weapons and armour you keep (the
   artificer half of the lore) need Smithing (phase 4) to make sense.
 - Runes are glowing discs. They need real rune art.
-- No trainer. All five tomes are at Maren's; the Seal College is far off in Karrowdeep.
+- One trainer: **Magister Orsa Deepcut** of the Seal College in Karrowdeep (to 60). The tomes are at
+  Maren's; Grima Coldiron on Karrowdeep's Market Bridge sells two of them too.

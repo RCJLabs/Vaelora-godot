@@ -56,7 +56,8 @@ choice) and the side quest Licence to Burn.
 ## Crime
 
 A crime someone sees costs you standing with the region's people, once you've met them:
-the River Compact in the Riverlands, the Ashen in the Fields, the Empire in Ilunhall,
+the River Compact in the Riverlands, the Ashen in the Fields, the Empire in Ilunhall, the Deep
+Guilds in Karrowdeep,
 Riverwatch in the Vale (CRIME.md).
 
 ## In dialogue

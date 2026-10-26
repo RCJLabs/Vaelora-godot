@@ -1,0 +1,123 @@
+{
+	"start": [
+		{"node": "after", "requires_flag": "seam_reported"},
+		{"node": "report", "requires_flag": "seam_resolved"},
+		{"node": "again", "requires_flag": "met_hrodna"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A Deepfolk woman in a leather apron worn smooth as a saddle, a guildmaster's chain over it, writing in a ledger as thick as a hearthstone. She doesn't look up until she's finished the line. \"Hrodna. I keep the Table this year. If you're here to sell, the Market Bridge. If you're here to complain, the Law Wall. If you're here for me, be quick.\"",
+			"set_flag": "met_hrodna",
+			"choices": [
+				{"text": "The Mercy lit Ilunhall's halls through a conduit of your seam-stone.", "next": "mark", "requires_flag": "light_reported", "requires_not_flag": "seam_nine_named"},
+				{"text": "Someone's cutting Seam Nine. Your own hewers hear the carts.", "next": "refuses", "requires_flag": "seam_nine_named", "requires_not_flag": "seam_nine_open", "requires_not_item": "seal_key"},
+				{"text": "What is the Table?", "next": "table"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"table": {
+			"text": "\"Nine guildmasters, one chair each, and a law cut in the wall where nobody can rub it out. Every seam in the mountain belongs to a guild, every contract is stone, and every dispute comes here. We argue for a week and then we carve it. It's slower than an Empress. It lasts longer.\"",
+			"choices": [
+				{"text": "The Mercy lit Ilunhall's halls through a conduit of your seam-stone.", "next": "mark", "requires_flag": "light_reported", "requires_not_flag": "seam_nine_named"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"mark": {
+			"text": "Her pen stops. You describe the mark on the conduit's stone and she draws it in the margin, without being asked, and looks at it a long time. \"Nine strokes and a bar. That's the ninth seam's mark. The Table sealed Seam Nine twenty years ago, under the Lowest Gallery. Nothing has been cut there since.\"",
+			"set_flag": "seam_nine_named",
+			"choices": [
+				{"text": "Then someone's cutting it now.", "next": "refuses"}
+			]
+		},
+		"refuses": {
+			"text": "\"Then someone is breaking guild-law, and the Table will find them.\" She shuts the ledger. \"Seam Nine is sealed. I won't unseal it on a stranger's word, and I won't hand a stranger the key. The last people who went past that door came back up and wouldn't say what they'd heard.\"",
+			"choices": [
+				{"text": "Your own hewers hear carts going through the Seal Door at night. Ask Ebba Lowlamp.", "next": "proof", "requires_flag": "ebba_heard", "requires_not_item": "seal_key", "requires_not_flag": "seam_nine_open"},
+				{"text": "Let me look. Seal it again after, with my name on the stone if I lie.", "next": "persuaded", "fail_next": "not_persuaded", "requires_not_item": "seal_key", "requires_not_flag": "seam_nine_open",
+					"check": {"id": "hrodna_key", "kind": "persuade", "difficulty": 50}},
+				{"text": "Then I'll find another way.", "next": "end"}
+			]
+		},
+		"proof": {
+			"text": "\"Lowlamp.\" She says it as if it's a stone she's turned over. \"Lowlamp doesn't make things up. She hasn't the imagination.\" She unhooks a long iron key from the chain at her neck and puts it in your hand, and doesn't let go of it at once. \"The seal-key. Open it, look, and come back up and tell this Table what you saw. Nobody else.\"",
+			"set_flag": "seal_key_given",
+			"give_item": "seal_key",
+			"choices": [
+				{"text": "I will.", "next": "end"}
+			]
+		},
+		"persuaded": {
+			"text": "She looks at you the way she looked at the mark. Then she unhooks a long iron key from the chain at her neck. \"Your name on the stone, then. The Table will remember it either way.\" She puts the key in your hand. \"Come back up and tell this Table what you saw. Nobody else.\"",
+			"set_flag": "seal_key_given",
+			"give_item": "seal_key",
+			"choices": [
+				{"text": "I will.", "next": "end"}
+			]
+		},
+		"not_persuaded": {
+			"text": "\"No.\" She opens the ledger again. \"Bring me something I can carve, and we'll talk.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Hrodna looks up from the ledger. \"Well?\"",
+			"choices": [
+				{"text": "The Mercy lit Ilunhall's halls through a conduit of your seam-stone.", "next": "mark", "requires_flag": "light_reported", "requires_not_flag": "seam_nine_named"},
+				{"text": "About Seam Nine.", "next": "refuses", "requires_flag": "seam_nine_named", "requires_not_flag": "seam_nine_open", "requires_not_item": "seal_key"},
+				{"text": "The assayer on the Gate Hall weighs the hewers' ore light. His counterweight is hollow.", "next": "weight", "requires_flag": "scales_rigged", "requires_not_flag": ["weight_reported", "weight_hushed"]},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"weight": {
+			"text": "\"Is it.\" Not a question. She writes a line, and then another. \"Pell will be fined twice what he skimmed, and every hewer he weighed will be paid the difference out of it. The Table thanks you.\" She almost smiles. \"Small things are how big ones start.\"",
+			"set_flag": "weight_reported",
+			"add_reputation": {"deep_guilds": 10},
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"report": {
+			"text": "Hrodna stands when she sees your face. \"You went down.\"",
+			"choices": [
+				{"text": "The Mercy were harvesting it: cages of lights, and seam-stone sent up the Deep Road under the River Compact's licence.", "next": "keld", "requires_item": "keld_orders", "requires_not_flag": "keld_shown"},
+				{"text": "I brought the face down. The lights it held are free, and nobody will cut there again.", "next": "collapsed", "requires_flag": "seam_collapsed"},
+				{"text": "The Mercy are gone. I shut their frame and left the seam for the Table.", "next": "sealed", "requires_flag": "seam_sealed"}
+			]
+		},
+		"keld": {
+			"text": "She reads Keld's orders twice, then reads the last lines a third time with her finger under them. \"'Do not go down.' Twenty years we've told our children that and never said why.\" She folds the sheet very small. \"The River Compact will hear from the Table. In stone.\"",
+			"set_flag": "keld_shown",
+			"choices": [
+				{"text": "I brought the face down. The lights it held are free, and nobody will cut there again.", "next": "collapsed", "requires_flag": "seam_collapsed"},
+				{"text": "The Mercy are gone. I shut their frame and left the seam for the Table.", "next": "sealed", "requires_flag": "seam_sealed"}
+			]
+		},
+		"collapsed": {
+			"text": "For a moment she can't speak. \"The richest seam under the mountain.\" Then, slower: \"And you'd say it was never ours. That the sky-folk didn't leave us treasure; they left us their dead.\" She sits. \"I'll carve what you did, and the Table will argue it for a year. Here: for the Mercy's heads, not the seam.\"",
+			"set_flag": "seam_reported",
+			"give_gold": 50,
+			"add_reputation": {"deep_guilds": -10},
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"sealed": {
+			"text": "Her shoulders come down an inch. \"Sealed, and the Table's again.\" She counts out gold without looking at it. \"The Guilds pay their debts. And they'll want to know who's been buying Seam Nine stone up the Deep Road, so you'll be hearing from us.\"",
+			"set_flag": "seam_reported",
+			"give_gold": 200,
+			"add_reputation": {"deep_guilds": 15},
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"after": {
+			"text": "Hrodna nods to you over the ledger. \"The Table remembers.\"",
+			"choices": [
+				{"text": "The assayer on the Gate Hall weighs the hewers' ore light. His counterweight is hollow.", "next": "weight", "requires_flag": "scales_rigged", "requires_not_flag": ["weight_reported", "weight_hushed"]},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}
