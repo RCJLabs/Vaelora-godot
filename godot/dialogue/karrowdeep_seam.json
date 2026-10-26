@@ -1,0 +1,40 @@
+{
+	"start": [
+		{"node": "done", "requires_flag": "seam_resolved"},
+		{"node": "guarded", "requires_not_flag": "seam_cleared"},
+		{"node": "choose"}
+	],
+	"nodes": {
+		"guarded": {
+			"text": "The seam glows blue-white in the cavern's far wall, and it's singing: no words, one long chord that shifts when you breathe. You can't think about it with the Mercy at your back.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		},
+		"choose": {
+			"text": "Up close the seam isn't stone. It's light, held in stone the way a breath is held in a chest: thousands of tiny lights packed in the rock, and every one of them is singing the same chord. The Mercy's frame is bolted to the face, cutting it out in blocks; their cages stand open and empty, waiting for the next cart.\n\nThe props that hold the face up are old guild timber. A few blows would bring it all down.",
+			"choices": [
+				{"text": "Knock out the props. Let the face fall and let what's in it go.", "next": "collapsed", "set_flag": ["seam_collapsed", "seam_resolved"]},
+				{"text": "Shut the harvest-frame and leave the seam to the Table.", "next": "sealed", "set_flag": ["seam_sealed", "seam_resolved"]}
+			]
+		},
+		"collapsed": {
+			"text": "The first prop goes, then the next, and the face comes down in a long roar of dust. When it settles there's no seam, only rubble, and rising out of the rubble, slowly, as if they've forgotten how, hundreds of small lights. They hang under the cavern roof for a moment. Then they go up through the rock as if it were water, and the singing goes with them, fainter, and fainter, and gone.",
+			"choices": [
+				{"text": "(Climb back up and tell the Table.)", "next": "end"}
+			]
+		},
+		"sealed": {
+			"text": "You throw the frame's clamps and wedge its cutting-bar out of reach. The seam goes on singing, steady and patient, behind the empty cages. It will be the Table's again: its richest seam, under its oldest law.",
+			"choices": [
+				{"text": "(Climb back up and tell the Table.)", "next": "end"}
+			]
+		},
+		"done": {
+			"text": "Where the seam was, there's what you left of it.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		}
+	}
+}

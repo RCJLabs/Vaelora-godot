@@ -1,0 +1,55 @@
+{
+	"start": [
+		{"node": "again", "requires_flag": "met_bek"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A broad Deepfolk mason with a beard tucked into his belt, chalking lines on a block as big as a cart. \"Bek. Master of the Anvil College, this year and most years. If it's built in this mountain and it's still standing, one of mine shaped it. If it's fallen down, ask the Seal College who sealed it.\"",
+			"set_flag": "met_bek",
+			"choices": [
+				{"text": "The Seal College wants its slate back.", "next": "slate", "requires_flag": "slate_started", "requires_not_flag": ["slate_returned", "bek_gave_slate"], "requires_not_item": "seal_slate"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Bek doesn't stop chalking. \"Mm?\"",
+			"choices": [
+				{"text": "The Seal College wants its slate back.", "next": "slate", "requires_flag": "slate_started", "requires_not_flag": ["slate_returned", "bek_gave_slate"], "requires_not_item": "seal_slate"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"slate": {
+			"text": "He pats the slate on his bench like a dog. \"Wants. The Seal has wanted things for three hundred years. A hundred seals nobody's allowed to study, and the College calls it heritage. I call it a lock on knowledge, and I shape locks for a living.\"",
+			"choices": [
+				{"text": "Copy it and keep it, and the Table hears the Anvil steals from the Seal.", "next": "gives", "fail_next": "laughs",
+					"check": {"id": "bek_slate", "kind": "persuade", "difficulty": 40}},
+				{"text": "Name a price.", "next": "sold",
+					"check": {"id": "bek_slate_bribe", "kind": "bribe", "gold": 120}},
+				{"text": "Then I'll let you get back to work.", "next": "end"}
+			]
+		},
+		"gives": {
+			"text": "His chalk stops. \"Hrodna would carve it, too. She loves a carving.\" He lifts the slate off the bench and puts it in your arms; it's heavier than it looks. \"Tell Orsa I'd finished with it anyway.\"",
+			"set_flag": "bek_gave_slate",
+			"give_item": "seal_slate",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"sold": {
+			"text": "He weighs the purse, not the argument. \"The Anvil has a new kiln to pay for.\" The slate goes into your arms. \"I copied the first forty already. Don't tell her that.\"",
+			"set_flag": ["bek_gave_slate", "slate_bought"],
+			"give_item": "seal_slate",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"laughs": {
+			"text": "Bek laughs, a sound like a rockfall in a small room. \"The Table? The Table has nine chairs and three of them are mine. Off you go.\"",
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		}
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "A Deepfolk trader behind a stall on the Market Bridge, with a fur collar, a scale of her own, and the dark of the chasm a step behind her. \"Grima Coldiron. Ingots, tools, a tome or two the Seal College would rather I didn't sell. Everything weighed on my own scales, so don't ask about Pell's.\"",
+			"choices": [
+				{"text": "Let's trade.", "open_trade": "grima", "next": "end"},
+				{"text": "A market on a bridge?", "next": "bridge"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"bridge": {
+			"text": "\"Oldest law in the mountain: no guild owns the bridge. Every other stone in Karrowdeep belongs to someone. Out here over the dark, nobody, so anybody can sell.\" She shrugs. \"And if a customer argues, the drop settles it.\"",
+			"choices": [
+				{"text": "Let's trade.", "open_trade": "grima", "next": "end"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

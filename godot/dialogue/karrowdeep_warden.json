@@ -1,0 +1,16 @@
+{
+	"start": "hello",
+	"nodes": {
+		"hello": {
+			"text": "A guild warden in a mail coat and a helm with a lamp-slot, a maul over one shoulder. \"The Table's peace. Weigh honest, cut true, and keep your hands off what's carved with someone else's mark.\"",
+			"choices": [
+				{"text": "And if I don't?", "next": "or"},
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"or": {
+			"text": "\"Then the Table carves your name, and I come and fetch you to read it.\"",
+			"choices": [{"text": "(Leave.)", "next": "end"}]
+		}
+	}
+}

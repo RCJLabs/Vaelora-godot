@@ -99,6 +99,10 @@ func _physics_process(_d: float) -> bool:
 			W.advance(4.0)
 			wait = 2
 		3:
+			# It goes out in _process: under load several physics frames can pass first.
+			if is_instance_valid(fire) and not fire.is_queued_for_deletion() and f < 2000:
+				wait = 1
+				return false
 			ok(not is_instance_valid(fire) or fire.is_queued_for_deletion(), "it burns out after three hours")
 			# Survival mode: needs rise slower with skill and perks.
 			S.levels["survival"] = 15; S.xp["survival"] = 0.0   # cooking and picking raised it

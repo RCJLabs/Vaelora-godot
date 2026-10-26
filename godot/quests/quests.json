@@ -1386,5 +1386,227 @@
 				"text": "Saelie sang me the third verse of Hallam and the Hundred Lights, the Choir's way: the lanterns were meant to guide the lights home, not to keep them out."
 			}
 		]
+	},
+	"the_seam_that_whispers": {
+		"title": "The Seam That Whispers",
+		"giver": "The conduit under Ilunhall",
+		"main": true,
+		"region": "karrowdeep",
+		"description": "The Undercroft's conduit was cut from seam-stone, stamped with a Karrowdeep guild-mark: nine strokes and a bar. Whoever is selling the Mercy that stone is under the mountain. The Deep Road runs east from Ilunhall's quay.",
+		"started_when": {
+			"requires_flag": "light_reported"
+		},
+		"completed_when": {
+			"requires_flag": "seam_reported"
+		},
+		"objectives": [
+			{
+				"text": "Go to Karrowdeep, by the Deep Road at the east end of Ilunhall's quay.",
+				"done_when": {
+					"requires_flag": "discovered_karrowdeep"
+				},
+				"marker": "DeepRoad"
+			},
+			{
+				"text": "Find out whose seam the stone was cut from: ask at the Table of Guildmasters, or among the hewers of the Lowest Gallery.",
+				"done_when": {
+					"requires_flag": "seam_nine_named"
+				},
+				"marker": [
+					"Hrodna",
+					"Ebba"
+				]
+			},
+			{
+				"text": "Get past the Seal Door on the Lowest Gallery: the Guildmaster's key, or another way.",
+				"done_when": {
+					"requires_flag": "seam_nine_open"
+				},
+				"marker": [
+					"SealDoor",
+					"Hrodna"
+				]
+			},
+			{
+				"text": "Go down into Seam Nine.",
+				"done_when": {
+					"requires_flag": "discovered_seam_nine"
+				},
+				"marker": "SeamDoor"
+			},
+			{
+				"text": "Stop the Mercy in Seam Nine.",
+				"done_when": {
+					"requires_flag": "seam_cleared"
+				},
+				"marker": "TheSeam"
+			},
+			{
+				"text": "Decide what becomes of the seam.",
+				"done_when": {
+					"requires_flag": "seam_resolved"
+				},
+				"marker": "TheSeam"
+			},
+			{
+				"text": "Tell Guildmaster Hrodna at the Table.",
+				"done_when": {
+					"requires_flag": "seam_reported"
+				},
+				"marker": "Hrodna"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "seal_key_given"
+				},
+				"text": "Guildmaster Hrodna gave me the seal-key from her own neck."
+			},
+			{
+				"when": {
+					"requires_flag": "seal_unpicked"
+				},
+				"text": "I read the Table's seals on the door and unpicked them one by one."
+			},
+			{
+				"when": {
+					"requires_flag": "seam_nine_open",
+					"requires_not_flag": [
+						"seal_key_given",
+						"seal_unpicked"
+					]
+				},
+				"text": "I opened the Seal Door with a key that wasn't mine to take."
+			},
+			{
+				"when": {
+					"requires_flag": "seam_collapsed"
+				},
+				"text": "I brought the face of Seam Nine down. The lights held in it rose through the rock, singing, and were gone. The Deep Guilds lost their richest seam."
+			},
+			{
+				"when": {
+					"requires_flag": "seam_sealed"
+				},
+				"text": "I shut the Mercy's harvest-frame and left Seam Nine to the Table, still singing behind its empty cages."
+			},
+			{
+				"when": {
+					"requires_item": "keld_orders"
+				},
+				"text": "Brother Keld's orders came from A.: every cart of seam-stone is a cage of lights, and the Mercy's next harvest is in Ithmarren, by the next dark of the Wanderer."
+			},
+			{
+				"when": {
+					"requires_flag": "heard_blind_choir"
+				},
+				"text": "I listened at the shaft below the seam. I heard the blind choir, and I don't remember how long."
+			}
+		]
+	},
+	"the_anvil_and_the_seal": {
+		"title": "The Anvil and the Seal",
+		"giver": "Magister Orsa Deepcut, of the Seal College in Karrowdeep",
+		"region": "karrowdeep",
+		"description": "Master Bek of the Anvil College 'borrowed' the Seal College's rune-slate: a hundred seals in one stone, kept for three hundred years. Orsa wants it back, by any means the Law Wall doesn't mention.",
+		"started_when": {
+			"requires_flag": "slate_started"
+		},
+		"completed_when": {
+			"requires_flag": "slate_returned"
+		},
+		"objectives": [
+			{
+				"text": "Get the rune-slate from Master Bek at the Anvil College: talk him round, buy it, or take it off his bench.",
+				"done_when": {
+					"requires_item": "seal_slate"
+				},
+				"marker": [
+					"Bek",
+					"SealSlate"
+				]
+			},
+			{
+				"text": "Bring it to Magister Orsa at the Seal College.",
+				"done_when": {
+					"requires_flag": "slate_returned"
+				},
+				"marker": "Orsa"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "bek_gave_slate",
+					"requires_not_flag": "slate_bought"
+				},
+				"text": "I talked Master Bek into giving the slate back. He said he'd finished with it anyway."
+			},
+			{
+				"when": {
+					"requires_flag": "slate_bought"
+				},
+				"text": "I bought the slate off Master Bek. He'd already copied forty of the seals."
+			},
+			{
+				"when": {
+					"requires_flag": "slate_returned",
+					"requires_not_flag": "bek_gave_slate"
+				},
+				"text": "I took the slate off Master Bek's bench. Orsa didn't ask how."
+			}
+		]
+	},
+	"the_short_weight": {
+		"title": "The Short Weight",
+		"giver": "Ebba Lowlamp, a hewer on Karrowdeep's Lowest Gallery",
+		"region": "karrowdeep",
+		"description": "Guild pay is by weight, and every hewer's cart comes up short on Assayer Pell's scales in the Gate Hall.",
+		"started_when": {
+			"requires_flag": "short_weight_started"
+		},
+		"completed_when": {
+			"requires_any_flag": [
+				"weight_reported",
+				"weight_hushed"
+			]
+		},
+		"objectives": [
+			{
+				"text": "Look at the assay scales in the Gate Hall.",
+				"done_when": {
+					"requires_flag": "scales_rigged"
+				},
+				"marker": "AssayScales"
+			},
+			{
+				"text": "Take it to Guildmaster Hrodna at the Table, or let Assayer Pell make it worth your while.",
+				"done_when": {
+					"requires_any_flag": [
+						"weight_reported",
+						"weight_hushed"
+					]
+				},
+				"marker": [
+					"Hrodna",
+					"Pell"
+				]
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "weight_reported"
+				},
+				"text": "The Table fined Assayer Pell twice what he'd skimmed, and paid every hewer he'd weighed short."
+			},
+			{
+				"when": {
+					"requires_flag": "weight_hushed"
+				},
+				"text": "Assayer Pell paid me eighty gold to forget his hollow counterweight. Ebba knew."
+			}
+		]
 	}
 }

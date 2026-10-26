@@ -1,0 +1,28 @@
+{
+	"start": [
+		{"node": "known", "requires_flag": "scales_rigged"},
+		{"node": "look"}
+	],
+	"nodes": {
+		"look": {
+			"text": "Guild assay scales: two brass pans on an iron beam, the Table's mark on the beam, and a stack of counterweights in a rack. Each one is stamped with its weight and the assayer's mark.",
+			"choices": [
+				{"text": "Weigh the big counterweight in your hand.", "next": "hollow", "requires_flag": "short_weight_started"},
+				{"text": "(Leave them.)", "next": "end"}
+			]
+		},
+		"hollow": {
+			"text": "It's light. Not by much; enough. You turn it over and find a plug in the base, filed flush and painted to match. Lead on one side, hollow on the other: it reads heavy and weighs light. Every hewer's cart that went on these pans came up short.",
+			"set_flag": "scales_rigged",
+			"choices": [
+				{"text": "(Put it back.)", "next": "end"}
+			]
+		},
+		"known": {
+			"text": "The hollow counterweight sits in the rack with the honest ones.",
+			"choices": [
+				{"text": "(Leave them.)", "next": "end"}
+			]
+		}
+	}
+}

@@ -81,6 +81,15 @@ const MERCHANTS := {
 		"gold": 500,
 		"stock": {"lockpick": 25, "hunting_dagger": 1, "minor_healing_potion": 2},
 	},
+	"grima": {   # the Market Bridge, Karrowdeep
+		"name": "Grima Coldiron",
+		"region": "karrowdeep",
+		"gold": 550,
+		"stock": {"iron_ingot": 15, "steel_ingot": 8, "leather_strip": 8, "lockpick": 15, "smiths_hammer": 1,
+				"minor_healing_potion": 4, "bread": 6, "water_flask": 6, "iron_helmet": 1, "iron_gauntlets": 1,
+				"steel_greatsword": 1, "tome_ward_circle": 1, "tome_binding_rune": 1},
+		"unique": ["tome_ward_circle", "tome_binding_rune"],
+	},
 	"bruna": {   # rune-goods on Ilunhall's quay
 		"name": "Bruna Deepseal",
 		"region": "capital",

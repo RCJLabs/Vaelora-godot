@@ -1,0 +1,33 @@
+{
+	"start": [
+		{"node": "caught", "requires_flag": "scales_rigged", "requires_not_flag": ["weight_reported", "weight_hushed"]},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A small-folk clerk in a guild collar too big for him, behind the assay bench with a slate and a stub of chalk. \"Assayer Pell. If you've ore, I weigh it; if you've coin, I count it; if you've neither, I'm busy.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"caught": {
+			"text": "He sees what's in your face before you say it, and his chalk stops. \"Keep your voice down.\" He leans in. \"Every assayer skims. It's how the job pays. Eighty gold, now, and you never picked up that weight.\"",
+			"choices": [
+				{"text": "Eighty gold. Done.", "next": "paid", "give_gold": 80, "set_flag": "weight_hushed"},
+				{"text": "The Table can hear about it.", "next": "refused"}
+			]
+		},
+		"paid": {
+			"text": "\"Sensible.\" He counts it out under the bench, quick and practised. \"I'll weigh honest for a month. Maybe two.\"",
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"refused": {
+			"text": "He goes the colour of chalk. \"Hrodna doesn't fine. She carves.\"",
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		}
+	}
+}

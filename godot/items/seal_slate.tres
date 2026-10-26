@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "seal_slate"
+display_name = "The Seal College's Rune-Slate"
+description = "A slab of black slate cut with a hundred tiny runes, each a seal the College has kept for three hundred years. Heavier than it looks, and it looks heavy."
+value = 0
+weight = 3.0
+quest_item = true

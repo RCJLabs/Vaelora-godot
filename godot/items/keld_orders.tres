@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "keld_orders"
+display_name = "Brother Keld's Orders"
+description = "A folded sheet in the Mercy's grey wax, and under it a tally of carts in a miner's square hand."
+value = 0
+weight = 0.1
+quest_item = true
+book_text = "To Keld, foreman of the ninth seam, from A.
+
+The Guilds sealed the ninth because it sang. They were right to be frightened, and wrong about why. It does not sing to them.
+
+Cut gently. Every cart of seam-stone that goes up the Deep Road under the River Compact's licence is a cart of lights going nowhere; the stone holds them like a cage holds a bird. Weirholt's mill has one. Ilunhall's cistern has a whole conduit. They will be glad of it when the time comes, and they will not know why.
+
+When the seam is cut back to the blind ones' song, stop. Do not go down. The Choir below is not yours to harvest, and not mine. Not yet.
+
+Bring what you have to the forest city by the next dark of the Wanderer. Ithmarren keeps its own wells, and keeps them badly.
+
+- A.
+
+(Below, in Keld's hand: Cart 112. Cart 113. Cart 114. The singing is louder at the face. Two of the lads won't go past the props. I don't blame them.)"

@@ -105,9 +105,9 @@ endings. `tools/quest_flow.py` knows about it.
 ## Known limits
 
 - A greybox of one district. The Hall of Spears is shut, and the Empress isn't in the game yet.
-- Taking the horn is not a crime: there's no theft system yet, so nobody notices.
+- Taking the horn is not a crime: the trophy chest isn't marked as anyone's (CRIME.md).
 - Nobody moves. The feast "never stops", but nobody is feasting.
-- Vessa's ledger points to Karrowdeep. That region isn't built.
+- Vessa's ledger points to Karrowdeep: see KARROWDEEP.md. The Deep Road runs east off the quay.
 
 ## Tests
 

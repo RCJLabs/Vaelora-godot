@@ -60,6 +60,7 @@ character level, with the XP towards the next level kept).
   | Ostap | Archery | 40 | "Can you teach me to shoot?" |
   | Zora | Glamour | 50 | "Will you train me in Glamour? I'll pay." (after her first lesson) |
   | Magister Aurel | Tidecraft | 50 | "Teach me yourself, not from a book." |
+  | Magister Orsa Deepcut (Karrowdeep) | Runecraft | 60 | "Will you teach me Runecraft?" |
 
   A dialogue choice with `"open_training": "<id>", "next": "end"` opens it. Lessons taken this
   level are saved.

@@ -1,0 +1,76 @@
+{
+	"start": [
+		{"node": "weight_done", "requires_any_flag": ["weight_reported", "weight_hushed"], "requires_not_flag": "ebba_settled"},
+		{"node": "again", "requires_flag": "met_ebba"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A hewer in a leather cap with a lamp on the brim, sitting on an upturned cart with her pick across her knees. \"Ebba Lowlamp. Hewer, nineteen years. If you're lost, the Gate Hall's up the Cut Stair. If you're not lost, you're down here on purpose, which is worse.\"",
+			"set_flag": "met_ebba",
+			"choices": [
+				{"text": "Anything strange down here?", "next": "carts"},
+				{"text": "You look like someone's cheating you.", "next": "weight", "requires_not_flag": "short_weight_started"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Ebba lifts her lamp an inch. \"Still down here, then.\"",
+			"choices": [
+				{"text": "Anything strange down here?", "next": "carts", "requires_not_flag": "ebba_heard"},
+				{"text": "About the Seal Door.", "next": "carts", "requires_flag": "ebba_heard"},
+				{"text": "You look like someone's cheating you.", "next": "weight", "requires_not_flag": "short_weight_started"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"carts": {
+			"text": "She looks at the Seal Door, then back at you. \"Seam Nine. Sealed twenty years. And twice a week, past the second bell, a cart goes through it. I hear the wheels. I hear the door.\" Quieter: \"And when it's open, I hear singing. Not people. Not like people.\"",
+			"set_flag": ["ebba_heard", "seam_nine_named"],
+			"choices": [
+				{"text": "Have you told the Table?", "next": "told"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"told": {
+			"text": "\"A hewer, telling the Table that a sealed seam's open?\" She snorts. \"They'd fine me for the noise. But if someone with clean boots told Guildmaster Hrodna that Lowlamp heard it, she'd listen. She knows I can't make things up. Says so.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"weight": {
+			"text": "\"Everyone's cheating me. Pell's just the one doing it on purpose.\" She jerks her thumb up toward the Gate Hall. \"Guild pay's by weight. Every week I bring up a full cart, and his scales say three-quarters. So does everyone's. The scales are guild scales. Nobody checks the guild's scales.\"",
+			"choices": [
+				{"text": "I'll look at them.", "next": "accepted", "set_flag": "short_weight_started"},
+				{"text": "Not my business.", "next": "end"}
+			]
+		},
+		"accepted": {
+			"text": "\"Look at the counterweight. Mine's lead all the way through. I'd bet a week's pay his isn't.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"weight_done": {
+			"text": "Ebba's on her cart. She looks at you for a long time.",
+			"choices": [
+				{"text": "The Table's fined Pell. You'll be paid the difference.", "next": "thanks", "requires_flag": "weight_reported"},
+				{"text": "Pell won't be weighing light any more. Leave it there.", "next": "cold", "requires_flag": "weight_hushed"}
+			]
+		},
+		"thanks": {
+			"text": "\"Nineteen years.\" She stands up, and digs in her cap, and presses a fold of coin into your hand. \"First of the difference. Don't argue. The guild-law says a debt's a debt.\"",
+			"set_flag": "ebba_settled",
+			"give_gold": 40,
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"cold": {
+			"text": "\"He paid you.\" It isn't a question. \"Course he did.\" She turns back to her pick. \"Clean boots. I should've known.\"",
+			"set_flag": "ebba_settled",
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		}
+	}
+}

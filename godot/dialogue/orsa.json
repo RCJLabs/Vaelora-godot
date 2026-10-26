@@ -1,0 +1,59 @@
+{
+	"start": [
+		{"node": "again", "requires_flag": "met_orsa"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A Deepfolk magister with rune-ink to the elbows and a loupe screwed into one eye, sitting on the Seal College's step with a slab of slate across her knees, cutting. \"Orsa Deepcut, Seal College. We cut the seals that keep this mountain's promises. Mind the chips; they're sharp and some of them are binding.\"",
+			"set_flag": "met_orsa",
+			"choices": [
+				{"text": "Will you teach me Runecraft?", "next": "teach"},
+				{"text": "The Seal College and the Anvil College?", "next": "rivals", "requires_not_flag": "slate_started"},
+				{"text": "Could someone open the Seal Door on the Lowest Gallery without its key?", "next": "door"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Orsa looks up through the loupe, and her eye is enormous. \"Back.\"",
+			"choices": [
+				{"text": "Will you teach me Runecraft?", "next": "teach"},
+				{"text": "The Seal College and the Anvil College?", "next": "rivals", "requires_not_flag": "slate_started"},
+				{"text": "I have your slate.", "next": "returned", "requires_flag": "slate_started", "requires_item": "seal_slate"},
+				{"text": "Could someone open the Seal Door on the Lowest Gallery without its key?", "next": "door"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"teach": {
+			"text": "\"A rune is a promise you cut into something so it can't forget. Cut badly and it remembers wrong.\" She makes room on the step. \"Gold first. The College isn't a charity; it's a monopoly.\"",
+			"choices": [
+				{"text": "Let's begin.", "open_training": "orsa", "next": "end"},
+				{"text": "Not now.", "next": "end"}
+			]
+		},
+		"rivals": {
+			"text": "\"The Anvil shapes stone. We seal it. Three hundred years of arguing which matters more.\" She sets the slate down. \"Last month Master Bek 'borrowed' our rune-slate: a hundred seals the College has kept since before the Table, cut in one stone. He says the Anvil needs to study them. He means copy them. Bring it back, by any means the Law Wall doesn't mention, and the College will owe you.\"",
+			"set_flag": "slate_started",
+			"choices": [
+				{"text": "I'll get it back.", "next": "end"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"returned": {
+			"text": "She takes it in both hands like a child and runs her thumb down the rows, counting. All hundred. \"I won't ask how.\" She counts out coin onto the step. \"The College owes you. It will remember, which is worse than gratitude and more use.\"",
+			"take_item": "seal_slate",
+			"set_flag": "slate_returned",
+			"give_gold": 100,
+			"add_reputation": {"deep_guilds": 5},
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"door": {
+			"text": "\"The Table's seal on Seam Nine?\" She takes the loupe out. \"A key is a seal you can carry. Without it you'd have to read every seal on that door and unpick them in the right order. A Seal College hand could. Forty years at the bench, or a gift. Or the Guildmaster's key, which hangs on her neck and in her strongbox by turns, depending who you ask.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

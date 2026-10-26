@@ -22,6 +22,7 @@ const TRAINERS := {
 	"varga": {"name": "Captain Varga", "skill": "block", "max": 50},   # Weirholt
 	"ysolde": {"name": "Listener Ysolde", "skill": "sight", "max": 50},   # Greyfold
 	"ignatia": {"name": "Magister Ignatia Rufa", "skill": "destruction", "max": 60},   # Ilunhall, the Ember College
+	"orsa": {"name": "Magister Orsa Deepcut", "skill": "runecraft", "max": 60},   # Karrowdeep, the Seal College
 }
 
 

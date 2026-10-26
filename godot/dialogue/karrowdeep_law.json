@@ -1,0 +1,11 @@
+{
+	"start": "read",
+	"nodes": {
+		"read": {
+			"text": "The guild-law, cut in the gallery's north wall in letters a hand high, rows of it, each line signed with nine marks. Some lines are worn smooth by fingers. Some are newer, cut over older ones.\n\nEVERY SEAM BELONGS TO A GUILD. EVERY GUILD ANSWERS TO THE TABLE.\nWEIGH HONEST. A SHORT WEIGHT IS A THEFT FROM EVERY HAND THAT CUT IT.\nNO GUILD OWNS THE BRIDGE.\nWHAT THE TABLE SEALS STAYS SEALED.\n\nAnd lower, older, cut by a less steady hand: DO NOT GO DOWN.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		}
+	}
+}

@@ -39,6 +39,11 @@
 			"name": "The Lantern Order",
 			"description": "Lantern-bearing inquisitors who hunt corrupt mages and burn essence-drinkers. Their chapterhouse stands on the Long Halls of Ilunhall.",
 			"known_when": { "requires_flag": "met_severin" }
+		},
+		"deep_guilds": {
+			"name": "The Deep Guilds",
+			"description": "Karrowdeep's crafters and miners under guild-law: contracts carved in stone, a Table of Guildmasters, and seams that go down further than anyone admits.",
+			"known_when": { "requires_flag": "met_hrodna" }
 		}
 	}
 }
