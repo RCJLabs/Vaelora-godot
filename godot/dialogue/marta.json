@@ -1,0 +1,19 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Marta Coil, of the Hearthlands and the road. Bread, rope, salves, and the only lockpicks for twenty miles. Don't tell the Ashen I sell those; they're very honest.",
+			"choices": [
+				{
+					"text": "Let's trade.",
+					"next": "end",
+					"open_trade": "marta"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

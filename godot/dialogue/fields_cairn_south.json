@@ -1,0 +1,35 @@
+{
+	"start": [
+		{
+			"node": "done",
+			"requires_flag": "cairn_south"
+		},
+		{
+			"node": "look"
+		}
+	],
+	"nodes": {
+		"look": {
+			"text": "A cairn where the grass won't grow, its stones thrown wide. The ground under it is grey and dry, like ash.",
+			"choices": [
+				{
+					"text": "Stack it again, stone by stone.",
+					"next": "stacked",
+					"set_flag": "cairn_south"
+				},
+				{
+					"text": "(Leave it)",
+					"next": "end"
+				}
+			]
+		},
+		"stacked": {
+			"text": "It takes a while. When the top stone goes on, the field seems very quiet.",
+			"choices": []
+		},
+		"done": {
+			"text": "The cairn stands again.",
+			"choices": []
+		}
+	}
+}

@@ -1,0 +1,198 @@
+{
+	"start": [
+		{
+			"node": "again",
+			"requires_flag": "met_ysolde"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Ysolde. They call me Listener, which means I hear the lights better than anyone in Greyfold, and sleep worse.",
+			"set_flag": "met_ysolde",
+			"choices": [
+				{
+					"text": "You can hear them too, can't you? The lights.",
+					"next": "kin",
+					"requires_race": "Ashen",
+					"requires_not_flag": "ysolde_kin"
+				},
+				{
+					"text": "I can feel how you look at me.",
+					"next": "elf",
+					"requires_race": "Elf",
+					"requires_not_flag": "ysolde_elf"
+				},
+				{
+					"text": "What's wrong here?",
+					"next": "screaming",
+					"requires_not_flag": "deep_ring_started"
+				},
+				{
+					"text": "The Deep Ring is broken. The lights are free.",
+					"next": "report",
+					"requires_flag": "harvest_engine_broken",
+					"requires_not_flag": "deep_ring_reported"
+				},
+				{
+					"text": "Corin Dray sells wisps to the Mercy.",
+					"next": "corin_exile",
+					"requires_flag": "corin_confronted",
+					"requires_not_flag": "corin_resolved"
+				},
+				{
+					"text": "Teach me to listen.",
+					"next": "end",
+					"open_training": "ysolde"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "The lights are quieter today. Or I'm getting used to it.",
+			"choices": [
+				{
+					"text": "You can hear them too, can't you? The lights.",
+					"next": "kin",
+					"requires_race": "Ashen",
+					"requires_not_flag": "ysolde_kin"
+				},
+				{
+					"text": "I can feel how you look at me.",
+					"next": "elf",
+					"requires_race": "Elf",
+					"requires_not_flag": "ysolde_elf"
+				},
+				{
+					"text": "What's wrong here?",
+					"next": "screaming",
+					"requires_not_flag": "deep_ring_started"
+				},
+				{
+					"text": "The Deep Ring is broken. The lights are free.",
+					"next": "report",
+					"requires_flag": "harvest_engine_broken",
+					"requires_not_flag": "deep_ring_reported"
+				},
+				{
+					"text": "Corin Dray sells wisps to the Mercy.",
+					"next": "corin_exile",
+					"requires_flag": "corin_confronted",
+					"requires_not_flag": "corin_resolved"
+				},
+				{
+					"text": "Teach me to listen.",
+					"next": "end",
+					"open_training": "ysolde"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"kin": {
+			"text": "\"Faintly. Like a crowd in the next room.\" She takes your hand for a moment. \"Kin. Then you'll know when they start screaming.\"",
+			"set_flag": "ysolde_kin",
+			"choices": [
+				{
+					"text": "What's wrong here?",
+					"next": "screaming",
+					"requires_not_flag": "deep_ring_started"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"elf": {
+			"text": "\"Your houses cast out our grandmothers' grandmothers and called them cursed. I'm told I should forgive that. I'm working on it.\" A pause. \"You're here, at least. That's more than the houses ever managed.\"",
+			"set_flag": "ysolde_elf",
+			"choices": [
+				{
+					"text": "What's wrong here?",
+					"next": "screaming",
+					"requires_not_flag": "deep_ring_started"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"screaming": {
+			"text": "The lights under the fields are screaming. Not the ones on the laying grounds; deeper. Since the spring, carts at night, strangers in hoods. There's a sinkhole north-east of the village that wasn't there last year. Something is down there, feeding.",
+			"set_flag": "deep_ring_started",
+			"choices": [
+				{
+					"text": "I'll go down.",
+					"next": "end"
+				},
+				{
+					"text": "The Mercy. They came from the Riverlands.",
+					"next": "mercy",
+					"requires_flag": "weirstones_letter"
+				}
+			]
+		},
+		"mercy": {
+			"text": "\"The ones with the masks. Corin's been taking their coin, the fool.\" Her jaw sets. \"Then you know what they do. Go down. Please.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"report": {
+			"text": "She closes her eyes and listens a long time. \"Quiet. Not silent: quiet. They're going back into the stones.\" When she opens them she's crying, and doesn't seem to notice. \"Greyfold won't forget this.\"",
+			"give_gold": 120,
+			"set_flag": "deep_ring_reported",
+			"add_reputation": {
+				"ashen_fields": 20
+			},
+			"choices": [
+				{
+					"text": "There was a note. V. is going to Ilunhall.",
+					"next": "ilunhall",
+					"requires_flag": "vessa_note_read"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"ilunhall": {
+			"text": "\"Ilunhall. The capital glows gold at night, they say, from the light-stone in its eaves.\" She looks north. \"Light-stone. Residue. If the Mercy are feeding the Empress's city, that isn't a cult any more. That's a court.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"corin_exile": {
+			"text": "\"I know he takes their coin. I didn't know it went to the ones under the fields.\" She is quiet. \"He leaves Greyfold tonight. Thank you for telling me, even if I hate it.\"",
+			"set_flag": [
+				"corin_exiled",
+				"corin_resolved"
+			],
+			"add_reputation": {
+				"ashen_fields": 5
+			},
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

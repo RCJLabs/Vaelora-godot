@@ -107,6 +107,7 @@ func _physics_process(_d: float) -> bool:
 		5:
 			var menu = autoload("CharacterMenu")
 			ok(menu.tabs.get_tab_title(menu.WORLD_TAB) == "World", "a World tab")
+			menu.tabs.current_tab = menu.WORLD_TAB
 			var buttons: Array = menu.world_page.find_children("*", "Button", true, false).filter(func(b): return b.has_meta("place"))
 			var ids: Array = buttons.map(func(b): return b.get_meta("place"))
 			ok(ids == FT.discovered().map(func(pl): return pl["id"]) and "weirholt" in ids and "stone_circle" in ids, "a Travel button for each place you know, and only those", ids)

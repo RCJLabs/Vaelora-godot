@@ -62,6 +62,14 @@ const MERCHANTS := {
 		"unique": ["tome_frost_burst", "tome_firebolt"],
 		"discount_flag": "wenna_discount",
 	},
+	"marta": {   # a Hearthlands peddler's wagon in the Grieving Fields
+		"name": "Marta Coil",
+		"gold": 300,
+		"stock": {"bread": 12, "water_flask": 12, "apple": 10, "minor_healing_potion": 5, "lockpick": 15,
+				"arrow": 40, "leather_cap": 1, "leather_gloves": 1, "leather_boots": 1, "firewood": 8,
+				"tome_true_sight": 1, "tome_foresight": 1},
+		"unique": ["tome_true_sight", "tome_foresight"],
+	},
 }
 
 signal changed

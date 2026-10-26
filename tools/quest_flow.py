@@ -180,6 +180,10 @@ def scan_code(index):
             for name, flag in prop.findall(line):
                 sets = script is not None and script_sets(script, name)
                 (index.set_by if sets else index.read_by)[flag].add("%s (%s)" % (rel(path), node))
+            # A map marker sets "discovered_<location_id>" when you walk up to it (props/map_marker.gd).
+            m = re.match(r'location_id = "([a-z0-9_]+)"', line)
+            if m and script is not None and script.endswith("map_marker.gd"):
+                index.set_by["discovered_" + m.group(1)].add("%s (%s, when found)" % (rel(path), node))
 
 
 def quest_chart(quest_id, quest):

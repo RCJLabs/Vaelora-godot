@@ -6,8 +6,8 @@ Each quest's state is worked out from flags (and items) every time the journal l
 
 ## Contents
 
-- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made), [Down the Greywater](#down-the-greywater), [The Weirstones](#the-weirstones)
-- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook), [The Toll of the Weir](#toll-of-the-weir), [Fever in the Lanes](#lanes-fever), [The Toll-Road Gang](#toll-road-gang)
+- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made), [Down the Greywater](#down-the-greywater), [The Weirstones](#the-weirstones), [The Deep Ring](#the-deep-ring)
+- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook), [The Toll of the Weir](#toll-of-the-weir), [Fever in the Lanes](#lanes-fever), [The Toll-Road Gang](#toll-road-gang), [The Wisp-Finder](#the-wisp-finder), [Cairns of the Rising](#cairns-of-the-rising)
 - [Flag index](#flag-index)
 
 ## Main quests
@@ -237,6 +237,36 @@ flowchart TD
 | Stop whoever is feeding on the stones. | weirstones_cleared | Weirstones |
 | See what they were feeding, in the middle of the circle. | weirstones_freed | DrainFocus |
 | (Optional) Tell Captain Varga what the letter said. | weirstones_reported | Varga |
+
+<a id="the-deep-ring"></a>
+
+### The Deep Ring (`the_deep_ring`)
+
+Given by: Listener Ysolde of Greyfold. Starts when: deep_ring_started. Done when: deep_ring_reported.
+
+```mermaid
+flowchart TD
+  start(["The Deep Ring<br/><i>starts: deep_ring_started</i>"])
+  o0["Find the sinkhole north-east of Greyfold."]
+  start --> o0
+  o1["Stop the Mercy in the Deep Ring."]
+  o0 --> o1
+  o2["Break their engine."]
+  o1 --> o2
+  o3["Tell Listener Ysolde."]
+  o2 --> o3
+  done(["Done<br/><i>deep_ring_reported</i>"])
+  o3 --> done
+  r0["Under the Grieving Fields the Mercy had an engine of rune-iron draining dozens of caged wi…"]
+  done -. "deep_ring_reported" .-> r0
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Find the sinkhole north-east of Greyfold. | discovered_sinkhole | Sinkhole |
+| Stop the Mercy in the Deep Ring. | deep_ring_cleared | HarvestEngine |
+| Break their engine. | harvest_engine_broken | HarvestEngine |
+| Tell Listener Ysolde. | deep_ring_reported | Ysolde |
 
 ## Side quests
 
@@ -585,6 +615,58 @@ flowchart TD
 | Find the gang's camp in the woods west of the north road. | toll_gang_cleared | TollRoadGang |
 | Collect the bounty from Captain Varga. | bounty_paid | Varga |
 
+<a id="the-wisp-finder"></a>
+
+### The Wisp-Finder (`the_wisp_finder`)
+
+Given by: Corin Dray, outside Greyfold. Starts when: corin_started. Done when: corin_resolved.
+
+```mermaid
+flowchart TD
+  start(["The Wisp-Finder<br/><i>starts: corin_started</i>"])
+  o0["Ask Corin who pays him."]
+  start --> o0
+  o1["Get him to stop: talk him round, pay him off, or tell Listener Ysolde."]
+  o0 --> o1
+  done(["Done<br/><i>corin_resolved</i>"])
+  o1 --> done
+  r0["I told Corin Dray where his lights were going. He quit, and went to tell Ysolde himself."]
+  done -. "corin_quit" .-> r0
+  r1["I paid Corin Dray a hundred gold to stop selling wisps to the Mercy."]
+  done -. "corin_paid_off" .-> r1
+  r2["I told Listener Ysolde that Corin Dray sells wisps to the Mercy. He left Greyfold that nig…"]
+  done -. "corin_exiled" .-> r2
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Ask Corin who pays him. | corin_confronted | Corin |
+| Get him to stop: talk him round, pay him off, or tell Listener Ysolde. | corin_resolved | Corin |
+
+<a id="cairns-of-the-rising"></a>
+
+### Cairns of the Rising (`cairns_of_the_rising`)
+
+Given by: Old Hesk, the cairn-keeper of Greyfold. Starts when: cairns_started. Done when: cairns_thanked.
+
+```mermaid
+flowchart TD
+  start(["Cairns of the Rising<br/><i>starts: cairns_started</i>"])
+  o0["Restack the three toppled cairns: west by the old ford, east past the laying grounds, south where the grass won't grow."]
+  start --> o0
+  o1["Tell Old Hesk."]
+  o0 --> o1
+  done(["Done<br/><i>cairns_thanked</i>"])
+  o1 --> done
+  r0["I restacked the three toppled cairns of the Rising. Old Hesk gave me his brother's sword."]
+  done -. "cairns_thanked" .-> r0
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Restack the three toppled cairns: west by the old ford, east past the laying grounds, south where the grass won't grow. | cairn_west, cairn_east, cairn_south | ['CairnWest', 'CairnEast', 'CairnSouth'] |
+| Tell Old Hesk. | cairns_thanked | Hesk |
+
 ## Flag index
 
 Every flag, where it's set, and where it's checked. **⚠ never set** means nothing in the game sets it: a typo or a missing step. *(never checked)* is usually fine: a record for later, or for the tests.
@@ -614,12 +696,23 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `brannoc_spared_truth` | companion_brannoc: roll_lie | quest brannoc_founded |
 | `brannoc_told_zora` | brannoc: zora_gone<br>brannoc: zora_paid | brannoc (start → zora_report)<br>quest licence_to_burn |
 | `brannoc_would_travel` | brannoc: after_all | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_given, "What will you do, after all this?"<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_kept, "What will you do, after all this?"<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: after_restored, "What will you do, after all this?"<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: greet_again, "What will you do, after all this?"<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: progress, "What will you do, after all this?"<br>brannoc: waiting_on_stones, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "What will you do, after all this?" |
+| `cairn_east` | fields_cairn_east: look, "Stack it again, stone by stone." | fields_cairn_east (start → done)<br>hesk (start → report)<br>quest cairns_of_the_rising |
+| `cairn_south` | fields_cairn_south: look, "Stack it again, stone by stone." | fields_cairn_south (start → done)<br>hesk (start → report)<br>quest cairns_of_the_rising |
+| `cairn_west` | fields_cairn_west: look, "Stack it again, stone by stone." | fields_cairn_west (start → done)<br>hesk (start → report)<br>quest cairns_of_the_rising |
+| `cairns_started` | hesk: where | hesk (start → waiting)<br>quest cairns_of_the_rising |
+| `cairns_thanked` | hesk: report | hesk (start → done)<br>quest cairns_of_the_rising |
 | `companion_brannoc` | brannoc: join | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "Come with me. Now, not later."<br>levels/test_level.tscn (BrannocAtPost)<br>zora: again, "Come with me."<br>zora: taught, "Come with me." |
 | `companion_cmd_dismiss` (never checked) | companion_brannoc: home<br>companion_zora: home | – |
 | `companion_cmd_follow` (never checked) | companion_brannoc: follow<br>companion_zora: follow | – |
 | `companion_cmd_talk` (never checked) | companion_brannoc: cold, "About something else."<br>companion_brannoc: greet, "About something else."<br>companion_brannoc: warm, "About something else."<br>companion_zora: cold, "About something else."<br>companion_zora: greet, "About something else."<br>companion_zora: warm, "About something else." | – |
 | `companion_cmd_wait` (never checked) | companion_brannoc: wait<br>companion_zora: wait | – |
 | `companion_zora` | zora: join | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "Come with me. Now, not later."<br>levels/test_level.tscn (ZoraAtHome)<br>zora: again, "Come with me."<br>zora: taught, "Come with me." |
+| `corin_confronted` | corin: who | corin: again, "About your buyers."<br>corin: again, "Who pays you?"<br>quest the_wisp_finder<br>ysolde: again, "Corin Dray sells wisps to the Mercy."<br>ysolde: greet, "Corin Dray sells wisps to the Mercy." |
+| `corin_exiled` | ysolde: corin_exile | quest the_wisp_finder |
+| `corin_paid_off` | corin: options, "Here: a hundred gold. That's more tha..." | quest the_wisp_finder |
+| `corin_quit` | corin: options, "They're draining them under the field..." | quest the_wisp_finder |
+| `corin_resolved` | corin: options, "Here: a hundred gold. That's more tha..."<br>corin: options, "They're draining them under the field..."<br>ysolde: corin_exile | corin (start → resolved)<br>quest the_wisp_finder<br>ysolde: again, "Corin Dray sells wisps to the Mercy."<br>ysolde: greet, "Corin Dray sells wisps to the Mercy." |
+| `corin_started` | corin: greet | corin (start → again)<br>quest the_wisp_finder |
 | `cultists_cleared` (never checked) | levels/test_dungeon.tscn (Cultists) | – |
 | `culvert_cleared` (never checked) | levels/weirholt_culvert.tscn (Smugglers) | – |
 | `culvert_wisp_freed` | weirholt_cages: look, "Open the cage." | weirholt_cages (start → empty) |
@@ -627,7 +720,35 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `dace_folded` | dace: dace_two, "Rates went up when you got greedy. St..." | quest toll_of_the_weir |
 | `dace_reported` | varga: dace_report | quest toll_of_the_weir |
 | `dark_barges_started` | jory_weirholt: barges, "I'll look into it." | jory_weirholt: again, "Not yet."<br>jory_weirholt: again, "Tell me about the barges again."<br>quest down_the_greywater<br>tarle: again, "What do the barges carry at the dark ..."<br>tarle: greet, "What do the barges carry at the dark ..." |
+| `deep_ring_cleared` | levels/grieving_deep_ring.tscn (Mercy) | deep_ring_engine (start → open)<br>quest the_deep_ring |
+| `deep_ring_reported` | ysolde: report | quest the_deep_ring<br>ysolde: again, "The Deep Ring is broken. The lights a..."<br>ysolde: greet, "The Deep Ring is broken. The lights a..." |
+| `deep_ring_started` | ysolde: screaming | quest the_deep_ring<br>ysolde: again, "What's wrong here?"<br>ysolde: elf, "What's wrong here?"<br>ysolde: greet, "What's wrong here?"<br>ysolde: kin, "What's wrong here?" |
+| `deep_ring_wisps_freed` (never checked) | deep_ring_engine: open, "Smash the rune-iron and let them go." | – |
 | `demo_finished` | brannoc: end_brannoc<br>brannoc: end_hollow<br>maren: end_hollow<br>maren: end_maren<br>mirela: end_hollow<br>mirela: end_mirela<br>mirela: end_mirela_cold | brannoc (start → end_hollow)<br>brannoc (start → end_intro)<br>maren (start → end_hollow)<br>maren (start → end_intro)<br>mirela (start → end_hollow)<br>mirela (start → end_intro)<br>quest what_they_made |
+| `discovered_ama_farm` (never checked) | levels/weirholt.tscn (MapFarm, when found) | – |
+| `discovered_bandit_camp` (never checked) | levels/test_level.tscn (MapBanditCamp, when found) | – |
+| `discovered_corin_hut` (never checked) | levels/grieving_fields.tscn (MapCorinHut, when found) | – |
+| `discovered_counting_house` (never checked) | levels/weirholt.tscn (MapCountingHouse, when found) | – |
+| `discovered_greyfang_hollow` (never checked) | levels/test_level.tscn (MapGreyfangHollow, when found) | – |
+| `discovered_greyfold` (never checked) | levels/grieving_fields.tscn (MapGreyfold, when found) | – |
+| `discovered_hollow_oak` (never checked) | levels/test_level.tscn (MapHollowOak, when found) | – |
+| `discovered_lantern_weir` (never checked) | levels/weirholt.tscn (MapInn, when found) | – |
+| `discovered_laying_grounds` (never checked) | levels/grieving_fields.tscn (MapLayingGrounds, when found) | – |
+| `discovered_old_barrow` (never checked) | levels/test_level.tscn (MapOldBarrow, when found) | – |
+| `discovered_outlaw_camp` (never checked) | levels/test_level.tscn (MapOutlawCamp, when found) | – |
+| `discovered_roadside_shrine` (never checked) | levels/test_level.tscn (MapShrine, when found) | – |
+| `discovered_sinkhole` | levels/grieving_fields.tscn (MapSinkhole, when found) | quest the_deep_ring |
+| `discovered_south_road` (never checked) | levels/test_level.tscn (MapSouthRoad, when found) | – |
+| `discovered_stone_circle` (never checked) | levels/test_level.tscn (MapStoneCircle, when found) | – |
+| `discovered_the_lanes` (never checked) | levels/weirholt.tscn (MapLanes, when found) | – |
+| `discovered_toll_fort` (never checked) | levels/weirholt.tscn (MapTollFort, when found) | – |
+| `discovered_toll_road_camp` (never checked) | levels/weirholt.tscn (MapGangCamp, when found) | – |
+| `discovered_waystation` (never checked) | levels/test_level.tscn (MapWaystation, when found) | – |
+| `discovered_weirholt` (never checked) | levels/weirholt.tscn (MapWeirholt, when found) | – |
+| `discovered_weirholt_docks` (never checked) | levels/weirholt.tscn (MapDocks, when found) | – |
+| `discovered_weirholt_ford` (never checked) | levels/weirholt.tscn (MapFord, when found) | – |
+| `discovered_weirholt_mill` (never checked) | levels/weirholt.tscn (MapMill, when found) | – |
+| `discovered_weirstones` (never checked) | levels/weirholt.tscn (MapWeirstones, when found) | – |
 | `first_recognised_you` (never checked) | enemies/the_first.gd:50 | – |
 | `first_slain` | enemies/the_first.gd:14 | levels/test_level.tscn (FirstStream)<br>props/ritual_altar.gd:7<br>props/ritual_site.gd:17<br>quest what_they_made |
 | `found_hidden_chamber` | props/puzzle/secret_wall.gd:7 | levels/test_dungeon.tscn (Cultist1)<br>levels/test_dungeon.tscn (Cultist2)<br>quest the_barrow |
@@ -638,6 +759,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `got_supply_crate` | brannoc: crate | brannoc: after_given, "I need a crate of the garrison's supp..."<br>brannoc: after_restored, "I need a crate of the garrison's supp..."<br>brannoc: greet, "I need a crate of the garrison's supp..."<br>brannoc: greet_again, "I need a crate of the garrison's supp..."<br>brannoc: progress, "I need a crate of the garrison's supp..."<br>brannoc: waiting_on_stones, "I need a crate of the garrison's supp..." |
 | `halina_taught_draw` | halina: teach_draw | halina: again, "Teach me the rest."<br>halina: again, "Teach me to do what you do."<br>halina: same, "Teach me the rest."<br>halina: same, "Teach me to do what you do." |
 | `halina_taught_touch` | halina: teach_touch | halina: again, "Teach me the rest."<br>halina: same, "Teach me the rest." |
+| `harvest_engine_broken` | deep_ring_engine: open, "Smash the rune-iron and let them go." | deep_ring_engine (start → done)<br>quest the_deep_ring<br>ysolde: again, "The Deep Ring is broken. The lights a..."<br>ysolde: greet, "The Deep Ring is broken. The lights a..." |
 | `heard_about_bandits` | brannoc: bandits_info | brannoc: after_given, "Anything else I should know about out..."<br>brannoc: after_restored, "Anything else I should know about out..."<br>brannoc: greet, "Anything else I should know about out..."<br>brannoc: greet_again, "Anything else I should know about out..."<br>brannoc: progress, "Anything else I should know about out..."<br>brannoc: waiting_on_stones, "Anything else I should know about out..."<br>quest bandit_camp |
 | `heard_about_mercy` | brannoc: bandits_info<br>halina: greet | quest the_merciful |
 | `heard_about_wolves` | maren: wolves | maren: greet_again, "I'll deal with the Greyfang pack." |
@@ -688,6 +810,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `met_fenn` (never checked) | fenn: greet | – |
 | `met_halina` | halina: greet | halina (start → again) |
 | `met_hedda` | hedda: greet | hedda (start → again) |
+| `met_hesk` (never checked) | hesk: greet | – |
 | `met_inquisitor` | inquisitor: greet<br>inquisitor: marked<br>inquisitor: suspicious | inquisitor (start → again) |
 | `met_jory_weirholt` | jory_weirholt: greet<br>jory_weirholt: greet_known | jory_weirholt (start → again) |
 | `met_maren` | maren: greet | maren (start → greet_again) |
@@ -695,6 +818,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `met_tarle` | tarle: greet | tarle (start → again) |
 | `met_teodor` (never checked) | teodor: greet | – |
 | `met_varga` | varga: greet | varga (start → again) |
+| `met_ysolde` | ysolde: greet | ysolde (start → again) |
 | `met_zora` | zora: greet | inquisitor: greet, "Her hut is west of the outlaw camp."<br>inquisitor: greet, "She's harmless."<br>quest licence_to_burn<br>zora (start → again)<br>zora (start → betrayed)<br>zora (start → sees_stain) |
 | `millstone_found` | weirholt_millstone: known | fenn: greet, "It isn't the Passengers. It's the new..."<br>quest lanes_fever |
 | `mirela_heard_essence` | mirela: heard_essence | mirela (start → heard_essence) |
@@ -759,10 +883,11 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `toll_started` | ama: greet | ama (start → waiting)<br>dace: greet, "The board in the square says two."<br>quest toll_of_the_weir |
 | `took_wisp_essence` | caged_wisp: take | mirela (start → heard_essence)<br>mirela: end_dunya, "What will the Free do?"<br>mirela: end_letter, "What will the Free do?"<br>quest the_barrow<br>systems/save_system.gd:209 |
 | `touched_crystal` | props/floating_crystal.gd:81<br>props/floating_crystal.gd:86 | brannoc: progress, "The crystal answered when I touched i..."<br>props/floating_crystal.gd:48<br>props/floating_crystal.gd:85<br>quest waking_stones |
+| `vessa_note_read` | deep_ring_engine: open | ysolde: report, "There was a note. V. is going to Ilun..." |
 | `weirstones_cleared` | levels/weirholt.tscn (Acolytes) | levels/weirholt.tscn (Weirstones)<br>quest the_weirstones<br>weirholt_focus (start → open) |
 | `weirstones_freed` | weirholt_focus: open, "Break the cage open and let the light..." | quest the_weirstones<br>varga: again, "Where does the ledger's trail go?"<br>varga: greet, "Where does the ledger's trail go?"<br>weirholt_focus (start → done) |
 | `weirstones_hinted` (never checked) | varga: weirstones_hint | – |
-| `weirstones_letter` | weirholt_focus: open | varga: again, "The Weirstones are quiet. The Mercy's..."<br>varga: greet, "The Weirstones are quiet. The Mercy's..." |
+| `weirstones_letter` | weirholt_focus: open | varga: again, "The Weirstones are quiet. The Mercy's..."<br>varga: greet, "The Weirstones are quiet. The Mercy's..."<br>ysolde: screaming, "The Mercy. They came from the Riverla..." |
 | `weirstones_reported` | varga: weirstones_report | quest the_weirstones<br>varga: again, "The Weirstones are quiet. The Mercy's..."<br>varga: greet, "The Weirstones are quiet. The Mercy's..." |
 | `weirstones_rite` | levels/weirholt.tscn (Weirstones) | levels/weirholt.tscn (Acolyte1)<br>levels/weirholt.tscn (Acolyte2)<br>levels/weirholt.tscn (Acolyte3)<br>quest the_weirstones |
 | `weirstones_seen_by_day` (never checked) | levels/weirholt.tscn (Weirstones) | – |
@@ -772,9 +897,11 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `wolf_quest_accepted` | maren: accept | maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
 | `wolf_quest_done` | maren: reward<br>maren: reward_driven | brannoc: greet, "Maren says she told Riverwatch about ..."<br>maren (start → greet_hero)<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
 | `wolves_cleared` | enemies/wolf_pack.gd:18 | maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet, "Why don't people come this way?"<br>maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: greet_again, "Tell me about the wolves again."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: hunter_line, "Tell me about the wolves."<br>maren: soldier_line, "Tell me about the wolves."<br>maren: wolf_sick, "Tell me about the rest of the pack."<br>maren: wolf_where, "Tell me about the rest of the pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
-| `wolves_driven_off` | enemies/wolf_pack.gd:23<br>levels/weirholt.tscn (Acolytes)<br>levels/weirholt.tscn (TollRoadGang)<br>levels/weirholt_culvert.tscn (Smugglers) | maren: greet, "I drove off the wolves north of here."<br>maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
+| `wolves_driven_off` | enemies/wolf_pack.gd:23<br>levels/grieving_deep_ring.tscn (Mercy)<br>levels/weirholt.tscn (Acolytes)<br>levels/weirholt.tscn (TollRoadGang)<br>levels/weirholt_culvert.tscn (Smugglers) | maren: greet, "I drove off the wolves north of here."<br>maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
 | `wrong_things_done` | brannoc: mark | brannoc: after_given, "What will you do, after all this?"<br>brannoc: after_kept, "What will you do, after all this?"<br>brannoc: after_restored, "What will you do, after all this?"<br>brannoc: greet_again, "What will you do, after all this?"<br>brannoc: progress, "What will you do, after all this?"<br>brannoc: waiting_on_stones, "What will you do, after all this?"<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>quest wrong_things |
 | `wrong_things_started` | systems/save_system.gd:228 | enemies/wisp_spawner.gd:17<br>maren: greet, "I'm tracking a Greyfang that walks wr..."<br>maren: greet, "I've come to tend the roadside shrine..."<br>maren: greet, "My wagon never reached Riverwatch. Ye..."<br>maren: greet, "Sergeant Holt sent me from Riverwatch..."<br>maren: greet, "The Collegium sent me to study the st..."<br>maren: greet, "You saw me sleeping behind your wayst..."<br>maren: greet_again, "Anything strange around here lately?"<br>maren: greet_hero, "Anything strange around here lately?"<br>maren: wolves, "Why are they raiding the road at all?"<br>quest wrong_things<br>systems/save_system.gd:227<br>zora: again, "What do you know about what's drainin..."<br>zora: drain, "What do you know about what's drainin..."<br>zora: greet, "What do you know about what's drainin..."<br>zora: scholar, "What do you know about what's drainin..."<br>zora: taught, "What do you know about what's drainin..." |
+| `ysolde_elf` | ysolde: elf | ysolde: again, "I can feel how you look at me."<br>ysolde: greet, "I can feel how you look at me." |
+| `ysolde_kin` | ysolde: kin | ysolde: again, "You can hear them too, can't you? The..."<br>ysolde: greet, "You can hear them too, can't you? The..." |
 | `zora_arrested` | zora: arrested | brannoc: zora_report, "She came quietly. She says the goats ..."<br>brannoc: zora_report, "She was gone when I got there."<br>quest licence_to_burn |
 | `zora_decided` | zora: arrested<br>zora: taught_now<br>zora: warned | brannoc (start → zora_report)<br>quest licence_to_burn<br>zora: again, "The garrison wants you arrested."<br>zora: drain, "The garrison wants you arrested."<br>zora: greet, "The garrison wants you arrested."<br>zora: scholar, "The garrison wants you arrested." |
 | `zora_drain_hint` | zora: drain | zora: again, "What do you know about what's drainin..."<br>zora: drain, "What do you know about what's drainin..."<br>zora: greet, "What do you know about what's drainin..."<br>zora: scholar, "What do you know about what's drainin..."<br>zora: taught, "What do you know about what's drainin..." |

@@ -1013,5 +1013,148 @@
 				"text": "The Mercy were feeding a lump of seam-stone on the Weirstones' light. I broke their cage and gave the light back. Their letter, signed V., moves the harvest to the Grieving Fields, where the old site runs deeper."
 			}
 		]
+	},
+	"the_deep_ring": {
+		"title": "The Deep Ring",
+		"giver": "Listener Ysolde of Greyfold",
+		"main": true,
+		"region": "grieving_fields",
+		"description": "The Ashen hear the lights under the Grieving Fields screaming. A sinkhole has opened north-east of Greyfold, and hooded strangers come and go at night.",
+		"started_when": {
+			"requires_flag": "deep_ring_started"
+		},
+		"completed_when": {
+			"requires_flag": "deep_ring_reported"
+		},
+		"objectives": [
+			{
+				"text": "Find the sinkhole north-east of Greyfold.",
+				"done_when": {
+					"requires_flag": "discovered_sinkhole"
+				},
+				"marker": "Sinkhole"
+			},
+			{
+				"text": "Stop the Mercy in the Deep Ring.",
+				"done_when": {
+					"requires_flag": "deep_ring_cleared"
+				},
+				"marker": "HarvestEngine"
+			},
+			{
+				"text": "Break their engine.",
+				"done_when": {
+					"requires_flag": "harvest_engine_broken"
+				},
+				"marker": "HarvestEngine"
+			},
+			{
+				"text": "Tell Listener Ysolde.",
+				"done_when": {
+					"requires_flag": "deep_ring_reported"
+				},
+				"marker": "Ysolde"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "deep_ring_reported"
+				},
+				"text": "Under the Grieving Fields the Mercy had an engine of rune-iron draining dozens of caged wisps into seam-stone. I broke it and let them go. V.'s note sends her people to Ilunhall: the Empress's light-stone is residue, and the Mercy mean to feed it."
+			}
+		]
+	},
+	"the_wisp_finder": {
+		"title": "The Wisp-Finder",
+		"giver": "Corin Dray, outside Greyfold",
+		"region": "grieving_fields",
+		"description": "Corin Dray finds wisps for whoever pays, and lately that's been people in masks.",
+		"started_when": {
+			"requires_flag": "corin_started"
+		},
+		"completed_when": {
+			"requires_flag": "corin_resolved"
+		},
+		"objectives": [
+			{
+				"text": "Ask Corin who pays him.",
+				"done_when": {
+					"requires_flag": "corin_confronted"
+				},
+				"marker": "Corin"
+			},
+			{
+				"text": "Get him to stop: talk him round, pay him off, or tell Listener Ysolde.",
+				"done_when": {
+					"requires_flag": "corin_resolved"
+				},
+				"marker": "Corin"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "corin_quit"
+				},
+				"text": "I told Corin Dray where his lights were going. He quit, and went to tell Ysolde himself."
+			},
+			{
+				"when": {
+					"requires_flag": "corin_paid_off"
+				},
+				"text": "I paid Corin Dray a hundred gold to stop selling wisps to the Mercy."
+			},
+			{
+				"when": {
+					"requires_flag": "corin_exiled"
+				},
+				"text": "I told Listener Ysolde that Corin Dray sells wisps to the Mercy. He left Greyfold that night."
+			}
+		]
+	},
+	"cairns_of_the_rising": {
+		"title": "Cairns of the Rising",
+		"giver": "Old Hesk, the cairn-keeper of Greyfold",
+		"region": "grieving_fields",
+		"description": "Three of the cairns raised for the companies that fell in the Ashen Rising have been torn down this year.",
+		"started_when": {
+			"requires_flag": "cairns_started"
+		},
+		"completed_when": {
+			"requires_flag": "cairns_thanked"
+		},
+		"objectives": [
+			{
+				"text": "Restack the three toppled cairns: west by the old ford, east past the laying grounds, south where the grass won't grow.",
+				"done_when": {
+					"requires_flag": [
+						"cairn_west",
+						"cairn_east",
+						"cairn_south"
+					]
+				},
+				"marker": [
+					"CairnWest",
+					"CairnEast",
+					"CairnSouth"
+				]
+			},
+			{
+				"text": "Tell Old Hesk.",
+				"done_when": {
+					"requires_flag": "cairns_thanked"
+				},
+				"marker": "Hesk"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "cairns_thanked"
+				},
+				"text": "I restacked the three toppled cairns of the Rising. Old Hesk gave me his brother's sword."
+			}
+		]
 	}
 }

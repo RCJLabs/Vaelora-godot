@@ -47,6 +47,7 @@ The level is 200 × 200 m around the town (`_build_wilds()` in the builder):
 | The ford | The easy way across the river, south-east of the town |
 | **The Weirstones** | On the east bank: a ring of eight standing stones, one of the **twelve sites**. Empty by day apart from a humming bundle; at night the Mercy's acolytes feed it, and wisps come out |
 | Ama's farm | West of the town: a farmhouse and fields |
+| The south road | From the south gate to the map's south edge: on to the Grieving Fields (`GRIEVING_FIELDS.md`) |
 
 ## Quests
 
