@@ -22,9 +22,11 @@ const QUESTS_TAB := 3
 const MAP_TAB := 5
 const PERKS_TAB := 6
 const POWERS_TAB := 7
+const WORLD_TAB := 8
 var map_view: MapView
 var perk_tree: PerkTree
 var powers_page: PowersPage
+var world_page: WorldPage
 var _quest_ids: Array = []   # quest id for each row of quest_list
 
 var _item_ids: Array = []   # item id for each row of item_list
@@ -44,6 +46,8 @@ func _ready() -> void:
 	tabs.add_child(perk_tree)
 	powers_page = PowersPage.new()
 	tabs.add_child(powers_page)
+	world_page = WorldPage.new()
+	tabs.add_child(world_page)
 	%PerksButton.pressed.connect(func(): tabs.current_tab = PERKS_TAB; _focus_tab.call_deferred())
 	%HealthButton.pressed.connect(Skills.spend_level_up.bind("health"))
 	%StaminaButton.pressed.connect(Skills.spend_level_up.bind("stamina"))
@@ -227,6 +231,7 @@ func _refresh_perks() -> void:
 	%PerksButton.text = "Perks  -  %d point%s to spend  >" % [Character.perk_points, "" if Character.perk_points == 1 else "s"]
 	perk_tree.refresh()
 	powers_page.refresh()
+	world_page.refresh()
 
 
 func _refresh_inventory() -> void:

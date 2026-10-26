@@ -1200,6 +1200,7 @@ script = ExtResource("98_marker")
 location_id = "old_barrow"
 display_name = "The Old Barrow"
 kind = 3
+arrival_offset = Vector3(0, 0.3, -3)
 
 [node name="BanditCage" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -46, 0, -26)

@@ -497,7 +497,7 @@ func arrive_at_marker(marker_name: String) -> void:
 	if marker == null:
 		push_warning("No Marker3D called '%s' in this level - staying at the default spawn." % marker_name)
 		return
-	global_position = marker.global_position
+	global_position = marker.arrival_point() if marker is MapMarker else marker.global_position   # fast travel: beside the place
 	rotation.y = marker.global_rotation.y
 	head.rotation.x = 0.0
 	spawn_position = global_position
