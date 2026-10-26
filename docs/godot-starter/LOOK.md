@@ -215,6 +215,28 @@ The windows (`props/light_stone.gd`, with new `surface` and `glow` colours) are 
 and glow warm at night. Weirholt, Greyfold and Ilunhall's harbour houses were rebuilt with it.
 The Vale's waystation is hand-made and unchanged.
 
+## Water and sky
+
+**Water** (`levels/materials/water.gdshader`, builder `water_mat(flow)`):
+- Two layers of ripples scroll with the flow.
+- It's darker looking straight down, and lighter and glossy at a glance (a cheap fresnel), so it
+  catches the sky.
+- Weirholt's river flows south, Ilunhall's fjord drifts, and the culvert's runoff and the
+  Undercroft's cistern sit still (or nearly).
+
+**Clouds and stars** (`levels/sky_dome.gd`, `levels/sky_dome.gdshader`):
+- They're drawn on a great dome that follows the camera. `DayNight` makes one for each outdoor
+  level, so no scene needs editing.
+- Clouds drift, lit by the sun's colour and dark at night.
+- The stars come out after dusk and twinkle.
+- Cloud cover comes from the mood (`LevelMood.clouds`): Vale 0.4, Riverlands 0.55, Fields 0.85,
+  Ilunhall 0.3.
+- They're not in the sky shader on purpose. A sky shader that animates recomputes the scene's
+  ambient light every frame, which phones can't spare.
+
+**The Vale** now has the ground skirt out to the horizon too, so there's no dark band past its
+edge.
+
 ## Renderers (a caveat)
 
 On Android the game runs on the **Mobile** renderer. The screenshots for this pass were

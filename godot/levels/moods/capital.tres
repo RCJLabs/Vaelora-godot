@@ -17,3 +17,4 @@ glow_bloom = 0.06
 ambient_mult = 1.2
 saturation = 1.06
 contrast = 1.04
+clouds = 0.3

@@ -48,6 +48,7 @@ const KEYS := [
 @onready var world_environment: WorldEnvironment = get_node_or_null(environment_path)
 @onready var night_moon: Node3D = get_node_or_null(night_moon_path) if not night_moon_path.is_empty() else null
 var _sky: ProceduralSkyMaterial
+var _dome: SkyDome   # clouds and stars (levels/sky_dome.gd), made here for the level
 var _last_hour := -1.0
 
 
@@ -60,6 +61,9 @@ func _ready() -> void:
 			_sky = sky.sky_material
 		if mood:
 			mood.apply_static(world_environment.environment)
+	if not Engine.is_editor_hint():
+		_dome = SkyDome.new()
+		get_parent().add_child.call_deferred(_dome)
 	apply(_hour())
 
 
@@ -120,6 +124,9 @@ func apply(hour: float) -> void:
 			_sky.sky_top_color = mood.sky(_sky.sky_top_color)
 			_sky.sky_horizon_color = mood.sky(_sky.sky_horizon_color)
 			_sky.ground_horizon_color = mood.sky(_sky.ground_horizon_color)
+	if _dome:
+		var night := maxf(smoothstep(18.5, 20.5, hour), 1.0 - smoothstep(4.5, 6.5, hour))   # stars out after dusk, gone by dawn
+		_dome.set_look(sun.light_color if sun else Color(1, 1, 1), night, mood.clouds if mood else 0.4)
 	if world_environment:
 		var env := world_environment.environment
 		env.ambient_light_energy = lerpf(a[6], b[6], t)

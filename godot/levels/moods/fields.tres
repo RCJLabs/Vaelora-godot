@@ -13,3 +13,4 @@ fog_density = 0.014
 saturation = 0.72
 contrast = 1.02
 brightness = 0.97
+clouds = 0.85

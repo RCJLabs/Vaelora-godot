@@ -13,6 +13,8 @@ extends Resource
 @export_range(0.0, 1.0) var sky_tint_amount := 0.0
 ## Cloud cover, 0 to 1: greys the sky, dims the sun and softens its shadows.
 @export_range(0.0, 1.0) var overcast := 0.0
+## How much of the sky the drifting clouds cover (levels/sky_dome.gd), 0 to 1.
+@export_range(0.0, 1.0) var clouds := 0.4
 
 @export_group("Sun")
 @export var sun_tint := Color(1, 1, 1)

@@ -123,6 +123,19 @@ func own(node: Node, parent: Node = null) -> Node:
 	return node
 
 
+## Water (levels/materials/water.gdshader): ripples drifting with `flow` (metres a
+## second, over the water's world x/z), dark looking down, bright at a glance.
+func water_mat(flow := Vector2.ZERO) -> ShaderMaterial:
+	var key := "water%s" % flow
+	if not _mats.has(key):
+		var m := ShaderMaterial.new()
+		m.shader = load("res://levels/materials/water.gdshader")
+		m.set_shader_parameter("ripples", load("res://levels/materials/noise_water_normal.tres"))
+		m.set_shader_parameter("flow", flow * 0.07)   # into ripple-texture units (ripple_scale)
+		_mats[key] = m
+	return _mats[key]
+
+
 ## A solid box (StaticBody3D with a mesh and a collision shape) centred at `pos`.
 ## Its material (mat()): stone if it's surface_stone, ground if it's a big flat slab
 ## (grounds, roads, fields), fine grain otherwise.
