@@ -8,6 +8,8 @@ extends MeshInstance3D
 const RADIUS := 900.0
 
 var material: ShaderMaterial
+var _motes_day: CPUParticles3D
+var _motes_night: CPUParticles3D
 
 
 func _init() -> void:
@@ -32,6 +34,18 @@ func _process(_delta: float) -> void:
 		global_position = camera.global_position
 
 
+## What drifts in the air round the camera by day and by night (Fx.motes kinds; ""
+## for nothing). Under the dome, so it follows you.
+func set_motes(day: String, night: String) -> void:
+	for kind in [[day, "_motes_day"], [night, "_motes_night"]]:
+		if kind[0] == "" or Fx.ambient_share() <= 0.0:
+			continue
+		var p := Fx.motes(kind[0])
+		p.name = "Motes" + ("Day" if kind[1] == "_motes_day" else "Night")
+		add_child(p)
+		set(kind[1], p)
+
+
 ## How the sky looks now: clouds lit by `light` (the sun's colour and energy), night
 ## 0..1, cover 0..1.
 func set_look(light: Color, night: float, cover: float) -> void:
@@ -41,3 +55,7 @@ func set_look(light: Color, night: float, cover: float) -> void:
 	material.set_shader_parameter("cloud_color", day_cloud.lerp(night_cloud, night))
 	material.set_shader_parameter("night", night)
 	material.set_shader_parameter("cover", cover)
+	if _motes_day:
+		_motes_day.emitting = night < 0.5
+	if _motes_night:
+		_motes_night.emitting = night >= 0.5

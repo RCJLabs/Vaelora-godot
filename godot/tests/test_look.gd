@@ -68,7 +68,7 @@ func _physics_process(_d: float) -> bool:
 			var stone: StandardMaterial3D = n("Ford/Mesh").mesh.material
 			ok(stone.normal_enabled and stone.albedo_texture != ground.albedo_texture, "stone has its own texture and a normal map")
 			# Houses: a gabled roof, a door facing the streets, windows lit at night; pines
-			# in layers (systems/tree_dresser.gd).
+			# in layers (systems/dresser.gd).
 			var dressing = n("CountingHouseDressing")
 			ok(dressing != null and dressing.get_node_or_null("RoofA") != null and dressing.get_node_or_null("Door") != null
 					and dressing.get_node_or_null("Chimney") != null, "houses have roofs, doors and chimneys")

@@ -63,6 +63,7 @@ func _ready() -> void:
 			mood.apply_static(world_environment.environment)
 	if not Engine.is_editor_hint():
 		_dome = SkyDome.new()
+		_dome.set_motes(mood.motes_day if mood else "pollen", mood.motes_night if mood else "fireflies")
 		get_parent().add_child.call_deferred(_dome)
 	apply(_hour())
 

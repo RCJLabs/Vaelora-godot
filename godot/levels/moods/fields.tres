@@ -14,3 +14,5 @@ saturation = 0.72
 contrast = 1.02
 brightness = 0.97
 clouds = 0.85
+motes_day = "ash"
+motes_night = "ash"

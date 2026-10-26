@@ -16,6 +16,12 @@ extends Resource
 ## How much of the sky the drifting clouds cover (levels/sky_dome.gd), 0 to 1.
 @export_range(0.0, 1.0) var clouds := 0.4
 
+@export_group("Air")
+## What drifts in the air round you (props/fx.gd motes): by day, and by night.
+## "pollen", "fireflies", "ash", "dust", or "" for nothing.
+@export var motes_day := "pollen"
+@export var motes_night := "fireflies"
+
 @export_group("Sun")
 @export var sun_tint := Color(1, 1, 1)
 @export_range(0.0, 1.0) var sun_tint_amount := 0.0

@@ -1,11 +1,17 @@
 extends Node
 
-# Greybox trees, fuller: every pine crown in a level (a MeshInstance3D named
+# Dresses greybox levels as they load, by convention, so hand-made and generated
+# levels alike get it without editing them. Autoloaded as "Dresser".
+#
+# Pines: every pine crown in a level (a MeshInstance3D named
 # "Canopy" or "Crown" whose mesh is a cone, a CylinderMesh with no top) is swapped,
 # as it enters the tree, for three stacked, faceted cones, darker at the bottom and
 # each tree a slightly different green (from where it stands, so the same every
-# time). Works on hand-made levels and generated ones alike; collision is untouched.
-# Autoloaded as "TreeDresser". docs/godot-starter/LOOK.md, "Trees and houses".
+# time). Collision is untouched.
+#
+# Chimneys: every MeshInstance3D named "Chimney" (builder houses) smokes (props/fx.gd),
+# as much as the graphics preset allows. docs/godot-starter/LOOK.md, "Trees and
+# houses", "Effects".
 
 const LAYERS := [   # radius, height (shares of the cone's), centre (share of height above its middle), shade
 	[1.0, 0.5, -0.25, 0.8],
@@ -23,6 +29,17 @@ func _ready() -> void:
 func _on_node_added(node: Node) -> void:
 	if node is MeshInstance3D and (node.name == &"Canopy" or node.name == &"Crown"):
 		_dress.call_deferred(node)
+	elif node is MeshInstance3D and node.name == &"Chimney":
+		_smoke.call_deferred(node)
+
+
+func _smoke(chimney: MeshInstance3D) -> void:
+	var amount := int(6 * Fx.ambient_share())
+	if not is_instance_valid(chimney) or not chimney.is_inside_tree() or amount <= 0 or chimney.has_meta("smoking"):
+		return
+	chimney.set_meta("smoking", true)
+	var top: float = chimney.mesh.size.y / 2.0 if chimney.mesh is BoxMesh else 1.0
+	Fx.smoke(chimney.get_parent(), chimney.position + Vector3(0, top + 0.2, 0), amount)
 
 
 func is_pine(crown: MeshInstance3D) -> bool:

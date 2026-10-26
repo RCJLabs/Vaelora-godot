@@ -10,6 +10,8 @@ var prompt := "Use campfire"
 
 func _ready() -> void:
 	add_to_group("heat_source")
+	Fx.embers(self)
+	Fx.smoke(self, Vector3(0, 0.8, 0), 6, Color(0.45, 0.44, 0.42, 0.4))
 	var stream := Sfx.loop("campfire_crackle")
 	if stream == null:
 		return

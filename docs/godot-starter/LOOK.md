@@ -196,7 +196,7 @@ Builders: `ground_cover(style, area)`, plus `.add_to_group("ground_cover", true)
 
 ## Trees and houses
 
-**Pines** (`systems/tree_dresser.gd`, autoload `TreeDresser`):
+**Pines** (`systems/dresser.gd`, autoload `Dresser`):
 - Any MeshInstance3D named `Canopy` or `Crown` whose mesh is a cone is swapped, as it enters the
   tree, for three stacked, faceted cones.
 - The layers are darker at the bottom, and each tree is a slightly different green, picked from
@@ -236,6 +236,20 @@ The Vale's waystation is hand-made and unchanged.
 
 **The Vale** now has the ground skirt out to the horizon too, so there's no dark band past its
 edge.
+
+## Effects: `props/fx.gd`
+
+These are CPU particles with a soft round sprite, so they work on every renderer. Counts are small.
+
+| Effect | Where | Notes |
+|---|---|---|
+| Hit burst | Every melee blow that lands (`player_combat.gd`) | Orange sparks off a guard or parry; pale dust off a hit. Cleans itself up |
+| Embers and smoke | Every campfire, including the ones you build | |
+| Chimney smoke | Every builder house's chimney (`systems/dresser.gd`) | A light breeze carries it |
+| Motes in the air | Round the camera, on the sky dome, by the mood's `motes_day` and `motes_night` | Vale and Riverlands: pollen by day, fireflies at night. Grieving Fields: drifting ash. Ilunhall: gold dust |
+
+The ambient effects (chimney smoke and motes) scale with the preset's `clutter`, so there are none
+on Low. Hit bursts and fires always show.
 
 ## Renderers (a caveat)
 

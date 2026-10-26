@@ -18,3 +18,5 @@ ambient_mult = 1.2
 saturation = 1.06
 contrast = 1.04
 clouds = 0.3
+motes_day = "dust"
+motes_night = "dust"
