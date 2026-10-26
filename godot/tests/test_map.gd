@@ -88,10 +88,64 @@ func _physics_process(_d: float) -> bool:
 			near(map.to_map(Vector3(0, 0, 0)).x, map._overlay.size.x / 2.0, 1.0, "the world centre is the map centre")
 			ok(map.to_map(Vector3(0, 0, -30)).y < map.to_map(Vector3(0, 0, 30)).y, "north is up")
 			var full: float = map.shown_area().size.x
-			map._zoom = 1
-			ok(map.shown_area().size.x < full, "zooming in shows less", map.shown_area().size.x)
-			ok(map.shown_area().get_center().distance_to(Vector2(p.global_position.x, p.global_position.z)) < 0.01, "zoomed in, the map centres on the player")
-			map._zoom = 0
+			var full_region: float = map._atlas.region.size.x
+			# A tap (a finger is the left mouse button too) doesn't zoom: it used to, as "attack".
+			for pressed in [true, false]:
+				var tap := InputEventMouseButton.new()
+				tap.button_index = MOUSE_BUTTON_LEFT
+				tap.pressed = pressed
+				tap.position = Vector2(250, 250)
+				map._gui_input(tap)
+			ok(is_equal_approx(map.zoom, 1.0), "a tap doesn't zoom", map.zoom)
+			# The + button, the wheel and a pinch zoom in; - zooms out.
+			map._buttons.get_node("ZoomIn").pressed.emit()
+			ok(map.shown_area().size.x < full and map._atlas.region.size.x < full_region, "+ zooms in (cropping the picture)", map.shown_area().size.x)
+			var wheel := InputEventMouseButton.new()
+			wheel.button_index = MOUSE_BUTTON_WHEEL_UP
+			wheel.pressed = true
+			wheel.position = Vector2(250, 250)
+			var before: float = map.zoom
+			map._gui_input(wheel)
+			near(map.zoom, before * map.ZOOM_STEP, 0.01, "the wheel zooms in")
+			map._buttons.get_node("ZoomOut").pressed.emit()
+			map._buttons.get_node("ZoomOut").pressed.emit()
+			near(map.zoom, 1.0, 0.01, "- zooms back out")
+			for t in [[0, Vector2(150, 250)], [1, Vector2(250, 250)]]:
+				var touch := InputEventScreenTouch.new()
+				touch.index = t[0]
+				touch.position = t[1]
+				touch.pressed = true
+				map._gui_input(touch)
+			var spread := InputEventScreenDrag.new()
+			spread.index = 1
+			spread.position = Vector2(350, 250)
+			map._gui_input(spread)
+			near(map.zoom, 2.0, 0.01, "spreading two fingers twice as far apart zooms in twice")
+			for i in [0, 1]:
+				var up := InputEventScreenTouch.new()
+				up.index = i
+				up.pressed = false
+				map._gui_input(up)
+			# Dragging moves the map (the picture follows the finger), and stops at the edges.
+			var was: Vector2 = map.center
+			var press := InputEventMouseButton.new()
+			press.button_index = MOUSE_BUTTON_LEFT
+			press.pressed = true
+			map._gui_input(press)
+			var drag := InputEventMouseMotion.new()
+			drag.relative = Vector2(100, 0)
+			map._gui_input(drag)
+			ok(map.center.x < was.x, "dragging right shows what's to the west", [was, map.center])
+			drag.relative = Vector2(-100000, -100000)
+			map._gui_input(drag)
+			var area: Rect2 = map.shown_area()
+			var whole: Rect2 = map.full_area()
+			ok(area.end.x <= whole.end.x + 0.01 and area.end.y <= whole.end.y + 0.01, "and stops at the edge of the level")
+			press.pressed = false
+			map._gui_input(press)
+			map._buttons.get_node("ZoomMe").pressed.emit()
+			ok(map.shown_area().get_center().distance_to(Vector2(p.global_position.x, p.global_position.z)) < 0.01, "Me centres the map on the player")
+			map.set_zoom(1.0)
 			press("map")
 			wait = 5
 		6:

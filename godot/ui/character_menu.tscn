@@ -192,6 +192,7 @@ theme_override_constants/separation = 12
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
+autowrap_mode = 3
 
 [node name="SpellDescription" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Magic/SpellDetails"]
 unique_name_in_owner = true
@@ -202,6 +203,7 @@ autowrap_mode = 3
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
+autowrap_mode = 3
 
 [node name="SpellHint" type="Label" parent="Root/Panel/Margin/VBox/Tabs/Magic/SpellDetails"]
 layout_mode = 2
