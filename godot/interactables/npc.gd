@@ -227,13 +227,19 @@ func _watch_for_wanted(delta: float) -> void:
 	DialogueManager.start(Crime.GUARD_DIALOGUE, display_name)
 
 
+## The colour they're dressed in: Cloth, or the capsule's.
+func clothes() -> Color:
+	if cloth.a > 0.0:
+		return cloth
+	var capsule := get_node_or_null("MeshInstance3D") as MeshInstance3D
+	if capsule and capsule.mesh and capsule.mesh.surface_get_material(0) is StandardMaterial3D:
+		return capsule.mesh.surface_get_material(0).albedo_color
+	return Color(0.4, 0.38, 0.35)
+
+
 func _dress() -> void:
 	var capsule := get_node_or_null("MeshInstance3D") as MeshInstance3D
-	var colour := cloth
-	if colour.a == 0.0:
-		colour = Color(0.4, 0.38, 0.35)
-		if capsule and capsule.mesh and capsule.mesh.surface_get_material(0) is StandardMaterial3D:
-			colour = capsule.mesh.surface_get_material(0).albedo_color
+	var colour := clothes()
 	if capsule:
 		capsule.visible = false
 	add_child(Figure.build(race, role, colour, sitting))

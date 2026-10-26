@@ -1,0 +1,16 @@
+{
+	"start": "hello",
+	"nodes": {
+		"hello": {
+			"text": "An Ashen woman with a spear and a Listener's grey sash. \"Warden Ashlock. Greyfold keeps its peace quietly. Keep yours the same and we'll not have words.\"",
+			"choices": [
+				{"text": "Who do you answer to?", "next": "who"},
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"who": {
+			"text": "\"The Listeners. Ysolde, mostly. Strangers come through on the road and some of them think a quiet village is an easy one. They learn.\"",
+			"choices": [{"text": "I'll keep it quiet.", "next": "end"}]
+		}
+	}
+}

@@ -202,7 +202,7 @@ func _refresh() -> void:
 		var price := Trade.sell_price(id)
 		var label := "%s  x%d      %s" % [item.display_name, Inventory.items[id],
 				"keep" if item.quest_item else ("%d gold" % price if price > 0 else "worthless")]
-		var hot: int = Crime.stolen_count(id, Trade.MERCHANTS[merchant].get("region", ""))
+		var hot: int = 0 if Trade.MERCHANTS[merchant].get("fence", false) else Crime.stolen_count(id, Trade.MERCHANTS[merchant].get("region", ""))
 		if hot > 0:
 			label += "   (%d stolen here)" % hot   # they won't buy those (systems/crime.gd)
 		_yours.add_item(label)

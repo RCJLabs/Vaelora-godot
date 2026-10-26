@@ -8,7 +8,11 @@ extends Node
 # took is stolen: merchants in the region it came from won't buy it. Guards
 # (NPCs with the guard role) stop you while you have a bounty where they serve:
 # pay it (they take the stolen goods), talk your way out (Speech), go to the
-# cells (days pass, the goods are taken), or run (it grows, and they'll be back).
+# cells (days pass, the goods are taken), or run: then they fight (enemies/guard.gd),
+# every guard near you. Guards don't kill: beaten by them, you're arrested (the
+# cells); beat one and they yield (a bounty for assault); outrun them and they go
+# back to their posts. A seen crime also costs you standing with the region's
+# people (Reputation, if you've met them).
 #
 # Who sees: people (interactables/npc.gd, group "people") who are out (not gone
 # in for the night), facing you (about 100 degrees each side), with a clear line
@@ -36,6 +40,13 @@ const GUARD_RANGE := 9.0         # a guard stops you this close, if they can see
 const GUARD_COOLDOWN := 60.0     # seconds after you run before guards try again
 const JAIL_GOLD_PER_DAY := 100   # a day in the cells per this much bounty (1 to 7 days)
 const GUARD_DIALOGUE := "res://dialogue/guard_crime.json"
+const ASSAULT := 40              # beating a guard until they yield
+const CALL_RANGE := 40.0         # guards this near you join the fight when you run
+const GUARD_SCENE := "res://enemies/bandit.tscn"   # loaded when guards first fight, not at startup
+const GUARD_SCRIPT := "res://enemies/guard.gd"
+## A region's people, and what a seen crime costs you with them.
+const FACTIONS := {"vale": "riverwatch", "riverlands": "river_compact", "fields": "ashen_fields", "capital": "ilunar_empire"}
+const REPUTATION_LOSS := {"theft": 2, "pickpocket": 3, "resist": 2, "assault": 5}
 
 ## Pickpocketing: the base chance at Sneak 15, more per level above, more from behind.
 const PICK_BASE := 0.3
@@ -162,7 +173,7 @@ func theft(items: Dictionary, gold: int, owner_name: String, except: Node = null
 		worth += (item.value if item else 0) * int(items[id])
 	if witnesses(except).is_empty():
 		return false
-	_add_bounty(r, maxi(worth, MIN_THEFT), "Seen stealing from %s!" % owner_name)
+	_add_bounty(r, maxi(worth, MIN_THEFT), "Seen stealing from %s!" % owner_name, "theft")
 	return true
 
 
@@ -173,11 +184,14 @@ func _mark_stolen(r: String, id: String, count: int) -> void:
 	changed.emit()
 
 
-func _add_bounty(r: String, amount: int, what: String) -> void:
+func _add_bounty(r: String, amount: int, what: String, kind := "") -> void:
 	bounty[r] = bounty_in(r) + amount
 	var p := player()
 	if p and p.get("hud"):
 		p.hud.notify("%s Bounty in %s: %d gold." % [what, region_name(r), bounty_in(r)])
+	var faction: String = FACTIONS.get(r, "")
+	if kind != "" and faction != "" and Reputation.known(faction):
+		Reputation.add(faction, -int(REPUTATION_LOSS[kind]))
 	changed.emit()
 
 
@@ -272,7 +286,7 @@ func pickpocket(person: Node3D) -> bool:
 	if _roll() >= pick_chance(person):
 		var r := region()
 		if r != "":
-			_add_bounty(r, PICKPOCKET_CAUGHT, "%s catches your hand in their pocket!" % name)
+			_add_bounty(r, PICKPOCKET_CAUGHT, "%s catches your hand in their pocket!" % name, "pickpocket")
 		elif p:
 			p.show_message("%s catches your hand in their pocket!" % name)
 		return false
@@ -320,13 +334,121 @@ func pardon() -> void:
 	changed.emit()
 
 
-## Ran from a guard: more bounty, and guards leave you be for a minute.
+## Ran from a guard: more bounty, and every guard near you comes after you.
+## (Lose them and they leave you be for a minute.)
 func resist() -> void:
 	var r := region()
 	if r == "":
 		return
+	_quiet()
+	_add_bounty(r, RESISTING, "You run from the guard.", "resist")
+	call_guards()
+
+
+func _quiet() -> void:
 	_guard_quiet_until = Time.get_ticks_msec() / 1000.0 + GUARD_COOLDOWN
-	_add_bounty(r, RESISTING, "You run from the guard.")
+
+
+## Every guard within CALL_RANGE of you takes up arms. Returns how many.
+func call_guards() -> int:
+	var p := player()
+	if p == null:
+		return 0
+	var called := 0
+	for person in get_tree().get_nodes_in_group("people"):
+		if person.get("role") == "guard" and person.is_visible_in_tree() and not person.has_meta("armed") \
+				and person.global_position.distance_to(p.global_position) < CALL_RANGE:
+			_to_arms(person)
+			called += 1
+	return called
+
+
+# The guard NPC steps out of the scene; a fighter in their clothes steps in.
+func _to_arms(person: Node3D) -> void:
+	var fighter: CharacterBody3D = load(GUARD_SCENE).instantiate()
+	var kept := {}   # the scene's own settings (its swings, its sword), which a new script would drop
+	for prop in fighter.get_property_list():
+		if prop["usage"] & PROPERTY_USAGE_SCRIPT_VARIABLE and prop["usage"] & PROPERTY_USAGE_STORAGE:
+			kept[prop["name"]] = fighter.get(prop["name"])
+	fighter.set_script(load(GUARD_SCRIPT))
+	for key in kept:
+		fighter.set(key, kept[key])
+	fighter.name = "%sArmed" % person.name
+	fighter.display_name = person.display_name
+	fighter.look_race = person.race if person.race != "" else "human"
+	fighter.look_cloth = person.clothes()
+	fighter.max_health = 90.0
+	fighter.attack_damage = 12.0
+	fighter.guard_chance = 0.6
+	fighter.parry_chance = 0.15
+	fighter.gold = 0
+	fighter.loot = {}
+	fighter.post = person
+	fighter.transform = person.global_transform
+	person.set_meta("armed", fighter)
+	person.visible = false
+	person.collision_layer = 0
+	get_tree().current_scene.add_child(fighter)
+
+
+# The fighter goes; the guard NPC is back (where the fighter stood, if `here`).
+func _back_to_post(fighter: Node3D, here: bool) -> void:
+	var person: Node3D = fighter.post
+	if person and is_instance_valid(person):
+		person.remove_meta("armed")
+		person.visible = true
+		person.collision_layer = 1
+		if here:
+			person.global_position = fighter.global_position
+			person.rotation.y = fighter.rotation.y
+	fighter.remove_from_group("guards_fighting")
+	fighter.name = "%sStoodDown" % fighter.name   # free the name now: they may take up arms again this frame
+	fighter.queue_free()
+
+
+## A fighting guard has lost you and is back at their post.
+func stand_down(fighter: Node3D) -> void:
+	_back_to_post(fighter, false)
+	_quiet()
+
+
+## Beaten down: they yield, and you've assaulted a guard.
+func guard_yields(fighter: Node3D) -> void:
+	if fighter.is_queued_for_deletion():
+		return
+	_back_to_post(fighter, true)
+	_quiet()
+	var r := region()
+	if r != "":
+		_add_bounty(r, ASSAULT, "%s yields." % fighter.display_name, "assault")
+
+
+## E at a fighting guard: everyone lowers their weapons, and they talk again.
+func surrender(fighter: Node3D) -> void:
+	var person: Node3D = fighter.post
+	for each in get_tree().get_nodes_in_group("guards_fighting"):
+		_back_to_post(each, each == fighter)
+	_guard_quiet_until = 0.0
+	if person and is_instance_valid(person):
+		DialogueManager.start(GUARD_DIALOGUE, person.display_name)
+
+
+## Beaten by the guards: not death, the cells. (The player calls it instead of dying.)
+func arrest(p: Node3D) -> void:
+	for each in get_tree().get_nodes_in_group("guards_fighting"):
+		_back_to_post(each, false)
+	for id in p.effects.active.keys():
+		var data: StatusEffectData = p.effects.active[id]["data"]
+		if data.is_harmful and data.duration > 0.0:
+			p.effects.remove(id)
+	p.stats.refill()
+	p.stats.health = p.stats.max_health * 0.5
+	p.stats.changed.emit()
+	p.is_dead = false
+	Engine.time_scale = 1.0
+	if bounty_here() <= 0:
+		bounty[region()] = RESISTING   # (you can't be beaten by a guard with nothing owed, but just in case)
+	jail()
 
 
 ## The cells: days pass, the goods are taken, the bounty's served. You come out at
@@ -348,6 +470,8 @@ func jail() -> int:
 		p.rotation.y = release.global_rotation.y
 		p.velocity = Vector3.ZERO
 	_tell("You serve %d day%s in the cells.%s" % [days, "" if days == 1 else "s", " Your stolen goods were taken." if taken > 0 else ""])
+	if Character.modes.get("hardcore", false):
+		SaveSystem.save_game(SaveSystem.AUTOSAVE, true)   # like a defeat: no loading your way out of it
 	return days
 
 

@@ -16,7 +16,8 @@ extends Node
 # back up, with their stock, every RESTOCK_DAYS days. Things marked unique (the
 # bow on Maren's wall, the tomes) don't come back once sold. Quest items and
 # worthless things can't be sold, and nor can goods stolen in the merchant's own
-# region (systems/crime.gd): sell them somewhere else.
+# region (systems/crime.gd): sell them somewhere else, or to a fence ("fence": true),
+# who'll take them from anywhere.
 
 const RESTOCK_DAYS := 3
 const BUY_BASE := 1.25
@@ -73,6 +74,12 @@ const MERCHANTS := {
 				"arrow": 40, "leather_cap": 1, "leather_gloves": 1, "leather_boots": 1, "firewood": 8,
 				"tome_true_sight": 1, "tome_foresight": 1},
 		"unique": ["tome_true_sight", "tome_foresight"],
+	},
+	"quill": {   # a fence in Ilunhall's Low Lane: buys stolen goods from anywhere
+		"name": "Quill",
+		"fence": true,
+		"gold": 500,
+		"stock": {"lockpick": 25, "hunting_dagger": 1, "minor_healing_potion": 2},
 	},
 	"bruna": {   # rune-goods on Ilunhall's quay
 		"name": "Bruna Deepseal",
@@ -168,7 +175,7 @@ func why_not_sell(merchant: String, id: String) -> String:
 		return "You don't have it."
 	if item.quest_item:
 		return "You'd better keep that."
-	if Inventory.count(id) <= Crime.stolen_count(id, MERCHANTS[merchant].get("region", "")):
+	if not MERCHANTS[merchant].get("fence", false) and Inventory.count(id) <= Crime.stolen_count(id, MERCHANTS[merchant].get("region", "")):
 		return "%s knows that was stolen round here." % MERCHANTS[merchant]["name"]
 	if sell_price(id) <= 0:
 		return "%s won't give you anything for it." % MERCHANTS[merchant]["name"]

@@ -264,6 +264,7 @@ func _build_city() -> Node3D:
 	npc("QuayWarden", "Warden of the Quay", "res://dialogue/warden.json", Vector3(-6, 0, 22), Color(0.3, 0.32, 0.4), PI / 2.0, null, "human/guard")
 	npc("BridgeWarden", "Bridge Warden", "res://dialogue/warden.json", Vector3(42, 8, -47), Color(0.3, 0.32, 0.4), PI, null, "orc/guard")
 	marker("JailRelease", Vector3(-6, 0, 25), 0.0)
+	npc("Quill", "Quill", "res://dialogue/quill.json", Vector3(33, 0, 37), Color(0.25, 0.24, 0.22), PI, null, "small_folk/commoner")   # the Low Lane fence
 	goods("BrunaIngots", "steel_ingot", 2, Vector3(-21.2, 1.2, 17), "Bruna Deepseal")
 	goods("BrunaTonic", "potion_restore_magicka_1", 1, Vector3(-18.8, 1.2, 17), "Bruna Deepseal")
 	stores("OdoCask", "Odo's strongbox", {"bread": 2}, 35, Vector3(-30, 8.35, -66), "Hallmaster Odo", 1)

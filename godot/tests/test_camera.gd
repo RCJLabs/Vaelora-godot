@@ -58,6 +58,12 @@ func _physics_process(_d: float) -> bool:
 			key(KEY_V)
 			wait = 3
 		2:
+			# The body's copy of what you hold is built in _process: under load several
+			# physics frames can pass first, so give it a few more before checking.
+			if V.held_copy("Weapon") == null and f < 600:
+				wait = 1
+				step = 2
+				return false
 			ok(V.third_person and V.camera.current and not p.camera.current, "V: third person")
 			ok(autoload("Settings").third_person, "remembered in Settings")
 			ok(V.body.visible, "and there you are")

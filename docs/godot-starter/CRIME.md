@@ -65,6 +65,17 @@ A seen crime puts a bounty on you in that region (`Crime.REGIONS`, one per regio
 | Theft (seen) | what it's worth: the items' value plus any gold, at least 5 |
 | Caught picking a pocket | 25 |
 | Running from a guard | +10 |
+| Beating a guard until they yield | +40 |
+
+A seen crime also costs you standing with the region's people, once you've met them
+(`Crime.FACTIONS`; see FACTIONS.md):
+
+| Region | Faction | Theft | Pickpocket | Running | Assault |
+|---|---|---|---|---|---|
+| The Greywater Vale | Riverwatch Garrison | −2 | −3 | −2 | −5 |
+| The Riverlands | The River Compact | −2 | −3 | −2 | −5 |
+| The Grieving Fields | The Ashen of the Fields | −2 | −3 | −2 | −5 |
+| Ilunhall | The Ilunar Empire | −2 | −3 | −2 | −5 |
 
 Bounties never fade. **Tab → World** lists where you're wanted, under the Wanted heading.
 
@@ -101,6 +112,7 @@ chance, for example "Pickpocket Hedda Marrow (55%)".
 NPCs with the **guard** role keep the law where they stand:
 
 - **The Riverlands:** Captain Varga and Sergeant Dace.
+- **The Grieving Fields:** Warden Ashlock, on the road into Greyfold.
 - **Ilunhall:** the Warden of the Quay and the Bridge Warden.
 
 While you have a bounty in their region, a guard who sees you within 9 m stops you. Talking
@@ -108,8 +120,27 @@ to a guard while you're wanted does the same. The conversation is `dialogue/guar
 
 - **Pay**, if you can afford it. You pay the bounty, and they take everything you stole in this region.
 - **Talk your way out**. Only for bounties under 100: a Persuade 45 check. Pass and the bounty's gone, and you keep the goods. Fail and, as with every Speech check, it isn't offered again.
-- **Go quietly**. A day in the cells per 100 gold of bounty, 1 to 7 days. The clock and your needs go on (you're fed and you sleep). Your stolen goods are taken. You come out at the level's `JailRelease` marker: the barracks door in Weirholt, the quay in Ilunhall.
-- **Run**. Esc does the same. The bounty grows by 10, and guards leave you be for a minute. Then they'll stop you again.
+- **Go quietly**. A day in the cells per 100 gold of bounty, 1 to 7 days. The clock and your needs go on (you're fed and you sleep). Your stolen goods are taken. You come out at the level's `JailRelease` marker: the barracks door in Weirholt, the road into Greyfold, the quay in Ilunhall. In Hardcore it autosaves, as a defeat does.
+- **Run**. Esc does the same. The bounty grows by 10, and they fight (below).
+
+### When they fight
+
+Run, and every guard within 40 m of you takes up arms. Each guard NPC steps out of
+the scene, and a fighter steps in (`enemies/guard.gd`). The fighter is `bandit.tscn` with
+the guard's name, race and clothes, and it fights like a bandit: telegraphed swings, a raised
+guard, sometimes a parry. Each has 90 health and hits for 12.
+
+- **They don't kill.** Beaten by a guard, you're **arrested**: the cells, as if you'd gone quietly, in any mode. You go to the cells with half your health, instead of dying or reloading.
+- **You can't kill them either.** Beat one down to a quarter of their health and they **yield**: they're themselves again, where they stood, and you've a 40-gold bounty for assault.
+- **Surrender:** E at a fighting guard. Everyone lowers their weapons, and the guard you surrendered to talks again: pay, the cells, or run once more.
+- **Lose them:** guards run slower than you sprint and won't chase more than 28 m from their post. Lose them, and once they're back at their posts they go back to being people. Guards then leave you be for a minute before they'll stop you again.
+
+Quest people who are guards (Varga, Dace) can't die this way, so nothing in their quests breaks.
+
+## Fences
+
+Quill, in Ilunhall's Low Lane, buys stolen goods from anywhere ("fence": true in
+`systems/trade.gd`). His prices are the usual ones.
 
 ## Saving
 
@@ -126,12 +157,13 @@ A dialogue can use:
 
 ## Limits
 
-- **Guards can't fight.** They're NPCs, not combatants. Running only postpones being stopped, and you can't fight your way out or break out of the cells. Turning guards into figure-based enemies (like bandits) when you resist is the natural next step.
-- **Some regions have no law.** The Grieving Fields have no guards, so a bounty there stands but nobody collects it. The Greywater Vale has no owned goods and no guards yet (it's a hand-placed scene). Levels not in `Crime.REGIONS` (dungeons, interiors) have no law: nothing there is stolen.
-- **No other crimes.** There's no trespassing, and no assault or murder, because NPCs can't be attacked.
-- **No consequences beyond the bounty.** Owners don't react, reputation doesn't drop, and there's no fence. A thieves' guild or a Low Lane fence in Ilunhall would fit.
+- **No breaking out of the cells.** You serve the time.
+- **The Greywater Vale has no law yet.** It has no owned goods and no guards (it's a hand-placed scene). Levels not in `Crime.REGIONS` (dungeons, interiors) have no law: nothing there is stolen.
+- **No other crimes.** There's no trespassing, and you can't attack ordinary NPCs, so there's no assault or murder beyond the guards.
+- **A yielded guard stays where they yielded** until you leave the level. Their watch spot only comes back with the level.
+- **Guards in a fight don't call for help.** Only guards near you when you run take up arms.
+- **Owners don't react.** A robbed merchant trades with you as before.
 - **Witnesses report at once.** Nobody has to run and tell a guard, and killing a witness isn't a thing.
 - **Pockets are generated by role**, not stocked per person.
-- **In Hardcore**, going to the cells doesn't autosave, the way a defeat does.
 
-Tests: `tests/test_crime.gd`.
+Tests: `tests/test_crime.gd`, `tests/test_guards.gd`.
