@@ -87,6 +87,9 @@ func _build_fields() -> Node3D:
 	npc("Corin", "Corin Dray", "res://dialogue/corin.json", Vector3(-36, 0, 13), Color(0.35, 0.36, 0.38), PI, null, "human/hunter")
 	npc("Marta", "Marta Coil", "res://dialogue/marta.json", Vector3(9, 0, -21.5), Color(0.55, 0.45, 0.25), PI, null, "human/merchant")
 	npc("Bram", "Bram", "res://dialogue/bram.json", Vector3(-14, 0, -6), Color(0.42, 0.4, 0.3), PI / 3.0, null, "ashen/worker")
+	# A day by the clock (Ysolde listens at the stone, day and night).
+	gathering(Vector3(3, 0, 3))   # by the Listening Stone
+	routines(["Hesk", "Corin", "Marta", "Bram"])
 
 	# The way back north to the Riverlands.
 	door("RiverRoad", "res://levels/weirholt.tscn", "FromFields", "the Riverlands", "Take the north road to",

@@ -143,6 +143,9 @@ func _build_town() -> Node3D:
 	npc("Teodor", "Teodor", "res://dialogue/teodor.json", Vector3(-20, 0, 13), Color(0.55, 0.55, 0.6), PI / 2.0, null, "passenger/commoner")
 	npc("Fenn", "Physician Fenn", "res://dialogue/fenn.json", Vector3(-10, 0, 9.5), Color(0.2, 0.2, 0.2), PI, null, "human/physician")
 	npc("JoryDocks", "Jory Vell", "res://dialogue/jory_weirholt.json", Vector3(22.5, 0.15, 16), Color(0.6, 0.5, 0.2), -PI / 2.0, null, "small_folk/merchant")
+	# A day by the clock for the townsfolk (Hedda keeps the inn, the guards keep watch).
+	gathering(Vector3(-14, 0, -11))   # in front of the Lantern Weir
+	routines(["Wenna", "Ama", "Teodor", "Fenn", "JoryDocks"])
 
 	# The way back north, and where you arrive from it.
 	door("NorthRoad", "res://levels/test_level.tscn", "FromWeirholt", "the Greywater Vale", "Take the north road to",

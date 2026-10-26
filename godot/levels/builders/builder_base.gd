@@ -245,6 +245,7 @@ func house(name: String, size: Vector3, pos: Vector3, wall: Color, roof: Color) 
 	door.mesh = dm
 	door.position = front * (depth + 0.03) + Vector3(0, 1.0, 0)
 	door.rotation.y = atan2(front.x, front.z)
+	door.add_to_group("home_door", true)   # someone lives here (interactables/npc.gd routines)
 	own(door, dressing)
 	var windows := Node3D.new()
 	windows.name = "Windows"
@@ -278,6 +279,19 @@ func house(name: String, size: Vector3, pos: Vector3, wall: Color, roof: Color) 
 	var along := Vector3(1, 0, 0) if along_x else Vector3(0, 0, 1)
 	chimney.position = along * ((size.x if along_x else size.z) * 0.3) + Vector3(0, ridge_y - 0.1, 0) + (Vector3(0, 0, 0.5) if along_x else Vector3(0.5, 0, 0))
 	own(chimney, dressing)
+
+
+## Where people gather in the evening (interactables/npc.gd routines): the inn, the square.
+func gathering(pos: Vector3) -> void:
+	marker("Gathering", pos, 0.0)
+
+
+## Give these people a day by the clock (interactables/npc.gd, Routine).
+func routines(names: Array) -> void:
+	for who in names:
+		var person := scene.find_child(who, true, false)
+		if person:
+			person.set("routine", true)
 
 
 func npc(name: String, display: String, dialogue: String, pos: Vector3, color: Color, facing := 0.0, parent: Node = null, look := "human/commoner") -> StaticBody3D:
