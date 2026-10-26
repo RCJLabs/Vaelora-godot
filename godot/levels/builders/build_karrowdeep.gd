@@ -93,6 +93,7 @@ func _build_city() -> Node3D:
 	scene.name = "Karrowdeep"
 	scene.add_to_group("navmesh_source", true)
 	common("Karrowdeep", false)
+	air(0.012, Color(0.7, 0.75, 0.9))   # a huge hall: thin, cold
 	var env: Environment = scene.get_node("WorldEnvironment").environment
 	env.ambient_light_color = Color(0.42, 0.47, 0.6)   # the rune-ore's cold light, everywhere a little
 	env.ambient_light_energy = 1.3
@@ -280,6 +281,7 @@ func _build_seam() -> Node3D:
 	scene.name = "SeamNine"
 	scene.add_to_group("navmesh_source", true)
 	common("SeamNine", false)
+	air(0.03, Color(0.8, 0.78, 0.72))   # rock dust from the cutting
 	var env: Environment = scene.get_node("WorldEnvironment").environment
 	env.ambient_light_color = Color(0.36, 0.4, 0.52)
 	env.ambient_light_energy = 0.9

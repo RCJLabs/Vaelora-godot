@@ -265,7 +265,7 @@ every outdoor region gets it, including the hand-made Vale.
 | **Morning mist**: volumetric fog that gathers before dawn and burns off by about 9:30 | `LevelMood.morning_mist`: Riverlands 0.03, Ithmarren 0.025, Fields 0.02, Vale 0.015 | High and Ultra (it's volumetric fog) |
 
 As with the other effects, a preset only ever switches these **off** relative to how a scene was
-built: a scene built without SDFGI (every interior, for now) doesn't gain it on Ultra.
+built: a scene built without SDFGI doesn't gain it on Ultra.
 
 Weirholt at 6:30, before and after (High):
 
@@ -281,8 +281,45 @@ GPU:
 - toggle **SDFGI → Enabled** and watch the shade under the gate towers and eaves;
 - if it's too bright, lower **SDFGI → Energy** (1.0 now); if shade goes too dark, raise it.
 
-**Interiors are next.** Each generated interior has its own environment written into its scene,
-so giving them GI means changing `builder_base.common()` and rebuilding them.
+## Interiors
+
+Every interior gets the same PC look, built into its scene:
+- **SSAO**: contact shadows in corners and under things.
+- **Close-up bounce light**: SSIL on Ultra, as outdoors.
+- **No SDFGI yet** (below).
+- **Air**: a little volumetric fog, so the lamps and braziers glow in it, and the rest falls
+  away into dark. High and Ultra only, like all volumetric fog.
+
+Generated interiors get it from `builder_base.common()`, and each builder sets its own air
+with `air(density, tint)`:
+
+| Interior | Air | Why |
+|---|---|---|
+| Weirholt's culvert | 0.035, green-grey | Wet |
+| Seam Nine | 0.03, warm grey | Rock dust from the cutting |
+| Ilunhall's Undercroft | 0.025, grey-green | Damp |
+| The Rootwell | 0.025, green | Close; pollen in it |
+| The Deep Ring | 0.02, grey | (the default) |
+| The Under-Glass | 0.015, cold blue | Clear: glass dust |
+| Karrowdeep | 0.012, cold blue | A huge hall, so thin (and it keeps its distance fog) |
+
+The hand-made test dungeon and waystation cellar already had SSAO and air (0.025 and 0.03), and
+now have SSIL too.
+
+![Undercroft, before](../images/interior_undercroft_before.jpg)
+![Undercroft, after: air](../images/interior_undercroft_after.jpg)
+
+**Why no SDFGI underground (yet).** In the cloud session's renderer, switching SDFGI on in
+Weirholt's culvert took the ambient fill's reflections away (the water channel went black),
+and SDFGI itself adds nothing there. That fits SDFGI standing in for the environment's ambient
+light rather than adding to it. Outdoors that's fine: SDFGI reads the sky. Underground, there's
+no sky, and the dim ambient fill is what lets you see past the lamps. So it stays off until
+it's been looked at on a real GPU. To try it: on an interior's `WorldEnvironment`, tick **SDFGI
+→ Enabled** (with **Use Occlusion**, **Min Cell Size** 0.1) and compare. If the fill survives,
+add it to `_interior_environment()` in `builder_base.gd` and rebuild.
+
+The same question applies outdoors, where SDFGI is on from High: if shade looks darker or
+flatter than on Medium, that's the place to look.
 
 ## Renderers (a caveat)
 

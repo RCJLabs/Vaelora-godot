@@ -301,6 +301,7 @@ func _build_culvert() -> Node3D:
 	scene.name = "WeirholtCulvert"
 	scene.add_to_group("navmesh_source", true)
 	common("WeirholtCulvert", false)
+	air(0.035, Color(0.7, 0.78, 0.72))   # wet, green-grey
 	var stone := Color(0.25, 0.25, 0.26)
 	# A tunnel running south (z 0..36), a side chamber east at the far end.
 	box("Floor", Vector3(8, 0.5, 40), Vector3(0, -0.25, 18), stone, "surface_stone")

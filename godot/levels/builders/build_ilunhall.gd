@@ -312,6 +312,7 @@ func _build_undercroft() -> Node3D:
 	scene.name = "Undercroft"
 	scene.add_to_group("navmesh_source", true)
 	common("Undercroft", false)
+	air(0.025, Color(0.75, 0.8, 0.78))   # damp
 	var stone := Color(0.26, 0.25, 0.24)
 	# A stair-tunnel south from the gate into an old cistern hall, pillars in rows,
 	# gold veins of light-stone climbing the walls up into the city.
