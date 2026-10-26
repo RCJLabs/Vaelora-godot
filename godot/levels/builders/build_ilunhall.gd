@@ -386,7 +386,8 @@ func _build_undercroft() -> Node3D:
 	vessa_pack.set("cleared_message", "Magister Vessa falls, grey to the shoulder. The conduit keeps humming.")
 	own(vessa_pack, vessa_fight)
 	enemy(vessa_pack, "VessaFoe", "Magister Vessa", Vector3(8, 0, 30), 0.0, CULTIST,
-			{"gold": 80, "max_health": 160.0, "attack_damage": 16.0, "guard_chance": 0.6, "parry_chance": 0.2})
+			{"gold": 80, "max_health": 160.0, "attack_damage": 16.0, "guard_chance": 0.6, "parry_chance": 0.2,
+			"look_vary": false, "look_role": "scholar", "look_cloth": Color(0.4, 0.34, 0.45)})
 
 	map_marker("MapUndercroft", "undercroft", "The Undercroft", Vector3(0, 0, 12))
 	door("Stair", "res://levels/ilunhall.tscn", "FromUndercroft", "the Quay Steps", "Climb up to",

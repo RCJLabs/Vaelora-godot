@@ -93,10 +93,30 @@ func _physics_process(_d: float) -> bool:
 			var dunya = n("Dunya")
 			ok(dunya.sitting and top(dunya) < 1.4, "Dunya sits", top(dunya))
 			ok(n("Aurel").get_node("Figure") != null, "Magister Aurel has a figure")
+			# Enemies: figures too, each in its own clothes, with arms on the shoulder pivots.
+			var camp: Array = n("BanditCamp").get_children()
+			ok(camp.all(func(b): return b.model.get_node_or_null("Figure") != null and b.model.get_node_or_null("Body") == null),
+					"bandits are figures (the placeholder body's gone)")
+			ok(camp.all(func(b): return b.right_arm.get_child_count() >= 3), "with their arms on the swinging shoulders (and the sword in hand)")
+			var looks := {}
+			for b in camp:
+				looks["%s %s" % [b.look_race, b.look_cloth]] = true
+			ok(looks.size() >= 2, "and not all the same person", looks.keys())
+			var mats := {}
+			for b in camp:
+				mats[b._cloth] = true
+			ok(mats.size() == camp.size(), "each with clothes of its own")
+			var before: Color = camp[1]._cloth.albedo_color
+			camp[0]._on_damaged(5.0)
+			ok(camp[1]._cloth.albedo_color == before, "so a hit flash tints only the one that was hit")
+			camp[0]._pose("overhead", 0.01)
 			# Companions.
 			autoload("GameState").set_flag("companion_brannoc")
 			wait = 5
 		4:
+			var raised = n("BanditCamp").get_children()[0]
+			ok(raised.right_arm.rotation_degrees.x > 100.0 and raised.weapon_holder.global_position.y > raised.global_position.y + 1.6,
+					"poses still swing the figure's arm, sword and all", raised.right_arm.rotation_degrees)
 			var comp = get_nodes_in_group("companion")
 			ok(comp.size() == 1 and comp[0]._body.name == "Figure", "a companion is a figure too")
 			if comp.size() == 1:
