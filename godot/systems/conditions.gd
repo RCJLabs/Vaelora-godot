@@ -19,6 +19,7 @@ class_name Conditions
 #   "requires_approval_below": {"zora": 0}      less than this
 #   "requires_skill": {"tidecraft": 50}         a skill's level at least this
 #   "requires_skill_below": {"tidecraft": 50}   lower than this
+#   "requires_night": true / "requires_day": true   by the WorldClock (night: 20:00 to 6:00)
 # An empty Dictionary always passes.
 
 
@@ -63,6 +64,10 @@ static func met(entry: Dictionary) -> bool:
 	for id in entry.get("requires_skill", {}):
 		if Skills.levels.get(id, 0) < int(entry["requires_skill"][id]):
 			return false
+	if entry.get("requires_night", false) and not WorldClock.is_night():
+		return false
+	if entry.get("requires_day", false) and WorldClock.is_night():
+		return false
 	for id in entry.get("requires_skill_below", {}):
 		if Skills.levels.get(id, 0) >= int(entry["requires_skill_below"][id]):
 			return false

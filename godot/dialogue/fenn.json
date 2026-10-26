@@ -1,0 +1,87 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Physician Amsel Fenn. If you've been in the Lanes, wash your hands.",
+			"set_flag": "met_fenn",
+			"choices": [
+				{
+					"text": "It isn't the Passengers. It's the new millstone: its dust is in the Lanes' well.",
+					"next": "proof",
+					"requires_flag": "millstone_found",
+					"requires_not_flag": "lanes_resolved"
+				},
+				{
+					"text": "Why blame the Lanes?",
+					"next": "why",
+					"requires_not_flag": "lanes_resolved"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"why": {
+			"text": "Because the fever started there and stays there. Passengers live close and travel far. I'm a physician, not a poet: I follow where the sick are.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"proof": {
+			"text": "\"Stone dust? Absurd.\" But he's listening.",
+			"choices": [
+				{
+					"text": "(Alchemy) The sheen, the metal taste, a fever with no cough: that's residue in the water, not contagion.",
+					"next": "convinced",
+					"requires_skill": {
+						"alchemy": 25
+					},
+					"set_flag": [
+						"lanes_cleared",
+						"lanes_resolved"
+					]
+				},
+				{
+					"text": "Come and look at the well with me. If I'm wrong, I'll say so in the square.",
+					"next": "convinced",
+					"fail_next": "refuses",
+					"check": {
+						"id": "fenn_well",
+						"kind": "persuade",
+						"difficulty": 30
+					},
+					"set_flag": [
+						"lanes_cleared",
+						"lanes_resolved"
+					]
+				},
+				{
+					"text": "Never mind.",
+					"next": "end"
+				}
+			]
+		},
+		"convinced": {
+			"text": "He goes with you, looks a long time, and says nothing on the walk back. In the square that evening he says it loudly: the fever is the water, and the water is the mill's. Some people even listen.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"refuses": {
+			"text": "\"Bring me something better than a story.\" (You could still shut the mill's pipe yourself.)",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

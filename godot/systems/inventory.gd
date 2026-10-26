@@ -24,6 +24,8 @@ const ITEM_FILES := [
 	"res://items/wanted_notice.tres",
 	"res://items/wagon_manifest.tres",
 	"res://items/marked_coin.tres",
+	"res://items/harvest_ledger.tres",
+	"res://items/toll_ledger.tres",
 	"res://items/supply_crate.tres",
 	"res://items/cult_notes.tres",
 	"res://items/book_hallam.tres",

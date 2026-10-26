@@ -1,0 +1,100 @@
+{
+	"start": [
+		{
+			"node": "after",
+			"requires_flag": "barges_resolved"
+		},
+		{
+			"node": "again",
+			"requires_flag": "met_jory_weirholt"
+		},
+		{
+			"node": "greet_known",
+			"requires_flag": "jory_settled"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "You're new. Jory Vell, barge-hand. Compact man for a whole month now. Mind the ropes, they bite.",
+			"set_flag": "met_jory_weirholt",
+			"choices": [
+				{
+					"text": "You look like you want to tell someone something.",
+					"next": "barges"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"greet_known": {
+			"text": "You! You're the one who got me out of that cage up north. I took the Compact's coin after that. Barges seemed safer than wagons. Seemed.",
+			"set_flag": "met_jory_weirholt",
+			"choices": [
+				{
+					"text": "Seemed?",
+					"next": "barges"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"barges": {
+			"text": "Keep your voice down. The Heron and two others go upriver at the dark of the Wanderer. Sealed crates, no manifest, and Factor Tarle won't log them. Last run, something in the crates was humming. Like a wisp at a window, but sadder.",
+			"choices": [
+				{
+					"text": "I'll look into it.",
+					"next": "thanks",
+					"set_flag": "dark_barges_started"
+				},
+				{
+					"text": "Not my business.",
+					"next": "end"
+				}
+			]
+		},
+		"thanks": {
+			"text": "Ask Tarle, if you like; he'll lie nicely. The Heron's moored at the docks. After dark there's nobody on her.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "Any luck with the Heron?",
+			"choices": [
+				{
+					"text": "Tell me about the barges again.",
+					"next": "barges",
+					"requires_not_flag": "dark_barges_started"
+				},
+				{
+					"text": "Not yet.",
+					"next": "end",
+					"requires_flag": "dark_barges_started"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"after": {
+			"text": "Whatever you did, the Heron's not sailing at the dark this month. I'm going to keep my head down and my ropes tidy.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

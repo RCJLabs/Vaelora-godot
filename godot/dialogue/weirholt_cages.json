@@ -1,0 +1,35 @@
+{
+	"start": [
+		{
+			"node": "empty",
+			"requires_flag": "culvert_wisp_freed"
+		},
+		{
+			"node": "look"
+		}
+	],
+	"nodes": {
+		"look": {
+			"text": "Three cages. Two are empty. In the third, a wisp so faint it's barely there.",
+			"choices": [
+				{
+					"text": "Open the cage.",
+					"next": "freed",
+					"set_flag": "culvert_wisp_freed"
+				},
+				{
+					"text": "(Leave it)",
+					"next": "end"
+				}
+			]
+		},
+		"freed": {
+			"text": "It doesn't move at first. Then it drifts up, through a crack in the ceiling, towards the river.",
+			"choices": []
+		},
+		"empty": {
+			"text": "Three empty cages.",
+			"choices": []
+		}
+	}
+}

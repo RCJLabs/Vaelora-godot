@@ -1,0 +1,10 @@
+{
+	"start": "look",
+	"nodes": {
+		"look": {
+			"text": "Cold water, a long way down. There's a sheen on it, very faint, the colour of the drain-line light under the stones at home. A new lead pipe runs from the well-head, under the lane, towards the mill.",
+			"set_flag": "well_examined",
+			"choices": []
+		}
+	}
+}

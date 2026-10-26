@@ -1,0 +1,101 @@
+{
+	"start": [
+		{
+			"node": "again",
+			"requires_flag": "met_hedda"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Welcome to the Lantern Weir. Supper's stew, the bed's at the back, and the gossip's free.",
+			"set_flag": "met_hedda",
+			"choices": [
+				{
+					"text": "I need a bed.",
+					"next": "bed",
+					"requires_not_flag": "inn_room"
+				},
+				{
+					"text": "Any news?",
+					"next": "rumours"
+				},
+				{
+					"text": "Where am I, exactly?",
+					"next": "town"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "Back for stew?",
+			"choices": [
+				{
+					"text": "I need a bed.",
+					"next": "bed",
+					"requires_not_flag": "inn_room"
+				},
+				{
+					"text": "Any news?",
+					"next": "rumours"
+				},
+				{
+					"text": "Where am I, exactly?",
+					"next": "town"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"bed": {
+			"text": "Five gold, and the bed at the back's yours whenever you like.",
+			"choices": [
+				{
+					"text": "Here.",
+					"next": "bed_paid",
+					"take_gold": 5,
+					"requires_gold": 5,
+					"set_flag": "inn_room"
+				},
+				{
+					"text": "Not now.",
+					"next": "end"
+				}
+			]
+		},
+		"bed_paid": {
+			"text": "Sheets are clean. Mostly.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"rumours": {
+			"text": "Jory on the docks has been jumpy since the last dark of the Wanderer. Old Teodor in the Lanes says the fever's in the water, and Fenn says it's in the Passengers. And Goodwife Ama at the south gate will tell you about the toll whether you ask or not.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"town": {
+			"text": "Weirholt: the first walled town on the Greywater south of the Vale. The Compact owns the weir, the Empire owns the walls, and the river owns everyone.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

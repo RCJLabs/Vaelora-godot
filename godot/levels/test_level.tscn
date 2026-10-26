@@ -1122,6 +1122,43 @@ shape = SubResource("Shape_barrow_door")
 [node name="DungeonExit" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 28.7)
 
+[node name="SouthRoad" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 57)
+script = ExtResource("12_door")
+target_scene = "res://levels/weirholt.tscn"
+target_marker = "FromVale"
+destination_name = "Weirholt"
+verb = "Take the south road to"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SouthRoad"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 1.1, 0)
+mesh = SubResource("BoxMesh_door")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SouthRoad"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 1.1, 0)
+shape = SubResource("BoxShape_door")
+
+[node name="SouthRoadSign" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.4, 52)
+script = ExtResource("2_sign")
+text = "South: Weirholt, on the Greywater, and the Riverlands beyond.
+North: the waystation and Riverwatch."
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SouthRoadSign"]
+mesh = SubResource("BoxMesh_sign")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SouthRoadSign"]
+shape = SubResource("BoxShape_sign")
+
+[node name="FromWeirholt" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 53)
+
+[node name="MapSouthRoad" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 55)
+script = ExtResource("98_marker")
+location_id = "south_road"
+display_name = "The south road (to Weirholt)"
+
 [node name="LevelMap" type="Node" parent="."]
 script = ExtResource("97_levelmap")
 map_name = "The North Road"

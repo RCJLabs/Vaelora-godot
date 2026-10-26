@@ -6,8 +6,8 @@ Each quest's state is worked out from flags (and items) every time the journal l
 
 ## Contents
 
-- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made)
-- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook)
+- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made), [Down the Greywater](#down-the-greywater)
+- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook), [The Toll of the Weir](#toll-of-the-weir), [Fever in the Lanes](#lanes-fever)
 - [Flag index](#flag-index)
 
 ## Main quests
@@ -173,6 +173,40 @@ flowchart TD
 | Stop what they're making. | first_slain | TheFirst |
 | Search the stone slab by the oak. | read_letter | RitualAltar |
 | Tell someone what you found: Maren, Brannoc or Mirela. | demo_finished | ['Maren', 'Brannoc', 'Mirela'] |
+
+<a id="down-the-greywater"></a>
+
+### Down the Greywater (`down_the_greywater`)
+
+Given by: Jory Vell, barge-hand on Weirholt's docks. Starts when: dark_barges_started. Done when: barges_resolved.
+
+```mermaid
+flowchart TD
+  start(["Down the Greywater<br/><i>starts: dark_barges_started</i>"])
+  o0["Ask Factor Tarle at the counting house what the barges carry."]
+  start --> o0
+  o1["Look at the Heron's sealed crates on the docks, after dark, when nobody's about."]
+  o0 --> o1
+  o2["Follow the cargo into the culvert under the docks."]
+  o1 --> o2
+  o3["Decide who gets the smugglers' ledger: Captain Varga, or Factor Tarle."]
+  o2 --> o3
+  done(["Done<br/><i>barges_resolved</i>"])
+  o3 --> done
+  r0["I gave Captain Varga the smugglers' ledger. Her men took Tarle at the counting house, and …"]
+  done -. "ledger_to_varga" .-> r0
+  r1["I sold Factor Tarle his own ledger for two hundred gold, and watched him burn it. The Hero…"]
+  done -. "tarle_bribed" .-> r1
+  r2["I showed Factor Tarle his ledger and wouldn't sell it back. He ran downriver on the Heron …"]
+  done -. "tarle_fled" .-> r2
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Ask Factor Tarle at the counting house what the barges carry. | asked_tarle_barges | Tarle |
+| Look at the Heron's sealed crates on the docks, after dark, when nobody's about. | heron_inspected | HeronCrates |
+| Follow the cargo into the culvert under the docks. | has harvest_ledger | CulvertGrate |
+| Decide who gets the smugglers' ledger: Captain Varga, or Factor Tarle. | barges_resolved | Varga |
 
 ## Side quests
 
@@ -437,16 +471,79 @@ flowchart TD
 | Get Ilse's notebook from Inquisitor Hale on the south road. | has book_ilse_notebook | Inquisitor |
 | Give it to Zora. | zora_notebook_done |  |
 
+<a id="toll-of-the-weir"></a>
+
+### The Toll of the Weir (`toll_of_the_weir`)
+
+Given by: Goodwife Ama, at Weirholt's south gate. Starts when: toll_started. Done when: ama_thanked.
+
+```mermaid
+flowchart TD
+  start(["The Toll of the Weir<br/><i>starts: toll_started</i>"])
+  o0["Talk to Sergeant Dace at the south gate."]
+  start --> o0
+  o1["Stop the double toll: lean on Dace, pay him off, or take the toll ledger from the toll-fort strongbox to Captain Varga."]
+  o0 --> o1
+  o2["Tell Goodwife Ama."]
+  o1 --> o2
+  done(["Done<br/><i>ama_thanked</i>"])
+  o2 --> done
+  r0["I took Dace's toll ledger to Captain Varga. He's counting latrine buckets now, and Ama's c…"]
+  done -. "dace_reported" .-> r0
+  r1["I leaned on Sergeant Dace until he charged the farmers two coppers again. He'd like a word…"]
+  done -. "dace_folded" .-> r1
+  r2["I paid Sergeant Dace sixty gold to charge the farmers two coppers. For a while."]
+  done -. "dace_bribed" .-> r2
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Talk to Sergeant Dace at the south gate. | toll_confronted | Dace |
+| Stop the double toll: lean on Dace, pay him off, or take the toll ledger from the toll-fort strongbox to Captain Varga. | toll_settled | TollStrongbox |
+| Tell Goodwife Ama. | ama_thanked | Ama |
+
+<a id="lanes-fever"></a>
+
+### Fever in the Lanes (`lanes_fever`)
+
+Given by: Teodor, an elder of Weirholt's Passengers. Starts when: lanes_started. Done when: lanes_resolved.
+
+```mermaid
+flowchart TD
+  start(["Fever in the Lanes<br/><i>starts: lanes_started</i>"])
+  o0["Look into the Lanes' well."]
+  start --> o0
+  o1["Follow the new pipe to the mill."]
+  o0 --> o1
+  o2["Convince Physician Fenn it isn't the Passengers, or shut the pipe yourself."]
+  o1 --> o2
+  done(["Done<br/><i>lanes_resolved</i>"])
+  o2 --> done
+  r0["The fever came from the Compact's new seam-stone millstone, its dust in the Lanes' water. …"]
+  done -. "lanes_cleared" .-> r0
+  r1["I wedged the Lanes' pipe shut, and the fever eased. Physician Fenn still blames the Passen…"]
+  done -. "pipe_closed" .-> r1
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Look into the Lanes' well. | well_examined | LanesWell |
+| Follow the new pipe to the mill. | millstone_found | Millstone |
+| Convince Physician Fenn it isn't the Passengers, or shut the pipe yourself. | lanes_resolved | Fenn |
+
 ## Flag index
 
 Every flag, where it's set, and where it's checked. **⚠ never set** means nothing in the game sets it: a typo or a missing step. *(never checked)* is usually fine: a record for later, or for the tests.
 
 | Flag | Set by | Checked by |
 |---|---|---|
+| `ama_thanked` | ama: after | ama (start → after)<br>ama (start → thanked)<br>quest toll_of_the_weir |
+| `asked_tarle_barges` | tarle: barges_lie | quest down_the_greywater<br>tarle: again, "What do the barges carry at the dark ..."<br>tarle: greet, "What do the barges carry at the dark ..." |
 | `aurel_saw_stain` | aurel: sees_stain | aurel (start → sees_stain) |
 | `bandit_bounty_paid` | brannoc: bandit_bounty | brannoc: after_given, "The bandit camp south-west of here is..."<br>brannoc: after_kept, "The bandit camp south-west of here is..."<br>brannoc: after_restored, "The bandit camp south-west of here is..."<br>brannoc: greet, "The bandit camp south-west of here is..."<br>brannoc: greet_again, "The bandit camp south-west of here is..."<br>brannoc: progress, "The bandit camp south-west of here is..."<br>brannoc: waiting_on_stones, "The bandit camp south-west of here is..."<br>quest bandit_camp |
 | `bandit_cage_opened` | levels/test_level.tscn (CageDoor) | jory_caged (start → freed) |
 | `bandits_cleared` | levels/test_level.tscn (BanditCamp) | brannoc: after_given, "Anything else I should know about out..."<br>brannoc: after_given, "The bandit camp south-west of here is..."<br>brannoc: after_kept, "The bandit camp south-west of here is..."<br>brannoc: after_restored, "Anything else I should know about out..."<br>brannoc: after_restored, "The bandit camp south-west of here is..."<br>brannoc: greet, "Anything else I should know about out..."<br>brannoc: greet, "The bandit camp south-west of here is..."<br>brannoc: greet_again, "Anything else I should know about out..."<br>brannoc: greet_again, "The bandit camp south-west of here is..."<br>brannoc: progress, "Anything else I should know about out..."<br>brannoc: progress, "The bandit camp south-west of here is..."<br>brannoc: waiting_on_stones, "Anything else I should know about out..."<br>brannoc: waiting_on_stones, "The bandit camp south-west of here is..."<br>mirela (start → bandits_done)<br>mirela: terms, "I'll deal with the bandits."<br>mirela: terms, "That camp's already ash."<br>quest bandit_camp |
+| `barges_resolved` | tarle: ledger, "Deal."<br>tarle: ledger, "No. Captain Varga gets this."<br>varga: ledger | jory_weirholt (start → after)<br>quest down_the_greywater<br>tarle: again, "I found your ledger in the culvert."<br>tarle: greet, "I found your ledger in the culvert."<br>varga: again, "I have something you should see."<br>varga: greet, "I have something you should see." |
 | `barrow_lead` | mirela: lead | mirela (start → after_lead)<br>quest ask_forest<br>quest the_barrow |
 | `bought_tome_crush` | aurel: sold_crush | aurel: teach, "Moon-Crush. (220 gold)"<br>aurel: teach, "The Lifting Tide. (400 gold)"<br>aurel: teach, "The Lifting Tide?" |
 | `bought_tome_lift` | aurel: sold_lift | aurel: teach, "The Lifting Tide. (400 gold)" |
@@ -467,6 +564,12 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `companion_cmd_wait` (never checked) | companion_brannoc: wait<br>companion_zora: wait | – |
 | `companion_zora` | zora: join | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "Come with me. Now, not later."<br>levels/test_level.tscn (ZoraAtHome)<br>zora: again, "Come with me."<br>zora: taught, "Come with me." |
 | `cultists_cleared` (never checked) | levels/test_dungeon.tscn (Cultists) | – |
+| `culvert_cleared` (never checked) | levels/weirholt_culvert.tscn (Smugglers) | – |
+| `culvert_wisp_freed` | weirholt_cages: look, "Open the cage." | weirholt_cages (start → empty) |
+| `dace_bribed` | dace: dace_two, "Here. Take this, and charge the farme..." | quest toll_of_the_weir |
+| `dace_folded` | dace: dace_two, "Rates went up when you got greedy. St..." | quest toll_of_the_weir |
+| `dace_reported` | varga: dace_report | quest toll_of_the_weir |
+| `dark_barges_started` | jory_weirholt: barges, "I'll look into it." | jory_weirholt: again, "Not yet."<br>jory_weirholt: again, "Tell me about the barges again."<br>quest down_the_greywater<br>tarle: again, "What do the barges carry at the dark ..."<br>tarle: greet, "What do the barges carry at the dark ..." |
 | `demo_finished` | brannoc: end_brannoc<br>brannoc: end_hollow<br>maren: end_hollow<br>maren: end_maren<br>mirela: end_hollow<br>mirela: end_mirela<br>mirela: end_mirela_cold | brannoc (start → end_hollow)<br>brannoc (start → end_intro)<br>maren (start → end_hollow)<br>maren (start → end_intro)<br>mirela (start → end_hollow)<br>mirela (start → end_intro)<br>quest what_they_made |
 | `first_recognised_you` (never checked) | enemies/the_first.gd:50 | – |
 | `first_slain` | enemies/the_first.gd:14 | levels/test_level.tscn (FirstStream)<br>props/ritual_altar.gd:7<br>props/ritual_site.gd:17<br>quest what_they_made |
@@ -486,10 +589,12 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `heard_hallam` (never checked) | ostap: song | – |
 | `heard_hallam_sung` (never checked) | props/lanternfast_song.gd:38 | – |
 | `heard_of_thornwood` (never checked) | brannoc: mark_hunter | – |
+| `heron_inspected` | weirholt_heron: night | quest down_the_greywater<br>weirholt_heron (start → done) |
 | `hint_climb` | Hints.show_once(id) sets hint_<id> (systems/hints.gd) | player/player_traversal.gd:44 |
 | `hollow_wolf_killed` | enemies/hollow_wolf.gd:66<br>hollow_wolf: mercy | enemies/hollow_wolf.gd:31<br>quest wrong_things |
 | `hollow_wolf_spared` (never checked) | hollow_wolf: leave | – |
 | `hunter_read_tracks` | hollow_wolf: tracks | brannoc: drain_line, "(Hunter) Same way the hollow wolf's t..."<br>brannoc: mark, "(Hunter) Its tracks came out of the f..." |
+| `inn_room` | hedda: bed, "Here." | hedda: again, "I need a bed."<br>hedda: greet, "I need a bed."<br>levels/weirholt.tscn (InnRoom) |
 | `inquisitor_hostile` | inquisitor: draws<br>inquisitor: marked (walking away)<br>inquisitor: marked, "(Fight.)"<br>inquisitor: notebook_draw | inquisitor (start → spared_again)<br>levels/test_level.tscn (InquisitorDrawn)<br>levels/test_level.tscn (InquisitorOnRoad) |
 | `inquisitor_spared` | inquisitor: spared<br>inquisitor: spared_afraid<br>inquisitor: spared_bribed | inquisitor (start → spared_again) |
 | `inquisitor_told_zora` | inquisitor: told | zora (start → betrayed)<br>zora (start → lanternfast)<br>zora: again, "Come with me."<br>zora: again, "Teach me more of it."<br>zora: again, "What do you really do? Not the fire."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "Teach me more of it."<br>zora: taught, "What do you really do? Not the fire."<br>zora: taught, "Would you ever leave this place?" |
@@ -499,13 +604,18 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `jory_freed` | jory_caged: freed | levels/test_level.tscn (JoryAtWaystation)<br>levels/test_level.tscn (JoryInCage)<br>quest lost_wagon |
 | `jory_paid` | jory: merchant_wages | quest lost_wagon |
 | `jory_paid_bonus` | jory: merchant_bonus | quest lost_wagon |
-| `jory_settled` | jory: keep_box<br>jory: merchant_bonus<br>jory: merchant_cheat<br>jory: merchant_wages<br>jory: return_box | jory (start → settled)<br>quest lost_wagon |
+| `jory_settled` | jory: keep_box<br>jory: merchant_bonus<br>jory: merchant_cheat<br>jory: merchant_wages<br>jory: return_box | jory (start → settled)<br>jory_weirholt (start → greet_known)<br>quest lost_wagon |
 | `kept_vigil` (never checked) | props/shrine.gd:66 | – |
 | `knows_marked_coin` (never checked) | mirela: coin | – |
+| `lanes_cleared` | fenn: proof, "(Alchemy) The sheen, the metal taste,..."<br>fenn: proof, "Come and look at the well with me. If..." | quest lanes_fever |
+| `lanes_resolved` | fenn: proof, "(Alchemy) The sheen, the metal taste,..."<br>fenn: proof, "Come and look at the well with me. If..."<br>weirholt_millstone: known, "Wedge the Lanes' pipe shut." | fenn: greet, "It isn't the Passengers. It's the new..."<br>fenn: greet, "Why blame the Lanes?"<br>quest lanes_fever<br>teodor (start → after)<br>weirholt_millstone: known, "Wedge the Lanes' pipe shut." |
+| `lanes_started` | teodor: ask | quest lanes_fever<br>teodor (start → again) |
 | `lanternfast_maren` | maren: lanternfast | maren (start → lanternfast) |
 | `lanternfast_now` | systems/lanternfast.gd:21 | enemies/wisp.gd:237<br>levels/test_level.tscn (Lanternfast)<br>maren (start → lanternfast)<br>ostap (start → lanternfast)<br>systems/lanternfast.gd:17<br>zora (start → lanternfast) |
 | `lanternfast_ostap` | ostap: lanternfast | ostap (start → lanternfast) |
 | `lanternfast_zora` | zora: lanternfast | zora (start → lanternfast) |
+| `ledger_to_varga` | varga: ledger | quest down_the_greywater |
+| `ledger_to_varga_late` (never checked) | varga: ledger_late | – |
 | `left_you_brannoc` | systems/companions.gd sets left_you_<id> when a companion walks out | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "Come with me. Now, not later." |
 | `left_you_zora` | systems/companions.gd sets left_you_<id> when a companion walks out | zora: again, "Come with me."<br>zora: taught, "Come with me." |
 | `licence_started` | brannoc: licence | brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?"<br>quest licence_to_burn<br>zora: again, "The garrison wants you arrested."<br>zora: drain, "The garrison wants you arrested."<br>zora: greet, "The garrison wants you arrested."<br>zora: scholar, "The garrison wants you arrested." |
@@ -518,11 +628,18 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `mercy_let_go` | halina: peace | quest the_merciful |
 | `mercy_offered_cure` | halina: same | halina: again, "You've got grey fingers. So do I." |
 | `met_brannoc` | brannoc: gift<br>brannoc: greet<br>brannoc: mark | brannoc (start → greet_again)<br>brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?" |
+| `met_fenn` (never checked) | fenn: greet | – |
 | `met_halina` | halina: greet | halina (start → again) |
+| `met_hedda` | hedda: greet | hedda (start → again) |
 | `met_inquisitor` | inquisitor: greet<br>inquisitor: marked<br>inquisitor: suspicious | inquisitor (start → again) |
+| `met_jory_weirholt` | jory_weirholt: greet<br>jory_weirholt: greet_known | jory_weirholt (start → again) |
 | `met_maren` | maren: greet | maren (start → greet_again) |
 | `met_mirela` | mirela: greet | mirela (start → bandits_done)<br>mirela (start → greet_again)<br>mirela (start → sees_hollowing)<br>mirela (start → trusted)<br>quest ask_forest |
+| `met_tarle` | tarle: greet | tarle (start → again) |
+| `met_teodor` (never checked) | teodor: greet | – |
+| `met_varga` | varga: greet | varga (start → again) |
 | `met_zora` | zora: greet | inquisitor: greet, "Her hut is west of the outlaw camp."<br>inquisitor: greet, "She's harmless."<br>quest licence_to_burn<br>zora (start → again)<br>zora (start → betrayed)<br>zora (start → sees_stain) |
+| `millstone_found` | weirholt_millstone: known | fenn: greet, "It isn't the Passengers. It's the new..."<br>quest lanes_fever |
 | `mirela_heard_essence` | mirela: heard_essence | mirela (start → heard_essence) |
 | `mirela_heard_freed` | mirela: heard_freed | mirela (start → heard_freed) |
 | `mirela_saw_hollowing` | mirela: sees_hollowing | mirela (start → sees_hollowing) |
@@ -531,6 +648,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `outlaws_trust_bandits` | mirela: bandits_done | quest ask_forest |
 | `outlaws_trust_supplies` | mirela: supplies_done | quest ask_forest |
 | `outlaws_trust_vouched` (never checked) | mirela: outlaw_vouch | – |
+| `pipe_closed` | weirholt_millstone: known, "Wedge the Lanes' pipe shut." | quest lanes_fever<br>weirholt_millstone (start → closed) |
 | `prayed_for_dunya` (never checked) | dunya: acolyte | – |
 | `reached_hollowing` | systems/corruption.gd:116 | systems/corruption.gd:115 |
 | `read_book_riverwatch_roll` | ui/book_reader.gd sets read_<item id> when a book is opened | companion_brannoc: cold, "I read the roll in the barrow."<br>companion_brannoc: greet, "I read the roll in the barrow."<br>companion_brannoc: warm, "I read the roll in the barrow."<br>quest brannoc_founded |
@@ -566,6 +684,10 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `strongbox_kept` | jory: keep_box | quest lost_wagon |
 | `strongbox_returned` | jory: return_box | quest lost_wagon |
 | `taken:test_dungeon/CultNotes` | interactables/pickup.gd sets taken:<level>/<node> when picked up | quest what_they_made |
+| `tarle_bribed` | tarle: ledger, "Deal." | quest down_the_greywater |
+| `tarle_fled` | tarle: ledger, "No. Captain Varga gets this." | quest down_the_greywater<br>varga: again, "Tarle ran with his secrets, but I kep..."<br>varga: greet, "Tarle ran with his secrets, but I kep..." |
+| `tarle_gone` | tarle: refused<br>varga: ledger | levels/weirholt.tscn (TarlePresence) |
+| `tarle_slipped` (never checked) | tarle: barges_slip | – |
 | `told_brannoc_crystal` | brannoc: hint_shards | brannoc: progress, "The crystal answered when I touched i..." |
 | `told_brannoc_drain` | brannoc: drain_line | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..." |
 | `told_brannoc_end` | brannoc: end_brannoc<br>brannoc: end_hollow | quest what_they_made |
@@ -574,13 +696,18 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `told_maren_hollow` | maren: hollow_found | maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf." |
 | `told_mirela_end` | mirela: end_hollow<br>mirela: end_mirela<br>mirela: end_mirela_cold | quest what_they_made |
 | `told_mirela_wolf` | mirela: wolf_too | mirela: drain, "A wolf by Greyfang Hollow looked the ..." |
+| `toll_confronted` | dace: dace_two | quest toll_of_the_weir |
+| `toll_settled` | dace: dace_two, "Here. Take this, and charge the farme..."<br>dace: dace_two, "Rates went up when you got greedy. St..."<br>varga: dace_report | ama (start → after)<br>dace: greet, "Ama's coppers come back, I hear."<br>dace: greet, "The board in the square says two."<br>quest toll_of_the_weir<br>varga: again, "Sergeant Dace is taking double toll a..."<br>varga: greet, "Sergeant Dace is taking double toll a..." |
+| `toll_started` | ama: greet | ama (start → waiting)<br>dace: greet, "The board in the square says two."<br>quest toll_of_the_weir |
 | `took_wisp_essence` | caged_wisp: take | mirela (start → heard_essence)<br>mirela: end_dunya, "What will the Free do?"<br>mirela: end_letter, "What will the Free do?"<br>quest the_barrow<br>systems/save_system.gd:209 |
 | `touched_crystal` | props/floating_crystal.gd:81<br>props/floating_crystal.gd:86 | brannoc: progress, "The crystal answered when I touched i..."<br>props/floating_crystal.gd:48<br>props/floating_crystal.gd:85<br>quest waking_stones |
+| `well_examined` | weirholt_well: look | quest lanes_fever<br>weirholt_millstone (start → known) |
+| `wenna_discount` (never checked) | wenna: greet, "A friend's price, for a friend?" | – |
 | `wisp_choice_made` | caged_wisp: free<br>caged_wisp: take | props/caged_wisp.gd:23<br>props/caged_wisp.gd:29<br>quest the_barrow |
 | `wolf_quest_accepted` | maren: accept | maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
 | `wolf_quest_done` | maren: reward<br>maren: reward_driven | brannoc: greet, "Maren says she told Riverwatch about ..."<br>maren (start → greet_hero)<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
 | `wolves_cleared` | enemies/wolf_pack.gd:18 | maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet, "Why don't people come this way?"<br>maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: greet_again, "Tell me about the wolves again."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: hunter_line, "Tell me about the wolves."<br>maren: soldier_line, "Tell me about the wolves."<br>maren: wolf_sick, "Tell me about the rest of the pack."<br>maren: wolf_where, "Tell me about the rest of the pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
-| `wolves_driven_off` | enemies/wolf_pack.gd:23 | maren: greet, "I drove off the wolves north of here."<br>maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
+| `wolves_driven_off` | enemies/wolf_pack.gd:23<br>levels/weirholt_culvert.tscn (Smugglers) | maren: greet, "I drove off the wolves north of here."<br>maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
 | `wrong_things_done` | brannoc: mark | brannoc: after_given, "What will you do, after all this?"<br>brannoc: after_kept, "What will you do, after all this?"<br>brannoc: after_restored, "What will you do, after all this?"<br>brannoc: greet_again, "What will you do, after all this?"<br>brannoc: progress, "What will you do, after all this?"<br>brannoc: waiting_on_stones, "What will you do, after all this?"<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>quest wrong_things |
 | `wrong_things_started` | systems/save_system.gd:228 | enemies/wisp_spawner.gd:17<br>maren: greet, "I'm tracking a Greyfang that walks wr..."<br>maren: greet, "I've come to tend the roadside shrine..."<br>maren: greet, "My wagon never reached Riverwatch. Ye..."<br>maren: greet, "Sergeant Holt sent me from Riverwatch..."<br>maren: greet, "The Collegium sent me to study the st..."<br>maren: greet, "You saw me sleeping behind your wayst..."<br>maren: greet_again, "Anything strange around here lately?"<br>maren: greet_hero, "Anything strange around here lately?"<br>maren: wolves, "Why are they raiding the road at all?"<br>quest wrong_things<br>systems/save_system.gd:227<br>zora: again, "What do you know about what's drainin..."<br>zora: drain, "What do you know about what's drainin..."<br>zora: greet, "What do you know about what's drainin..."<br>zora: scholar, "What do you know about what's drainin..."<br>zora: taught, "What do you know about what's drainin..." |
 | `zora_arrested` | zora: arrested | brannoc: zora_report, "She came quietly. She says the goats ..."<br>brannoc: zora_report, "She was gone when I got there."<br>quest licence_to_burn |

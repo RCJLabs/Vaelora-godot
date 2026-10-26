@@ -1,0 +1,124 @@
+{
+	"start": [
+		{
+			"node": "again",
+			"requires_flag": "met_varga"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Captain Ilsa Varga, Imperial garrison. Thirty spears to hold a river the Compact thinks it owns.",
+			"set_flag": "met_varga",
+			"choices": [
+				{
+					"text": "I have something you should see.",
+					"next": "ledger",
+					"requires_item": "harvest_ledger",
+					"requires_not_flag": "barges_resolved"
+				},
+				{
+					"text": "Tarle ran with his secrets, but I kept his ledger.",
+					"next": "ledger_late",
+					"requires_item": "harvest_ledger",
+					"requires_flag": "tarle_fled"
+				},
+				{
+					"text": "Sergeant Dace is taking double toll at the south gate. Here's his ledger.",
+					"next": "dace_report",
+					"requires_item": "toll_ledger",
+					"requires_not_flag": "toll_settled"
+				},
+				{
+					"text": "Teach me to hold a shield line.",
+					"next": "end",
+					"open_training": "varga"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "Back. What is it?",
+			"choices": [
+				{
+					"text": "I have something you should see.",
+					"next": "ledger",
+					"requires_item": "harvest_ledger",
+					"requires_not_flag": "barges_resolved"
+				},
+				{
+					"text": "Tarle ran with his secrets, but I kept his ledger.",
+					"next": "ledger_late",
+					"requires_item": "harvest_ledger",
+					"requires_flag": "tarle_fled"
+				},
+				{
+					"text": "Sergeant Dace is taking double toll at the south gate. Here's his ledger.",
+					"next": "dace_report",
+					"requires_item": "toll_ledger",
+					"requires_not_flag": "toll_settled"
+				},
+				{
+					"text": "Teach me to hold a shield line.",
+					"next": "end",
+					"open_training": "varga"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"ledger": {
+			"text": "She reads it twice. \"Lights. Vessels. Countersigned T.\" She sends four men to the counting house. \"The Compact will howl. Let it. Whatever's at the end of this\" (she taps the last page, the circle split by three lines) \"is upriver, and it isn't grain. Here, for your trouble.\"",
+			"take_item": "harvest_ledger",
+			"give_gold": 75,
+			"set_flag": [
+				"ledger_to_varga",
+				"tarle_gone",
+				"barges_resolved"
+			],
+			"add_reputation": {
+				"river_compact": -15
+			},
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"ledger_late": {
+			"text": "\"Tarle's gone downriver, and the Compact swears it never heard of him.\" She keeps the ledger anyway. \"Paper outlives factors. That mark on the last page: I'll be writing to Ilunhall about it.\"",
+			"take_item": "harvest_ledger",
+			"give_gold": 40,
+			"set_flag": "ledger_to_varga_late",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"dace_report": {
+			"text": "\"Double, every cart, initialled D.\" She closes the book very gently. \"He'll be counting latrine buckets by nightfall. Tell Goodwife Ama her coppers are coming back.\"",
+			"take_item": "toll_ledger",
+			"give_gold": 40,
+			"set_flag": [
+				"dace_reported",
+				"toll_settled"
+			],
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

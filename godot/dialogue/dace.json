@@ -1,0 +1,98 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Four coppers a cart. Says so on the board.",
+			"choices": [
+				{
+					"text": "The board in the square says two.",
+					"next": "dace_two",
+					"requires_flag": "toll_started",
+					"requires_not_flag": "toll_settled"
+				},
+				{
+					"text": "Ama's coppers come back, I hear.",
+					"next": "dace_sour",
+					"requires_flag": "toll_settled"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"dace_two": {
+			"text": "\"Board's old. Rates went up.\" He doesn't look at you.",
+			"set_flag": "toll_confronted",
+			"choices": [
+				{
+					"text": "Rates went up when you got greedy. Stop, or the captain hears about it.",
+					"next": "dace_folds",
+					"fail_next": "dace_laughs",
+					"check": {
+						"id": "dace_toll",
+						"kind": "intimidate",
+						"difficulty": 35
+					},
+					"set_flag": [
+						"dace_folded",
+						"toll_settled"
+					]
+				},
+				{
+					"text": "Here. Take this, and charge the farmers two.",
+					"next": "dace_bribed",
+					"check": {
+						"id": "dace_bribe",
+						"kind": "bribe",
+						"gold": 60
+					},
+					"set_flag": [
+						"dace_bribed",
+						"toll_settled"
+					]
+				},
+				{
+					"text": "Never mind.",
+					"next": "end"
+				}
+			]
+		},
+		"dace_folds": {
+			"text": "\"Two coppers. Fine. Two.\" He spits. \"Don't come through my gate after dark.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"dace_laughs": {
+			"text": "\"The captain?\" He laughs. \"Prove it.\" (Somewhere there's a ledger. The toll-fort strongbox, maybe.)",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"dace_bribed": {
+			"text": "The coins vanish. \"Two coppers it is. For a while.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"dace_sour": {
+			"text": "\"Coppers, coppers. You'd think the river ran on them.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

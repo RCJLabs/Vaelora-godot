@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "harvest_ledger"
+display_name = "Harvest Ledger"
+description = "A smugglers' account book, kept in a careful clerk's hand. Barge names, dates at the dark of the Wanderer, and cargo listed only as \"lights\" and \"vessels\", by the dozen. Every page is countersigned with a T, and the last entries go upriver to a mark you've seen before: a circle split by three lines."
+value = 0
+weight = 0.5
+quest_item = true
