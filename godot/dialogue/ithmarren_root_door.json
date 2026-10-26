@@ -1,0 +1,34 @@
+{
+	"start": [
+		{"node": "keyed", "requires_item": "root_key"},
+		{"node": "shut"}
+	],
+	"nodes": {
+		"shut": {
+			"text": "A door grown from the Moot Tree's own roots, knotted shut with House Sennaveth's knot. It's warm to the touch, and through it, very faintly, you can feel something like a heartbeat that isn't yours.",
+			"choices": [
+				{"text": "(Wear a Sennaveth face.) Tell the roots you're family.", "next": "glamoured", "requires_skill": {"glamour": 40}, "set_flag": ["rootwell_open", "root_glamoured"]},
+				{"text": "(Leave it.)", "next": "end"}
+			]
+		},
+		"keyed": {
+			"text": "The root-key warms in your hand as you bring it to the knot, and the knot loosens like a held breath.",
+			"choices": [
+				{"text": "Open it.", "next": "opened", "set_flag": "rootwell_open", "take_item": "root_key"},
+				{"text": "(Not yet.)", "next": "end"}
+			]
+		},
+		"opened": {
+			"text": "The roots draw back. A stair goes down into green light, and the smell that comes up it is rain, and earth, and something sweet underneath that makes your mouth water.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		},
+		"glamoured": {
+			"text": "You let the glamour settle: plum and silver, a Sennaveth face, the knot of the house at your throat. The roots feel you, and the knot loosens as if it knew you all along. A stair goes down into green light.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		}
+	}
+}

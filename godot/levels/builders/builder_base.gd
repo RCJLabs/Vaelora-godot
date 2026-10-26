@@ -310,8 +310,8 @@ func goods(name: String, item: String, count: int, pos: Vector3, who: String, go
 
 
 ## A chest or crate of someone's: emptying it is stealing.
-func stores(name: String, what: String, contents: Dictionary, gold: int, pos: Vector3, who: String, lock := -1) -> StaticBody3D:
-	var b := box(name, Vector3(0.9, 0.7, 0.7), pos, Color(0.36, 0.25, 0.14), "surface_wood", null, LOOT)
+func stores(name: String, what: String, contents: Dictionary, gold: int, pos: Vector3, who: String, lock := -1, parent: Node = null) -> StaticBody3D:
+	var b := box(name, Vector3(0.9, 0.7, 0.7), pos, Color(0.36, 0.25, 0.14), "surface_wood", parent, LOOT)
 	b.set("container_name", what)
 	b.set("contents", contents)
 	b.set("gold", gold)

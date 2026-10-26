@@ -1,0 +1,90 @@
+{
+	"start": [
+		{"node": "after", "requires_flag": "well_reported"},
+		{"node": "report", "requires_flag": "well_resolved"},
+		{"node": "again", "requires_flag": "met_calaneth"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "An elf in moss-green, older than the bough you're standing on and twice as patient, sitting on the Moot's lowest seat with her hands folded. \"Calaneth. I speak for the Moot this century. The Houses argue; I remember what they argued last time. What brings someone with mountain dust on their boots up into the boughs?\"",
+			"set_flag": "met_calaneth",
+			"choices": [
+				{"text": "The Mercy's harvest comes to Ithmarren. Lights, cut out of a seam in Karrowdeep.", "next": "harvest", "requires_flag": "seam_reported", "requires_not_flag": "well_lead"},
+				{"text": "What is the Moot?", "next": "moot"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Calaneth inclines her head a fraction. \"Again.\"",
+			"choices": [
+				{"text": "The Mercy's harvest comes to Ithmarren. Lights, cut out of a seam in Karrowdeep.", "next": "harvest", "requires_flag": "seam_reported", "requires_not_flag": "well_lead"},
+				{"text": "What is the Moot?", "next": "moot"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"moot": {
+			"text": "\"Every Great House, one seat each, round the oldest tree in the forest. We were kindled by the lights when the Wanderer first passed, and we have spent every year since deciding what we owe them.\" A small smile. \"We have not decided.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"harvest": {
+			"text": "She is quiet a long time. \"Under this tree there is a well. The sixth of the twelve, the old songs say, though the Houses stopped singing that verse. By Moot-right it is in the keeping of House Sennaveth, and has been for three hundred years.\" She looks along the bridge to the Sennaveth bough. \"If anything is coming to Ithmarren from below, it is coming to them. Lady Ithariel keeps the Root Door's key. I have never asked to borrow it. I find I would like to know why.\"",
+			"set_flag": "well_lead",
+			"choices": [
+				{"text": "I'll find out.", "next": "end"}
+			]
+		},
+		"report": {
+			"text": "Calaneth stands. She doesn't often, by the look of the other seats.",
+			"choices": [
+				{"text": "There was a note on Lord Caerwyn's desk. A playing card.", "next": "card", "requires_item": "rootwell_letter", "requires_not_flag": "card_shown"},
+				{"text": "I broke the root-cages and let the well empty. The lights are gone home.", "next": "unbound", "requires_flag": "well_unbound"},
+				{"text": "The takers are gone. The well's still bound, and it's the Moot's to keep now.", "next": "given", "requires_flag": "well_given"},
+				{"text": "I drank it.", "next": "drunk", "requires_flag": "well_drunk"}
+			]
+		},
+		"card": {
+			"text": "She turns the card over, and over, and reads the pin-writing with the card held at arm's length. \"'Look under the glass.'\" She gives it back. \"There is only one glass the old songs mean. The coast in Sundra where the Mage War burned the sand. The Glass College sits on it.\" Quieter: \"The founders' confession. My grandmother said it was burned with everything else.\"",
+			"set_flag": "card_shown",
+			"choices": [
+				{"text": "I broke the root-cages and let the well empty. The lights are gone home.", "next": "unbound", "requires_flag": "well_unbound"},
+				{"text": "The takers are gone. The well's still bound, and it's the Moot's to keep now.", "next": "given", "requires_flag": "well_given"},
+				{"text": "I drank it.", "next": "drunk", "requires_flag": "well_drunk"}
+			]
+		},
+		"unbound": {
+			"text": "\"So the Gardens go dark.\" She looks out over the lanterns. \"We were kindled by the lights, and we kept them in cages to read by. I will tell the Moot what you did, and the Moot will be angry for fifty years, and then it will be grateful for five hundred.\" She presses a purse into your hand. \"For Caerwyn's takers. Not for the well.\"",
+			"set_flag": "well_reported",
+			"give_gold": 50,
+			"add_reputation": {"great_houses": -5},
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"given": {
+			"text": "\"The Moot's to keep.\" She says it as if testing the weight of it. \"Then the Moot will keep it better than Sennaveth did, or it will learn why it can't.\" She counts gold into your hand. \"House Sennaveth will answer to every seat in this hall. Thank you.\"",
+			"set_flag": "well_reported",
+			"give_gold": 200,
+			"add_reputation": {"great_houses": 15},
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"drunk": {
+			"text": "She doesn't step back. She looks at your hands, at the grey creeping in at the wrists, the way she might look at a storm she'd seen coming for a century. \"Then you are what Caerwyn was, and worse, because you did it all at once.\" Very quietly: \"Go carefully. The Lantern Order can smell it, and so can the wisps.\"",
+			"set_flag": "well_reported",
+			"add_reputation": {"great_houses": -20},
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"after": {
+			"text": "Calaneth nods to you from the Moot's lowest seat. \"The Moot remembers. So do I.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

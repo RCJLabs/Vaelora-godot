@@ -1,0 +1,62 @@
+{
+	"start": [
+		{"node": "after", "requires_flag": "well_resolved"},
+		{"node": "again", "requires_flag": "met_ithariel"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "An elf in the plum and silver of House Sennaveth, beautiful in the careful way of someone who has had three hundred years to practise it. Her hands are gloved to the elbow. \"Ithariel, of Sennaveth. You've come a long way to stand on my bough uninvited.\"",
+			"set_flag": "met_ithariel",
+			"choices": [
+				{"text": "Your house keeps the Rootwell.", "next": "keeps", "requires_flag": "well_lead", "requires_not_flag": "rootwell_open", "requires_not_item": "root_key"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Lady Ithariel doesn't quite look at you. \"Still here.\"",
+			"choices": [
+				{"text": "Your house keeps the Rootwell.", "next": "keeps", "requires_flag": "well_lead", "requires_not_flag": "rootwell_open", "requires_not_item": "root_key"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"keeps": {
+			"text": "\"By Moot-right. Sennaveth has kept the Root Door three hundred years.\" Her gloved fingers tighten on each other. \"It is a well. It is old. It is not for visitors. My brother tends it, and my brother is not receiving.\"",
+			"choices": [
+				{"text": "Let me see it, or the Moot will start asking why you won't.", "next": "leave", "fail_next": "refused",
+					"check": {"id": "ithariel_leave", "kind": "persuade", "difficulty": 55}},
+				{"text": "I've read your letter to your brother. 'Stop before the roots see it in your hands.'", "next": "shamed", "requires_item": "sennaveth_letter"},
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"leave": {
+			"text": "For a moment the careful face slips, and under it she's only tired. She draws a key of green wood from her sleeve. \"Go down, then. If my brother is... if Caerwyn is not himself, don't hurt him more than you must.\"",
+			"set_flag": "ithariel_leave",
+			"give_item": "root_key",
+			"choices": [
+				{"text": "I'll try.", "next": "end"}
+			]
+		},
+		"shamed": {
+			"text": "The colour leaves her face all at once. \"Lirael.\" Not a question. She takes a key of green wood from her sleeve and holds it out without looking at you. \"Take it, and take that letter out of my house. Whatever is down there, my brother is still my brother.\"",
+			"set_flag": "ithariel_shamed",
+			"give_item": "root_key",
+			"add_reputation": {"great_houses": -5},
+			"choices": [
+				{"text": "(Take the key.)", "next": "end"}
+			]
+		},
+		"refused": {
+			"text": "\"The Moot may ask whatever it likes. It has asked before.\" She turns away. \"Good day.\"",
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"after": {
+			"text": "Lady Ithariel stands at the bough's rail, looking down at the Moot Tree's roots. She doesn't turn round. \"You've been below. I can tell. Everyone who goes down comes up smelling of it.\"",
+			"choices": [
+				{"text": "(Leave her be.)", "next": "end"}
+			]
+		}
+	}
+}

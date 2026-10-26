@@ -1,0 +1,49 @@
+{
+	"start": [
+		{"node": "again", "requires_flag": "met_fennick"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A small-folk gardener with soil to the elbows, kneeling at a raised bed with a trowel in each hand. \"Fennick. Forty years I've kept these gardens, and the Houses think the lanterns light themselves.\" He sniffs. \"They don't. Nothing does.\"",
+			"set_flag": "met_fennick",
+			"choices": [
+				{"text": "Can I help?", "next": "blooms", "requires_not_flag": "blooms_started"},
+				{"text": "The lanterns: what's in them?", "next": "lanterns"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Fennick doesn't look up from the bed. \"Mind the seedlings.\"",
+			"choices": [
+				{"text": "Can I help?", "next": "blooms", "requires_not_flag": "blooms_started"},
+				{"text": "I've brought your moonpetals.", "next": "paid", "requires_flag": "blooms_started", "requires_not_flag": "blooms_done", "requires_item": {"id": "moonpetal", "count": 3}},
+				{"text": "The lanterns: what's in them?", "next": "lanterns"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"blooms": {
+			"text": "\"Help? Hah.\" He points his trowel at the three beds. \"Night-blooms. Moonpetals. They open after dark and close at dawn, and if they're not picked the night they open the Gardens' best healer goes without. My knees don't do nights any more. Three, picked gently. I'll make it worth your while.\"",
+			"set_flag": "blooms_started",
+			"choices": [
+				{"text": "Three moonpetals. After dark.", "next": "end"}
+			]
+		},
+		"paid": {
+			"text": "He takes them one at a time, as if they might bruise from being looked at. \"Gently. Good.\" He hands you two stoppered vials and a few coins. \"From the healer, and from me. Come back in spring.\"",
+			"set_flag": "blooms_done",
+			"take_item": {"id": "moonpetal", "count": 3},
+			"give_item": {"id": "minor_healing_potion", "count": 2},
+			"give_gold": 40,
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"lanterns": {
+			"text": "He's quiet a moment. \"Light. Old light, from below. The Houses pour it in every spring and it fades by autumn.\" He jabs the trowel into the soil. \"I don't ask where it comes from. Forty years, I never asked. Maybe I should have.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

@@ -1,0 +1,47 @@
+{
+	"start": [
+		{"node": "done", "requires_flag": "well_resolved"},
+		{"node": "guarded", "requires_not_flag": "rootwell_cleared"},
+		{"node": "choose"}
+	],
+	"nodes": {
+		"guarded": {
+			"text": "The well glows green-gold in its stone rim. You can't get near it with the takers at your back.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		},
+		"choose": {
+			"text": "The well isn't water. It's light, pooled so deep and so thick it moves like water, and in it, if you look, hundreds of small lights turning slowly, the way fish turn in a pond. The roots have been grown round it into cages; the Mercy's harvest from the mountain was poured in here, and Sennaveth drew it out again for the Gardens, and for Caerwyn.\n\nIt smells of rain. Your mouth is watering.",
+			"choices": [
+				{"text": "Break the root-cages. Let the well empty, and the lights go home.", "next": "unbound", "set_flag": ["well_unbound", "well_emptied", "well_resolved"]},
+				{"text": "Leave it bound, and give it to the Moot to keep.", "next": "given", "set_flag": ["well_given", "well_resolved"]},
+				{"text": "Kneel, and drink.", "next": "drunk", "set_flag": ["well_drunk", "well_emptied", "well_resolved"], "add_corruption": 30}
+			]
+		},
+		"unbound": {
+			"text": "The root-cages are old and they break easily, the way old promises do. The light in the well rises: slowly at first, then all at once, hundreds of small lights going up through the roots and the trunk and the boughs above, up and out. Far overhead, every lantern in the Gardens flickers and goes dim.",
+			"choices": [
+				{"text": "(Climb back up and tell the Moot.)", "next": "end"}
+			]
+		},
+		"given": {
+			"text": "You leave the cages as they are. The well goes on glowing, patient, bound, three hundred years of keeping. The Moot will keep it now. Whether it keeps it better is the Moot's business.",
+			"choices": [
+				{"text": "(Climb back up and tell the Moot.)", "next": "end"}
+			]
+		},
+		"drunk": {
+			"text": "It tastes like the first morning of the world. It tastes like being kindled. You drink until there's nothing left to drink, and when you sit back on your heels the well is dark and your hands are grey to the wrist, and every one of the lights you swallowed is singing, very quietly, inside you.",
+			"choices": [
+				{"text": "(Climb back up.)", "next": "end"}
+			]
+		},
+		"done": {
+			"text": "The well, as you left it.",
+			"choices": [
+				{"text": "(Step back.)", "next": "end"}
+			]
+		}
+	}
+}

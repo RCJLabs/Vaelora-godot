@@ -86,6 +86,8 @@ They're listed in **Project → Project Settings → Globals → Autoload** (alr
   the conditions `"requires_bounty_affordable": true` and `"requires_bounty_below": 100`; and
   `{bounty}` and `{region}` in any line or choice text are filled in with your bounty here and
   the region's name. `dialogue/guard_crime.json` is the guards' version.
+- **Corruption:** `"add_corruption": 30` as an action (CORRUPTION.md). Drinking the Rootwell
+  uses it.
 - A node with no choices that pass gets an automatic **(Leave)** button.
 
 Put flags you want to keep even if the player presses Esc (quest accepted, secret learned) on

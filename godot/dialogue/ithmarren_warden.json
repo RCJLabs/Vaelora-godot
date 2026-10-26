@@ -1,0 +1,11 @@
+{
+	"start": "hello",
+	"nodes": {
+		"hello": {
+			"text": "An elven warden in bark-brown mail with a long spear, watching you the way a cat watches a bird it hasn't decided about. \"The Houses' peace. Keep your hands to yourself and your feet off the rails.\"",
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		}
+	}
+}

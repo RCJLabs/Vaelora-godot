@@ -1,0 +1,54 @@
+{
+	"start": [
+		{"node": "again", "requires_flag": "met_lirael"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A young elf in Sennaveth plum with ink on his cuffs and a ledger under his arm, guarding the bridge onto the bough as if it were a door. \"Steward Lirael, of Sennaveth. The house is not receiving. If you've a letter, I'll take it. If you've business, I'll write it down and lose it.\"",
+			"set_flag": "met_lirael",
+			"choices": [
+				{"text": "I'm the courier for Lord Caerwyn's letter.", "next": "courier", "requires_flag": "lie_started", "requires_not_flag": "letter_given", "requires_not_item": "sennaveth_letter"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Lirael looks up from the ledger. \"Mm.\"",
+			"choices": [
+				{"text": "I'm the courier for Lord Caerwyn's letter.", "next": "courier", "requires_flag": "lie_started", "requires_not_flag": "letter_given", "requires_not_item": "sennaveth_letter"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"courier": {
+			"text": "\"Are you.\" He looks you up and down. \"The courier for below is a Sennaveth, always. I'd know your face.\"",
+			"choices": [
+				{"text": "(Wear a Sennaveth face.) \"You do know it, Lirael. Hurry.\"", "next": "fooled", "requires_skill": {"glamour": 30}},
+				{"text": "Lady Ithariel sent me herself. Do you want to be the one who kept her waiting?", "next": "persuaded", "fail_next": "suspicious",
+					"check": {"id": "lirael_letter", "kind": "persuade", "difficulty": 45}},
+				{"text": "Never mind.", "next": "end"}
+			]
+		},
+		"fooled": {
+			"text": "The glamour settles over you like a scarf. Lirael blinks, flushes, and nearly drops the ledger. \"Forgive me, I didn't... the light's poor on the bridge.\" He fetches the letter from the house's box and presses it into your hands. \"For Lord Caerwyn. As always.\"",
+			"set_flag": ["letter_given", "lirael_fooled"],
+			"give_item": "sennaveth_letter",
+			"choices": [
+				{"text": "As always.", "next": "end"}
+			]
+		},
+		"persuaded": {
+			"text": "He goes pale and hurries to the house's box. \"Of course, of course. She never says.\" The letter is in your hands before he's finished apologising.",
+			"set_flag": "letter_given",
+			"give_item": "sennaveth_letter",
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"suspicious": {
+			"text": "\"She'd have sent word.\" He holds the ledger a little closer. \"Good day.\"",
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		}
+	}
+}

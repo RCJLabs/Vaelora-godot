@@ -1,0 +1,50 @@
+{
+	"start": [
+		{"node": "after_unbound", "requires_flag": "well_unbound"},
+		{"node": "after_drunk", "requires_flag": "well_drunk"},
+		{"node": "after_given", "requires_flag": "well_given"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "An elf sitting among the Moot Tree's roots with her knees drawn up, fine clothes gone shabby, grey running up the veins of both wrists. She looks at your hands before your face. \"Got any light? No. Nobody up there does either. They just look like they do.\"",
+			"choices": [
+				{"text": "Where do you get it?", "next": "buy", "requires_not_flag": "well_lead"},
+				{"text": "Who are you?", "next": "who"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"who": {
+			"text": "\"Rhosyn. Of House Tirwen, once. We had a seat at the Moot.\" She laughs, and it hurts to hear. \"Never leave an elf alone with a wisp. They say it like a joke.\"",
+			"choices": [
+				{"text": "Where do you get it?", "next": "buy", "requires_not_flag": "well_lead"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"buy": {
+			"text": "She jerks her chin at the Root Door. \"From them. Sennaveth's takers, after the second bell, when the Root Warden's looking the other way. They draw it out of the well under the tree and sell the dregs to the likes of me. Lord Caerwyn drinks the rest.\" Softer: \"It tastes like being kindled. Like the first morning.\"",
+			"set_flag": "well_lead",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"after_unbound": {
+			"text": "Rhosyn is still among the roots, but she's looking up, through the boughs, at nothing. \"It's gone. All of it. I felt it go, like a tune stopping.\" She wipes her face. \"I think I might be all right.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"after_given": {
+			"text": "\"The Moot's got it now. Calaneth's wardens on the door day and night.\" A thin smile. \"Good. Somebody should stop me.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"after_drunk": {
+			"text": "She looks at your wrists, then at your face, and her eyes go wide and wet and hungry all at once. \"You took it. All of it.\" She reaches for your hand and stops herself. \"Was it like the first morning?\"",
+			"choices": [
+				{"text": "(Leave.)", "next": "end"}
+			]
+		}
+	}
+}

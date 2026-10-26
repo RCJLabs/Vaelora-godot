@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "root_key"
+display_name = "Sennaveth Root-Key"
+description = "A key of living wood, still faintly green, carved with House Sennaveth's knot. It's warm, the way a root is warm in spring."
+value = 0
+weight = 0.2
+quest_item = true

@@ -1,0 +1,33 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "An elf behind a counter grown from the bough itself, filling cups from a jug that never seems to empty. \"The Hanging Lantern. Wine, bread, a hammock at the back if you've the coin. Don't lean on the rail; it's older than you.\"",
+			"choices": [
+				{"text": "I need a bed.", "next": "bed", "requires_not_flag": "lantern_bed"},
+				{"text": "Tell me about the city.", "next": "city"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"bed": {
+			"text": "\"Ten gold and the hammock at the back's yours. It sways. Everyone sleeps better for it, after the first night.\"",
+			"choices": [
+				{"text": "Here's ten.", "next": "bed_paid", "requires_gold": 10, "take_gold": 10, "set_flag": "lantern_bed"},
+				{"text": "Not now.", "next": "end"}
+			]
+		},
+		"bed_paid": {
+			"text": "\"At the back, past the lanterns.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"city": {
+			"text": "\"The Houses live up high and look down on everything, in every sense.\" She smiles to show she's allowed to say it. \"We say the lights kindled us, when the Wanderer first passed. Made us what we are. Long-lived, clever, and thirsty.\" The smile goes. \"Never leave an elf alone with a wisp. That's what the Deepfolk say. They're not wrong.\"",
+			"choices": [
+				{"text": "I need a bed.", "next": "bed", "requires_not_flag": "lantern_bed"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

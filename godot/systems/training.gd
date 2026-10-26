@@ -23,6 +23,7 @@ const TRAINERS := {
 	"ysolde": {"name": "Listener Ysolde", "skill": "sight", "max": 50},   # Greyfold
 	"ignatia": {"name": "Magister Ignatia Rufa", "skill": "destruction", "max": 60},   # Ilunhall, the Ember College
 	"orsa": {"name": "Magister Orsa Deepcut", "skill": "runecraft", "max": 60},   # Karrowdeep, the Seal College
+	"sylvaine": {"name": "Magister Sylvaine", "skill": "glamour", "max": 60},   # Ithmarren, the Veil College
 }
 
 

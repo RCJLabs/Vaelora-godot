@@ -1,0 +1,20 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "An elf in a leaf-green apron behind a stall of jars, bundles and stoppered vials, the Lantern Gardens' light catching in every one. \"Tamsin Leafwright. Herbs, tinctures, arrows for the forest floor, and a tome or two the Veil College would rather I kept for its own students. Look all you like.\"",
+			"choices": [
+				{"text": "Let's trade.", "open_trade": "tamsin", "next": "end"},
+				{"text": "The forest floor needs arrows?", "next": "floor"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"floor": {
+			"text": "\"The boughs are safe. The floor has boars, and worse when the Wanderer's dark.\" She shrugs. \"Elves who never climb down don't think about it. I sell to the ones who do.\"",
+			"choices": [
+				{"text": "Let's trade.", "open_trade": "tamsin", "next": "end"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

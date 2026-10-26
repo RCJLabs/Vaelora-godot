@@ -23,6 +23,8 @@ the bottom centre of the HUD ("Corruption: Stained") once you're Touched.
 - Swallowing **Wisp Essence**: +10 each (it still gives +40 Magicka). Offering it at the
   shrine isn't swallowing it, so the Silent Shrine quest is unaffected.
 - Taking the **caged wisp's light** in the barrow: +35 (Touched on its own).
+- **Drinking the Rootwell** under Ithmarren's Moot Tree (The Well Kept Badly): +30. A dialogue
+  can do this with `"add_corruption": 30` (DIALOGUE.md).
 
 So the caged wisp alone makes you Touched; it plus two essences, Stained; it plus five,
 Hollowing.

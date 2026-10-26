@@ -125,6 +125,7 @@ func _show_node(node_id: String) -> void:
 #   "add_reputation": {"riverwatch": 10}   (negative to lose reputation)
 #   "add_approval": {"brannoc": 5}          a companion's approval (negative to lose it)
 #   "crime": "pay" / "pardon" / "jail" / "resist"   the law here (systems/crime.gd)
+#   "add_corruption": 30                    drink what you shouldn't (systems/corruption.gd)
 # Text can name "{bounty}" (your bounty here) and "{region}".
 func _run_actions(entry: Dictionary) -> void:
 	for flag in Conditions.as_list(entry.get("set_flag", [])):
@@ -146,6 +147,8 @@ func _run_actions(entry: Dictionary) -> void:
 	if entry.has("open_trade"):
 		# The buy and sell screen, once this conversation has closed (point the choice at "end").
 		TradeScreen.open.call_deferred(str(entry["open_trade"]))
+	if entry.has("add_corruption"):
+		Corruption.add(float(entry["add_corruption"]), "the Rootwell")
 	match str(entry.get("crime", "")):
 		"pay": Crime.pay()
 		"pardon": Crime.pardon()

@@ -81,6 +81,15 @@ const MERCHANTS := {
 		"gold": 500,
 		"stock": {"lockpick": 25, "hunting_dagger": 1, "minor_healing_potion": 2},
 	},
+	"tamsin": {   # the Lantern Gardens, Ithmarren
+		"name": "Tamsin Leafwright",
+		"region": "ithmarren",
+		"gold": 500,
+		"stock": {"minor_healing_potion": 5, "potion_restore_magicka_1": 4, "arrow": 60, "hunting_bow": 1,
+				"blue_moss": 6, "mountain_flower": 6, "moth_wing": 4, "red_cap": 4, "moonpetal": 2, "mortar_and_pestle": 1,
+				"bread": 6, "water_flask": 6, "tome_invisibility": 1, "tome_mirror_image": 1},
+		"unique": ["tome_invisibility", "tome_mirror_image"],
+	},
 	"grima": {   # the Market Bridge, Karrowdeep
 		"name": "Grima Coldiron",
 		"region": "karrowdeep",
