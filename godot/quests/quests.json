@@ -1835,5 +1835,229 @@
 				"text": "I picked three moonpetals in the dark for Fennick, gently. He paid in potions and coin, and told me to come back in spring."
 			}
 		]
+	},
+	"under_the_glass": {
+		"title": "Under the Glass",
+		"giver": "A.'s card, in the Rootwell",
+		"main": true,
+		"region": "glass_coast",
+		"description": "A.'s card on Lord Caerwyn's desk said the founders' confession wasn't burned: \"Look under the glass.\" Under the glass means the Glass Coast, in Sundra, where the Mage War burned the desert to glass and the Glass College was built on top of it. Ships sail there from Ilunhall's quay.",
+		"started_when": {
+			"requires_flag": "well_reported"
+		},
+		"completed_when": {
+			"requires_flag": "glass_reported"
+		},
+		"objectives": [
+			{
+				"text": "Take ship to the Glass Coast from Ilunhall's quay.",
+				"done_when": {
+					"requires_flag": "discovered_glass_coast"
+				},
+				"marker": "ShipToGlass"
+			},
+			{
+				"text": "Find out what's under the glass: ask the Glass College's Seer-Magister on the spire's steps, or whoever camps on the Scar's edge.",
+				"done_when": {
+					"requires_flag": "under_glass_lead"
+				},
+				"marker": [
+					"Ophira",
+					"Ammara"
+				]
+			},
+			{
+				"text": "Get past the ward over the stair in the black ring, out on the Scar.",
+				"done_when": {
+					"requires_flag": "vault_open"
+				},
+				"marker": "UnderGlassWard"
+			},
+			{
+				"text": "Go down under the glass.",
+				"done_when": {
+					"requires_flag": "discovered_under_glass_vault"
+				},
+				"marker": "UnderGlassStair"
+			},
+			{
+				"text": "Get past what keeps the vault.",
+				"done_when": {
+					"requires_flag": "glass_sentinel_down"
+				},
+				"marker": "TheSeal"
+			},
+			{
+				"text": "Study the door at the end of the hall.",
+				"done_when": {
+					"requires_flag": "seal_read"
+				},
+				"marker": "TheSeal"
+			},
+			{
+				"text": "Tell Ophira, or Sister Ammara, what's under the glass.",
+				"done_when": {
+					"requires_flag": "glass_reported"
+				},
+				"marker": [
+					"Ophira",
+					"Ammara"
+				]
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "ward_lifted"
+				},
+				"text": "I looked at the College's ward through Ophira's lens, and it let me by."
+			},
+			{
+				"when": {
+					"requires_flag": "mercy_way"
+				},
+				"text": "I went through the ward by the cut the Mercy made in it."
+			},
+			{
+				"when": {
+					"requires_flag": "ward_seen"
+				},
+				"text": "I Saw the old seam in the College's ward, and stepped through it."
+			},
+			{
+				"when": {
+					"requires_flag": "glass_sentinel_down"
+				},
+				"text": "A sentinel of fused glass kept the vault. It's glass again now."
+			},
+			{
+				"when": {
+					"requires_flag": "seal_read"
+				},
+				"text": "The vault ends in the Seal of the Twelve: a door that opens only when all twelve wells answer. A socket lights for every well that's been put right. A. left a card in its seam: she's tried it too, and she's waiting for the rest."
+			},
+			{
+				"when": {
+					"requires_flag": "glass_told"
+				},
+				"text": "I told Ophira everything. The Glass College will go after the wells too, and not all its seers will be friendly."
+			},
+			{
+				"when": {
+					"requires_flag": "glass_lied"
+				},
+				"text": "I told Ophira it was a dead end. She looked relieved."
+			},
+			{
+				"when": {
+					"requires_flag": "glass_mercy"
+				},
+				"text": "I told Sister Ammara. The Mercy will go after the wells, gently, she hopes."
+			}
+		]
+	},
+	"the_sovereigns_due": {
+		"title": "The Sovereign's Due",
+		"giver": "Samira, in Sarabh",
+		"region": "glass_coast",
+		"description": "Samira's household couldn't pay the Sovereign's water-due this season, so Collector Amir Tahan took their tally-stone. No tally, no water from the oasis.",
+		"started_when": {
+			"requires_flag": "due_started"
+		},
+		"completed_when": {
+			"requires_flag": "due_done"
+		},
+		"objectives": [
+			{
+				"text": "Get Samira's tally-stone back from Collector Amir: pay the due, lean on him, or take it from his chest.",
+				"done_when": {
+					"requires_item": "water_tally"
+				},
+				"marker": [
+					"Amir",
+					"TallyChest"
+				]
+			},
+			{
+				"text": "Bring the tally-stone to Samira.",
+				"done_when": {
+					"requires_flag": "due_done"
+				},
+				"marker": "Samira"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "due_paid"
+				},
+				"text": "I paid Samira's sixty gold to the Sovereign's collector."
+			},
+			{
+				"when": {
+					"requires_flag": "due_scared"
+				},
+				"text": "I leaned on Collector Amir until he handed the tally-stone over. The ledger will say she paid."
+			},
+			{
+				"when": {
+					"requires_flag": "due_done",
+					"requires_not_flag": [
+						"due_paid",
+						"due_scared"
+					]
+				},
+				"text": "I took Samira's tally-stone out of the collector's chest."
+			},
+			{
+				"when": {
+					"requires_flag": "due_done"
+				},
+				"text": "Samira's children will drink tonight."
+			}
+		]
+	},
+	"glass_that_sings": {
+		"title": "Glass That Sings",
+		"giver": "Jamila the Glassblower, in Sarabh",
+		"region": "glass_coast",
+		"description": "Out on the Scar, knuckles of glass sing as they cool at night. Jamila wants three singing shards for lamp-chimneys the seers pay a fortune for.",
+		"started_when": {
+			"requires_flag": "sing_started"
+		},
+		"completed_when": {
+			"requires_flag": "sing_done"
+		},
+		"objectives": [
+			{
+				"text": "Work three singing shards free of the glass on the Scar. They only sing at night.",
+				"done_when": {
+					"requires_item": {
+						"id": "singing_glass",
+						"count": 3
+					}
+				},
+				"marker": [
+					"SingingGlass1",
+					"SingingGlass2",
+					"SingingGlass3"
+				]
+			},
+			{
+				"text": "Bring them to Jamila at her kiln.",
+				"done_when": {
+					"requires_flag": "sing_done"
+				},
+				"marker": "Jamila"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "sing_done"
+				},
+				"text": "I brought Jamila three singing shards from the Scar, and she paid in coin and the seers' blue."
+			}
+		]
 	}
 }

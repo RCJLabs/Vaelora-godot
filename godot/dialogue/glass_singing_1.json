@@ -1,0 +1,24 @@
+{
+	"start": [
+		{"node": "taken", "requires_flag": "sing_glass_1"},
+		{"node": "singing", "requires_night": true},
+		{"node": "quiet"}
+	],
+	"nodes": {
+		"quiet": {
+			"text": "A knuckle of clear glass standing up out of the Scar, too hot to touch. By day it's only glass.",
+			"choices": [{"text": "(Leave it.)", "next": "end"}]
+		},
+		"singing": {
+			"text": "In the cool of the night the glass is singing: one high thin note, so soft you only hear it when you stop breathing. Where it's cracked, a shard is loose enough to work free.",
+			"choices": [
+				{"text": "Work the singing shard free.", "next": "end", "set_flag": "sing_glass_1", "give_item": "singing_glass"},
+				{"text": "(Leave it.)", "next": "end"}
+			]
+		},
+		"taken": {
+			"text": "Glass, quiet now where the singing shard came away.",
+			"choices": [{"text": "(Leave it.)", "next": "end"}]
+		}
+	}
+}

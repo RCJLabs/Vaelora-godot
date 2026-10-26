@@ -49,6 +49,11 @@
 			"name": "The Great Houses",
 			"description": "The old elven families of Ithmarren, meeting as the Moot of Houses in the canopy. Lineage matters more than anything, and memories are four hundred years long.",
 			"known_when": { "requires_flag": "met_calaneth" }
+		},
+		"oasis_thrones": {
+			"name": "The Oasis Thrones",
+			"description": "Sundra's oasis lords, each with a throne and a well, under a Sovereign of Wells chosen among them. On the Glass Coast their collectors meter the water and their wardens keep the peace.",
+			"known_when": { "requires_flag": "met_amir" }
 		}
 	}
 }

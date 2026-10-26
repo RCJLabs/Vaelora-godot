@@ -1,0 +1,73 @@
+{
+	"start": [
+		{"node": "after", "requires_flag": "glass_reported"},
+		{"node": "report", "requires_flag": "seal_read"},
+		{"node": "again", "requires_flag": "met_ophira"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A woman in white linen with a veil of fine glass beads over her eyes, sitting on the College's steps with her face turned up to the sun as if she can see it through the veil. Perhaps she can. \"Ophira. Seer-Magister of the Glass College. I Saw a stranger coming up from the harbour with a playing card in their pack. Sit, if you like. The glass is warm.\"",
+			"set_flag": "met_ophira",
+			"choices": [
+				{"text": "The card says to look under the glass.", "next": "under", "requires_not_flag": "ophira_ward"},
+				{"text": "Will you teach me to See?", "next": "teach"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Ophira turns her veiled face toward you. \"Back from the Scar, or not yet gone?\"",
+			"choices": [
+				{"text": "The card says to look under the glass.", "next": "under", "requires_not_flag": "ophira_ward"},
+				{"text": "Will you teach me to See?", "next": "teach"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"teach": {
+			"text": "\"Sight is the art of looking where you were told not to.\" She lifts her veil an inch, and her eyes are pale as the glass. \"Gold first. The College was built by people who looked, and it has always been expensive.\"",
+			"choices": [
+				{"text": "Let's begin.", "open_training": "ophira", "next": "end"},
+				{"text": "Not now.", "next": "end"}
+			]
+		},
+		"under": {
+			"text": "She is still for a long time. \"Four hundred years ago two colleges fought over the deepest of the twelve wells, here, and burned the land to glass doing it. When it was over, the founders sank a vault under the Scar and sealed it, and built this College on top to keep the seal. Nobody has opened it since. Not the College. Not anyone.\" She takes a small cut lens from her sleeve. \"Here: the College's ward-glass. Look at the ward through it and it'll let you by. It'll crack doing it; they always do. Come and tell me what you See.\"",
+			"set_flag": ["under_glass_lead", "ophira_ward"],
+			"give_item": "ward_glass",
+			"choices": [
+				{"text": "I will.", "next": "end"}
+			]
+		},
+		"report": {
+			"text": "Ophira stands before you reach the steps. \"You went down. You're carrying something cold.\"",
+			"choices": [
+				{"text": "The vault opens only when all twelve wells answer. A. has tried it too, for centuries.", "next": "told"},
+				{"text": "(Wear an honest face.) \"It's sealed, and nothing behind it answers. A dead end.\"", "next": "lied", "requires_skill": {"glamour": 40}},
+				{"text": "Not yet.", "next": "end"}
+			]
+		},
+		"told": {
+			"text": "Her hand finds the rail of the steps. \"All twelve.\" She breathes out. \"Then the founders locked their confession with the very wells they took, and the only way to read it is to go and put every one of them right.\" She presses a purse into your hands. \"The College will send its seers after the wells. I am sorry: you'll have company. Some of it won't be friendly.\"",
+			"set_flag": ["glass_told", "glass_reported"],
+			"give_gold": 150,
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"lied": {
+			"text": "The veil turns toward you, and for a moment you're sure she Sees straight through it. Then she nods. \"A dead end. Four hundred years, and a dead end.\" She sounds almost relieved. \"Thank you for looking.\" She gives you a small purse.",
+			"set_flag": ["glass_lied", "glass_reported"],
+			"give_gold": 50,
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"after": {
+			"text": "Ophira inclines her veiled head. \"The glass remembers you. So do I.\"",
+			"choices": [
+				{"text": "Will you teach me to See?", "next": "teach"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

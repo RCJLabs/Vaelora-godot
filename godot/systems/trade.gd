@@ -81,6 +81,15 @@ const MERCHANTS := {
 		"gold": 500,
 		"stock": {"lockpick": 25, "hunting_dagger": 1, "minor_healing_potion": 2},
 	},
+	"nadira": {   # Sarabh's oasis square, the Glass Coast
+		"name": "Nadira",
+		"region": "glass_coast",
+		"gold": 450,
+		"stock": {"water_flask": 15, "bread": 10, "apple": 8, "minor_healing_potion": 4, "potion_restore_magicka_1": 2,
+				"arrow": 50, "iron_sword": 1, "hunting_dagger": 2, "leather_cap": 1, "lockpick": 10, "singing_glass": 1,
+				"tome_true_sight": 1, "tome_moment_of_clarity": 1},
+		"unique": ["tome_true_sight", "tome_moment_of_clarity"],
+	},
 	"tamsin": {   # the Lantern Gardens, Ithmarren
 		"name": "Tamsin Leafwright",
 		"region": "ithmarren",

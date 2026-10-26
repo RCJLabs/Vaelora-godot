@@ -34,6 +34,8 @@ The builders place owned things with these helpers:
 | Ithmarren, the Lantern Gardens | potions and blue moss on the stall | Tamsin Leafwright |
 | Ithmarren, the Sennaveth Bough | House Sennaveth's coffer (Expert lock): the root-key, 90 gold | Lady Ithariel Sennaveth |
 | Ithmarren, the Sennaveth Bough | the house letter-box (Apprentice lock): this week's letter (A Lie Well Told) | Steward Lirael |
+| The Glass Coast, Sarabh | water flasks and bread on the stall | Nadira |
+| The Glass Coast, Sarabh | the collector's tally-chest (Apprentice lock): Samira's tally-stone, 70 gold (The Sovereign's Due) | Collector Amir Tahan |
 
 ## Who sees
 
@@ -85,6 +87,7 @@ A seen crime also costs you standing with the region's people, once you've met t
 | Ilunhall | The Ilunar Empire | −2 | −3 | −2 | −5 |
 | Karrowdeep | The Deep Guilds | −2 | −3 | −2 | −5 |
 | Ithmarren | The Great Houses | −2 | −3 | −2 | −5 |
+| The Glass Coast | The Oasis Thrones | −2 | −3 | −2 | −5 |
 
 Bounties never fade. **Tab → World** lists where you're wanted, under the Wanted heading.
 
@@ -125,13 +128,14 @@ NPCs with the **guard** role keep the law where they stand:
 - **Ilunhall:** the Warden of the Quay and the Bridge Warden.
 - **Karrowdeep:** the Warden of the Bridge and the Gallery Warden (the Table's wardens).
 - **Ithmarren:** the Bough Warden and the Root Warden (the Houses' wardens).
+- **The Glass Coast:** the Square Warden and the Mole Warden (the Sovereign's wardens).
 
 While you have a bounty in their region, a guard who sees you within 9 m stops you. Talking
 to a guard while you're wanted does the same. The conversation is `dialogue/guard_crime.json`:
 
 - **Pay**, if you can afford it. You pay the bounty, and they take everything you stole in this region.
 - **Talk your way out**. Only for bounties under 100: a Persuade 45 check. Pass and the bounty's gone, and you keep the goods. Fail and, as with every Speech check, it isn't offered again.
-- **Go quietly**. A day in the cells per 100 gold of bounty, 1 to 7 days. The clock and your needs go on (you're fed and you sleep). Your stolen goods are taken. You come out at the level's `JailRelease` marker: the barracks door in Weirholt, the road into Greyfold, the quay in Ilunhall, the Gate Hall in Karrowdeep, the forest road in Ithmarren. In Hardcore it autosaves, as a defeat does.
+- **Go quietly**. A day in the cells per 100 gold of bounty, 1 to 7 days. The clock and your needs go on (you're fed and you sleep). Your stolen goods are taken. You come out at the level's `JailRelease` marker: the barracks door in Weirholt, the road into Greyfold, the quay in Ilunhall, the Gate Hall in Karrowdeep, the forest road in Ithmarren, Sarabh's oasis on the Glass Coast. In Hardcore it autosaves, as a defeat does.
 - **Run**. Esc does the same. The bounty grows by 10, and they fight (below).
 
 ### When they fight

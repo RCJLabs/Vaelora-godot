@@ -1,0 +1,39 @@
+{
+	"start": [
+		{"node": "again", "requires_flag": "met_jamila"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A broad orc woman in a leather apron scorched black, turning a long pipe in the mouth of a roaring kiln. A bubble of glowing glass swells on its end. \"Jamila. Glassblower. Don't touch anything that's orange; don't touch anything that's clear either, it might still be orange inside.\"",
+			"set_flag": "met_jamila",
+			"choices": [
+				{"text": "Need anything?", "next": "need", "requires_not_flag": "sing_started"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Jamila doesn't take her eyes off the glass. \"Mm?\"",
+			"choices": [
+				{"text": "Need anything?", "next": "need", "requires_not_flag": "sing_started"},
+				{"text": "I've brought singing glass.", "next": "paid", "requires_flag": "sing_started", "requires_not_flag": "sing_done", "requires_item": {"id": "singing_glass", "count": 3}},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"need": {
+			"text": "\"Singing glass. Out on the Scar there are knuckles of glass that sing at night, when they cool. A shard of that in a lamp-chimney and the lamp hums all night. The seers pay a fortune.\" She grins with both tusks. \"Three shards. Night only: by day it's just glass and you'll burn your fingers finding out.\"",
+			"set_flag": "sing_started",
+			"choices": [
+				{"text": "Three singing shards. At night.", "next": "end"}
+			]
+		},
+		"paid": {
+			"text": "She holds each shard to her ear in turn, and nods, and nods. \"Good. Good. Sweet as you like.\" She counts out coin, and adds two stoppered vials. \"The seers' blue, for the magicka. They give it me in trade.\"",
+			"set_flag": "sing_done",
+			"take_item": {"id": "singing_glass", "count": 3},
+			"give_gold": 60,
+			"give_item": {"id": "potion_restore_magicka_1", "count": 2},
+			"choices": [{"text": "Goodbye.", "next": "end"}]
+		}
+	}
+}

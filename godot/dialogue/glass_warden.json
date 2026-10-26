@@ -1,0 +1,9 @@
+{
+	"start": "hello",
+	"nodes": {
+		"hello": {
+			"text": "A warden in the Sovereign's saffron with a curved spear and a face wrapped against the dust. \"The Sovereign's peace. Water by the measure, trade by the scale, and hands off what isn't yours.\"",
+			"choices": [{"text": "(Leave.)", "next": "end"}]
+		}
+	}
+}

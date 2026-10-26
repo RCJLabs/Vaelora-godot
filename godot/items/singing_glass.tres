@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "singing_glass"
+display_name = "Singing Glass"
+description = "A shard from the Scar that hums when you hold it to your ear, very softly, a note you almost recognise. Glassblowers prize it."
+value = 15
+weight = 0.2

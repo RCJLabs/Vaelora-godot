@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="LevelMood" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://levels/level_mood.gd" id="1_mood"]
+
+[resource]
+script = ExtResource("1_mood")
+sky_tint = Color(1, 0.9, 0.72, 1)
+sky_tint_amount = 0.12
+sun_tint = Color(1, 0.88, 0.7, 1)
+sun_tint_amount = 0.25
+sun_energy_mult = 1.15
+fog_tint = Color(1, 0.88, 0.7, 1)
+fog_tint_amount = 0.3
+fog_density = 0.0022
+fog_sun_scatter = 0.4
+glow_intensity = 1.0
+glow_bloom = 0.08
+ambient_mult = 1.15
+saturation = 1.08
+contrast = 1.05
+clouds = 0.08
+motes_day = "dust"
+motes_night = "dust"

@@ -1,0 +1,68 @@
+{
+	"start": [
+		{"node": "after", "requires_flag": "glass_reported"},
+		{"node": "report", "requires_flag": "seal_read"},
+		{"node": "again", "requires_flag": "met_ammara"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A woman in the Mercy's grey and violet, sitting at a small fire on the Scar's edge, turning a shard of glass in grey fingers. She doesn't reach for a weapon. \"Sister Ammara. You've the look of someone who's been following our carts. Sit down. We're not what the Lantern Order says, mostly.\"",
+			"set_flag": "met_ammara",
+			"choices": [
+				{"text": "Vessa sent word about me?", "next": "vessa", "requires_flag": "vessa_turned"},
+				{"text": "What are the Mercy doing on the Scar?", "next": "digging", "requires_not_flag": "mercy_cut"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Ammara looks up from the fire. \"Still here.\"",
+			"choices": [
+				{"text": "What are the Mercy doing on the Scar?", "next": "digging", "requires_not_flag": "mercy_cut"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"vessa": {
+			"text": "\"Magister Vessa. Yes.\" Something in her face softens. \"She wrote that you could have let the Lantern Order have her, and didn't. That counts with us. More than you'd think.\"",
+			"choices": [
+				{"text": "What are the Mercy doing on the Scar?", "next": "digging", "requires_not_flag": "mercy_cut"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"digging": {
+			"text": "\"Waiting.\" She points with the shard at the ring of black glass out on the Scar. \"There's a vault under that, and a ward over the stair the College put there. A. told us to cut a way through the ward and then wait for her, and not to go down.\" She shrugs. \"We cut it. A. hasn't come. Go and look, if you want. The cut's on the ward's west side; you'll feel it.\"",
+			"set_flag": ["under_glass_lead", "mercy_cut"],
+			"choices": [
+				{"text": "Why are you telling me?", "next": "why"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"why": {
+			"text": "\"Because everyone I've loved has gone grey in the hands, and A. says there's a cure on the other side of a door. If you get that door open, I don't much care whose side you're on.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"report": {
+			"text": "Ammara stands when she sees your face. \"You went down. Did it open?\"",
+			"choices": [
+				{"text": "It wants all twelve wells to answer. A. knows; she's tried.", "next": "told"},
+				{"text": "No. Leave it.", "next": "end"}
+			]
+		},
+		"told": {
+			"text": "She closes her eyes. \"Twelve.\" When she opens them she's almost smiling. \"Then we've work, all of us. The Mercy will go after the wells. Gently, I hope, whatever the others do.\" She presses a stoppered vial into your hand. \"For the grey, when it comes. It doesn't cure. It helps.\"",
+			"set_flag": ["glass_mercy", "glass_reported"],
+			"give_item": {"id": "minor_healing_potion", "count": 2},
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"after": {
+			"text": "Ammara nods to you across the fire. \"Mind the glass. It cuts.\"",
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

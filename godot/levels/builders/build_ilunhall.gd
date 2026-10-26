@@ -277,6 +277,10 @@ func _build_city() -> Node3D:
 	door("DeepRoad", "res://levels/karrowdeep.tscn", "FromIlunhall", "Karrowdeep", "Take the Deep Road to",
 			Vector3(0.4, 3, 4), Vector3(84.6, 1.5, 20), Color(0.35, 0.25, 0.15))
 	marker("FromKarrowdeep", Vector3(79, 0, 20), PI / 2.0)
+	# The ship south across the sea to the Glass Coast (docs/godot-starter/GLASS_COAST.md).
+	door("ShipToGlass", "res://levels/glass_coast.tscn", "FromIlunhall", "the Glass Coast", "Take ship to",
+			Vector3(2, 2.5, 0.4), Vector3(40, 1.25, 57.6), Color(0.4, 0.28, 0.16))
+	marker("FromGlassCoast", Vector3(40, 0, 52), 0.0)
 	signpost("DeepRoadSign", "East: the Deep Road, to Karrowdeep under the mountain.", Vector3(80, 1.4, 16), PI / 2.0)
 
 	var level_map := Node.new()

@@ -62,6 +62,7 @@ character level, with the XP towards the next level kept).
   | Magister Aurel | Tidecraft | 50 | "Teach me yourself, not from a book." |
   | Magister Orsa Deepcut (Karrowdeep) | Runecraft | 60 | "Will you teach me Runecraft?" |
   | Magister Sylvaine (Ithmarren) | Glamour | 60 | "Will you teach me?" |
+  | Seer-Magister Ophira (the Glass Coast) | Sight | 70 | "Will you teach me to See?" |
 
   A dialogue choice with `"open_training": "<id>", "next": "end"` opens it. Lessons taken this
   level are saved.
