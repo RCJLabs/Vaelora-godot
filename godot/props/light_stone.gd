@@ -13,6 +13,9 @@ extends Node3D
 ## The lights under the stone, against their own energy at full glow: the whole
 ## city glows gold at night (docs/lore/WORLD.md).
 @export var light_mult := 2.0
+## The surface colour (gold stone; dark glass for windows) and the glow's.
+@export var surface := Color(1.0, 0.8, 0.4)
+@export var glow := Color(1.0, 0.72, 0.3)
 
 var material: StandardMaterial3D
 var _lights := {}   # light -> its full energy
@@ -21,9 +24,9 @@ var _since := 0.0
 
 func _ready() -> void:
 	material = StandardMaterial3D.new()
-	material.albedo_color = Color(1.0, 0.8, 0.4)
+	material.albedo_color = surface
 	material.emission_enabled = true
-	material.emission = Color(1.0, 0.72, 0.3)
+	material.emission = glow
 	for m in find_children("*", "MeshInstance3D", true, false):
 		m.material_override = material
 	for light in find_children("*", "OmniLight3D", true, false):

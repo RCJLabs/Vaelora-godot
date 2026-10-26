@@ -194,6 +194,27 @@ moment into play.
 
 Builders: `ground_cover(style, area)`, plus `.add_to_group("ground_cover", true)` on the grass.
 
+## Trees and houses
+
+**Pines** (`systems/tree_dresser.gd`, autoload `TreeDresser`):
+- Any MeshInstance3D named `Canopy` or `Crown` whose mesh is a cone is swapped, as it enters the
+  tree, for three stacked, faceted cones.
+- The layers are darker at the bottom, and each tree is a slightly different green, picked from
+  where it stands so it's the same every time.
+- It works on the hand-made Vale and the generated regions alike. Collision is untouched.
+- The Hollow Oak's canopy isn't a cone, so it keeps its own look.
+
+**Houses** (builder `house()`): the block is still the collision. On top of it, each house gets:
+- a gabled roof along its long side, with a ridge beam and wall gables under it;
+- dark corner posts;
+- a door, and two windows, on the wall facing the middle of the level, where the streets are;
+- one window at the back;
+- a stone chimney.
+
+The windows (`props/light_stone.gd`, with new `surface` and `glow` colours) are dark glass by day
+and glow warm at night. Weirholt, Greyfold and Ilunhall's harbour houses were rebuilt with it.
+The Vale's waystation is hand-made and unchanged.
+
 ## Renderers (a caveat)
 
 On Android the game runs on the **Mobile** renderer. The screenshots for this pass were

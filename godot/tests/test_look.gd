@@ -67,6 +67,22 @@ func _physics_process(_d: float) -> bool:
 			ok(ground.albedo_texture != null and ground.uv1_world_triplanar, "the ground is textured (world triplanar)")
 			var stone: StandardMaterial3D = n("Ford/Mesh").mesh.material
 			ok(stone.normal_enabled and stone.albedo_texture != ground.albedo_texture, "stone has its own texture and a normal map")
+			# Houses: a gabled roof, a door facing the streets, windows lit at night; pines
+			# in layers (systems/tree_dresser.gd).
+			var dressing = n("CountingHouseDressing")
+			ok(dressing != null and dressing.get_node_or_null("RoofA") != null and dressing.get_node_or_null("Door") != null
+					and dressing.get_node_or_null("Chimney") != null, "houses have roofs, doors and chimneys")
+			var windows = dressing.get_node("Windows")
+			autoload("WorldClock").hour = 23.0
+			windows._update()
+			var lit: float = windows.material.emission_energy_multiplier
+			autoload("WorldClock").hour = 13.0
+			windows._update()
+			ok(lit > 1.0 and windows.material.emission_energy_multiplier < 0.2, "windows glow at night, not by day", [lit, windows.material.emission_energy_multiplier])
+			var door: Node3D = dressing.get_node("Door")
+			ok(door.global_position.length() < dressing.global_position.length(), "the door is on the side facing the middle of town")
+			var tree = n("Tree1")
+			ok(tree.get_node_or_null("CrownLayer2") != null and not tree.get_node("Crown").visible, "pines are layered", tree.get_children().map(func(c): return c.name))
 			var skirt = n("GroundSkirt")
 			ok(skirt != null and skirt.mesh.size.x >= 1000.0 and skirt.global_position.y < n("River").global_position.y,
 					"ground on to the horizon, under the river")
@@ -93,6 +109,8 @@ func _physics_process(_d: float) -> bool:
 			var dunya = n("Dunya")
 			ok(dunya.sitting and top(dunya) < 1.4, "Dunya sits", top(dunya))
 			ok(n("Aurel").get_node("Figure") != null, "Magister Aurel has a figure")
+			var pine = n("Thornwood/Tree1")
+			ok(pine.get_node_or_null("CrownLayer0") != null and not pine.get_node("Canopy").visible, "the Vale's hand-placed pines are layered too")
 			# Enemies: figures too, each in its own clothes, with arms on the shoulder pivots.
 			var camp: Array = n("BanditCamp").get_children()
 			ok(camp.all(func(b): return b.model.get_node_or_null("Figure") != null and b.model.get_node_or_null("Body") == null),
