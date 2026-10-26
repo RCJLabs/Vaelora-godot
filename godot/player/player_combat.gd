@@ -630,6 +630,10 @@ func _land_hit(target: Node) -> void:
 			poise *= 3.0
 			heavy = true
 	var result = target.take_hit(damage, player.global_position, current_attack.knockback, poise, heavy)
+	if target is Node3D:
+		var toward: Vector3 = (player.global_position - target.global_position) * Vector3(1, 0, 1)
+		Fx.burst(player.get_tree(), target.global_position + Vector3(0, 1.1, 0) + toward.normalized() * 0.35,
+				result == "blocked" or result == "parried")   # sparks off a guard, dust off a hit
 	Glamour.struck(target, player)
 	if result == "blocked" or result == "parried":
 		_bounced(result == "parried")

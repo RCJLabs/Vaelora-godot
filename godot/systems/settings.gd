@@ -32,21 +32,23 @@ const UI_SCALES := [1.0, 1.15, 1.3, 1.5]
 
 ## Graphics presets. Effects only ever get switched off relative to how a scene was
 ## built (a scene without volumetric fog doesn't gain it on Ultra); shadow_distance
-## multiplies each sun's own shadow distance.
+## multiplies each sun's own shadow distance. clutter: how thick the ground cover
+## (grass, flowers, stones: props/ground_cover.gd) grows, 0 for none; clutter_range:
+## how far away it's drawn.
 const QUALITY_NAMES := ["Low", "Medium", "High", "Ultra"]
 const QUALITY := [
 	{"ssao": false, "volumetric_fog": false, "glow": false, "shadow_atlas": 1024, "shadow_distance": 0.5,
 		"soft_shadows": RenderingServer.SHADOW_QUALITY_HARD, "msaa": Viewport.MSAA_DISABLED, "fxaa": true,
-		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_VERY_LOW, "fog_volume": 48},
+		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_VERY_LOW, "fog_volume": 48, "clutter": 0.0, "clutter_range": 30.0},
 	{"ssao": true, "volumetric_fog": false, "glow": true, "shadow_atlas": 2048, "shadow_distance": 0.75,
 		"soft_shadows": RenderingServer.SHADOW_QUALITY_SOFT_VERY_LOW, "msaa": Viewport.MSAA_DISABLED, "fxaa": true,
-		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_LOW, "fog_volume": 48},
+		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_LOW, "fog_volume": 48, "clutter": 0.5, "clutter_range": 40.0},
 	{"ssao": true, "volumetric_fog": true, "glow": true, "shadow_atlas": 4096, "shadow_distance": 1.0,
 		"soft_shadows": RenderingServer.SHADOW_QUALITY_SOFT_LOW, "msaa": Viewport.MSAA_2X, "fxaa": false,
-		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_MEDIUM, "fog_volume": 64},
+		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_MEDIUM, "fog_volume": 64, "clutter": 1.0, "clutter_range": 55.0},
 	{"ssao": true, "volumetric_fog": true, "glow": true, "shadow_atlas": 8192, "shadow_distance": 1.5,
 		"soft_shadows": RenderingServer.SHADOW_QUALITY_SOFT_HIGH, "msaa": Viewport.MSAA_4X, "fxaa": false,
-		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_HIGH, "fog_volume": 96},
+		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_HIGH, "fog_volume": 96, "clutter": 1.6, "clutter_range": 85.0},
 ]
 const GRAPHICS_KEYS := ["graphics_quality", "render_scale"]
 

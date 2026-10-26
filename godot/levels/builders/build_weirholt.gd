@@ -21,25 +21,25 @@ const PLASTER := Color(0.66, 0.6, 0.5)
 const ROOF := Color(0.32, 0.18, 0.12)
 const SLATE := Color(0.22, 0.24, 0.27)
 const GRASS := Color(0.25, 0.33, 0.15)
-const WATER := Color(0.22, 0.36, 0.42, 0.8)
 
 
 func _build_town() -> Node3D:
 	scene = Node3D.new()
 	scene.name = "Weirholt"
 	scene.add_to_group("navmesh_source", true)
-	common("Weirholt", true)
+	common("Weirholt", true, "riverlands")
 
 	# Ground on both banks of the Greywater, the river between (x 22..34, flowing south).
-	box("GroundWest", Vector3(122, 1, 200), Vector3(-39, -0.5, 0), GRASS)
-	box("GroundEast", Vector3(66, 1, 200), Vector3(67, -0.5, 0), GRASS)
+	box("GroundWest", Vector3(122, 1, 200), Vector3(-39, -0.5, 0), GRASS).add_to_group("ground_cover", true)
+	box("GroundEast", Vector3(66, 1, 200), Vector3(67, -0.5, 0), GRASS).add_to_group("ground_cover", true)
+	ground_cover("riverbank", Rect2(-100, -100, 200, 200))
 	skirt(GRASS)
 	box("RiverBed", Vector3(12, 1, 200), Vector3(28, -1.9, 0), Color(0.25, 0.22, 0.18), "surface_stone")
 	var water := MeshInstance3D.new()
 	water.name = "River"
 	var wm := BoxMesh.new()
 	wm.size = Vector3(12, 0.1, 200)
-	wm.material = mat(WATER, true)
+	wm.material = water_mat(Vector2(0, 0.6))
 	water.mesh = wm
 	water.position = Vector3(28, -0.35, 0)
 	own(water)
@@ -302,7 +302,7 @@ func _build_culvert() -> Node3D:
 	channel.name = "Runoff"
 	var cm := BoxMesh.new()
 	cm.size = Vector3(1.4, 0.05, 38)
-	cm.material = mat(WATER, true)
+	cm.material = water_mat(Vector2(0, 0.4))
 	channel.mesh = cm
 	channel.position = Vector3(-2.8, 0.03, 18)
 	own(channel)

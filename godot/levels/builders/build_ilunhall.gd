@@ -15,7 +15,6 @@ const QUAY_STONE := Color(0.4, 0.4, 0.42)
 const PAVING := Color(0.42, 0.4, 0.36)
 const ROCK := Color(0.28, 0.29, 0.31)
 const GRASS := Color(0.24, 0.3, 0.16)
-const WATER := Color(0.12, 0.22, 0.3, 0.85)
 const RUNE_BLUE := Color(0.45, 0.7, 1.0)
 
 var LIGHT_STONE
@@ -87,7 +86,7 @@ func _build_city() -> Node3D:
 	scene = Node3D.new()
 	scene.name = "Ilunhall"
 	scene.add_to_group("navmesh_source", true)
-	common("Ilunhall", true)
+	common("Ilunhall", true, "capital")
 	skirt(ROCK)
 
 	# The fjord, south of the quay; cliffs east and west; the mountain behind.
@@ -95,7 +94,7 @@ func _build_city() -> Node3D:
 	water.name = "Fjord"
 	var wm := PlaneMesh.new()
 	wm.size = Vector2(1600, 700)
-	wm.material = mat(WATER, true)
+	wm.material = water_mat(Vector2(0.08, 0.04))
 	water.mesh = wm
 	water.position = Vector3(0, -0.9, 390)
 	own(water)
@@ -315,7 +314,7 @@ func _build_undercroft() -> Node3D:
 	cistern.name = "Cistern"
 	var cm := BoxMesh.new()
 	cm.size = Vector3(26, 0.05, 4)
-	cm.material = mat(WATER, true)
+	cm.material = water_mat(Vector2.ZERO)
 	cistern.mesh = cm
 	cistern.position = Vector3(0, 0.03, 33.5)
 	own(cistern)

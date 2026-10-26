@@ -123,6 +123,19 @@ func own(node: Node, parent: Node = null) -> Node:
 	return node
 
 
+## Water (levels/materials/water.gdshader): ripples drifting with `flow` (metres a
+## second, over the water's world x/z), dark looking down, bright at a glance.
+func water_mat(flow := Vector2.ZERO) -> ShaderMaterial:
+	var key := "water%s" % flow
+	if not _mats.has(key):
+		var m := ShaderMaterial.new()
+		m.shader = load("res://levels/materials/water.gdshader")
+		m.set_shader_parameter("ripples", load("res://levels/materials/noise_water_normal.tres"))
+		m.set_shader_parameter("flow", flow * 0.07)   # into ripple-texture units (ripple_scale)
+		_mats[key] = m
+	return _mats[key]
+
+
 ## A solid box (StaticBody3D with a mesh and a collision shape) centred at `pos`.
 ## Its material (mat()): stone if it's surface_stone, ground if it's a big flat slab
 ## (grounds, roads, fields), fine grain otherwise.
@@ -152,20 +165,121 @@ func box(name: String, size: Vector3, pos: Vector3, color: Color, surface := "",
 	return body
 
 
-## A greybox house: a solid block with a darker roof slab on top.
+## A greybox house: a solid block (the collision) dressed as a house: a gabled roof
+## along its long side with a ridge beam, dark corner posts, a door and windows on the
+## side facing the middle of the level (where the streets are), windows glowing warm
+## at night (props/light_stone.gd), and a chimney.
 func house(name: String, size: Vector3, pos: Vector3, wall: Color, roof: Color) -> void:
 	box(name, size, pos + Vector3(0, size.y / 2.0, 0), wall, "surface_wood")
-	var slab := MeshInstance3D.new()
-	slab.name = name + "Roof"
-	var m := BoxMesh.new()
-	m.size = Vector3(size.x + 0.6, 0.4, size.z + 0.6)
-	m.material = mat(roof)
-	slab.mesh = m
-	slab.position = pos + Vector3(0, size.y + 0.2, 0)
-	own(slab)
+	var dressing := Node3D.new()
+	dressing.name = name + "Dressing"
+	dressing.position = pos
+	own(dressing)
+	var timber := wall.darkened(0.6).lerp(Color(0.2, 0.13, 0.08), 0.6)
+	# The roof: two slabs meeting at a ridge over the long side.
+	var along_x := size.x >= size.z
+	var span := size.z if along_x else size.x
+	var length := (size.x if along_x else size.z) + 0.8
+	var pitch := deg_to_rad(35.0)
+	var slab := (span / 2.0 + 0.5) / cos(pitch)
+	for side in [-1.0, 1.0]:
+		var m := BoxMesh.new()
+		m.size = Vector3(length, 0.25, slab) if along_x else Vector3(slab, 0.25, length)
+		m.material = mat(roof)
+		var piece := MeshInstance3D.new()
+		piece.name = "Roof%s" % ("A" if side < 0 else "B")
+		piece.mesh = m
+		var rise := size.y + span / 4.0 * tan(pitch)
+		if along_x:
+			piece.position = Vector3(0, rise, side * span / 4.0)
+			piece.rotation.x = side * pitch
+		else:
+			piece.position = Vector3(side * span / 4.0, rise, 0)
+			piece.rotation.z = -side * pitch
+		own(piece, dressing)
+	# Gable ends: wedges of wall under the roof's ends.
+	var ridge_y := size.y + span / 2.0 * tan(pitch)
+	var ridge := BoxMesh.new()
+	ridge.size = Vector3(length, 0.22, 0.22) if along_x else Vector3(0.22, 0.22, length)
+	ridge.material = mat(timber)
+	var beam := MeshInstance3D.new()
+	beam.name = "Ridge"
+	beam.mesh = ridge
+	beam.position = Vector3(0, ridge_y + 0.05, 0)
+	own(beam, dressing)
+	for end in [-1.0, 1.0]:
+		var gable := MeshInstance3D.new()
+		gable.name = "Gable%s" % ("A" if end < 0 else "B")
+		var prism := PrismMesh.new()
+		prism.size = Vector3(span, ridge_y - size.y, 0.2)
+		prism.material = mat(wall)
+		gable.mesh = prism
+		gable.position = Vector3(end * (size.x / 2.0 - 0.1), size.y + (ridge_y - size.y) / 2.0, 0) if along_x \
+				else Vector3(0, size.y + (ridge_y - size.y) / 2.0, end * (size.z / 2.0 - 0.1))
+		if along_x:
+			gable.rotation.y = PI / 2.0
+		own(gable, dressing)
+	# Corner posts.
+	for cx in [-1.0, 1.0]:
+		for cz in [-1.0, 1.0]:
+			var post := MeshInstance3D.new()
+			post.name = "Post"
+			var pm := BoxMesh.new()
+			pm.size = Vector3(0.22, size.y, 0.22)
+			pm.material = mat(timber)
+			post.mesh = pm
+			post.position = Vector3(cx * (size.x / 2.0 + 0.02), size.y / 2.0, cz * (size.z / 2.0 + 0.02))
+			own(post, dressing)
+	# The front: the wall facing the middle of the level.
+	var to_middle := Vector2(-pos.x, -pos.z)
+	var front := Vector3(signf(to_middle.x), 0, 0) if absf(to_middle.x) > absf(to_middle.y) else Vector3(0, 0, signf(to_middle.y) if to_middle.y != 0.0 else 1.0)
+	var half := size / 2.0
+	var depth := half.x if front.x != 0.0 else half.z
+	var across := Vector3(-front.z, 0, front.x)   # along the front wall
+	var width := size.z if front.x != 0.0 else size.x
+	var door := MeshInstance3D.new()
+	door.name = "Door"
+	var dm := BoxMesh.new()
+	dm.size = Vector3(1.1, 2.0, 0.12)
+	dm.material = mat(timber.darkened(0.3))
+	door.mesh = dm
+	door.position = front * (depth + 0.03) + Vector3(0, 1.0, 0)
+	door.rotation.y = atan2(front.x, front.z)
+	own(door, dressing)
+	var windows := Node3D.new()
+	windows.name = "Windows"
+	windows.set_script(load("res://props/light_stone.gd"))
+	windows.set("day_energy", 0.0)
+	windows.set("night_energy", 1.4)
+	windows.set("surface", Color(0.12, 0.11, 0.1))   # dark glass by day
+	windows.set("glow", Color(1.0, 0.68, 0.35))
+	own(windows, dressing)
+	var panes := []
+	if width > 3.5:
+		panes.append(front * (depth + 0.03) + across * width * 0.3)
+		panes.append(front * (depth + 0.03) - across * width * 0.3)
+	panes.append(-front * (depth + 0.03))   # one at the back
+	for i in panes.size():
+		var w := MeshInstance3D.new()
+		w.name = "Window%d" % i
+		var wm := BoxMesh.new()
+		wm.size = Vector3(0.7, 0.7, 0.08)
+		w.mesh = wm
+		w.position = panes[i] + Vector3(0, minf(1.8, size.y * 0.6), 0)
+		w.rotation.y = atan2(front.x, front.z)
+		own(w, windows)
+	# A chimney near one end.
+	var chimney := MeshInstance3D.new()
+	chimney.name = "Chimney"
+	var cm := BoxMesh.new()
+	cm.size = Vector3(0.6, 1.8, 0.6)
+	cm.material = mat(Color(0.35, 0.33, 0.32), false, "stone")
+	chimney.mesh = cm
+	var along := Vector3(1, 0, 0) if along_x else Vector3(0, 0, 1)
+	chimney.position = along * ((size.x if along_x else size.z) * 0.3) + Vector3(0, ridge_y - 0.1, 0) + (Vector3(0, 0, 0.5) if along_x else Vector3(0.5, 0, 0))
+	own(chimney, dressing)
 
 
-## Someone to talk to; `look` is "race/role" (Figure: "small_folk/merchant").
 func npc(name: String, display: String, dialogue: String, pos: Vector3, color: Color, facing := 0.0, parent: Node = null, look := "human/commoner") -> StaticBody3D:
 	var body := StaticBody3D.new()
 	body.name = name
@@ -251,7 +365,8 @@ func lantern(name: String, pos: Vector3, color := Color(1, 0.75, 0.45)) -> void:
 	own(light)
 
 
-func common(level_name: String, outdoor: bool) -> void:
+## The nodes every level needs. `mood`: an outdoor level's weather (levels/moods/<mood>.tres).
+func common(level_name: String, outdoor: bool, mood := "") -> void:
 	var env := WorldEnvironment.new()
 	env.name = "WorldEnvironment"
 	if outdoor:
@@ -279,6 +394,8 @@ func common(level_name: String, outdoor: bool) -> void:
 		var dn := Node.new()
 		dn.name = "DayNight"
 		dn.set_script(DAY_NIGHT)
+		if mood != "":
+			dn.set("mood", load("res://levels/moods/%s.tres" % mood))
 		own(dn)
 	var nav := NavigationRegion3D.new()
 	nav.name = "NavigationRegion3D"
@@ -315,6 +432,17 @@ func skirt(color: Color) -> void:
 	plane.position.y = -1.2
 	plane.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	own(plane)
+
+
+## Grass, flowers and stones on the bodies in the "ground_cover" group, over `area`
+## (props/ground_cover.gd).
+func ground_cover(style: String, area: Rect2) -> void:
+	var cover := Node3D.new()
+	cover.name = "GroundCover"
+	cover.set_script(load("res://props/ground_cover.gd"))
+	cover.set("style", style)
+	cover.set("area", area)
+	own(cover)
 
 
 # --- trees and enemies -------------------------------------------------------------------

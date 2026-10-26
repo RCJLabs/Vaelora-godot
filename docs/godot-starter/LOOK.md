@@ -120,6 +120,137 @@ Ambient light is now a mix: 55% sky and 45% a fill colour. `DayNight` moves the 
 with the fog light: cool and dim at night, near-neutral by day. Shade used to be
 strongly sky-blue.
 
+## Moods: `levels/level_mood.gd`, `levels/moods/`
+
+Each outdoor region has a mood: its weather and colour, laid over the day/night cycle. The clock
+still runs; the mood only tints it and thickens it. `DayNight` applies it every time it sets the
+hour. To change one, set it as the level's **DayNight > Mood**, or edit the `.tres` in the
+inspector.
+
+| Region | Mood | Look |
+|---|---|---|
+| The Greywater Vale | `vale` | A touch cooler and crisper |
+| Weirholt and the Riverlands | `riverlands` | Damp: green-grey mist, a little cloud |
+| The Grieving Fields | `fields` | Overcast: grey sky, dim sun, soft shadows, washed-out colour, thick fog |
+| Ilunhall | `capital` | Hazy gold: a warm sun and haze, more glow, and more fill light at night from the city |
+
+A mood can set:
+- **Sky:** a tint, and cloud cover (`overcast`, which also dims the sun and softens shadows).
+- **Sun:** a tint and a brightness.
+- **Fog:** a tint, its density, and how much it glows towards the sun.
+- **Grade:** ambient light, saturation, contrast, brightness and glow.
+
+Builders pass a mood to `common()`, as in `common("Ilunhall", true, "capital")`.
+
+**Nights are brighter now.** The shade's fill colour never drops below a moonlit blue
+(`NIGHT_FILL`), and the night's ambient light is 2.2, so you can see the ground on a phone. It's
+still dark. Stealth goes by the clock, not by how bright it looks, so this changes nothing in
+play.
+
+**The light-stone** in Ilunhall's eaves lights the halls around it twice as strongly
+(`light_mult`), so at night the halls glow gold.
+
+## Ground cover: `props/ground_cover.gd`, `props/foliage.gdshader`
+
+Grass tufts, flowers, reeds and stones scattered over a region's grass, so greybox fields aren't
+bare.
+
+| Region | Style | What grows |
+|---|---|---|
+| The Vale | `meadow` | Grass, white, yellow and violet flowers, stones |
+| Weirholt | `riverbank` | Lush grass, reeds, flowers, stones |
+| The Grieving Fields | `ashfield` | Sparse grey grass, more stones |
+| Ilunhall | — | None: it's paved |
+
+**Where it grows:**
+- A `GroundCover` node scatters points over its `area`.
+- Each point is kept only if a ray from above lands first on a body in the `ground_cover` group
+  (the region's grass).
+- So nothing grows on roads, paving, in rivers, under houses, or inside trees.
+- It's the same scatter every time (`scatter_seed`).
+
+**Drawing:**
+- Everything is drawn as MultiMeshes in 20 m chunks. Each chunk is culled on its own and hidden
+  beyond the preset's clutter range.
+- The grass sways in the wind; the shader does it, so there's no CPU cost.
+- Stones cast shadows. Grass doesn't.
+
+**Graphics presets** (new keys `clutter` and `clutter_range`):
+
+| Preset | Amount | Drawn out to |
+|---|---|---|
+| Low | none | — |
+| Medium | half | 40 m |
+| High | as designed | 55 m |
+| Ultra | 1.6× | 85 m |
+
+Changing the preset rebuilds the cover.
+
+**Cost:** the scatter is built when the level loads, in the loading frame, so it isn't a hitch a
+moment into play.
+- Weirholt, the biggest: about 25,000 pieces, 150 ms on a desktop. Expect a few times that on a
+  phone.
+- Medium halves it.
+
+Builders: `ground_cover(style, area)`, plus `.add_to_group("ground_cover", true)` on the grass.
+
+## Trees and houses
+
+**Pines** (`systems/dresser.gd`, autoload `Dresser`):
+- Any MeshInstance3D named `Canopy` or `Crown` whose mesh is a cone is swapped, as it enters the
+  tree, for three stacked, faceted cones.
+- The layers are darker at the bottom, and each tree is a slightly different green, picked from
+  where it stands so it's the same every time.
+- It works on the hand-made Vale and the generated regions alike. Collision is untouched.
+- The Hollow Oak's canopy isn't a cone, so it keeps its own look.
+
+**Houses** (builder `house()`): the block is still the collision. On top of it, each house gets:
+- a gabled roof along its long side, with a ridge beam and wall gables under it;
+- dark corner posts;
+- a door, and two windows, on the wall facing the middle of the level, where the streets are;
+- one window at the back;
+- a stone chimney.
+
+The windows (`props/light_stone.gd`, with new `surface` and `glow` colours) are dark glass by day
+and glow warm at night. Weirholt, Greyfold and Ilunhall's harbour houses were rebuilt with it.
+The Vale's waystation is hand-made and unchanged.
+
+## Water and sky
+
+**Water** (`levels/materials/water.gdshader`, builder `water_mat(flow)`):
+- Two layers of ripples scroll with the flow.
+- It's darker looking straight down, and lighter and glossy at a glance (a cheap fresnel), so it
+  catches the sky.
+- Weirholt's river flows south, Ilunhall's fjord drifts, and the culvert's runoff and the
+  Undercroft's cistern sit still (or nearly).
+
+**Clouds and stars** (`levels/sky_dome.gd`, `levels/sky_dome.gdshader`):
+- They're drawn on a great dome that follows the camera. `DayNight` makes one for each outdoor
+  level, so no scene needs editing.
+- Clouds drift, lit by the sun's colour and dark at night.
+- The stars come out after dusk and twinkle.
+- Cloud cover comes from the mood (`LevelMood.clouds`): Vale 0.4, Riverlands 0.55, Fields 0.85,
+  Ilunhall 0.3.
+- They're not in the sky shader on purpose. A sky shader that animates recomputes the scene's
+  ambient light every frame, which phones can't spare.
+
+**The Vale** now has the ground skirt out to the horizon too, so there's no dark band past its
+edge.
+
+## Effects: `props/fx.gd`
+
+These are CPU particles with a soft round sprite, so they work on every renderer. Counts are small.
+
+| Effect | Where | Notes |
+|---|---|---|
+| Hit burst | Every melee blow that lands (`player_combat.gd`) | Orange sparks off a guard or parry; pale dust off a hit. Cleans itself up |
+| Embers and smoke | Every campfire, including the ones you build | |
+| Chimney smoke | Every builder house's chimney (`systems/dresser.gd`) | A light breeze carries it |
+| Motes in the air | Round the camera, on the sky dome, by the mood's `motes_day` and `motes_night` | Vale and Riverlands: pollen by day, fireflies at night. Grieving Fields: drifting ash. Ilunhall: gold dust |
+
+The ambient effects (chimney smoke and motes) scale with the preset's `clutter`, so there are none
+on Low. Hit bursts and fires always show.
+
 ## Renderers (a caveat)
 
 On Android the game runs on the **Mobile** renderer. The screenshots for this pass were
