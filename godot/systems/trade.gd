@@ -52,6 +52,16 @@ const MERCHANTS := {
 		"flags": {"hunting_bow": "bought_maren_bow", "tome_candlelight": "bought_tome_candlelight",
 				"tome_stoneflesh": "bought_tome_stoneflesh", "tome_healing_ward": "bought_tome_healing_ward"},
 	},
+	"wenna": {   # Weirholt's market square (the Riverlands)
+		"name": "Wenna Pike",
+		"gold": 400,
+		"stock": {"bread": 10, "water_flask": 10, "arrow": 60, "minor_healing_potion": 4, "lockpick": 12,
+				"iron_sword": 2, "hunting_dagger": 2, "iron_axe": 1, "iron_mace": 1, "wooden_shield": 1,
+				"leather_cap": 2, "leather_gloves": 2, "iron_ingot": 12, "leather_strip": 8, "river_reed": 10,
+				"tome_frost_burst": 1, "tome_firebolt": 1},
+		"unique": ["tome_frost_burst", "tome_firebolt"],
+		"discount_flag": "wenna_discount",
+	},
 }
 
 signal changed

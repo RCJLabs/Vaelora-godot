@@ -756,5 +756,172 @@
 				"text": "I took Ilse Marrow's notebook from Inquisitor Hale, the hard way, and gave it to Zora."
 			}
 		]
+	},
+	"down_the_greywater": {
+		"title": "Down the Greywater",
+		"giver": "Jory Vell, barge-hand on Weirholt's docks",
+		"region": "riverlands",
+		"main": true,
+		"description": "The barge Heron and two others sail upriver at the dark of the Wanderer with sealed crates that hum, and the River Compact's factor won't log them.",
+		"started_when": {
+			"requires_flag": "dark_barges_started"
+		},
+		"completed_when": {
+			"requires_flag": "barges_resolved"
+		},
+		"objectives": [
+			{
+				"text": "Ask Factor Tarle at the counting house what the barges carry.",
+				"done_when": {
+					"requires_flag": "asked_tarle_barges"
+				},
+				"marker": "Tarle"
+			},
+			{
+				"text": "Look at the Heron's sealed crates on the docks, after dark, when nobody's about.",
+				"done_when": {
+					"requires_flag": "heron_inspected"
+				},
+				"marker": "HeronCrates"
+			},
+			{
+				"text": "Follow the cargo into the culvert under the docks.",
+				"done_when": {
+					"requires_item": "harvest_ledger"
+				},
+				"marker": "CulvertGrate"
+			},
+			{
+				"text": "Decide who gets the smugglers' ledger: Captain Varga, or Factor Tarle.",
+				"done_when": {
+					"requires_flag": "barges_resolved"
+				},
+				"marker": "Varga"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "ledger_to_varga"
+				},
+				"text": "I gave Captain Varga the smugglers' ledger. Her men took Tarle at the counting house, and the Heron won't sail at the dark this month. The ledger's last entries go upriver, to the circle split by three lines."
+			},
+			{
+				"when": {
+					"requires_flag": "tarle_bribed"
+				},
+				"text": "I sold Factor Tarle his own ledger for two hundred gold, and watched him burn it. The Heron sails at the dark, as always. Whatever it carries, it carries north."
+			},
+			{
+				"when": {
+					"requires_flag": "tarle_fled"
+				},
+				"text": "I showed Factor Tarle his ledger and wouldn't sell it back. He ran downriver on the Heron before morning. The ledger's last entries go upriver, to the circle split by three lines."
+			}
+		]
+	},
+	"toll_of_the_weir": {
+		"title": "The Toll of the Weir",
+		"giver": "Goodwife Ama, at Weirholt's south gate",
+		"region": "riverlands",
+		"description": "Sergeant Dace charges farmers four coppers a cart at the south gate when the Compact's board says two, and keeps the difference.",
+		"started_when": {
+			"requires_flag": "toll_started"
+		},
+		"completed_when": {
+			"requires_flag": "ama_thanked"
+		},
+		"objectives": [
+			{
+				"text": "Talk to Sergeant Dace at the south gate.",
+				"done_when": {
+					"requires_flag": "toll_confronted"
+				},
+				"marker": "Dace"
+			},
+			{
+				"text": "Stop the double toll: lean on Dace, pay him off, or take the toll ledger from the toll-fort strongbox to Captain Varga.",
+				"done_when": {
+					"requires_flag": "toll_settled"
+				},
+				"marker": "TollStrongbox"
+			},
+			{
+				"text": "Tell Goodwife Ama.",
+				"done_when": {
+					"requires_flag": "ama_thanked"
+				},
+				"marker": "Ama"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "dace_reported"
+				},
+				"text": "I took Dace's toll ledger to Captain Varga. He's counting latrine buckets now, and Ama's coppers came back to her."
+			},
+			{
+				"when": {
+					"requires_flag": "dace_folded"
+				},
+				"text": "I leaned on Sergeant Dace until he charged the farmers two coppers again. He'd like a word with me after dark."
+			},
+			{
+				"when": {
+					"requires_flag": "dace_bribed"
+				},
+				"text": "I paid Sergeant Dace sixty gold to charge the farmers two coppers. For a while."
+			}
+		]
+	},
+	"lanes_fever": {
+		"title": "Fever in the Lanes",
+		"giver": "Teodor, an elder of Weirholt's Passengers",
+		"region": "riverlands",
+		"description": "A fever in the Lanes, the Passengers' quarter. Physician Fenn blames the Passengers themselves. Teodor thinks it's the water.",
+		"started_when": {
+			"requires_flag": "lanes_started"
+		},
+		"completed_when": {
+			"requires_flag": "lanes_resolved"
+		},
+		"objectives": [
+			{
+				"text": "Look into the Lanes' well.",
+				"done_when": {
+					"requires_flag": "well_examined"
+				},
+				"marker": "LanesWell"
+			},
+			{
+				"text": "Follow the new pipe to the mill.",
+				"done_when": {
+					"requires_flag": "millstone_found"
+				},
+				"marker": "Millstone"
+			},
+			{
+				"text": "Convince Physician Fenn it isn't the Passengers, or shut the pipe yourself.",
+				"done_when": {
+					"requires_flag": "lanes_resolved"
+				},
+				"marker": "Fenn"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "lanes_cleared"
+				},
+				"text": "The fever came from the Compact's new seam-stone millstone, its dust in the Lanes' water. Physician Fenn said so in the square. Some people even listened."
+			},
+			{
+				"when": {
+					"requires_flag": "pipe_closed"
+				},
+				"text": "I wedged the Lanes' pipe shut, and the fever eased. Physician Fenn still blames the Passengers, but fewer children are sick."
+			}
+		]
 	}
 }

@@ -18,6 +18,12 @@
 			"name": "The Thornwood Free",
 			"description": "The outlaws of the Thornwood: debtors, deserters, unlicensed mages and people the garrison forgot. They say the law is the real problem. Some of them have a point; some of them are just thieves.",
 			"known_when": { "requires_flag": "met_mirela" }
+		},
+		"river_compact": {
+			"name": "The River Compact",
+			"description": "The merchant league that runs the roads and rivers: tolls, barges, caravans, and the Riverlands' real government. Polite, patient, and owed money by everyone.",
+			"known_when": { "requires_flag": "met_tarle" },
+			"also_known_when": { "requires_flag": "met_jory_weirholt" }
 		}
 	}
 }

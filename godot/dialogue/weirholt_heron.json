@@ -1,0 +1,30 @@
+{
+	"start": [
+		{
+			"node": "done",
+			"requires_flag": "heron_inspected"
+		},
+		{
+			"node": "night",
+			"requires_night": true
+		},
+		{
+			"node": "day"
+		}
+	],
+	"nodes": {
+		"day": {
+			"text": "Dockhands everywhere, and a Compact clerk counting crates with a slate. Not now. Come back after dark, when the docks are empty.",
+			"choices": []
+		},
+		"night": {
+			"text": "The dock's empty. The crates are sealed with wax and stamped with the Compact's anchor. Under it, scratched small: a circle split by three lines. Through a knot-hole, a cage of light no bigger than a lantern, and stoppered jars, humming. A chalk tag on the lid: \"Culvert. Night of the dark.\" Someone moves this cargo through the culvert under the docks.",
+			"set_flag": "heron_inspected",
+			"choices": []
+		},
+		"done": {
+			"text": "The crates, sealed and humming. The culvert grate is at the land end of the docks.",
+			"choices": []
+		}
+	}
+}

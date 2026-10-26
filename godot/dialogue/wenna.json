@@ -1,0 +1,58 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Wenna Pike: broker, small folk, and no, I don't do spells. I'll sell you the books, though.",
+			"choices": [
+				{
+					"text": "Let's trade.",
+					"next": "end",
+					"open_trade": "wenna"
+				},
+				{
+					"text": "A friend's price, for a friend?",
+					"next": "discount",
+					"fail_next": "no_discount",
+					"check": {
+						"id": "wenna_discount",
+						"kind": "persuade",
+						"difficulty": 35
+					},
+					"set_flag": "wenna_discount"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"discount": {
+			"text": "\"Friends get a tenth off. Don't tell the Compact.\"",
+			"choices": [
+				{
+					"text": "Let's trade.",
+					"next": "end",
+					"open_trade": "wenna"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"no_discount": {
+			"text": "\"Friends pay full price. Enemies pay double.\"",
+			"choices": [
+				{
+					"text": "Let's trade.",
+					"next": "end",
+					"open_trade": "wenna"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

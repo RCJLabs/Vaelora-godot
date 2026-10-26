@@ -19,6 +19,7 @@ const TRAINERS := {
 	"ostap": {"name": "Ostap", "skill": "archery", "max": 40},
 	"zora": {"name": "Zora", "skill": "glamour", "max": 50},
 	"aurel": {"name": "Magister Aurel", "skill": "tidecraft", "max": 50},
+	"varga": {"name": "Captain Varga", "skill": "block", "max": 50},   # Weirholt
 }
 
 

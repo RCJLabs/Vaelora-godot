@@ -1,0 +1,48 @@
+{
+	"start": [
+		{
+			"node": "closed",
+			"requires_flag": "pipe_closed"
+		},
+		{
+			"node": "known",
+			"requires_flag": "well_examined"
+		},
+		{
+			"node": "look"
+		}
+	],
+	"nodes": {
+		"look": {
+			"text": "A new millstone, pale and veined, much finer than the old one leaning by the wall.",
+			"choices": []
+		},
+		"known": {
+			"text": "The new millstone is pale and veined with something that glints even in shade. Its dust washes into the wheel-race, and the Lanes' new pipe draws from right there. Stamped on its side: \"Seam-stone, Karrowdeep. Licensed by the River Compact.\"",
+			"set_flag": "millstone_found",
+			"choices": [
+				{
+					"text": "Wedge the Lanes' pipe shut.",
+					"next": "wedged",
+					"set_flag": [
+						"pipe_closed",
+						"lanes_resolved"
+					],
+					"requires_not_flag": "lanes_resolved"
+				},
+				{
+					"text": "(Leave it)",
+					"next": "end"
+				}
+			]
+		},
+		"wedged": {
+			"text": "You hammer a wooden wedge into the pipe's mouth. The Lanes will have to draw from the river for a while, but the river tastes of the river.",
+			"choices": []
+		},
+		"closed": {
+			"text": "The pipe's wedged shut. The millstone keeps turning.",
+			"choices": []
+		}
+	}
+}

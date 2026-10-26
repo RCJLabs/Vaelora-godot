@@ -293,12 +293,12 @@ func _plan() -> void:
 		ok(autoload("Openings").card_visible(), "the closing card"))
 	# --- everything, and it all survives one last load ---------------------------
 	step(1, func():
-		for id in Q.quests:
+		for id in Q.quests.keys().filter(func(q): return Q.quests[q].get("region", "") == ""):   # the Vale's (other regions have their own tests)
 			ok(state(id) == "completed", "all quests: %s completed" % id)
 		notices = []
 		save_and_load("the end"))
 	step(15, func():
-		for id in Q.quests:
+		for id in Q.quests.keys().filter(func(q): return Q.quests[q].get("region", "") == ""):   # the Vale's (other regions have their own tests)
 			ok(state(id) == "completed", "after loading: %s completed" % id)
 		ok(notices.is_empty(), "no quest notices from loading", notices)
 		ok(n("TheFirst") == null and n("FirstStream").visible, "the oak, as you left it"))

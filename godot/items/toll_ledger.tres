@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "toll_ledger"
+display_name = "Toll Ledger"
+description = "Two columns for every cart through the south gate: what the Compact's tariff says, and what was taken. The second column is always double. The difference is initialled D."
+value = 0
+weight = 0.3
+quest_item = true

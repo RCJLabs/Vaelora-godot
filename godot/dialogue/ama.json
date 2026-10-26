@@ -1,0 +1,68 @@
+{
+	"start": [
+		{
+			"node": "after",
+			"requires_flag": "toll_settled",
+			"requires_not_flag": "ama_thanked"
+		},
+		{
+			"node": "thanked",
+			"requires_flag": "ama_thanked"
+		},
+		{
+			"node": "waiting",
+			"requires_flag": "toll_started"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Four coppers a cart at the south gate, every market day, and the board in the square says two. Sergeant Dace pockets the rest, and who listens to a farmer?",
+			"set_flag": "toll_started",
+			"choices": [
+				{
+					"text": "I'll have a word with him.",
+					"next": "end"
+				},
+				{
+					"text": "That's how tolls go.",
+					"next": "end"
+				}
+			]
+		},
+		"waiting": {
+			"text": "Still four coppers. Still Dace.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"after": {
+			"text": "Two coppers at the gate this morning! Here, eggs, well, apples. Don't argue with me.",
+			"give_item": {
+				"id": "apple",
+				"count": 3
+			},
+			"set_flag": "ama_thanked",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"thanked": {
+			"text": "Two coppers. Lovely word, two.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

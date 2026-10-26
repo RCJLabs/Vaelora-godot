@@ -1,0 +1,143 @@
+{
+	"start": [
+		{
+			"node": "again",
+			"requires_flag": "met_tarle"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Oswin Tarle, factor for the River Compact in Weirholt. If it floats, it pays, and if it pays, I log it.",
+			"set_flag": "met_tarle",
+			"choices": [
+				{
+					"text": "What do the barges carry at the dark of the Wanderer?",
+					"next": "barges_lie",
+					"requires_flag": "dark_barges_started",
+					"requires_not_flag": "asked_tarle_barges"
+				},
+				{
+					"text": "I found your ledger in the culvert.",
+					"next": "ledger",
+					"requires_item": "harvest_ledger",
+					"requires_not_flag": "barges_resolved"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "Back again? The Compact's hours are posted.",
+			"choices": [
+				{
+					"text": "What do the barges carry at the dark of the Wanderer?",
+					"next": "barges_lie",
+					"requires_flag": "dark_barges_started",
+					"requires_not_flag": "asked_tarle_barges"
+				},
+				{
+					"text": "I found your ledger in the culvert.",
+					"next": "ledger",
+					"requires_item": "harvest_ledger",
+					"requires_not_flag": "barges_resolved"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"barges_lie": {
+			"text": "At the dark of the Wanderer? Grain, wool, the usual. Dark water is cheap water, that's all. Fewer tolls, fewer questions.",
+			"set_flag": "asked_tarle_barges",
+			"choices": [
+				{
+					"text": "Grain doesn't hum, Factor.",
+					"next": "barges_slip",
+					"fail_next": "barges_stonewall",
+					"check": {
+						"id": "tarle_barges",
+						"kind": "persuade",
+						"difficulty": 40
+					}
+				},
+				{
+					"text": "I see.",
+					"next": "end"
+				}
+			]
+		},
+		"barges_slip": {
+			"text": "He looks at the door, then at you. \"Some clients pay for discretion. Very well. They pay a great deal of it. That's all you'll get, and more than you should have.\"",
+			"set_flag": "tarle_slipped",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"barges_stonewall": {
+			"text": "\"Then it hums. Grain settling. Good day.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"ledger": {
+			"text": "He reads the first page and goes very still. \"Two hundred gold, and you never saw it. The Compact remembers its friends. It remembers the other sort too.\"",
+			"choices": [
+				{
+					"text": "Deal.",
+					"next": "bribed",
+					"give_gold": 200,
+					"take_item": "harvest_ledger",
+					"set_flag": [
+						"tarle_bribed",
+						"barges_resolved"
+					],
+					"add_reputation": {
+						"river_compact": 15
+					}
+				},
+				{
+					"text": "No. Captain Varga gets this.",
+					"next": "refused",
+					"set_flag": [
+						"tarle_fled",
+						"barges_resolved"
+					],
+					"add_reputation": {
+						"river_compact": -10
+					}
+				}
+			]
+		},
+		"bribed": {
+			"text": "He counts the coins out himself and drops the ledger in the stove. \"A pleasure. The Heron sails at the dark, as always.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"refused": {
+			"text": "\"Then I have a barge to catch.\" He's out of the back door before you can stop him. By morning the counting house is shut, and the Heron is gone downriver.",
+			"set_flag": "tarle_gone",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

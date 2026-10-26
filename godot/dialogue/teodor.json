@@ -1,0 +1,73 @@
+{
+	"start": [
+		{
+			"node": "after",
+			"requires_flag": "lanes_resolved"
+		},
+		{
+			"node": "again",
+			"requires_flag": "lanes_started"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Teodor, of the Lanes. You'll have heard the physician: the fever is ours, so the fault is ours. Passengers bring sickness. Everyone knows it, the way everyone knows the rain is wet.",
+			"set_flag": "met_teodor",
+			"choices": [
+				{
+					"text": "They blame us in every town.",
+					"next": "passenger",
+					"requires_race": "Passenger"
+				},
+				{
+					"text": "What do you think it is?",
+					"next": "ask"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"passenger": {
+			"text": "\"Then you know the song.\" He almost smiles. \"Help us change a verse.\"",
+			"choices": [
+				{
+					"text": "What do you think it is?",
+					"next": "ask"
+				}
+			]
+		},
+		"ask": {
+			"text": "I think it's the water. It used to taste of the river. Now it tastes of nothing, and the children who drink most are the sickest. Look at our well, if you would. And then, if you can bear him, talk to Fenn.",
+			"set_flag": "lanes_started",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "The well is by the corner, where the lane bends.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"after": {
+			"text": "Things are a little better in the Lanes. Thank you for that. We'll put you in a song. A short one, but a good one.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}
