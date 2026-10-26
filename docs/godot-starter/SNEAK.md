@@ -99,6 +99,14 @@ The perk modifiers (see CHARACTER.md, "Modifiers") are `detection`, `detection_s
 Light Foot, Shadow Step, Poised Strike, Thrill of the Hunt, Quiet Kill and Master of
 Shadows are checked by id (`Stealth.has_perk`).
 
+## Pickpocketing
+
+Crouched, E at a person picks their pocket instead of talking. The prompt shows the
+chance: "Pickpocket Hedda Marrow (55%)". It's 30% at Sneak 15, +0.6% per level, +25% from
+behind, less on wary people (officials, merchants, scholars), capped at 90%. Success gives
+their coin (and sometimes what they carry, by role) and 8 Sneak XP. Failure is a 25 gold
+bounty. One try per person per day either way. Guards can't be picked. See CRIME.md.
+
 ## Adding it to a new enemy
 
 In its "unaware" state, replace the range check with:
@@ -117,7 +125,6 @@ Shadows works on it.
 - No vision cone: an enemy facing away notices you as fast as one facing you.
 - Armour doesn't make you louder yet. Heavy Armour (phase 2) is the natural place for it.
 - Lights (a lantern, a spell in your hand) don't give you away.
-- No pickpocketing.
 - In third-person view the body doesn't crouch (only the first-person camera drops).
 - Light Foot has no automated test (the pressure plate needs its scene); it's two lines in
   `props/traps/pressure_plate.gd`.

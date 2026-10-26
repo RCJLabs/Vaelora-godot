@@ -2,6 +2,7 @@ extends StaticBody3D
 
 # A chest, barrel or sack: E takes everything inside. Remembers being emptied
 # (WorldState), so it stays empty after saving and coming back.
+# Owned (belongs_to): emptying it is theft (systems/crime.gd).
 # Locked (lock_level 0-4, Novice to Master): E picks the lock (ui/lockpick_screen.gd)
 # or opens it with its key. Once open it stays open.
 
@@ -13,6 +14,8 @@ extends StaticBody3D
 @export_range(-1, 4) var lock_level: int = -1
 ## An item that opens it without picking. Optional.
 @export var key_id: String = ""
+## Whose it is (a name, e.g. "Factor Tarle"). Taking from it is theft: systems/crime.gd.
+@export var belongs_to: String = ""
 
 var prompt: String:
 	get:
@@ -20,7 +23,11 @@ var prompt: String:
 			if key_id != "" and Inventory.count(key_id) > 0:
 				return "Unlock %s" % container_name
 			return "Pick the lock (%s)" % Lockpicking.LEVEL_NAMES[lock_level]
-		return ("Search %s" % container_name) if not _is_empty() else ("%s (empty)" % container_name.capitalize())
+		if _is_empty():
+			return "%s (empty)" % container_name.capitalize()
+		if belongs_to != "":
+			return "Steal from %s%s" % [container_name, Crime.watched_tag()]
+		return "Search %s" % container_name
 
 
 func _ready() -> void:
@@ -46,6 +53,8 @@ func interact(player: Node) -> void:
 		Inventory.add(id, int(contents[id]))
 	if gold > 0:
 		Inventory.add_gold(gold)
+	if belongs_to != "":
+		Crime.theft(contents, gold, belongs_to)
 	contents = {}
 	gold = 0
 

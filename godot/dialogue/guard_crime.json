@@ -1,0 +1,34 @@
+{
+	"start": "stop",
+	"nodes": {
+		"stop": {
+			"text": "Stop there. You've {bounty} gold on your head in {region}. Pay it, and hand over what you took, or you're coming with me.",
+			"on_leave": {"crime": "resist"},
+			"choices": [
+				{"text": "I'll pay. ({bounty} gold)", "requires_bounty_affordable": true, "crime": "pay", "next": "paid"},
+				{"text": "There's been a mistake. I've never seen that purse in my life.", "requires_bounty_below": 100,
+					"check": {"id": "guard_talk_down", "kind": "persuade", "difficulty": 45}, "next": "talked", "fail_next": "not_buying"},
+				{"text": "I'll come quietly.", "crime": "jail", "next": "end"},
+				{"text": "(Run for it.)", "crime": "resist", "next": "end"}
+			]
+		},
+		"not_buying": {
+			"text": "Save it. I've heard that one from better liars. Pay, or the cells.",
+			"on_leave": {"crime": "resist"},
+			"choices": [
+				{"text": "Fine. I'll pay. ({bounty} gold)", "requires_bounty_affordable": true, "crime": "pay", "next": "paid"},
+				{"text": "I'll come quietly.", "crime": "jail", "next": "end"},
+				{"text": "(Run for it.)", "crime": "resist", "next": "end"}
+			]
+		},
+		"talked": {
+			"text": "...Fine. Maybe I've got the wrong face. Keep your nose clean.",
+			"crime": "pardon",
+			"choices": [{"text": "Always do.", "next": "end"}]
+		},
+		"paid": {
+			"text": "That settles it. Don't let me catch you at it again.",
+			"choices": [{"text": "(Leave.)", "next": "end"}]
+		}
+	}
+}

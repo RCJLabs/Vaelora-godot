@@ -11,6 +11,7 @@ var SIGN
 var EXAMINE
 var LOCATION_DOOR
 var LOOT
+var PICKUP
 var BED
 var MARKER
 var LEVEL_MAP
@@ -47,6 +48,7 @@ func _process(_delta: float) -> bool:
 	EXAMINE = load("res://interactables/examine.gd")
 	LOCATION_DOOR = load("res://interactables/location_door.gd")
 	LOOT = load("res://interactables/loot_container.gd")
+	PICKUP = load("res://interactables/pickup.gd")
 	BED = load("res://interactables/bed.gd")
 	MARKER = load("res://props/map_marker.gd")
 	LEVEL_MAP = load("res://levels/level_map.gd")
@@ -292,6 +294,30 @@ func routines(names: Array) -> void:
 		var person := scene.find_child(who, true, false)
 		if person:
 			person.set("routine", true)
+
+
+## Something on a stall, a counter or a table that belongs to `who` (a display
+## name): taking it is stealing (systems/crime.gd). `item` "" with `gold` is a purse.
+func goods(name: String, item: String, count: int, pos: Vector3, who: String, gold := 0, label := "") -> StaticBody3D:
+	var b := box(name, Vector3(0.35, 0.2, 0.3), pos, Color(0.55, 0.45, 0.3) if item != "" else Color(0.45, 0.32, 0.15), "", null, PICKUP)
+	b.collision_layer = 8   # "loot": the interact ray finds it, you walk through it
+	b.set("item_id", item)
+	b.set("item_count", count)
+	b.set("gold", gold)
+	b.set("label", label)
+	b.set("belongs_to", who)
+	return b
+
+
+## A chest or crate of someone's: emptying it is stealing.
+func stores(name: String, what: String, contents: Dictionary, gold: int, pos: Vector3, who: String, lock := -1) -> StaticBody3D:
+	var b := box(name, Vector3(0.9, 0.7, 0.7), pos, Color(0.36, 0.25, 0.14), "surface_wood", null, LOOT)
+	b.set("container_name", what)
+	b.set("contents", contents)
+	b.set("gold", gold)
+	b.set("lock_level", lock)
+	b.set("belongs_to", who)
+	return b
 
 
 func npc(name: String, display: String, dialogue: String, pos: Vector3, color: Color, facing := 0.0, parent: Node = null, look := "human/commoner") -> StaticBody3D:

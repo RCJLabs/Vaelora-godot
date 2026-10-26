@@ -4,6 +4,8 @@ extends StaticBody3D
 # Set Race and Role and the game swaps the plain capsule for a greybox person
 # (systems/figure.gd) in the capsule's colour, or Cloth's if you set one.
 # Tick Routine and they keep a day by the clock (see "Routine" below).
+# Crouched, E picks their pocket instead of talking; guards stop you while you
+# have a bounty here (systems/crime.gd, docs/godot-starter/CRIME.md).
 
 @export var display_name: String = "Stranger"
 @export_file("*.json") var dialogue_file: String
@@ -36,6 +38,7 @@ const HOME_RANGE := 60.0   # the furthest a door can be and still be theirs
 var phase := -1
 var inside := false        # gone in for the night: hidden, no collision
 var _spot := Vector3.ZERO  # where they stand by day
+var _facing := 0.0         # and which way they face there (back to it when they stop)
 var _home: Node3D          # their door
 var _gather: Node3D
 var _path := PackedVector3Array()
@@ -45,20 +48,29 @@ var _layer := 1
 var _rng := RandomNumberGenerator.new()
 var _walked := 0.0
 var _set_up := false
+var _watch := 0.0          # guards: seconds to the next look for wanted people
 
 var prompt: String:
-	get: return "Talk to %s" % display_name
+	get:
+		if _picking():
+			var why := Crime.why_not_pick(self)
+			if why != "":
+				return why
+			return "Pickpocket %s (%d%%)%s" % [display_name, roundi(Crime.pick_chance(self) * 100.0), Crime.watched_tag(self)]
+		return "Talk to %s" % display_name
 
 
 func _ready() -> void:
+	add_to_group("people")   # witnesses (systems/crime.gd)
 	if race != "":
 		_dress()
 	if routine:
 		_spot = global_position
+		_facing = rotation.y
 		_layer = collision_layer
 		_rng.seed = hash(name)
 		_setup_routine.call_deferred()
-	else:
+	elif role != "guard":
 		set_physics_process(false)
 
 
@@ -89,6 +101,8 @@ func phase_for(hour: float) -> Phase:
 
 
 func _physics_process(delta: float) -> void:
+	if role == "guard":
+		_watch_for_wanted(delta)
 	if not _set_up:
 		return
 	var hour := WorldClock.hour
@@ -102,6 +116,12 @@ func _physics_process(delta: float) -> void:
 	if DialogueManager.is_active:
 		return   # nobody walks off mid-sentence
 	if _path.is_empty():
+		if not inside:   # stood still: face the stall again, or the others at the gathering
+			var face := _facing
+			if phase == Phase.GATHER:
+				var to_middle := _gather.global_position - global_position
+				face = atan2(-to_middle.x, -to_middle.z)
+			rotation.y = lerp_angle(rotation.y, face, minf(4.0 * delta, 1.0))
 		if phase == Phase.DAY and wander > 0.0 and not inside:
 			_idle -= delta
 			if _idle <= 0.0:
@@ -179,7 +199,32 @@ func _come_out() -> void:
 
 
 func interact(_player: Node) -> void:
+	if _picking():
+		Crime.pickpocket(self)
+		return
+	if role == "guard" and Crime.bounty_here() > 0:
+		DialogueManager.start(Crime.GUARD_DIALOGUE, display_name)
+		return
 	DialogueManager.start(dialogue_file, display_name)
+
+
+## Crouched at someone with pockets worth picking (guards have none).
+func _picking() -> bool:
+	return Stealth.is_sneaking() and Crime.why_not_pick(self) != "no"
+
+
+## A guard who sees you while you have a bounty here stops you (twice a second).
+func _watch_for_wanted(delta: float) -> void:
+	_watch -= delta
+	if _watch > 0.0:
+		return
+	_watch = 0.5
+	if Crime.bounty_here() <= 0 or not Crime.guards_may_stop() or DialogueManager.is_active or get_tree().paused:
+		return
+	var player := Crime.player()
+	if player == null or player.get("is_dead") == true or not Crime.sees(self, Crime.GUARD_RANGE):
+		return
+	DialogueManager.start(Crime.GUARD_DIALOGUE, display_name)
 
 
 func _dress() -> void:

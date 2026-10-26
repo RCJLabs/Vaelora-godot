@@ -1,0 +1,16 @@
+{
+	"start": "hello",
+	"nodes": {
+		"hello": {
+			"text": "Move along. The Quay's quiet and I mean to keep it that way.",
+			"choices": [
+				{"text": "What do you keep it quiet from?", "next": "what"},
+				{"text": "(Leave.)", "next": "end"}
+			]
+		},
+		"what": {
+			"text": "Cutpurses. Drunks off the boats. Whoever's lifting rune-goods off Bruna's stall after dark. Mind your hands near the stalls, and we'll get on.",
+			"choices": [{"text": "I'll mind them.", "next": "end"}]
+		}
+	}
+}

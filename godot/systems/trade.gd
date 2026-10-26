@@ -15,7 +15,8 @@ extends Node
 # Each merchant has a purse: they can't buy more than they have, and it fills
 # back up, with their stock, every RESTOCK_DAYS days. Things marked unique (the
 # bow on Maren's wall, the tomes) don't come back once sold. Quest items and
-# worthless things can't be sold.
+# worthless things can't be sold, and nor can goods stolen in the merchant's own
+# region (systems/crime.gd): sell them somewhere else.
 
 const RESTOCK_DAYS := 3
 const BUY_BASE := 1.25
@@ -32,6 +33,7 @@ const DISCOUNT := 0.9       # a merchant's discount_flag
 const MERCHANTS := {
 	"maren": {
 		"name": "Maren",
+		"region": "vale",
 		"gold": 250,
 		"stock": {"bread": 8, "water_flask": 8, "arrow": 40, "minor_healing_potion": 2,
 				"hunting_bow": 1, "tome_candlelight": 1, "tome_stoneflesh": 1, "tome_healing_ward": 1,
@@ -54,6 +56,7 @@ const MERCHANTS := {
 	},
 	"wenna": {   # Weirholt's market square (the Riverlands)
 		"name": "Wenna Pike",
+		"region": "riverlands",
 		"gold": 400,
 		"stock": {"bread": 10, "water_flask": 10, "arrow": 60, "minor_healing_potion": 4, "lockpick": 12,
 				"iron_sword": 2, "hunting_dagger": 2, "iron_axe": 1, "iron_mace": 1, "wooden_shield": 1,
@@ -64,6 +67,7 @@ const MERCHANTS := {
 	},
 	"marta": {   # a Hearthlands peddler's wagon in the Grieving Fields
 		"name": "Marta Coil",
+		"region": "fields",
 		"gold": 300,
 		"stock": {"bread": 12, "water_flask": 12, "apple": 10, "minor_healing_potion": 5, "lockpick": 15,
 				"arrow": 40, "leather_cap": 1, "leather_gloves": 1, "leather_boots": 1, "firewood": 8,
@@ -72,6 +76,7 @@ const MERCHANTS := {
 	},
 	"bruna": {   # rune-goods on Ilunhall's quay
 		"name": "Bruna Deepseal",
+		"region": "capital",
 		"gold": 600,
 		"stock": {"lockpick": 20, "minor_healing_potion": 6, "potion_restore_magicka_1": 4, "potion_restore_health_1": 4,
 				"steel_ingot": 10, "iron_helmet": 1, "iron_cuirass": 1, "steel_greatsword": 1,
@@ -163,6 +168,8 @@ func why_not_sell(merchant: String, id: String) -> String:
 		return "You don't have it."
 	if item.quest_item:
 		return "You'd better keep that."
+	if Inventory.count(id) <= Crime.stolen_count(id, MERCHANTS[merchant].get("region", "")):
+		return "%s knows that was stolen round here." % MERCHANTS[merchant]["name"]
 	if sell_price(id) <= 0:
 		return "%s won't give you anything for it." % MERCHANTS[merchant]["name"]
 	if gold(merchant) < sell_price(id):

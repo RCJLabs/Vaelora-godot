@@ -260,6 +260,13 @@ func _build_city() -> Node3D:
 	# A day by the clock for the quay and the scaffold (the rest keep their posts).
 	gathering(Vector3(-36, 8, -50))   # outside the Long Table
 	routines(["Bruna", "Karra"])
+	# The law: two wardens (guards, systems/crime.gd), one watching the quay stalls.
+	npc("QuayWarden", "Warden of the Quay", "res://dialogue/warden.json", Vector3(-6, 0, 22), Color(0.3, 0.32, 0.4), PI / 2.0, null, "human/guard")
+	npc("BridgeWarden", "Bridge Warden", "res://dialogue/warden.json", Vector3(42, 8, -47), Color(0.3, 0.32, 0.4), PI, null, "orc/guard")
+	marker("JailRelease", Vector3(-6, 0, 25), 0.0)
+	goods("BrunaIngots", "steel_ingot", 2, Vector3(-21.2, 1.2, 17), "Bruna Deepseal")
+	goods("BrunaTonic", "potion_restore_magicka_1", 1, Vector3(-18.8, 1.2, 17), "Bruna Deepseal")
+	stores("OdoCask", "Odo's strongbox", {"bread": 2}, 35, Vector3(-30, 8.35, -66), "Hallmaster Odo", 1)
 
 	# The road back west to the Grieving Fields.
 	door("ImperialRoad", "res://levels/grieving_fields.tscn", "FromIlunhall", "the Grieving Fields", "Take the Imperial Road to",

@@ -36,6 +36,8 @@ pauses while it's open.
   are one of a kind: once bought, gone.
 - **Can't sell:** quest items (**Quest Item** ticked in the item: the rune-glass, letters and
   notes, the Riverwatch Roll, wisp essences...) show "keep"; worthless things show "worthless".
+- **Stolen goods** (CRIME.md): a merchant won't buy what was stolen in their own region
+  (each merchant has a `region` in `systems/trade.gd`). Sell it in another region.
 - Her **pelt deal** ("I have a wolf pelt to sell", full value) and Aurel's Tidecraft lessons
   stay in dialogue.
 - **Adding a merchant:** an entry in `MERCHANTS` in `systems/trade.gd` (name, gold, stock,
