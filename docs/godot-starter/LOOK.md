@@ -150,6 +150,50 @@ play.
 **The light-stone** in Ilunhall's eaves lights the halls around it twice as strongly
 (`light_mult`), so at night the halls glow gold.
 
+## Ground cover: `props/ground_cover.gd`, `props/foliage.gdshader`
+
+Grass tufts, flowers, reeds and stones scattered over a region's grass, so greybox fields aren't
+bare.
+
+| Region | Style | What grows |
+|---|---|---|
+| The Vale | `meadow` | Grass, white, yellow and violet flowers, stones |
+| Weirholt | `riverbank` | Lush grass, reeds, flowers, stones |
+| The Grieving Fields | `ashfield` | Sparse grey grass, more stones |
+| Ilunhall | — | None: it's paved |
+
+**Where it grows:**
+- A `GroundCover` node scatters points over its `area`.
+- Each point is kept only if a ray from above lands first on a body in the `ground_cover` group
+  (the region's grass).
+- So nothing grows on roads, paving, in rivers, under houses, or inside trees.
+- It's the same scatter every time (`scatter_seed`).
+
+**Drawing:**
+- Everything is drawn as MultiMeshes in 20 m chunks. Each chunk is culled on its own and hidden
+  beyond the preset's clutter range.
+- The grass sways in the wind; the shader does it, so there's no CPU cost.
+- Stones cast shadows. Grass doesn't.
+
+**Graphics presets** (new keys `clutter` and `clutter_range`):
+
+| Preset | Amount | Drawn out to |
+|---|---|---|
+| Low | none | — |
+| Medium | half | 40 m |
+| High | as designed | 55 m |
+| Ultra | 1.6× | 85 m |
+
+Changing the preset rebuilds the cover.
+
+**Cost:** the scatter is built when the level loads, in the loading frame, so it isn't a hitch a
+moment into play.
+- Weirholt, the biggest: about 25,000 pieces, 150 ms on a desktop. Expect a few times that on a
+  phone.
+- Medium halves it.
+
+Builders: `ground_cover(style, area)`, plus `.add_to_group("ground_cover", true)` on the grass.
+
 ## Renderers (a caveat)
 
 On Android the game runs on the **Mobile** renderer. The screenshots for this pass were

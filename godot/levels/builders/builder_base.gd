@@ -320,6 +320,17 @@ func skirt(color: Color) -> void:
 	own(plane)
 
 
+## Grass, flowers and stones on the bodies in the "ground_cover" group, over `area`
+## (props/ground_cover.gd).
+func ground_cover(style: String, area: Rect2) -> void:
+	var cover := Node3D.new()
+	cover.name = "GroundCover"
+	cover.set_script(load("res://props/ground_cover.gd"))
+	cover.set("style", style)
+	cover.set("area", area)
+	own(cover)
+
+
 # --- trees and enemies -------------------------------------------------------------------
 
 const TRUNK := Color(0.3, 0.2, 0.12)

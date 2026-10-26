@@ -1,4 +1,4 @@
-[gd_scene load_steps=447 format=3]
+[gd_scene load_steps=448 format=3]
 
 [ext_resource type="Environment" path="res://levels/atmosphere.tres" id="1_lpqts"]
 [ext_resource type="Script" path="res://levels/day_night.gd" id="2_45hi4"]
@@ -26,6 +26,7 @@
 [ext_resource type="Script" path="res://props/map_marker.gd" id="24_ukb1l"]
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="25_ktkys"]
 [ext_resource type="Resource" path="res://levels/moods/riverlands.tres" id="mood_riverlands"]
+[ext_resource type="Script" path="res://props/ground_cover.gd" id="ground_cover"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_p1hbv"]
 geometry_parsed_geometry_type = 1
@@ -2145,7 +2146,7 @@ indoor_sound = "ambience_cellar"
 volume_db = -12.0
 fade_time = 3.0
 
-[node name="GroundWest" type="StaticBody3D" parent="."]
+[node name="GroundWest" type="StaticBody3D" parent="." groups=["ground_cover"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39, -0.5, 0)
 
 [node name="Mesh" type="MeshInstance3D" parent="GroundWest"]
@@ -2154,7 +2155,7 @@ mesh = SubResource("BoxMesh_sr7pl")
 [node name="Shape" type="CollisionShape3D" parent="GroundWest"]
 shape = SubResource("BoxShape3D_6ysj5")
 
-[node name="GroundEast" type="StaticBody3D" parent="."]
+[node name="GroundEast" type="StaticBody3D" parent="." groups=["ground_cover"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67, -0.5, 0)
 
 [node name="Mesh" type="MeshInstance3D" parent="GroundEast"]
@@ -2162,6 +2163,12 @@ mesh = SubResource("BoxMesh_i4ll1")
 
 [node name="Shape" type="CollisionShape3D" parent="GroundEast"]
 shape = SubResource("BoxShape3D_2qoff")
+
+
+[node name="GroundCover" type="Node3D" parent="."]
+script = ExtResource("ground_cover")
+style = "riverbank"
+area = Rect2(-100, -100, 200, 200)
 
 [node name="GroundSkirt" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2, 0)

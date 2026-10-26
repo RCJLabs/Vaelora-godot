@@ -31,8 +31,9 @@ func _build_town() -> Node3D:
 	common("Weirholt", true, "riverlands")
 
 	# Ground on both banks of the Greywater, the river between (x 22..34, flowing south).
-	box("GroundWest", Vector3(122, 1, 200), Vector3(-39, -0.5, 0), GRASS)
-	box("GroundEast", Vector3(66, 1, 200), Vector3(67, -0.5, 0), GRASS)
+	box("GroundWest", Vector3(122, 1, 200), Vector3(-39, -0.5, 0), GRASS).add_to_group("ground_cover", true)
+	box("GroundEast", Vector3(66, 1, 200), Vector3(67, -0.5, 0), GRASS).add_to_group("ground_cover", true)
+	ground_cover("riverbank", Rect2(-100, -100, 200, 200))
 	skirt(GRASS)
 	box("RiverBed", Vector3(12, 1, 200), Vector3(28, -1.9, 0), Color(0.25, 0.22, 0.18), "surface_stone")
 	var water := MeshInstance3D.new()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=162 format=3]
+[gd_scene load_steps=163 format=3]
 
 [ext_resource type="Environment" path="res://levels/atmosphere.tres" id="1_xft3b"]
 [ext_resource type="Script" path="res://levels/day_night.gd" id="2_84gbh"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://props/map_marker.gd" id="15_lphta"]
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="16_h2ru7"]
 [ext_resource type="Resource" path="res://levels/moods/fields.tres" id="mood_fields"]
+[ext_resource type="Script" path="res://props/ground_cover.gd" id="ground_cover"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_4w1n8"]
 geometry_parsed_geometry_type = 1
@@ -677,7 +678,7 @@ indoor_sound = "ambience_cellar"
 volume_db = -12.0
 fade_time = 3.0
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." groups=["ground_cover"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
 [node name="Mesh" type="MeshInstance3D" parent="Ground"]
@@ -685,6 +686,12 @@ mesh = SubResource("BoxMesh_qr8ew")
 
 [node name="Shape" type="CollisionShape3D" parent="Ground"]
 shape = SubResource("BoxShape3D_fn3x5")
+
+
+[node name="GroundCover" type="Node3D" parent="."]
+script = ExtResource("ground_cover")
+style = "ashfield"
+area = Rect2(-100, -100, 200, 200)
 
 [node name="GroundSkirt" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2, 0)
