@@ -108,3 +108,6 @@ func apply(hour: float) -> void:
 		var env := world_environment.environment
 		env.ambient_light_energy = lerpf(a[6], b[6], t)
 		env.fog_light_color = a[7].lerp(b[7], t)
+		# The fill the sky's colour is mixed with (ambient_light_sky_contribution), so
+		# shade isn't all sky-blue: a dimmer fog light, cool at night, near-neutral by day.
+		env.ambient_light_color = (a[7].lerp(b[7], t) * 0.6).clamp(Color(0, 0, 0, 1), Color(1, 1, 1, 1))

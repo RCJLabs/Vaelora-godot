@@ -7,7 +7,7 @@ extends "res://levels/builders/builder_base.gd"
 #   godot --headless --path . -s levels/builders/build_grieving_fields.gd
 # docs/godot-starter/GRIEVING_FIELDS.md.
 
-const ASH_GRASS := Color(0.42, 0.44, 0.38)
+const ASH_GRASS := Color(0.36, 0.37, 0.31)
 const GREY_STONE := Color(0.5, 0.5, 0.5)
 const DARK := Color(0.2, 0.2, 0.22)
 const ASH_WALL := Color(0.55, 0.55, 0.52)
@@ -26,6 +26,7 @@ func _build_fields() -> Node3D:
 	scene.add_to_group("navmesh_source", true)
 	common("GrievingFields", true)
 	box("Ground", Vector3(200, 1, 200), Vector3(0, -0.5, 0), ASH_GRASS)
+	skirt(ASH_GRASS)
 	box("Road", Vector3(5, 0.04, 80), Vector3(0, 0.02, -58), Color(0.38, 0.35, 0.3))
 
 	# Greyfold: low grey houses in a ring around the Listening Stone.
@@ -80,11 +81,11 @@ func _build_fields() -> Node3D:
 	marker("FromDeepRing", Vector3(55, 0, -59), 0.0)
 
 	# People.
-	npc("Ysolde", "Listener Ysolde", "res://dialogue/ysolde.json", Vector3(1.5, 0, -2), Color(0.62, 0.64, 0.66), PI)
-	npc("Hesk", "Old Hesk", "res://dialogue/hesk.json", Vector3(-8, 0, 6), Color(0.5, 0.52, 0.5), PI / 2.0)
-	npc("Corin", "Corin Dray", "res://dialogue/corin.json", Vector3(-36, 0, 13), Color(0.35, 0.36, 0.38), PI)
-	npc("Marta", "Marta Coil", "res://dialogue/marta.json", Vector3(9, 0, -21.5), Color(0.55, 0.45, 0.25), PI)
-	npc("Bram", "Bram", "res://dialogue/bram.json", Vector3(-14, 0, -6), Color(0.48, 0.5, 0.47), PI / 3.0)
+	npc("Ysolde", "Listener Ysolde", "res://dialogue/ysolde.json", Vector3(1.5, 0, -2), Color(0.32, 0.34, 0.44), PI, null, "ashen/priest")
+	npc("Hesk", "Old Hesk", "res://dialogue/hesk.json", Vector3(-8, 0, 6), Color(0.38, 0.33, 0.26), PI / 2.0, null, "ashen/commoner")
+	npc("Corin", "Corin Dray", "res://dialogue/corin.json", Vector3(-36, 0, 13), Color(0.35, 0.36, 0.38), PI, null, "human/hunter")
+	npc("Marta", "Marta Coil", "res://dialogue/marta.json", Vector3(9, 0, -21.5), Color(0.55, 0.45, 0.25), PI, null, "human/merchant")
+	npc("Bram", "Bram", "res://dialogue/bram.json", Vector3(-14, 0, -6), Color(0.42, 0.4, 0.3), PI / 3.0, null, "ashen/worker")
 
 	# The way back north to the Riverlands.
 	door("RiverRoad", "res://levels/weirholt.tscn", "FromFields", "the Riverlands", "Take the north road to",

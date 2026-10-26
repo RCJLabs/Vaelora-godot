@@ -589,6 +589,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -4)
 script = ExtResource("4_npc")
 display_name = "Maren"
 dialogue_file = "res://dialogue/maren.json"
+race = "human"
+role = "innkeeper"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Maren"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -716,6 +718,8 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 3.5, 0, 14)
 script = ExtResource("4_npc")
 display_name = "Inquisitor Hale"
 dialogue_file = "res://dialogue/inquisitor.json"
+race = "human"
+role = "inquisitor"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="InquisitorOnRoad/Inquisitor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -780,6 +784,8 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 1.5)
 script = ExtResource("4_npc")
 display_name = "Sister Halina"
 dialogue_file = "res://dialogue/halina.json"
+race = "human"
+role = "priest"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MercyCell/HalinaHere/Halina"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -817,6 +823,8 @@ transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 
 script = ExtResource("4_npc")
 display_name = "Brannoc"
 dialogue_file = "res://dialogue/brannoc.json"
+race = "elf"
+role = "hunter"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BrannocAtPost/Brannoc"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.925, 0)
@@ -1366,6 +1374,8 @@ transform = Transform3D(-0.5145, 0, 0.8575, 0, 1, 0, -0.8575, 0, -0.5145, -6.5, 
 script = ExtResource("4_npc")
 display_name = "Mirela"
 dialogue_file = "res://dialogue/mirela.json"
+race = "human"
+role = "hunter"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Mirela"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -1380,6 +1390,9 @@ transform = Transform3D(0.5665, 0, -0.824, 0, 1, 0, 0.824, 0, 0.5665, -10.6, 0, 
 script = ExtResource("4_npc")
 display_name = "Dunya"
 dialogue_file = "res://dialogue/dunya.json"
+race = "human"
+role = "commoner"
+sitting = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Dunya"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
@@ -1394,6 +1407,8 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -12.5, 0, -42.5)
 script = ExtResource("4_npc")
 display_name = "Ostap"
 dialogue_file = "res://dialogue/ostap.json"
+race = "orc"
+role = "hunter"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ostap"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -1856,6 +1871,8 @@ transform = Transform3D(-0.3969, 0, 0.9179, 0, 1, 0, -0.9179, 0, -0.3969, -45.15
 script = ExtResource("4_npc")
 display_name = "Jory"
 dialogue_file = "res://dialogue/jory_caged.json"
+race = "small_folk"
+role = "merchant"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="JoryInCage/JoryCaged"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
@@ -1874,6 +1891,8 @@ transform = Transform3D(-0.8262, 0, 0.5633, 0, 1, 0, -0.5633, 0, -0.8262, 8, 0, 
 script = ExtResource("4_npc")
 display_name = "Jory"
 dialogue_file = "res://dialogue/jory.json"
+race = "small_folk"
+role = "merchant"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="JoryAtWaystation/JoryWaystation"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
@@ -1911,6 +1930,8 @@ transform = Transform3D(-0.2326, 0, -0.9726, 0, 1, 0, 0.9726, 0, -0.2326, -29.2,
 script = ExtResource("4_npc")
 display_name = "Zora"
 dialogue_file = "res://dialogue/zora.json"
+race = "human"
+role = "priest"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ZoraHere/ZoraAtHome/Zora"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
@@ -1932,6 +1953,8 @@ transform = Transform3D(-0.5145, 0, 0.8575, 0, 1, 0, -0.8575, 0, -0.5145, 7.5, 0
 script = ExtResource("4_npc")
 display_name = "Magister Aurel"
 dialogue_file = "res://dialogue/aurel.json"
+race = "human"
+role = "scholar"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Aurel"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -2000,6 +2023,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 1.0)
 script = ExtResource("4_npc")
 display_name = "Pim"
 dialogue_file = "res://dialogue/lf_pim.json"
+race = "human"
+role = "child"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Lanternfast/Pim"]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.540, 0)
@@ -2014,6 +2039,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3, 0, 1.0)
 script = ExtResource("4_npc")
 display_name = "Hettie Kettlewick"
 dialogue_file = "res://dialogue/lf_hettie.json"
+race = "small_folk"
+role = "commoner"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Lanternfast/Hettie"]
 transform = Transform3D(0.7, 0, 0, 0, 0.65, 0, 0, 0, 0.7, 0, 0.585, 0)
@@ -2028,6 +2055,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0, 0, 4.8)
 script = ExtResource("4_npc")
 display_name = "Orrin of the Mill Lane"
 dialogue_file = "res://dialogue/lf_orrin.json"
+race = "passenger"
+role = "commoner"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Lanternfast/Orrin"]
 transform = Transform3D(0.85, 0, 0, 0, 1.12, 0, 0, 0, 0.85, 0, 1.008, 0)
@@ -2042,6 +2071,8 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 14.0, 0, 7.0)
 script = ExtResource("4_npc")
 display_name = "Moss"
 dialogue_file = "res://dialogue/lf_moss.json"
+race = "ashen"
+role = "commoner"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Lanternfast/Moss"]
 transform = Transform3D(1.0, 0, 0, 0, 0.62, 0, 0, 0, 1.0, 0, 0.558, 0)

@@ -26,6 +26,8 @@ var WISPS
 var PLAYER
 var BANDIT
 var ATMOSPHERE
+var TEX := {}   # material kind -> its noise texture (levels/materials)
+var STONE_NORMAL
 
 var scene: Node3D
 var _mats := {}
@@ -60,6 +62,9 @@ func _process(_delta: float) -> bool:
 	PLAYER = load("res://player/player.tscn")
 	BANDIT = load("res://enemies/bandit.tscn")
 	ATMOSPHERE = load("res://levels/atmosphere.tres")
+	for kind in ["ground", "stone", "grain"]:
+		TEX[kind] = load("res://levels/materials/noise_%s.tres" % kind)
+	STONE_NORMAL = load("res://levels/materials/noise_stone_normal.tres")
 	build()
 	return true
 
@@ -82,14 +87,32 @@ func _save(scene_root: Node, path: String) -> void:
 
 # --- helpers --------------------------------------------------------------------------
 
-func mat(color: Color, transparent := false) -> StandardMaterial3D:
-	var key := "%s%s" % [color, transparent]
+## A material in `color`, with a noise texture over it so flat greybox surfaces read
+## as surfaces: "ground" (big soft patches), "stone" (cracked, with a normal map),
+## "grain" (fine grain: plaster, wood, cloth; the default) or "plain". The textures
+## are world-space triplanar, so they line up across boxes of any size.
+func mat(color: Color, transparent := false, kind := "grain") -> StandardMaterial3D:
+	if transparent:
+		kind = "plain"
+	var key := "%s%s%s" % [color, transparent, kind]
 	if not _mats.has(key):
 		var m := StandardMaterial3D.new()
 		m.albedo_color = color
 		m.roughness = 0.9
 		if transparent:
 			m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			m.roughness = 0.15
+		if TEX.has(kind):
+			m.albedo_texture = TEX[kind]
+			m.uv1_triplanar = true
+			m.uv1_world_triplanar = true
+			m.uv1_scale = Vector3.ONE * {"ground": 0.04, "stone": 0.35, "grain": 0.5}[kind]
+		if kind == "stone":
+			m.normal_enabled = true
+			m.normal_texture = STONE_NORMAL
+			m.roughness = 0.95
+		if kind == "ground":
+			m.roughness = 1.0
 		_mats[key] = m
 	return _mats[key]
 
@@ -101,6 +124,8 @@ func own(node: Node, parent: Node = null) -> Node:
 
 
 ## A solid box (StaticBody3D with a mesh and a collision shape) centred at `pos`.
+## Its material (mat()): stone if it's surface_stone, ground if it's a big flat slab
+## (grounds, roads, fields), fine grain otherwise.
 func box(name: String, size: Vector3, pos: Vector3, color: Color, surface := "", parent: Node = null, script: Script = null) -> StaticBody3D:
 	var body := StaticBody3D.new()
 	body.name = name
@@ -114,7 +139,8 @@ func box(name: String, size: Vector3, pos: Vector3, color: Color, surface := "",
 	mesh.name = "Mesh"
 	var box_mesh := BoxMesh.new()
 	box_mesh.size = size
-	box_mesh.material = mat(color)
+	var kind := "stone" if surface == "surface_stone" else ("ground" if size.y <= 1.0 and size.x * size.z >= 50.0 else "grain")
+	box_mesh.material = mat(color, false, kind)
 	mesh.mesh = box_mesh
 	own(mesh, body)
 	var shape := CollisionShape3D.new()
@@ -139,12 +165,15 @@ func house(name: String, size: Vector3, pos: Vector3, wall: Color, roof: Color) 
 	own(slab)
 
 
-func npc(name: String, display: String, dialogue: String, pos: Vector3, color: Color, facing := 0.0, parent: Node = null) -> StaticBody3D:
+## Someone to talk to; `look` is "race/role" (Figure: "small_folk/merchant").
+func npc(name: String, display: String, dialogue: String, pos: Vector3, color: Color, facing := 0.0, parent: Node = null, look := "human/commoner") -> StaticBody3D:
 	var body := StaticBody3D.new()
 	body.name = name
 	body.set_script(NPC)
 	body.set("display_name", display)
 	body.set("dialogue_file", dialogue)
+	body.set("race", look.get_slice("/", 0))
+	body.set("role", look.get_slice("/", 1))
 	body.position = pos
 	body.rotation.y = facing
 	own(body, parent)
@@ -271,6 +300,21 @@ func common(level_name: String, outdoor: bool) -> void:
 	amb.set_script(AMBIENCE)
 	amb.set("indoor", not outdoor)
 	own(amb)
+
+
+## The ground going on past the level's edge to the horizon (no collision; the
+## level's own edges stop you), so the sky's dark underside never shows. Under
+## everything, below rivers and cellars' tops.
+func skirt(color: Color) -> void:
+	var plane := MeshInstance3D.new()
+	plane.name = "GroundSkirt"
+	var m := PlaneMesh.new()
+	m.size = Vector2(1600, 1600)
+	m.material = mat(color, false, "ground")
+	plane.mesh = m
+	plane.position.y = -1.2
+	plane.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	own(plane)
 
 
 # --- trees and enemies -------------------------------------------------------------------

@@ -17,11 +17,11 @@ func build() -> void:
 const STONE := Color(0.42, 0.41, 0.4)
 const DARK_STONE := Color(0.3, 0.3, 0.31)
 const WOOD := Color(0.36, 0.24, 0.13)
-const PLASTER := Color(0.72, 0.66, 0.55)
+const PLASTER := Color(0.66, 0.6, 0.5)
 const ROOF := Color(0.32, 0.18, 0.12)
 const SLATE := Color(0.22, 0.24, 0.27)
-const GRASS := Color(0.3, 0.42, 0.22)
-const WATER := Color(0.16, 0.3, 0.38, 0.75)
+const GRASS := Color(0.25, 0.33, 0.15)
+const WATER := Color(0.22, 0.36, 0.42, 0.8)
 
 
 func _build_town() -> Node3D:
@@ -33,6 +33,7 @@ func _build_town() -> Node3D:
 	# Ground on both banks of the Greywater, the river between (x 22..34, flowing south).
 	box("GroundWest", Vector3(122, 1, 200), Vector3(-39, -0.5, 0), GRASS)
 	box("GroundEast", Vector3(66, 1, 200), Vector3(67, -0.5, 0), GRASS)
+	skirt(GRASS)
 	box("RiverBed", Vector3(12, 1, 200), Vector3(28, -1.9, 0), Color(0.25, 0.22, 0.18), "surface_stone")
 	var water := MeshInstance3D.new()
 	water.name = "River"
@@ -128,20 +129,20 @@ func _build_town() -> Node3D:
 	lantern("LanternDocks", Vector3(21, 0, 13), Color(0.8, 0.85, 1.0))
 
 	# People.
-	npc("Hedda", "Hedda Marrow", "res://dialogue/hedda.json", Vector3(-12, 0, -17.5), Color(0.6, 0.35, 0.3), PI)
+	npc("Hedda", "Hedda Marrow", "res://dialogue/hedda.json", Vector3(-12, 0, -17.5), Color(0.6, 0.35, 0.3), PI, null, "human/innkeeper")
 	var tarle_presence := Node3D.new()
 	tarle_presence.name = "TarlePresence"
 	tarle_presence.set_script(PRESENCE)
 	tarle_presence.set("hide_flag", "tarle_gone")
 	own(tarle_presence)
-	npc("Tarle", "Factor Tarle", "res://dialogue/tarle.json", Vector3(8, 0, -14.8), Color(0.3, 0.32, 0.45), PI, tarle_presence)
-	npc("Wenna", "Wenna Pike", "res://dialogue/wenna.json", Vector3(-4, 0, 4.2), Color(0.55, 0.5, 0.25), PI)
-	npc("Varga", "Captain Varga", "res://dialogue/varga.json", Vector3(-8, 0, 22), Color(0.45, 0.1, 0.12), PI)
-	npc("Dace", "Sergeant Dace", "res://dialogue/dace.json", Vector3(5.5, 0, 28), Color(0.4, 0.15, 0.15), -PI / 2.0)
-	npc("Ama", "Goodwife Ama", "res://dialogue/ama.json", Vector3(2, 0, 38), Color(0.45, 0.4, 0.25))
-	npc("Teodor", "Teodor", "res://dialogue/teodor.json", Vector3(-20, 0, 13), Color(0.55, 0.55, 0.6), PI / 2.0)
-	npc("Fenn", "Physician Fenn", "res://dialogue/fenn.json", Vector3(-10, 0, 9.5), Color(0.2, 0.2, 0.2), PI)
-	npc("JoryDocks", "Jory Vell", "res://dialogue/jory_weirholt.json", Vector3(22.5, 0.15, 16), Color(0.6, 0.5, 0.2), -PI / 2.0)
+	npc("Tarle", "Factor Tarle", "res://dialogue/tarle.json", Vector3(8, 0, -14.8), Color(0.3, 0.32, 0.45), PI, tarle_presence, "human/official")
+	npc("Wenna", "Wenna Pike", "res://dialogue/wenna.json", Vector3(-4, 0, 4.2), Color(0.55, 0.5, 0.25), PI, null, "small_folk/merchant")
+	npc("Varga", "Captain Varga", "res://dialogue/varga.json", Vector3(-8, 0, 22), Color(0.45, 0.1, 0.12), PI, null, "human/guard")
+	npc("Dace", "Sergeant Dace", "res://dialogue/dace.json", Vector3(5.5, 0, 28), Color(0.4, 0.15, 0.15), -PI / 2.0, null, "orc/guard")
+	npc("Ama", "Goodwife Ama", "res://dialogue/ama.json", Vector3(2, 0, 38), Color(0.45, 0.4, 0.25), 0.0, null, "human/worker")
+	npc("Teodor", "Teodor", "res://dialogue/teodor.json", Vector3(-20, 0, 13), Color(0.55, 0.55, 0.6), PI / 2.0, null, "passenger/commoner")
+	npc("Fenn", "Physician Fenn", "res://dialogue/fenn.json", Vector3(-10, 0, 9.5), Color(0.2, 0.2, 0.2), PI, null, "human/physician")
+	npc("JoryDocks", "Jory Vell", "res://dialogue/jory_weirholt.json", Vector3(22.5, 0.15, 16), Color(0.6, 0.5, 0.2), -PI / 2.0, null, "small_folk/merchant")
 
 	# The way back north, and where you arrive from it.
 	door("NorthRoad", "res://levels/test_level.tscn", "FromWeirholt", "the Greywater Vale", "Take the north road to",
