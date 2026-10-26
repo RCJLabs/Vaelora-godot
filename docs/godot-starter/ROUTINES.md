@@ -57,6 +57,7 @@ on the time of day until the quest text says so.
 
 - **The clock jumps, they jump.** If the hour moves more than half an hour in one tick (sleeping, waiting, fast travel, loading a save), they're placed straight at the end of their walk, inside if it's night. They also start where the clock says when a level loads.
 - **No walking off mid-sentence.** While any dialogue is open, nobody with a routine moves.
+- **They face their work.** Stopped by day, they turn back to the way they were placed (a merchant to her customers); at the gathering they face its middle. So stealing from behind a stall works while its keeper is at it.
 - **They walk on the navmesh** (`NavigationServer3D.map_get_path`). They go in a straight line if there's no path. Walking speed is 1.3 m/s, with a small step bob on the figure.
 - **Indoors means gone.** Going in hides them and clears their collision layer. Coming out restores both and puts them on their doorstep.
 

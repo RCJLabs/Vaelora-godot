@@ -90,6 +90,7 @@ func _build_fields() -> Node3D:
 	# A day by the clock (Ysolde listens at the stone, day and night).
 	gathering(Vector3(3, 0, 3))   # by the Listening Stone
 	routines(["Hesk", "Corin", "Marta", "Bram"])
+	stores("MartaCrate", "Marta's crate", {"bread": 3, "apple": 4, "lockpick": 2}, 10, Vector3(11, 0.35, -24.5), "Marta Coil")   # no guards out here: see CRIME.md
 
 	# The way back north to the Riverlands.
 	door("RiverRoad", "res://levels/weirholt.tscn", "FromFields", "the Riverlands", "Take the north road to",

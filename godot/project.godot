@@ -74,6 +74,7 @@ EarnedPowers="*res://systems/earned_powers.gd"
 FastTravel="*res://systems/fast_travel.gd"
 Combos="*res://systems/combos.gd"
 TouchControls="*res://ui/touch_controls.gd"
+Crime="*res://systems/crime.gd"
 
 [editor_plugins]
 

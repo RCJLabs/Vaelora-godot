@@ -16,10 +16,10 @@ extends Node
 
 const SAVE_DIR := "user://saves/"
 const OLD_SAVE_PATH := "user://savegame.json"   # before slots existed
-const SAVE_VERSION := 11  # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time,
+const SAVE_VERSION := 12  # 2: skills, 3: inventory, 4: spells, 5: reputation, 6: slots + play time,
                           # 7: attributes, equipment, status effects, 8: character (background, traits, perks, modes),
                           # 9: world clock and survival needs, 10: the main questline (see _migrate_story),
-                          # 11: corruption
+                          # 11: corruption, 12: crime (bounties, stolen goods)
 const QUICKSAVE := "quicksave"
 const AUTOSAVE := "autosave"
 const MANUAL_SLOTS := ["slot_1", "slot_2", "slot_3", "slot_4", "slot_5"]
@@ -134,6 +134,7 @@ func save_game(slot: String = QUICKSAVE, resting: bool = false) -> bool:
 		"alchemy": Alchemy.to_dict(),
 		"smithing": Smithing.to_dict(),
 		"lockpicking": Lockpicking.to_dict(),
+		"crime": Crime.to_dict(),
 		"player": player.get_save_data(),
 	}
 	var file := FileAccess.open(_path(slot), FileAccess.WRITE)
@@ -205,6 +206,7 @@ func load_game(slot: String = "") -> bool:
 	Alchemy.from_dict(data.get("alchemy", {}))
 	Smithing.from_dict(data.get("smithing", {}))
 	Lockpicking.from_dict(data.get("lockpicking", {}))
+	Crime.from_dict(data.get("crime", {}))   # versions 1-11: no crimes yet
 	Trade.from_dict(data.get("trade", {}))   # before the trading screen: full stock (bought uniques come from flags)
 	if not data.has("corruption") and GameState.has_flag("took_wisp_essence"):
 		Corruption.value = 35.0   # took the caged wisp's light before corruption existed

@@ -82,6 +82,10 @@ They're listed in **Project → Project Settings → Globals → Autoload** (alr
   `add_reputation` (`{"riverwatch": 10}`). The item ones take the same
   forms as `requires_item`. Example, Maren buying a pelt:
   `"buy_pelt": {"text": "Fifteen gold.", "take_item": "wolf_pelt", "give_gold": 15, "choices": [...]}`
+- **The law** (CRIME.md): `"crime": "pay"`, `"pardon"`, `"jail"` or `"resist"` as an action;
+  the conditions `"requires_bounty_affordable": true` and `"requires_bounty_below": 100`; and
+  `{bounty}` and `{region}` in any line or choice text are filled in with your bounty here and
+  the region's name. `dialogue/guard_crime.json` is the guards' version.
 - A node with no choices that pass gets an automatic **(Leave)** button.
 
 Put flags you want to keep even if the player presses Esc (quest accepted, secret learned) on

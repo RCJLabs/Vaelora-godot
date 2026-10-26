@@ -21,6 +21,8 @@ class_name Conditions
 #   "requires_skill": {"tidecraft": 50}         a skill's level at least this
 #   "requires_skill_below": {"tidecraft": 50}   lower than this
 #   "requires_night": true / "requires_day": true   by the WorldClock (night: 20:00 to 6:00)
+#   "requires_bounty_affordable": true          you can pay your bounty here (systems/crime.gd)
+#   "requires_bounty_below": 100                your bounty here is under this
 # An empty Dictionary always passes.
 
 
@@ -70,6 +72,10 @@ static func met(entry: Dictionary) -> bool:
 	if entry.get("requires_night", false) and not WorldClock.is_night():
 		return false
 	if entry.get("requires_day", false) and WorldClock.is_night():
+		return false
+	if entry.get("requires_bounty_affordable", false) and Inventory.gold < Crime.bounty_here():
+		return false
+	if entry.has("requires_bounty_below") and Crime.bounty_here() >= int(entry["requires_bounty_below"]):
 		return false
 	for id in entry.get("requires_skill_below", {}):
 		if Skills.levels.get(id, 0) >= int(entry["requires_skill_below"][id]):

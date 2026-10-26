@@ -91,6 +91,7 @@ func create(race: RaceData, new_name: String, background_id: String, trait_ids: 
 	Alchemy.reset()
 	Smithing.reset()
 	Lockpicking.reset()
+	Crime.reset()
 	Command.reset()
 	Arms.reset()
 	Spellcraft.reset()

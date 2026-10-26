@@ -146,6 +146,18 @@ func _build_town() -> Node3D:
 	# A day by the clock for the townsfolk (Hedda keeps the inn, the guards keep watch).
 	gathering(Vector3(-14, 0, -11))   # in front of the Lantern Weir
 	routines(["Wenna", "Ama", "Teodor", "Fenn", "JoryDocks"])
+	# What's theirs (taking it is stealing: systems/crime.gd). Wenna faces the square,
+	# her back to the stall; Hedda watches her counter; Tarle's strongbox sits by him.
+	goods("WennaBread", "bread", 2, Vector3(-5, 1.1, 3), "Wenna Pike")
+	goods("WennaLockpicks", "lockpick", 3, Vector3(-4, 1.1, 2.8), "Wenna Pike")
+	goods("WennaDagger", "hunting_dagger", 1, Vector3(-3, 1.1, 3), "Wenna Pike")
+	goods("HeddaPurse", "", 0, Vector3(-10.8, 1.2, -16.5), "Hedda Marrow", 12, "coin purse")
+	stores("TarleStrongbox", "counting-house strongbox", {"iron_ingot": 2}, 120, Vector3(11, 0.35, -15.3), "Factor Tarle", 2)
+	stores("JoryCrate", "Jory's crate", {"iron_ingot": 2, "leather_strip": 3}, 0, Vector3(21, 0.35, 18.5), "Jory Vell")
+	box("FennTable", Vector3(1, 0.9, 0.6), Vector3(-12.4, 0.45, 10.2), WOOD, "surface_wood")
+	goods("FennPotions", "minor_healing_potion", 2, Vector3(-12.4, 1.0, 10.2), "Physician Fenn")
+	goods("AmaApples", "apple", 4, Vector3(-0.5, 0.1, 39.5), "Goodwife Ama")
+	marker("JailRelease", Vector3(-12, 0, 22.3), 0.0)   # out of the barracks cells
 
 	# The way back north, and where you arrive from it.
 	door("NorthRoad", "res://levels/test_level.tscn", "FromWeirholt", "the Greywater Vale", "Take the north road to",
