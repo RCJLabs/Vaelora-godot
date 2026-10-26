@@ -184,6 +184,10 @@ func _build_city() -> Node3D:
 	box("GuildTable", Vector3(10, 0.9, 2), Vector3(0, 0.45, -46), DARK_ROCK, "surface_stone")
 	brazier("BrazierTableW", Vector3(-9, 0, -42))
 	brazier("BrazierTableE", Vector3(9, 0, -42))
+	# The Hollow Way: north through the mountain, down to the forest and Ithmarren (ITHMARREN.md).
+	door("HollowWay", "res://levels/ithmarren.tscn", "FromKarrowdeep", "Ithmarren", "Take the Hollow Way to",
+			Vector3(3, 3.5, 0.4), Vector3(38, 1.75, -51.6), Color(0.3, 0.24, 0.18))
+	marker("FromIthmarren", Vector3(38, 0, -47), PI)
 	examine("LawWall", "Read the guild-law", "", "res://dialogue/karrowdeep_law.json",
 			Vector3(10, 4, 0.3), Vector3(-28, 3, -51.8), Color(0.45, 0.42, 0.38))
 

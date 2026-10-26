@@ -17,6 +17,7 @@ const REGIONS := [
 	{"scene": "res://levels/grieving_fields.tscn", "name": "The Grieving Fields"},
 	{"scene": "res://levels/ilunhall.tscn", "name": "Ilunhall"},
 	{"scene": "res://levels/karrowdeep.tscn", "name": "Karrowdeep"},
+	{"scene": "res://levels/ithmarren.tscn", "name": "Ithmarren"},
 ]
 const MIN_HOURS := 0.25
 const METRES_PER_HOUR := 400.0   # the levels are a compressed world: a short walk is an hour or so

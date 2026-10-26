@@ -6,8 +6,8 @@ Each quest's state is worked out from flags (and items) every time the journal l
 
 ## Contents
 
-- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made), [Down the Greywater](#down-the-greywater), [The Weirstones](#the-weirstones), [The Deep Ring](#the-deep-ring), [The Light in the Eaves](#the-light-in-the-eaves), [The Seam That Whispers](#the-seam-that-whispers)
-- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook), [The Toll of the Weir](#toll-of-the-weir), [Fever in the Lanes](#lanes-fever), [The Toll-Road Gang](#toll-road-gang), [The Wisp-Finder](#the-wisp-finder), [Cairns of the Rising](#cairns-of-the-rising), [The Hundredth Horn](#the-hundredth-horn), [A Verse in the Eaves](#a-verse-in-the-eaves), [The Anvil and the Seal](#the-anvil-and-the-seal), [The Short Weight](#the-short-weight)
+- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made), [Down the Greywater](#down-the-greywater), [The Weirstones](#the-weirstones), [The Deep Ring](#the-deep-ring), [The Light in the Eaves](#the-light-in-the-eaves), [The Seam That Whispers](#the-seam-that-whispers), [The Well Kept Badly](#the-well-kept-badly)
+- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook), [The Toll of the Weir](#toll-of-the-weir), [Fever in the Lanes](#lanes-fever), [The Toll-Road Gang](#toll-road-gang), [The Wisp-Finder](#the-wisp-finder), [Cairns of the Rising](#cairns-of-the-rising), [The Hundredth Horn](#the-hundredth-horn), [A Verse in the Eaves](#a-verse-in-the-eaves), [The Anvil and the Seal](#the-anvil-and-the-seal), [The Short Weight](#the-short-weight), [A Lie Well Told](#a-lie-well-told), [Night-Blooms](#night-blooms)
 - [Flag index](#flag-index)
 
 ## Main quests
@@ -371,6 +371,59 @@ flowchart TD
 | Stop the Mercy in Seam Nine. | seam_cleared | TheSeam |
 | Decide what becomes of the seam. | seam_resolved | TheSeam |
 | Tell Guildmaster Hrodna at the Table. | seam_reported | Hrodna |
+
+<a id="the-well-kept-badly"></a>
+
+### The Well Kept Badly (`the_well_kept_badly`)
+
+Given by: Brother Keld's orders, in Seam Nine. Starts when: seam_reported. Done when: well_reported.
+
+```mermaid
+flowchart TD
+  start(["The Well Kept Badly<br/><i>starts: seam_reported</i>"])
+  o0["Go to Ithmarren, by the Hollow Way at the north-east end of Karrowdeep's Guild Gallery."]
+  start --> o0
+  o1["Find out where the harvest goes: ask the Moot-Speaker in the high boughs, or whoever waits by the Moot Tree's roots."]
+  o0 --> o1
+  o2["Get through the Root Door under the Moot Tree: House Sennaveth's key, or another way."]
+  o1 --> o2
+  o3["Go down into the Rootwell."]
+  o2 --> o3
+  o4["Stop the takers in the Rootwell."]
+  o3 --> o4
+  o5["Decide what becomes of the well."]
+  o4 --> o5
+  o6["Tell Moot-Speaker Calaneth."]
+  o5 --> o6
+  done(["Done<br/><i>well_reported</i>"])
+  o6 --> done
+  r0["Lady Ithariel gave me House Sennaveth's root-key, and asked me not to hurt her brother mor…"]
+  done -. "ithariel_leave" .-> r0
+  r1["I showed Lady Ithariel her own letter, and she gave me the root-key without looking at me."]
+  done -. "ithariel_shamed" .-> r1
+  r2["I wore a Sennaveth face, and the Root Door opened for family."]
+  done -. "root_glamoured" .-> r2
+  r3["I opened the Root Door with a key I took from House Sennaveth's coffer."]
+  done -. "rootwell_open, not ithariel_leave, not ithariel_shamed, not root_glamoured" .-> r3
+  r4["I broke the root-cages under the Moot Tree. The lights in the well rose and went home, and…"]
+  done -. "well_unbound" .-> r4
+  r5["I left the well bound and gave it to the Moot to keep, instead of House Sennaveth."]
+  done -. "well_given" .-> r5
+  r6["I drank the well under the Moot Tree dry. It tasted like the first morning of the world. T…"]
+  done -. "well_drunk" .-> r6
+  r7["A. left Lord Caerwyn a card: the founders' confession wasn't burned. 'Look under the glass…"]
+  done -. "has rootwell_letter" .-> r7
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Go to Ithmarren, by the Hollow Way at the north-east end of Karrowdeep's Guild Gallery. | discovered_ithmarren | HollowWay |
+| Find out where the harvest goes: ask the Moot-Speaker in the high boughs, or whoever waits by the Moot Tree's roots. | well_lead | ['Calaneth', 'Rhosyn'] |
+| Get through the Root Door under the Moot Tree: House Sennaveth's key, or another way. | rootwell_open | ['RootDoor', 'Ithariel'] |
+| Go down into the Rootwell. | discovered_rootwell | RootwellDoor |
+| Stop the takers in the Rootwell. | rootwell_cleared | TheWell |
+| Decide what becomes of the well. | well_resolved | TheWell |
+| Tell Moot-Speaker Calaneth. | well_reported | Calaneth |
 
 ## Side quests
 
@@ -877,6 +930,60 @@ flowchart TD
 | Look at the assay scales in the Gate Hall. | scales_rigged | AssayScales |
 | Take it to Guildmaster Hrodna at the Table, or let Assayer Pell make it worth your while. | any of weight_reported / weight_hushed | ['Hrodna', 'Pell'] |
 
+<a id="a-lie-well-told"></a>
+
+### A Lie Well Told (`a_lie_well_told`)
+
+Given by: Magister Sylvaine, of the Veil College in Ithmarren. Starts when: lie_started. Done when: lie_done.
+
+```mermaid
+flowchart TD
+  start(["A Lie Well Told<br/><i>starts: lie_started</i>"])
+  o0["Get House Sennaveth's letter: talk Steward Lirael out of it, wear a courier's face, or take it from the house's letter-box."]
+  start --> o0
+  o1["Bring it to Magister Sylvaine at the Veil College."]
+  o0 --> o1
+  done(["Done<br/><i>lie_done</i>"])
+  o1 --> done
+  r0["I wore a Sennaveth face, and Steward Lirael handed me the letter himself."]
+  done -. "lirael_fooled" .-> r0
+  r1["I told Steward Lirael that Lady Ithariel had sent me, and he believed me."]
+  done -. "letter_given, not lirael_fooled" .-> r1
+  r2["I took the letter from House Sennaveth's letter-box."]
+  done -. "lie_done, not letter_given" .-> r2
+  r3["Sylvaine read Ithariel's letter to her brother, gave it back, and told me I'd passed."]
+  done -. "lie_done" .-> r3
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Get House Sennaveth's letter: talk Steward Lirael out of it, wear a courier's face, or take it from the house's letter-box. | has sennaveth_letter | ['Lirael', 'SennavethLetters'] |
+| Bring it to Magister Sylvaine at the Veil College. | lie_done | Sylvaine |
+
+<a id="night-blooms"></a>
+
+### Night-Blooms (`night_blooms`)
+
+Given by: Fennick, gardener of the Lantern Gardens. Starts when: blooms_started. Done when: blooms_done.
+
+```mermaid
+flowchart TD
+  start(["Night-Blooms<br/><i>starts: blooms_started</i>"])
+  o0["Pick three moonpetals from Fennick's beds, at night when they open."]
+  start --> o0
+  o1["Bring them to Fennick."]
+  o0 --> o1
+  done(["Done<br/><i>blooms_done</i>"])
+  o1 --> done
+  r0["I picked three moonpetals in the dark for Fennick, gently. He paid in potions and coin, an…"]
+  done -. "blooms_done" .-> r0
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Pick three moonpetals from Fennick's beds, at night when they open. | has moonpetal x3 | ['NightBloom1', 'NightBloom2', 'NightBloom3'] |
+| Bring them to Fennick. | blooms_done | Fennick |
+
 ## Flag index
 
 Every flag, where it's set, and where it's checked. **⚠ never set** means nothing in the game sets it: a typo or a missing step. *(never checked)* is usually fine: a record for later, or for the tests.
@@ -892,6 +999,11 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `barges_resolved` | tarle: ledger, "Deal."<br>tarle: ledger, "No. Captain Varga gets this."<br>varga: ledger | jory_weirholt (start → after)<br>quest down_the_greywater<br>quest the_weirstones<br>tarle: again, "I found your ledger in the culvert."<br>tarle: greet, "I found your ledger in the culvert."<br>varga: again, "I have something you should see."<br>varga: again, "Where does the ledger's trail go?"<br>varga: greet, "I have something you should see."<br>varga: greet, "Where does the ledger's trail go?" |
 | `barrow_lead` | mirela: lead | mirela (start → after_lead)<br>quest ask_forest<br>quest the_barrow |
 | `bek_gave_slate` | bek: gives<br>bek: sold | bek: again, "The Seal College wants its slate back."<br>bek: greet, "The Seal College wants its slate back."<br>levels/karrowdeep.tscn (SlateOnBench)<br>quest the_anvil_and_the_seal |
+| `bloom_1` | ithmarren_bloom_1: open, "Pick it gently." | ithmarren_bloom_1 (start → picked) |
+| `bloom_2` | ithmarren_bloom_2: open, "Pick it gently." | ithmarren_bloom_2 (start → picked) |
+| `bloom_3` | ithmarren_bloom_3: open, "Pick it gently." | ithmarren_bloom_3 (start → picked) |
+| `blooms_done` | fennick: paid | fennick: again, "I've brought your moonpetals."<br>quest night_blooms |
+| `blooms_started` | fennick: blooms | fennick: again, "Can I help?"<br>fennick: again, "I've brought your moonpetals."<br>fennick: greet, "Can I help?"<br>quest night_blooms |
 | `bought_tome_crush` | aurel: sold_crush | aurel: teach, "Moon-Crush. (220 gold)"<br>aurel: teach, "The Lifting Tide. (400 gold)"<br>aurel: teach, "The Lifting Tide?" |
 | `bought_tome_lift` | aurel: sold_lift | aurel: teach, "The Lifting Tide. (400 gold)" |
 | `bought_tome_pull` | aurel: sold_pull | aurel: teach, "Pull. (80 gold)" |
@@ -912,6 +1024,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `cairn_west` | fields_cairn_west: look, "Stack it again, stone by stone." | fields_cairn_west (start → done)<br>hesk (start → report)<br>quest cairns_of_the_rising |
 | `cairns_started` | hesk: where | hesk (start → waiting)<br>quest cairns_of_the_rising |
 | `cairns_thanked` | hesk: report | hesk (start → done)<br>quest cairns_of_the_rising |
+| `card_shown` | calaneth: card | calaneth: report, "There was a note on Lord Caerwyn's de..." |
 | `choir_verse_ilunhall` (never checked) | saelie: ready | – |
 | `companion_brannoc` | brannoc: join | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "Come with me. Now, not later."<br>levels/test_level.tscn (BrannocAtPost)<br>zora: again, "Come with me."<br>zora: taught, "Come with me." |
 | `companion_cmd_dismiss` (never checked) | companion_brannoc: home<br>companion_zora: home | – |
@@ -947,21 +1060,27 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `discovered_corin_hut` (never checked) | levels/grieving_fields.tscn (MapCorinHut, when found) | – |
 | `discovered_counting_house` (never checked) | levels/weirholt.tscn (MapCountingHouse, when found) | – |
 | `discovered_ember_college` (never checked) | levels/ilunhall.tscn (MapEmberCollege, when found) | – |
+| `discovered_gate_landing` (never checked) | levels/ithmarren.tscn (MapGateLanding, when found) | – |
 | `discovered_greyfang_hollow` (never checked) | levels/test_level.tscn (MapGreyfangHollow, when found) | – |
 | `discovered_greyfold` (never checked) | levels/grieving_fields.tscn (MapGreyfold, when found) | – |
 | `discovered_guild_table` (never checked) | levels/karrowdeep.tscn (MapTable, when found) | – |
 | `discovered_hall_of_spears` (never checked) | levels/ilunhall.tscn (MapHallOfSpears, when found) | – |
 | `discovered_hollow_oak` (never checked) | levels/test_level.tscn (MapHollowOak, when found) | – |
 | `discovered_ilunhall` | levels/ilunhall.tscn (MapIlunhall, when found) | quest the_light_in_the_eaves |
+| `discovered_ithmarren` | levels/ithmarren.tscn (MapIthmarren, when found) | quest the_well_kept_badly |
 | `discovered_karrowdeep` | levels/karrowdeep.tscn (MapKarrowdeep, when found) | quest the_seam_that_whispers |
 | `discovered_lamp_and_pick` (never checked) | levels/karrowdeep.tscn (MapLampAndPick, when found) | – |
+| `discovered_lantern_gardens` (never checked) | levels/ithmarren.tscn (MapLanternGardens, when found) | – |
 | `discovered_lantern_weir` (never checked) | levels/weirholt.tscn (MapInn, when found) | – |
 | `discovered_laying_grounds` (never checked) | levels/grieving_fields.tscn (MapLayingGrounds, when found) | – |
 | `discovered_long_table` (never checked) | levels/ilunhall.tscn (MapLongTable, when found) | – |
 | `discovered_market_bridge` (never checked) | levels/karrowdeep.tscn (MapMarketBridge, when found) | – |
+| `discovered_moot_hall` (never checked) | levels/ithmarren.tscn (MapMootHall, when found) | – |
 | `discovered_old_barrow` (never checked) | levels/test_level.tscn (MapOldBarrow, when found) | – |
 | `discovered_outlaw_camp` (never checked) | levels/test_level.tscn (MapOutlawCamp, when found) | – |
 | `discovered_roadside_shrine` (never checked) | levels/test_level.tscn (MapShrine, when found) | – |
+| `discovered_root_door` (never checked) | levels/ithmarren.tscn (MapRootDoor, when found) | – |
+| `discovered_rootwell` | levels/ithmarren_rootwell.tscn (MapRootwell, when found) | quest the_well_kept_badly |
 | `discovered_rune_bridge` (never checked) | levels/ilunhall.tscn (MapRuneBridge, when found) | – |
 | `discovered_seal_college` (never checked) | levels/karrowdeep.tscn (MapSealCollege, when found) | – |
 | `discovered_seam_nine` | levels/karrowdeep_seam.tscn (MapSeamNine, when found) | quest the_seam_that_whispers |
@@ -972,6 +1091,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `discovered_toll_fort` (never checked) | levels/weirholt.tscn (MapTollFort, when found) | – |
 | `discovered_toll_road_camp` (never checked) | levels/weirholt.tscn (MapGangCamp, when found) | – |
 | `discovered_undercroft` | levels/ilunhall_undercroft.tscn (MapUndercroft, when found) | quest the_light_in_the_eaves |
+| `discovered_veil_college` (never checked) | levels/ithmarren.tscn (MapVeilCollege, when found) | – |
 | `discovered_waystation` (never checked) | levels/test_level.tscn (MapWaystation, when found) | – |
 | `discovered_weirholt` (never checked) | levels/weirholt.tscn (MapWeirholt, when found) | – |
 | `discovered_weirholt_docks` (never checked) | levels/weirholt.tscn (MapDocks, when found) | – |
@@ -1015,6 +1135,8 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `inquisitor_spared` | inquisitor: spared<br>inquisitor: spared_afraid<br>inquisitor: spared_bribed | inquisitor (start → spared_again) |
 | `inquisitor_told_zora` | inquisitor: told | zora (start → betrayed)<br>zora (start → lanternfast)<br>zora: again, "Come with me."<br>zora: again, "Teach me more of it."<br>zora: again, "What do you really do? Not the fire."<br>zora: again, "Would you ever leave this place?"<br>zora: taught, "Come with me."<br>zora: taught, "Teach me more of it."<br>zora: taught, "What do you really do? Not the fire."<br>zora: taught, "Would you ever leave this place?" |
 | `inquisitor_warned` | inquisitor: suspicious | inquisitor (start → suspicious) |
+| `ithariel_leave` | ithariel: leave | quest the_well_kept_badly |
+| `ithariel_shamed` | ithariel: shamed | quest the_well_kept_badly |
 | `jory_cheated` | jory: merchant_cheat | quest lost_wagon |
 | `jory_found` | jory_caged: freed<br>jory_caged: locked | quest lost_wagon |
 | `jory_freed` | jory_caged: freed | levels/test_level.tscn (JoryAtWaystation)<br>levels/test_level.tscn (JoryInCage)<br>quest lost_wagon |
@@ -1029,6 +1151,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `lanes_cleared` | fenn: proof, "(Alchemy) The sheen, the metal taste,..."<br>fenn: proof, "Come and look at the well with me. If..." | quest lanes_fever |
 | `lanes_resolved` | fenn: proof, "(Alchemy) The sheen, the metal taste,..."<br>fenn: proof, "Come and look at the well with me. If..."<br>weirholt_millstone: known, "Wedge the Lanes' pipe shut." | fenn: greet, "It isn't the Passengers. It's the new..."<br>fenn: greet, "Why blame the Lanes?"<br>quest lanes_fever<br>teodor (start → after)<br>weirholt_millstone: known, "Wedge the Lanes' pipe shut." |
 | `lanes_started` | teodor: ask | quest lanes_fever<br>teodor (start → again) |
+| `lantern_bed` | maelis: bed, "Here's ten." | levels/ithmarren.tscn (LanternBed)<br>maelis: city, "I need a bed."<br>maelis: greet, "I need a bed." |
 | `lanternfast_maren` | maren: lanternfast | maren (start → lanternfast) |
 | `lanternfast_now` | systems/lanternfast.gd:21 | enemies/wisp.gd:237<br>levels/test_level.tscn (Lanternfast)<br>maren (start → lanternfast)<br>ostap (start → lanternfast)<br>systems/lanternfast.gd:17<br>zora (start → lanternfast) |
 | `lanternfast_ostap` | ostap: lanternfast | ostap (start → lanternfast) |
@@ -1037,10 +1160,14 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `ledger_to_varga_late` (never checked) | varga: ledger_late | – |
 | `left_you_brannoc` | systems/companions.gd sets left_you_<id> when a companion walks out | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "Come with me. Now, not later." |
 | `left_you_zora` | systems/companions.gd sets left_you_<id> when a companion walks out | zora: again, "Come with me."<br>zora: taught, "Come with me." |
+| `letter_given` | lirael: fooled<br>lirael: persuaded | levels/ithmarren.tscn (LetterBox)<br>lirael: again, "I'm the courier for Lord Caerwyn's le..."<br>lirael: greet, "I'm the courier for Lord Caerwyn's le..."<br>quest a_lie_well_told |
 | `licence_started` | brannoc: licence | brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?"<br>quest licence_to_burn<br>zora: again, "The garrison wants you arrested."<br>zora: drain, "The garrison wants you arrested."<br>zora: greet, "The garrison wants you arrested."<br>zora: scholar, "The garrison wants you arrested." |
+| `lie_done` | sylvaine: read | quest a_lie_well_told<br>sylvaine: again, "I have House Sennaveth's letter." |
+| `lie_started` | sylvaine: test | lirael: again, "I'm the courier for Lord Caerwyn's le..."<br>lirael: greet, "I'm the courier for Lord Caerwyn's le..."<br>quest a_lie_well_told<br>sylvaine: again, "I have House Sennaveth's letter."<br>sylvaine: again, "What does the Veil College want with me?"<br>sylvaine: greet, "What does the Veil College want with me?" |
 | `light_hushed` | cassia: broken, "Agreed. No one hears it from me." | quest the_light_in_the_eaves |
 | `light_reported` | cassia: broken, "Agreed. No one hears it from me."<br>cassia: broken, "People should know what their light c..."<br>cassia: spared | cassia (start → after)<br>hrodna: again, "The Mercy lit Ilunhall's halls throug..."<br>hrodna: greet, "The Mercy lit Ilunhall's halls throug..."<br>hrodna: table, "The Mercy lit Ilunhall's halls throug..."<br>quest the_light_in_the_eaves<br>quest the_seam_that_whispers |
 | `light_told` | cassia: broken, "People should know what their light c..." | quest the_light_in_the_eaves |
+| `lirael_fooled` | lirael: fooled | quest a_lie_well_told |
 | `lost_wagon_started` | jory_caged: freed<br>jory_caged: locked<br>maren: report_merchant<br>wagon: look<br>wagon: merchant | quest lost_wagon |
 | `maren_discount` | maren: discount_yes | maren: greet_again, "Any chance of a better price for a re..."<br>maren: greet_hero, "Any chance of a better price for a re..." |
 | `maren_wrong_things` | maren: wrong_things | maren: greet, "I'm tracking a Greyfang that walks wr..."<br>maren: greet, "I've come to tend the roadside shrine..."<br>maren: greet, "My wagon never reached Riverwatch. Ye..."<br>maren: greet, "Sergeant Holt sent me from Riverwatch..."<br>maren: greet, "The Collegium sent me to study the st..."<br>maren: greet, "You saw me sleeping behind your wayst..."<br>maren: greet_again, "Anything strange around here lately?"<br>maren: greet_hero, "Anything strange around here lately?"<br>quest wrong_things |
@@ -1051,17 +1178,21 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `mercy_offered_cure` | halina: same | halina: again, "You've got grey fingers. So do I." |
 | `met_bek` | bek: greet | bek (start → again) |
 | `met_brannoc` | brannoc: gift<br>brannoc: greet<br>brannoc: mark | brannoc (start → greet_again)<br>brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?" |
+| `met_calaneth` | calaneth: greet | calaneth (start → again) |
 | `met_cassia` | cassia: greet<br>cassia: report | cassia (start → again) |
 | `met_ebba` | ebba: greet | ebba (start → again) |
 | `met_fenn` (never checked) | fenn: greet | – |
+| `met_fennick` | fennick: greet | fennick (start → again) |
 | `met_halina` | halina: greet | halina (start → again) |
 | `met_hedda` | hedda: greet | hedda (start → again) |
 | `met_hesk` (never checked) | hesk: greet | – |
 | `met_hrodna` | hrodna: greet | hrodna (start → again) |
 | `met_ignatia` (never checked) | ignatia: greet | – |
 | `met_inquisitor` | inquisitor: greet<br>inquisitor: marked<br>inquisitor: suspicious | inquisitor (start → again) |
+| `met_ithariel` | ithariel: greet | ithariel (start → again) |
 | `met_jory_weirholt` | jory_weirholt: greet<br>jory_weirholt: greet_known | jory_weirholt (start → again) |
 | `met_karra` (never checked) | karra: greet | – |
+| `met_lirael` | lirael: greet | lirael (start → again) |
 | `met_maren` | maren: greet | maren (start → greet_again) |
 | `met_mirela` | mirela: greet | mirela (start → bandits_done)<br>mirela (start → greet_again)<br>mirela (start → sees_hollowing)<br>mirela (start → trusted)<br>quest ask_forest |
 | `met_nob` (never checked) | nob: greet | – |
@@ -1070,6 +1201,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `met_quill` | quill: hello | quill (start → again) |
 | `met_saelie` (never checked) | saelie: greet | – |
 | `met_severin` | severin: greet<br>severin: handed<br>severin: hostile<br>severin: killed<br>severin: spared | severin (start → again) |
+| `met_sylvaine` | sylvaine: greet | sylvaine (start → again) |
 | `met_tarle` | tarle: greet | tarle (start → again) |
 | `met_teodor` (never checked) | teodor: greet | – |
 | `met_varga` | varga: greet | varga (start → again) |
@@ -1101,6 +1233,9 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `ritual_cultists_cleared` (never checked) | levels/test_level.tscn (RitualCultists) | – |
 | `ritual_site_seen_by_day` (never checked) | props/ritual_site.gd:19 | – |
 | `ritual_started` | props/ritual_site.gd:16 | levels/test_level.tscn (Cultist1)<br>levels/test_level.tscn (Cultist2)<br>levels/test_level.tscn (Cultist3)<br>quest what_they_made |
+| `root_glamoured` | ithmarren_root_door: shut, "(Wear a Sennaveth face.) Tell the roo..." | quest the_well_kept_badly |
+| `rootwell_cleared` | levels/ithmarren_rootwell.tscn (Takers) | ithmarren_well (start → guarded)<br>quest the_well_kept_badly |
+| `rootwell_open` | ithmarren_root_door: keyed, "Open it."<br>ithmarren_root_door: shut, "(Wear a Sennaveth face.) Tell the roo..." | ithariel: again, "Your house keeps the Rootwell."<br>ithariel: greet, "Your house keeps the Rootwell."<br>levels/ithmarren.tscn (RootOpen)<br>levels/ithmarren.tscn (RootShut)<br>quest the_well_kept_badly |
 | `saw_drain_line` | props/floating_crystal.gd:73<br>props/floating_crystal.gd:78<br>systems/save_system.gd:233 | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..."<br>props/drain_line.gd:9<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:77<br>quest ask_forest<br>quest waking_stones<br>systems/save_system.gd:232 |
 | `saw_dunya` | dunya: look | mirela: end_letter, "Dunya?" |
 | `saw_hollow_wolf` | enemies/hollow_wolf.gd:55<br>hollow_wolf: look | brannoc (start → mark)<br>enemies/hollow_wolf.gd:53<br>enemies/hollow_wolf.gd:73<br>hollow_wolf (start → again)<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>mirela: drain, "A wolf by Greyfang Hollow looked the ..."<br>quest wrong_things |
@@ -1114,7 +1249,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `seam_collapsed` | karrowdeep_seam: choose, "Knock out the props. Let the face fal..." | hrodna: keld, "I brought the face down. The lights i..."<br>hrodna: report, "I brought the face down. The lights i..."<br>quest the_seam_that_whispers |
 | `seam_nine_named` | ebba: carts<br>hrodna: mark | hrodna: again, "About Seam Nine."<br>hrodna: again, "The Mercy lit Ilunhall's halls throug..."<br>hrodna: greet, "Someone's cutting Seam Nine. Your own..."<br>hrodna: greet, "The Mercy lit Ilunhall's halls throug..."<br>hrodna: table, "The Mercy lit Ilunhall's halls throug..."<br>quest the_seam_that_whispers |
 | `seam_nine_open` | karrowdeep_seal_door: keyed, "Turn the key."<br>karrowdeep_seal_door: shut, "Read the seals and unpick them, one b..." | hrodna: again, "About Seam Nine."<br>hrodna: greet, "Someone's cutting Seam Nine. Your own..."<br>hrodna: refuses, "Let me look. Seal it again after, wit..."<br>hrodna: refuses, "Your own hewers hear carts going thro..."<br>levels/karrowdeep.tscn (SealOpen)<br>levels/karrowdeep.tscn (SealShut)<br>quest the_seam_that_whispers |
-| `seam_reported` | hrodna: collapsed<br>hrodna: sealed | hrodna (start → after)<br>quest the_seam_that_whispers |
+| `seam_reported` | hrodna: collapsed<br>hrodna: sealed | calaneth: again, "The Mercy's harvest comes to Ithmarre..."<br>calaneth: greet, "The Mercy's harvest comes to Ithmarre..."<br>hrodna (start → after)<br>quest the_seam_that_whispers<br>quest the_well_kept_badly |
 | `seam_resolved` | karrowdeep_seam: choose, "Knock out the props. Let the face fal..."<br>karrowdeep_seam: choose, "Shut the harvest-frame and leave the ..." | hrodna (start → report)<br>karrowdeep_seam (start → done)<br>quest the_seam_that_whispers |
 | `seam_sealed` | karrowdeep_seam: choose, "Shut the harvest-frame and leave the ..." | hrodna: keld, "The Mercy are gone. I shut their fram..."<br>hrodna: report, "The Mercy are gone. I shut their fram..."<br>quest the_seam_that_whispers |
 | `severin_deal` | severin: deal, "Alive, then. If I can."<br>severin: deal, "I'll decide when I find her." | severin: again, "About Magister Vessa."<br>vessa: a, "The Lantern Order is waiting for you ..."<br>vessa: not_yet, "The Lantern Order is waiting for you ..." |
@@ -1177,13 +1312,20 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `weirstones_reported` | varga: weirstones_report | quest the_weirstones<br>varga: again, "The Weirstones are quiet. The Mercy's..."<br>varga: greet, "The Weirstones are quiet. The Mercy's..." |
 | `weirstones_rite` | levels/weirholt.tscn (Weirstones) | levels/weirholt.tscn (Acolyte1)<br>levels/weirholt.tscn (Acolyte2)<br>levels/weirholt.tscn (Acolyte3)<br>quest the_weirstones |
 | `weirstones_seen_by_day` (never checked) | levels/weirholt.tscn (Weirstones) | – |
+| `well_drunk` | ithmarren_well: choose, "Kneel, and drink." | calaneth: card, "I drank it."<br>calaneth: report, "I drank it."<br>quest the_well_kept_badly<br>rhosyn (start → after_drunk) |
+| `well_emptied` | ithmarren_well: choose, "Break the root-cages. Let the well em..."<br>ithmarren_well: choose, "Kneel, and drink." | levels/ithmarren_rootwell.tscn (WellLight) |
 | `well_examined` | weirholt_well: look | quest lanes_fever<br>weirholt_millstone (start → known) |
+| `well_given` | ithmarren_well: choose, "Leave it bound, and give it to the Mo..." | calaneth: card, "The takers are gone. The well's still..."<br>calaneth: report, "The takers are gone. The well's still..."<br>quest the_well_kept_badly<br>rhosyn (start → after_given) |
+| `well_lead` | calaneth: harvest<br>rhosyn: buy | calaneth: again, "The Mercy's harvest comes to Ithmarre..."<br>calaneth: greet, "The Mercy's harvest comes to Ithmarre..."<br>ithariel: again, "Your house keeps the Rootwell."<br>ithariel: greet, "Your house keeps the Rootwell."<br>quest the_well_kept_badly<br>rhosyn: greet, "Where do you get it?"<br>rhosyn: who, "Where do you get it?" |
+| `well_reported` | calaneth: drunk<br>calaneth: given<br>calaneth: unbound | calaneth (start → after)<br>quest the_well_kept_badly |
+| `well_resolved` | ithmarren_well: choose, "Break the root-cages. Let the well em..."<br>ithmarren_well: choose, "Kneel, and drink."<br>ithmarren_well: choose, "Leave it bound, and give it to the Mo..." | calaneth (start → report)<br>ithariel (start → after)<br>ithmarren_well (start → done)<br>quest the_well_kept_badly |
+| `well_unbound` | ithmarren_well: choose, "Break the root-cages. Let the well em..." | calaneth: card, "I broke the root-cages and let the we..."<br>calaneth: report, "I broke the root-cages and let the we..."<br>levels/ithmarren.tscn (GardenLanterns)<br>levels/ithmarren.tscn (GateLanterns)<br>levels/ithmarren.tscn (MootLanterns)<br>levels/ithmarren.tscn (VeilLanterns)<br>quest the_well_kept_badly<br>rhosyn (start → after_unbound) |
 | `wenna_discount` (never checked) | wenna: greet, "A friend's price, for a friend?" | – |
 | `wisp_choice_made` | caged_wisp: free<br>caged_wisp: take | props/caged_wisp.gd:23<br>props/caged_wisp.gd:29<br>quest the_barrow |
 | `wolf_quest_accepted` | maren: accept | maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
 | `wolf_quest_done` | maren: reward<br>maren: reward_driven | brannoc: greet, "Maren says she told Riverwatch about ..."<br>maren (start → greet_hero)<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
 | `wolves_cleared` | enemies/wolf_pack.gd:18 | maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet, "Why don't people come this way?"<br>maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: greet_again, "Tell me about the wolves again."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: hunter_line, "Tell me about the wolves."<br>maren: soldier_line, "Tell me about the wolves."<br>maren: wolf_sick, "Tell me about the rest of the pack."<br>maren: wolf_where, "Tell me about the rest of the pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
-| `wolves_driven_off` | enemies/wolf_pack.gd:23<br>levels/grieving_deep_ring.tscn (Mercy)<br>levels/ilunhall_undercroft.tscn (Mercy)<br>levels/ilunhall_undercroft.tscn (VessaPack)<br>levels/karrowdeep_seam.tscn (Mercy)<br>levels/weirholt.tscn (Acolytes)<br>levels/weirholt.tscn (TollRoadGang)<br>levels/weirholt_culvert.tscn (Smugglers) | maren: greet, "I drove off the wolves north of here."<br>maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
+| `wolves_driven_off` | enemies/wolf_pack.gd:23<br>levels/grieving_deep_ring.tscn (Mercy)<br>levels/ilunhall_undercroft.tscn (Mercy)<br>levels/ilunhall_undercroft.tscn (VessaPack)<br>levels/ithmarren_rootwell.tscn (Takers)<br>levels/karrowdeep_seam.tscn (Mercy)<br>levels/weirholt.tscn (Acolytes)<br>levels/weirholt.tscn (TollRoadGang)<br>levels/weirholt_culvert.tscn (Smugglers) | maren: greet, "I drove off the wolves north of here."<br>maren: greet, "I killed the wolves north of here. Al..."<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |
 | `wrong_things_done` | brannoc: mark | brannoc: after_given, "What will you do, after all this?"<br>brannoc: after_kept, "What will you do, after all this?"<br>brannoc: after_restored, "What will you do, after all this?"<br>brannoc: greet_again, "What will you do, after all this?"<br>brannoc: progress, "What will you do, after all this?"<br>brannoc: waiting_on_stones, "What will you do, after all this?"<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>quest wrong_things |
 | `wrong_things_started` | systems/save_system.gd:230 | enemies/wisp_spawner.gd:17<br>maren: greet, "I'm tracking a Greyfang that walks wr..."<br>maren: greet, "I've come to tend the roadside shrine..."<br>maren: greet, "My wagon never reached Riverwatch. Ye..."<br>maren: greet, "Sergeant Holt sent me from Riverwatch..."<br>maren: greet, "The Collegium sent me to study the st..."<br>maren: greet, "You saw me sleeping behind your wayst..."<br>maren: greet_again, "Anything strange around here lately?"<br>maren: greet_hero, "Anything strange around here lately?"<br>maren: wolves, "Why are they raiding the road at all?"<br>quest wrong_things<br>systems/save_system.gd:229<br>zora: again, "What do you know about what's drainin..."<br>zora: drain, "What do you know about what's drainin..."<br>zora: greet, "What do you know about what's drainin..."<br>zora: scholar, "What do you know about what's drainin..."<br>zora: taught, "What do you know about what's drainin..." |
 | `ysolde_elf` | ysolde: elf | ysolde: again, "I can feel how you look at me."<br>ysolde: greet, "I can feel how you look at me." |

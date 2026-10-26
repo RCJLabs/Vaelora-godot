@@ -92,7 +92,7 @@ Opening it with the key leaves the key in the door.
 - bring the harvest to Ithmarren by the next dark of the Wanderer.
 
 Show them to Hrodna (`keld_shown`). The quest's journal remembers them. **Ithmarren is the
-next lead**, and it isn't built.
+next lead**: see ITHMARREN.md. The Hollow Way runs out of the Guild Gallery's north-east corner.
 
 **The blind choir.** Listening at the Deep sets `heard_blind_choir`. It's a thread for later.
 Nothing else uses it yet.
@@ -110,7 +110,7 @@ Nothing else uses it yet.
 - **Seam Nine is small:** one drift and one cavern, one fight.
 - **The seam looks the same after you collapse it.** The rubble isn't modelled; only the
   journal and Hrodna know.
-- **The blind choir and Ithmarren are hooks only.**
+- **The blind choir is a hook only.**
 - **The Seal Door's key is in two places:** Hrodna's neck and her strongbox. Either opens
   it once.
 - **Underground means no clock you can see.** Routines still keep time.

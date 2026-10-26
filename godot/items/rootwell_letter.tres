@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "rootwell_letter"
+display_name = "A Note in a Card-Player's Hand"
+description = "A playing card, the Wanderer's face, with writing on the back so small it must have been done with a pin."
+value = 0
+weight = 0.0
+quest_item = true
+book_text = "Caerwyn, dear,
+
+Your sister thinks I pay for what you keep. I don't. I pay for what you give back. Keep less.
+
+The well under your tree is the sixth of the twelve, and the one your people have kept worst: you have been drinking it since before your grandmothers were seeded. I don't blame you. They taste of home.
+
+I will come for what you've gathered on the dark of the Wanderer, as always. Then I go north, with whatever's left of us, and you need not keep anything ever again.
+
+If someone with clean hands comes down your stair before then, they have read Keld's orders and Vessa's ledger and they are cleverer than you. Be kind to them. They are going to have to choose, and nobody chose for me.
+
+- A.
+
+(On the face of the card, over the Wanderer, the same pin: the founders signed it, and the founders burned everything but this. It's still where they buried it. Look under the glass.)"

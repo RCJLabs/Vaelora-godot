@@ -1,0 +1,48 @@
+{
+	"start": [
+		{"node": "again", "requires_flag": "met_sylvaine"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "An elf in grey that seems to change colour as she moves, leaning on the Veil College's doorpost. When you blink she's somehow a step nearer. \"Sylvaine. Magister of the Veil. We teach Glamour, which is the art of being believed. You look as though you'd like to be believed by someone.\"",
+			"set_flag": "met_sylvaine",
+			"choices": [
+				{"text": "Will you teach me?", "next": "teach"},
+				{"text": "What does the Veil College want with me?", "next": "test", "requires_not_flag": "lie_started"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Sylvaine is somewhere slightly to your left of where you expected. \"Back.\"",
+			"choices": [
+				{"text": "Will you teach me?", "next": "teach"},
+				{"text": "What does the Veil College want with me?", "next": "test", "requires_not_flag": "lie_started"},
+				{"text": "I have House Sennaveth's letter.", "next": "read", "requires_flag": "lie_started", "requires_not_flag": "lie_done", "requires_item": "sennaveth_letter"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"teach": {
+			"text": "\"Everyone lies. The art is lying so well the lie gets tired and becomes true.\" She gestures you inside. \"Gold first. Honesty is free; Glamour is not.\"",
+			"choices": [
+				{"text": "Let's begin.", "open_training": "sylvaine", "next": "end"},
+				{"text": "Not now.", "next": "end"}
+			]
+		},
+		"test": {
+			"text": "\"An entrance test. The Veil admits no one it can't lie to, so show me you can do the lying.\" She nods toward the Sennaveth bough. \"House Sennaveth sends a letter below every week, by its own courier, and nobody in the Moot has ever read one. Bring me this week's. How you get it is the test. Don't break anything I'll have to apologise for.\"",
+			"set_flag": "lie_started",
+			"choices": [
+				{"text": "I'll bring it.", "next": "end"}
+			]
+		},
+		"read": {
+			"text": "She lifts the seal with a hot knife from nowhere, reads it twice, and lays the seal back so neatly you'd never know. \"Oh, Ithariel.\" She hands it back. \"Keep it. In this city a letter like that opens more doors than a key. You pass.\" A purse appears in your other hand. \"Welcome to the Veil, in the ways that matter.\"",
+			"set_flag": "lie_done",
+			"give_gold": 120,
+			"choices": [
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

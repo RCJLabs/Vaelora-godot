@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "sennaveth_letter"
+display_name = "A Sennaveth Letter"
+description = "A letter under House Sennaveth's knot, never sent. The seal has been lifted and laid back with a hot knife, by someone who's done it before."
+value = 0
+weight = 0.1
+quest_item = true
+book_text = "From Lady Ithariel, of House Sennaveth, to Lord Caerwyn, her brother, below.
+
+Brother,
+
+The Moot asks again why the Gardens dim each spring and brighten each autumn. I told them it is the season. They believed me, because they wished to.
+
+Take what the grey ones bring up from the mountain and pour it in, as before. Draw what the House needs before you pour, and no more than the House needs. I know what you are drinking. Everyone in this city who loves you knows. Stop before the roots see it in your hands.
+
+And when the small woman comes for the rest, give it to her and ask nothing. She has never once failed to pay.
+
+- I."

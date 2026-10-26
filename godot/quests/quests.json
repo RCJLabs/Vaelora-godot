@@ -1608,5 +1608,232 @@
 				"text": "Assayer Pell paid me eighty gold to forget his hollow counterweight. Ebba knew."
 			}
 		]
+	},
+	"the_well_kept_badly": {
+		"title": "The Well Kept Badly",
+		"giver": "Brother Keld's orders, in Seam Nine",
+		"main": true,
+		"region": "ithmarren",
+		"description": "Keld's orders send the Mercy's harvest to Ithmarren, the elves' forest city, by the next dark of the Wanderer. \"Ithmarren keeps its own wells, and keeps them badly.\" The Hollow Way runs north out of Karrowdeep's Guild Gallery, through the mountain, to the forest.",
+		"started_when": {
+			"requires_flag": "seam_reported"
+		},
+		"completed_when": {
+			"requires_flag": "well_reported"
+		},
+		"objectives": [
+			{
+				"text": "Go to Ithmarren, by the Hollow Way at the north-east end of Karrowdeep's Guild Gallery.",
+				"done_when": {
+					"requires_flag": "discovered_ithmarren"
+				},
+				"marker": "HollowWay"
+			},
+			{
+				"text": "Find out where the harvest goes: ask the Moot-Speaker in the high boughs, or whoever waits by the Moot Tree's roots.",
+				"done_when": {
+					"requires_flag": "well_lead"
+				},
+				"marker": [
+					"Calaneth",
+					"Rhosyn"
+				]
+			},
+			{
+				"text": "Get through the Root Door under the Moot Tree: House Sennaveth's key, or another way.",
+				"done_when": {
+					"requires_flag": "rootwell_open"
+				},
+				"marker": [
+					"RootDoor",
+					"Ithariel"
+				]
+			},
+			{
+				"text": "Go down into the Rootwell.",
+				"done_when": {
+					"requires_flag": "discovered_rootwell"
+				},
+				"marker": "RootwellDoor"
+			},
+			{
+				"text": "Stop the takers in the Rootwell.",
+				"done_when": {
+					"requires_flag": "rootwell_cleared"
+				},
+				"marker": "TheWell"
+			},
+			{
+				"text": "Decide what becomes of the well.",
+				"done_when": {
+					"requires_flag": "well_resolved"
+				},
+				"marker": "TheWell"
+			},
+			{
+				"text": "Tell Moot-Speaker Calaneth.",
+				"done_when": {
+					"requires_flag": "well_reported"
+				},
+				"marker": "Calaneth"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "ithariel_leave"
+				},
+				"text": "Lady Ithariel gave me House Sennaveth's root-key, and asked me not to hurt her brother more than I had to."
+			},
+			{
+				"when": {
+					"requires_flag": "ithariel_shamed"
+				},
+				"text": "I showed Lady Ithariel her own letter, and she gave me the root-key without looking at me."
+			},
+			{
+				"when": {
+					"requires_flag": "root_glamoured"
+				},
+				"text": "I wore a Sennaveth face, and the Root Door opened for family."
+			},
+			{
+				"when": {
+					"requires_flag": "rootwell_open",
+					"requires_not_flag": [
+						"ithariel_leave",
+						"ithariel_shamed",
+						"root_glamoured"
+					]
+				},
+				"text": "I opened the Root Door with a key I took from House Sennaveth's coffer."
+			},
+			{
+				"when": {
+					"requires_flag": "well_unbound"
+				},
+				"text": "I broke the root-cages under the Moot Tree. The lights in the well rose and went home, and every lantern in Ithmarren's gardens went dim."
+			},
+			{
+				"when": {
+					"requires_flag": "well_given"
+				},
+				"text": "I left the well bound and gave it to the Moot to keep, instead of House Sennaveth."
+			},
+			{
+				"when": {
+					"requires_flag": "well_drunk"
+				},
+				"text": "I drank the well under the Moot Tree dry. It tasted like the first morning of the world. The lights are in me now."
+			},
+			{
+				"when": {
+					"requires_item": "rootwell_letter"
+				},
+				"text": "A. left Lord Caerwyn a card: the founders' confession wasn't burned. \"Look under the glass.\" Calaneth says that means the Glass Coast, in Sundra."
+			}
+		]
+	},
+	"a_lie_well_told": {
+		"title": "A Lie Well Told",
+		"giver": "Magister Sylvaine, of the Veil College in Ithmarren",
+		"region": "ithmarren",
+		"description": "The Veil College admits no one it can't lie to. Sylvaine's entrance test: bring her this week's letter from House Sennaveth, which goes below by the house's own courier and has never been read.",
+		"started_when": {
+			"requires_flag": "lie_started"
+		},
+		"completed_when": {
+			"requires_flag": "lie_done"
+		},
+		"objectives": [
+			{
+				"text": "Get House Sennaveth's letter: talk Steward Lirael out of it, wear a courier's face, or take it from the house's letter-box.",
+				"done_when": {
+					"requires_item": "sennaveth_letter"
+				},
+				"marker": [
+					"Lirael",
+					"SennavethLetters"
+				]
+			},
+			{
+				"text": "Bring it to Magister Sylvaine at the Veil College.",
+				"done_when": {
+					"requires_flag": "lie_done"
+				},
+				"marker": "Sylvaine"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "lirael_fooled"
+				},
+				"text": "I wore a Sennaveth face, and Steward Lirael handed me the letter himself."
+			},
+			{
+				"when": {
+					"requires_flag": "letter_given",
+					"requires_not_flag": "lirael_fooled"
+				},
+				"text": "I told Steward Lirael that Lady Ithariel had sent me, and he believed me."
+			},
+			{
+				"when": {
+					"requires_flag": "lie_done",
+					"requires_not_flag": "letter_given"
+				},
+				"text": "I took the letter from House Sennaveth's letter-box."
+			},
+			{
+				"when": {
+					"requires_flag": "lie_done"
+				},
+				"text": "Sylvaine read Ithariel's letter to her brother, gave it back, and told me I'd passed."
+			}
+		]
+	},
+	"night_blooms": {
+		"title": "Night-Blooms",
+		"giver": "Fennick, gardener of the Lantern Gardens",
+		"region": "ithmarren",
+		"description": "Fennick's knees don't do nights any more. His moonpetals open after dark and close at dawn, and the Gardens' healer needs three.",
+		"started_when": {
+			"requires_flag": "blooms_started"
+		},
+		"completed_when": {
+			"requires_flag": "blooms_done"
+		},
+		"objectives": [
+			{
+				"text": "Pick three moonpetals from Fennick's beds, at night when they open.",
+				"done_when": {
+					"requires_item": {
+						"id": "moonpetal",
+						"count": 3
+					}
+				},
+				"marker": [
+					"NightBloom1",
+					"NightBloom2",
+					"NightBloom3"
+				]
+			},
+			{
+				"text": "Bring them to Fennick.",
+				"done_when": {
+					"requires_flag": "blooms_done"
+				},
+				"marker": "Fennick"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "blooms_done"
+				},
+				"text": "I picked three moonpetals in the dark for Fennick, gently. He paid in potions and coin, and told me to come back in spring."
+			}
+		]
 	}
 }

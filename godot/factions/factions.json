@@ -44,6 +44,11 @@
 			"name": "The Deep Guilds",
 			"description": "Karrowdeep's crafters and miners under guild-law: contracts carved in stone, a Table of Guildmasters, and seams that go down further than anyone admits.",
 			"known_when": { "requires_flag": "met_hrodna" }
+		},
+		"great_houses": {
+			"name": "The Great Houses",
+			"description": "The old elven families of Ithmarren, meeting as the Moot of Houses in the canopy. Lineage matters more than anything, and memories are four hundred years long.",
+			"known_when": { "requires_flag": "met_calaneth" }
 		}
 	}
 }

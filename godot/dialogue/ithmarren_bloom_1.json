@@ -1,0 +1,28 @@
+{
+	"start": [
+		{"node": "picked", "requires_flag": "bloom_1"},
+		{"node": "open", "requires_night": true},
+		{"node": "shut"}
+	],
+	"nodes": {
+		"shut": {
+			"text": "A pale bud on a dark stem, folded tight as a fist. Night-blooms only open in the dark.",
+			"choices": [
+				{"text": "(Leave it.)", "next": "end"}
+			]
+		},
+		"open": {
+			"text": "The bud has opened into a moonpetal, pale as the Wanderer, and it smells of rain on warm stone. In the lantern-light it almost seems to glow on its own.",
+			"choices": [
+				{"text": "Pick it gently.", "next": "end", "set_flag": "bloom_1", "give_item": "moonpetal"},
+				{"text": "(Leave it.)", "next": "end"}
+			]
+		},
+		"picked": {
+			"text": "A bare stem. It'll bloom again next spring.",
+			"choices": [
+				{"text": "(Leave it.)", "next": "end"}
+			]
+		}
+	}
+}

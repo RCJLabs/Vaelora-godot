@@ -61,6 +61,7 @@ character level, with the XP towards the next level kept).
   | Zora | Glamour | 50 | "Will you train me in Glamour? I'll pay." (after her first lesson) |
   | Magister Aurel | Tidecraft | 50 | "Teach me yourself, not from a book." |
   | Magister Orsa Deepcut (Karrowdeep) | Runecraft | 60 | "Will you teach me Runecraft?" |
+  | Magister Sylvaine (Ithmarren) | Glamour | 60 | "Will you teach me?" |
 
   A dialogue choice with `"open_training": "<id>", "next": "end"` opens it. Lessons taken this
   level are saved.
