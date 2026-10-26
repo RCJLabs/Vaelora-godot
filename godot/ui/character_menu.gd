@@ -209,6 +209,11 @@ func _refresh() -> void:
 		var desc := Label.new()
 		desc.text = info["description"]
 		desc.modulate = Color(1, 1, 1, 0.6)
+		# Wrapped, and free to shrink: an unwrapped line this long sets the whole menu's
+		# minimum width, which on a narrow or tall screen pushes it off both edges.
+		desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		desc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		desc.custom_minimum_size.x = 200
 		for c in [name_label, level, bar, desc]:
 			skill_list.add_child(c)
 	_refresh_perks()

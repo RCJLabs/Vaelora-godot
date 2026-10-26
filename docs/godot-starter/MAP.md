@@ -19,8 +19,15 @@ A top-down picture of the level, taken when you open it, with:
 - gold pins for quest targets
 - you, as a red arrow pointing the way you face
 
-Mouse wheel (or RT / LT on a gamepad; left/right click with a mouse) zooms in and out.
-Zoomed in, it centres on you. Interiors have their own maps, drawn from just under the
+**Zooming and moving the map:**
+- **Zoom:** pinch, the mouse wheel, the **+ / −** buttons in the corner, or RT / LT on a gamepad.
+  Zoom runs from the whole level up to 4×.
+- **Move:** drag with a finger or the mouse, or use the right stick.
+- **Me** centres the map on you. If you were zoomed in, the map also opens centred on you.
+- The level is drawn once, when the map opens, at 2048 px. Zooming and moving only crop that
+  picture, so dragging costs nothing on a phone.
+- A tap no longer zooms. Zoom used to be the "attack" action, which a tap counts as, and there
+  was no way to zoom out or pan by touch. Interiors have their own maps, drawn from just under the
 ceiling. **M** can be rebound in Settings → Controls.
 
 ## Adding places
