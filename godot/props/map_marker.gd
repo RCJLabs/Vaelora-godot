@@ -14,6 +14,10 @@ enum Kind { LANDMARK, SETTLEMENT, CAMP, DUNGEON }
 @export var discover_radius: float = 18.0
 ## Known from the start (where the game begins).
 @export var starts_discovered := false
+## Where fast travel puts you, from the marker (it often sits in the middle of the place).
+@export var arrival_offset := DEFAULT_ARRIVAL
+
+const DEFAULT_ARRIVAL := Vector3(0, 0.3, 5)
 
 var _check_left := 0.0
 
@@ -22,6 +26,11 @@ func _ready() -> void:
 	add_to_group("map_marker")
 	if location_id == "":
 		location_id = name.to_snake_case()
+
+
+## Where you appear when you fast travel here (FastTravel).
+func arrival_point() -> Vector3:
+	return global_position + arrival_offset
 
 
 func is_discovered() -> bool:

@@ -170,7 +170,7 @@ This is a **systems sandbox**, not yet a game slice: placeholder art, one test l
       ambience, campfire crackle. No music. All to be replaced with real recordings.)
 - [~] **Hardcore v1 (optional mode):** higher damage both ways, slower healing, no fast
       travel, limited saves. (Damage and healing done; saving only by resting done; there's
-      no fast travel to forbid yet. Permadeath is still an open question.)
+      Hardcore turns fast travel off (Tab → World). Permadeath is still an open question.)
 - [~] **Polish:** tutorial prompts, a title screen, key rebinding, performance on mid-range
       PCs, a bug-report link. (Tutorial hints done, with a setting to turn them off; key
       rebinding done: Settings → Controls; title screen done, with a placeholder name;

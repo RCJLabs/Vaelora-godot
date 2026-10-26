@@ -417,7 +417,7 @@ func _build_town() -> Node3D:
 	level_map.set("area", Rect2(-100, -100, 200, 200))
 	level_map.set("camera_height", 120.0)
 	own(level_map)
-	map_marker("MapWeirholt", "weirholt", "Weirholt", Vector3(0, 0, 0), 1, true)
+	map_marker("MapWeirholt", "weirholt", "Weirholt", Vector3(0, 0, 0), 1)
 	map_marker("MapInn", "lantern_weir", "The Lantern Weir", Vector3(-14, 0, -17))
 	map_marker("MapCountingHouse", "counting_house", "Compact counting house", Vector3(8, 0, -19))
 	map_marker("MapDocks", "weirholt_docks", "The docks", Vector3(24, 0, 19))
