@@ -19,5 +19,13 @@
 	"call_the_host": { "name": "Call the Host", "description": "For 2 minutes you can hold one more bound creature than usual.", "cooldown": 300, "effect": "call_the_host" },
 	"second_breath": { "name": "Second Breath", "description": "Instantly recover half your Health and half your Stamina.", "cooldown": 150, "class": true },
 	"rally": { "name": "Rally", "description": "For 20 seconds, you and your companions deal 25% more damage.", "cooldown": 120, "effect": "rally" },
-	"old_bargain": { "name": "Old Bargain", "description": "Trade 30 Health for 60 Magicka. Not when it would kill you.", "cooldown": 30, "class": true }
+	"old_bargain": { "name": "Old Bargain", "description": "Trade 30 Health for 60 Magicka. Not when it would kill you.", "cooldown": 30, "class": true },
+	"shrines_peace": { "name": "Shrine's Peace", "description": "Enemies within 10 m stop fighting for 10 seconds, unless you strike them. Wisps don't heed it.", "cooldown": 120, "scripted": true, "earned": {"quest": "silent_shrine"} },
+	"stone_skin": { "name": "Stone-Skin", "description": "For 8 seconds, take half damage but move 30% slower.", "cooldown": 120, "effect": "stone_skin", "earned": {"essences": 3} },
+	"wisp_step": { "name": "Wisp-Step", "description": "Blink up to 6 m the way you're facing.", "cooldown": 20, "scripted": true, "earned": {"essences": 6} },
+	"lanterns_glare": { "name": "Lantern's Glare", "description": "Enemies within 10 m in front of you reel; wisps take 40 damage.", "cooldown": 60, "scripted": true, "earned": {"quest": "wrong_things"} },
+	"greenward": { "name": "Greenward", "description": "Restore 3 Health a second for 20 seconds.", "cooldown": 120, "effect": "greenward", "earned": {"quest": "ask_forest"} },
+	"wanderers_eye": { "name": "Wanderer's Eye", "description": "For 30 seconds, every enemy within 40 m is marked, through walls (True Sight).", "cooldown": 180, "effect": "true_sight", "earned": {"quest": "readings"} },
+	"roadwise": { "name": "Roadwise", "description": "For 30 seconds, sprinting costs no Stamina.", "cooldown": 180, "effect": "roadwise", "earned": {"quest": "lost_wagon"} },
+	"kindle": { "name": "Kindle", "description": "Everything within 3 m of where you're aiming (up to 20 m) catches fire.", "cooldown": 45, "scripted": true, "earned": {"quest": "licence_to_burn"} }
 }

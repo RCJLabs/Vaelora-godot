@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "roadwise"
+display_name = "Roadwise"
+description = "Sprinting costs no Stamina."
+is_harmful = false
+duration = 30.0
+health_per_second = 0.0
+modifiers = {
+"sprint_stamina": 0.0
+}

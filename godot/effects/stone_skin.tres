@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "stone_skin"
+display_name = "Stone-Skin"
+description = "Half damage taken, 30% slower."
+is_harmful = false
+duration = 8.0
+health_per_second = 0.0
+modifiers = {
+"damage_taken": 0.5,
+"move_speed": 0.7
+}
