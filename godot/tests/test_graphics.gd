@@ -2,7 +2,7 @@ extends "res://tests/test_base.gd"
 # Graphics presets: title (shared atmosphere.tres) -> Low -> test level (DayNight duplicates
 # the environment) -> back to High must restore the designed effects; FPS counter toggles.
 # Bounce light: SDFGI from High up, SSIL on Ultra, never in a scene built without it.
-# Every interior is built for the PC look: SSAO, volumetric fog, SDFGI and SSIL.
+# Every interior is built for the PC look: SSAO, volumetric fog and SSIL (no SDFGI yet).
 const INTERIORS := ["glass_vault", "grieving_deep_ring", "ilunhall_undercroft", "ithmarren_rootwell", "karrowdeep",
 		"karrowdeep_seam", "weirholt_culvert", "test_dungeon", "waystation_cellar"]
 var f := 0
@@ -58,7 +58,9 @@ func _process(_d: float) -> bool:
 		31: change_scene_to_file("res://levels/waystation_cellar.tscn")
 		37:
 			expect("cellar High", true, true, true, -1.0, Viewport.MSAA_2X, 1.0)
-			expect_gi("cellar High", true, false)
+			expect_gi("cellar High", false, false)
+			ST.set_option("graphics_quality", 3)
+			expect_gi("cellar Ultra: SSIL", false, true)
 			ST.set_option("graphics_quality", 1)
 			expect("cellar Medium", true, false, true, -1.0, Viewport.MSAA_DISABLED, 1.0)
 			expect_gi("cellar Medium", false, false)
@@ -78,8 +80,8 @@ func _process(_d: float) -> bool:
 				# How it was built: the presets have already changed the loaded level's (the cellar's).
 				var built: Dictionary = e.get_meta("designed", {"ssao": e.ssao_enabled, "volumetric_fog": e.volumetric_fog_enabled,
 						"sdfgi": e.sdfgi_enabled, "ssil": e.ssil_enabled})
-				ok(built["ssao"] and built["volumetric_fog"] and e.volumetric_fog_density > 0.0 and built["sdfgi"] and built["ssil"],
-						"%s: built for the PC look (SSAO, air, bounce light)" % level, [built, e.volumetric_fog_density])
+				ok(built["ssao"] and built["volumetric_fog"] and e.volumetric_fog_density > 0.0 and built["ssil"] and not built["sdfgi"],
+						"%s: built for the PC look (SSAO, air, SSIL; no SDFGI yet)" % level, [built, e.volumetric_fog_density])
 				scene.free()
 			return done()
 	return false

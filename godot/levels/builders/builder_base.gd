@@ -406,8 +406,9 @@ func lantern(name: String, pos: Vector3, color := Color(1, 0.75, 0.45)) -> void:
 
 
 ## Underground and indoors: no sky, a dim fill, and the PC look (docs/godot-starter/LOOK.md,
-## "Interiors"): contact shadows, bounce light from the lamps and braziers (SDFGI from
-## High, SSIL on Ultra: systems/settings.gd), and a little air for those lights to glow in.
+## "Interiors"): contact shadows, close-up bounce light (SSIL, on Ultra: systems/settings.gd),
+## and a little air for the lamps and braziers to glow in. No SDFGI yet: it may stand in for
+## the ambient fill these places rely on to be seen in, and that hasn't been checked on a GPU.
 func _interior_environment() -> Environment:
 	var e := Environment.new()
 	e.background_mode = Environment.BG_COLOR
@@ -419,11 +420,6 @@ func _interior_environment() -> Environment:
 	e.glow_enabled = true
 	e.ssao_enabled = true
 	e.ssao_radius = 1.0
-	e.sdfgi_enabled = true
-	e.sdfgi_use_occlusion = true
-	e.sdfgi_read_sky_light = false   # there's no sky down here, only the black
-	e.sdfgi_min_cell_size = 0.1      # rooms and drifts a few metres wide
-	e.sdfgi_bounce_feedback = 0.5
 	e.ssil_enabled = true
 	e.ssil_radius = 3.0
 	e.ssil_intensity = 0.8

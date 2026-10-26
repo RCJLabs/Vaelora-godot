@@ -285,9 +285,8 @@ GPU:
 
 Every interior gets the same PC look, built into its scene:
 - **SSAO**: contact shadows in corners and under things.
-- **Bounce light**: SDFGI from High, SSIL on Ultra, as outdoors. The lamps and braziers light
-  the walls round them, not just what they point at. `sdfgi_min_cell_size` is 0.1 (outdoors
-  0.2), because drifts and rooms are only a few metres wide.
+- **Close-up bounce light**: SSIL on Ultra, as outdoors.
+- **No SDFGI yet** (below).
 - **Air**: a little volumetric fog, so the lamps and braziers glow in it, and the rest falls
   away into dark. High and Ultra only, like all volumetric fog.
 
@@ -305,10 +304,22 @@ with `air(density, tint)`:
 | Karrowdeep | 0.012, cold blue | A huge hall, so thin (and it keeps its distance fog) |
 
 The hand-made test dungeon and waystation cellar already had SSAO and air (0.025 and 0.03), and
-now have the bounce light too.
+now have SSIL too.
 
-**Seen, and not:** the air renders in the cloud session's screenshots; the bounce light doesn't
-(see above). Check it on a real GPU the same way, on any interior's `WorldEnvironment`.
+![Undercroft, before](../images/interior_undercroft_before.jpg)
+![Undercroft, after: air](../images/interior_undercroft_after.jpg)
+
+**Why no SDFGI underground (yet).** In the cloud session's renderer, switching SDFGI on in
+Weirholt's culvert took the ambient fill's reflections away (the water channel went black),
+and SDFGI itself adds nothing there. That fits SDFGI standing in for the environment's ambient
+light rather than adding to it. Outdoors that's fine: SDFGI reads the sky. Underground, there's
+no sky, and the dim ambient fill is what lets you see past the lamps. So it stays off until
+it's been looked at on a real GPU. To try it: on an interior's `WorldEnvironment`, tick **SDFGI
+→ Enabled** (with **Use Occlusion**, **Min Cell Size** 0.1) and compare. If the fill survives,
+add it to `_interior_environment()` in `builder_base.gd` and rebuild.
+
+The same question applies outdoors, where SDFGI is on from High: if shade looks darker or
+flatter than on Medium, that's the place to look.
 
 ## Renderers (a caveat)
 
