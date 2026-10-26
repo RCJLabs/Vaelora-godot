@@ -1,0 +1,32 @@
+{
+	"start": [
+		{
+			"node": "read",
+			"requires_night": true
+		},
+		{
+			"node": "day"
+		}
+	],
+	"nodes": {
+		"day": {
+			"text": "A rail-stone of the Rune Bridge, cut all over with runes. By day they're only grooves; whatever they say, they say it in the dark.",
+			"choices": [
+				{
+					"text": "(Leave it)",
+					"next": "end"
+				}
+			]
+		},
+		"read": {
+			"text": "The runes burn blue in the dark, and the grooves become words, in the Passengers' old letters:\n\n\"It said, \"We were lost, and we only came by, / and we cannot go home till you light us the sky.\"\"",
+			"choices": [
+				{
+					"text": "(Remember it)",
+					"next": "end",
+					"set_flag": "verse_rune_2"
+				}
+			]
+		}
+	}
+}

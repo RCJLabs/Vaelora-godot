@@ -1,0 +1,73 @@
+{
+	"start": [
+		{
+			"node": "after",
+			"requires_flag": "conduit_broken"
+		},
+		{
+			"node": "again",
+			"requires_flag": "undercroft_lead"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A Deepfolk woman in a harness hangs off the scaffold under the College's eaves, a chisel in her teeth. She drops down beside you. \"Karra Seamwright. Eaves-wright. I set the light-stone in the roofs, and I take it out again when it goes grey.\"",
+			"set_flag": "met_karra",
+			"choices": [
+				{
+					"text": "It goes grey?",
+					"next": "grey"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"grey": {
+			"text": "\"Every year. My gran set stones that burned for thirty years; mine last five, if I'm lucky. Light-stone isn't stone. It's what's left of something, and it's running out.\" She lowers her voice. \"Except this last year. This year the stones came up warm. Brighter. From below.\"",
+			"choices": [
+				{
+					"text": "From below?",
+					"next": "below",
+					"requires_not_flag": "undercroft_lead"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"below": {
+			"text": "\"I followed the warm down the veins. They run under the Market Steps, into the old cistern. The gate's barred from inside, and the people who use it wear grey and violet and don't say good morning.\" She presses an old iron key into your hand. \"Cistern key. From before they barred it. The bar's on a pin; push hard.\"",
+			"choices": [
+				{
+					"text": "Thank you.",
+					"next": "end",
+					"set_flag": "undercroft_lead"
+				}
+			]
+		},
+		"again": {
+			"text": "\"The gate under the Market Steps. Push hard.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"after": {
+			"text": "She's on the scaffold, looking at a stone the colour of ash. \"Every eave on the Steps went dim at once. Whatever you did down there, it was the warm. I liked the warm.\" A long breath. \"I liked it less once I knew.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

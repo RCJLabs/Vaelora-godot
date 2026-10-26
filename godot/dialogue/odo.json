@@ -1,0 +1,144 @@
+{
+	"start": [
+		{
+			"node": "greet_again",
+			"requires_flag": "met_odo"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A broad man in a gold-stitched apron, holding a jug in each hand and not spilling either. \"Welcome to the Long Table, friend! The feast started before my grandfather was born and it'll end after I'm dead. Sit anywhere. Not there, that's the Margrave's.\"",
+			"set_flag": "met_odo",
+			"choices": [
+				{
+					"text": "I need a bed.",
+					"next": "bed",
+					"requires_not_flag": "feast_bed"
+				},
+				{
+					"text": "The feast never stops?",
+					"next": "feast"
+				},
+				{
+					"text": "Nob Ashby on the quay wants your Hundredth Horn.",
+					"next": "report",
+					"requires_flag": "horn_started",
+					"requires_not_flag": [
+						"horn_to_nob",
+						"horn_reported",
+						"horn_returned"
+					]
+				},
+				{
+					"text": "This is yours. The Hundredth Horn.",
+					"next": "return",
+					"requires_item": "hundredth_horn"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"greet_again": {
+			"text": "\"Back at the Long Table! Sit, sit.\"",
+			"choices": [
+				{
+					"text": "I need a bed.",
+					"next": "bed",
+					"requires_not_flag": "feast_bed"
+				},
+				{
+					"text": "Nob Ashby on the quay wants your Hundredth Horn.",
+					"next": "report",
+					"requires_flag": "horn_started",
+					"requires_not_flag": [
+						"horn_to_nob",
+						"horn_reported",
+						"horn_returned"
+					]
+				},
+				{
+					"text": "This is yours. The Hundredth Horn.",
+					"next": "return",
+					"requires_item": "hundredth_horn"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"feast": {
+			"text": "\"Not since the Hall of Spears was raised. Shifts of cooks, shifts of drinkers. The halls glow, the cups are full, and nobody looks too hard at anything. That's Ilunhall.\" He glances at the eaves and, just for a moment, stops smiling.",
+			"choices": [
+				{
+					"text": "I need a bed.",
+					"next": "bed",
+					"requires_not_flag": "feast_bed"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"bed": {
+			"text": "\"Ten gold and the bed at the back's yours whenever you want it. It's loud. You'll get used to it.\"",
+			"choices": [
+				{
+					"text": "Here's ten.",
+					"next": "bed_paid",
+					"requires_gold": 10,
+					"take_gold": 10,
+					"set_flag": "feast_bed"
+				},
+				{
+					"text": "Not now.",
+					"next": "end"
+				}
+			]
+		},
+		"bed_paid": {
+			"text": "\"At the back, past the hearth. Sleep well, if you can.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"report": {
+			"text": "His jugs come down, carefully. \"Ashby. Of course it's Ashby.\" He sends a boy running down the Steps. \"The watch will see him off the quay. Here, for your trouble, and drink on the house till Lanternfast.\"",
+			"give_gold": 60,
+			"set_flag": "horn_reported",
+			"add_reputation": {
+				"ilunar_empire": 5
+			},
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"return": {
+			"text": "He stares at the horn, then at the trophy chest, then at you. \"You... took it. And brought it back.\" He laughs, enormous and delighted. \"Ilunhall's never seen the like! Eighty gold, and you never pay for a cup here again.\"",
+			"take_item": "hundredth_horn",
+			"give_gold": 80,
+			"set_flag": "horn_returned",
+			"add_reputation": {
+				"ilunar_empire": 5
+			},
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

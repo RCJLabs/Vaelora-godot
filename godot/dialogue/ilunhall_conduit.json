@@ -1,0 +1,78 @@
+{
+	"start": [
+		{
+			"node": "done",
+			"requires_flag": "conduit_resolved"
+		},
+		{
+			"node": "guarded",
+			"requires_not_flag": "undercroft_cleared"
+		},
+		{
+			"node": "look"
+		}
+	],
+	"nodes": {
+		"guarded": {
+			"text": "A column of rune-iron and seam-stone, humming. The acolytes stand between you and it.",
+			"choices": [
+				{
+					"text": "(Leave it)",
+					"next": "end"
+				}
+			]
+		},
+		"look": {
+			"text": "Rune-iron bands around a column of seam-stone, and gold veins running from it up the walls and into the city overhead. In the cages around it the wisps are faint and grey, and every pulse of the conduit takes a little more of them up into Ilunhall's eaves.",
+			"choices": [
+				{
+					"text": "Break it. Let them go.",
+					"next": "broken",
+					"set_flag": [
+						"conduit_broken",
+						"conduit_resolved"
+					]
+				},
+				{
+					"text": "Leave it running. The city needs its light.",
+					"next": "spared",
+					"set_flag": [
+						"conduit_spared",
+						"conduit_resolved"
+					]
+				},
+				{
+					"text": "(Not yet)",
+					"next": "end"
+				}
+			]
+		},
+		"broken": {
+			"text": "You break the bands and the seam-stone cracks. The cages open on nothing; the lights are already rising, through the stone, up and away. The veins on the walls fade from gold to grey. Above you, somewhere, a whole city's eaves have just gone dim.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"spared": {
+			"text": "You leave it humming. The wisps in the cages pulse, and dim, and the veins on the walls stay gold. Somewhere above, a feast goes on in the light.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"done": {
+			"text": "The conduit is as you left it.",
+			"choices": [
+				{
+					"text": "(Leave it)",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

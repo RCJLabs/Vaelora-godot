@@ -1156,5 +1156,235 @@
 				"text": "I restacked the three toppled cairns of the Rising. Old Hesk gave me his brother's sword."
 			}
 		]
+	},
+	"the_light_in_the_eaves": {
+		"title": "The Light in the Eaves",
+		"giver": "V.'s note, under the Grieving Fields",
+		"main": true,
+		"region": "ilunhall",
+		"description": "\"Come to me at Ilunhall. The Empress's light-stone needs us more than she knows.\" V. has gone to the capital, where the great halls glow gold at night.",
+		"started_when": {
+			"requires_flag": "vessa_note_read"
+		},
+		"completed_when": {
+			"requires_flag": "light_reported"
+		},
+		"objectives": [
+			{
+				"text": "Go to Ilunhall, by the Imperial Road east of Greyfold.",
+				"done_when": {
+					"requires_flag": "discovered_ilunhall"
+				},
+				"marker": "ImperialRoad"
+			},
+			{
+				"text": "Find out what's keeping the light-stone lit: ask the eaves-wright on the Long Halls, or the Lantern Order.",
+				"done_when": {
+					"requires_flag": "undercroft_lead"
+				},
+				"marker": [
+					"Karra",
+					"Severin"
+				]
+			},
+			{
+				"text": "Go down through the gate under the Market Steps.",
+				"done_when": {
+					"requires_flag": "discovered_undercroft"
+				},
+				"marker": "UndercroftGate"
+			},
+			{
+				"text": "Stop the Mercy in the Undercroft.",
+				"done_when": {
+					"requires_flag": "undercroft_cleared"
+				},
+				"marker": "Conduit"
+			},
+			{
+				"text": "Decide what to do with Magister Vessa.",
+				"done_when": {
+					"requires_any_flag": [
+						"vessa_spared",
+						"vessa_handed",
+						"vessa_killed"
+					]
+				},
+				"marker": [
+					"Vessa",
+					"VessaFoe"
+				]
+			},
+			{
+				"text": "Decide what to do with the conduit feeding the light-stone.",
+				"done_when": {
+					"requires_flag": "conduit_resolved"
+				},
+				"marker": "Conduit"
+			},
+			{
+				"text": "Tell Steward Cassia at the Hall of Spears.",
+				"done_when": {
+					"requires_flag": "light_reported"
+				},
+				"marker": "Cassia"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "vessa_turned"
+				},
+				"text": "Magister Vessa gave me her ledger and walked out of the Undercroft. A. promised her a cure; she'd rather know if it's a lie. The ledger points to Karrowdeep."
+			},
+			{
+				"when": {
+					"requires_flag": "vessa_spared",
+					"requires_not_flag": "vessa_turned"
+				},
+				"text": "I let Magister Vessa go. She walked out past the conduit and didn't look back."
+			},
+			{
+				"when": {
+					"requires_flag": "vessa_handed"
+				},
+				"text": "I handed Magister Vessa to the Lantern Order. She burns on Lanternfast eve."
+			},
+			{
+				"when": {
+					"requires_flag": "vessa_killed"
+				},
+				"text": "I killed Magister Vessa in the Undercroft."
+			},
+			{
+				"when": {
+					"requires_flag": "conduit_broken"
+				},
+				"text": "I broke the conduit and the caged wisps went free. Every eave in Ilunhall went dim at once."
+			},
+			{
+				"when": {
+					"requires_flag": "conduit_spared"
+				},
+				"text": "I left the conduit running. Ilunhall still glows gold, on the last of the wisps in its cages."
+			},
+			{
+				"when": {
+					"requires_flag": "light_hushed"
+				},
+				"text": "Steward Cassia paid me to keep quiet about the dimming."
+			},
+			{
+				"when": {
+					"requires_flag": "light_told"
+				},
+				"text": "I told Steward Cassia I wouldn't keep it quiet. She doesn't think Ilunhall will listen."
+			}
+		]
+	},
+	"the_hundredth_horn": {
+		"title": "The Hundredth Horn",
+		"giver": "Nob Ashby, on Ilunhall's quay",
+		"region": "ilunhall",
+		"description": "Nob Ashby moves things from where they're not wanted to where they are. Today it's the gold-bound horn in the Long Table's trophy chest.",
+		"started_when": {
+			"requires_flag": "horn_started"
+		},
+		"completed_when": {
+			"requires_any_flag": [
+				"horn_to_nob",
+				"horn_returned",
+				"horn_reported"
+			]
+		},
+		"objectives": [
+			{
+				"text": "Take the Hundredth Horn from the trophy chest in the Long Table (or tell Hallmaster Odo about Nob).",
+				"done_when": {
+					"requires_item": "hundredth_horn"
+				},
+				"marker": [
+					"TrophyChest",
+					"Odo"
+				]
+			},
+			{
+				"text": "Take the horn to Nob on the quay, or back to Hallmaster Odo.",
+				"done_when": {
+					"requires_any_flag": [
+						"horn_to_nob",
+						"horn_returned"
+					]
+				},
+				"marker": [
+					"Nob",
+					"Odo"
+				]
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "horn_to_nob"
+				},
+				"text": "I stole the Hundredth Horn for Nob Ashby. If I want more work, I'm to knock twice at a window with no lantern on the dark of the Wanderer."
+			},
+			{
+				"when": {
+					"requires_flag": "horn_returned"
+				},
+				"text": "I took the Hundredth Horn and gave it back to Hallmaster Odo, who found that very funny."
+			},
+			{
+				"when": {
+					"requires_flag": "horn_reported"
+				},
+				"text": "I told Hallmaster Odo, and the watch ran Nob Ashby off the quay."
+			}
+		]
+	},
+	"a_verse_in_the_eaves": {
+		"title": "A Verse in the Eaves",
+		"giver": "Saelie of the Low Lane, on Ilunhall's quay",
+		"region": "ilunhall",
+		"description": "The Lantern Order sings that Hallam put the lights out. Saelie says the Rune Bridge remembers it another way.",
+		"started_when": {
+			"requires_flag": "verse_started"
+		},
+		"completed_when": {
+			"requires_flag": "verse_sung"
+		},
+		"objectives": [
+			{
+				"text": "Read the three rune-stones on the Rune Bridge, at night when the runes are lit.",
+				"done_when": {
+					"requires_flag": [
+						"verse_rune_1",
+						"verse_rune_2",
+						"verse_rune_3"
+					]
+				},
+				"marker": [
+					"RuneStone1",
+					"RuneStone2",
+					"RuneStone3"
+				]
+			},
+			{
+				"text": "Bring the words to Saelie on the quay.",
+				"done_when": {
+					"requires_flag": "verse_sung"
+				},
+				"marker": "Saelie"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "verse_sung"
+				},
+				"text": "Saelie sang me the third verse of Hallam and the Hundred Lights, the Choir's way: the lanterns were meant to guide the lights home, not to keep them out."
+			}
+		]
 	}
 }

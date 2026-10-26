@@ -21,6 +21,7 @@ const TRAINERS := {
 	"aurel": {"name": "Magister Aurel", "skill": "tidecraft", "max": 50},
 	"varga": {"name": "Captain Varga", "skill": "block", "max": 50},   # Weirholt
 	"ysolde": {"name": "Listener Ysolde", "skill": "sight", "max": 50},   # Greyfold
+	"ignatia": {"name": "Magister Ignatia Rufa", "skill": "destruction", "max": 60},   # Ilunhall, the Ember College
 }
 
 

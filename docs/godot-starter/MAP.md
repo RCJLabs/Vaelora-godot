@@ -70,7 +70,7 @@ Without one, the map tab says there's no map of this place.
 ## Fast travel
 
 **Tab → World** lists every place you've discovered, region by region (the Greywater Vale,
-Weirholt and the Riverlands), each with a **Travel** button. `systems/fast_travel.gd`
+Weirholt and the Riverlands, the Grieving Fields, Ilunhall), each with a **Travel** button. `systems/fast_travel.gd`
 (autoload `FastTravel`); the page is `ui/world_page.gd`.
 
 - **Which places:** each region's map markers, read straight from the region scenes
