@@ -10,21 +10,24 @@ extends "res://enemies/bandit.gd"
 @export var wait_for_flag: String = ""
 
 const ROBE := Color(0.2, 0.18, 0.24)
-const HOOD := Color(0.12, 0.11, 0.15)
-const MASK := Color(0.75, 0.8, 0.78)
 
 
 func _ready() -> void:
+	if look_role == "bandit":   # the scene's default: dress as the Mercy, unless the level chose
+		look_role = "mercy"
+		look_cloth = ROBE
 	super()
 	remove_from_group("captors")
-	_cloth.albedo_color = ROBE
-	_cloth_color = ROBE
-	for part in [["Hood", HOOD], ["Mask", MASK], ["LegL", ROBE], ["LegR", ROBE]]:
-		var mesh := get_node_or_null("Model/" + part[0]) as MeshInstance3D
-		if mesh:
-			var mat := StandardMaterial3D.new()
-			mat.albedo_color = part[1]
-			mesh.material_override = mat
 	if wait_for_flag != "" and not GameState.has_flag(wait_for_flag) and state != State.DEAD:
 		set_physics_process(false)
 		GameState.flag_set.connect(func(flag): if flag == wait_for_flag: set_physics_process(true))
+
+
+## The Mercy are hollowing mages: humans, elves and Passengers.
+func vary_races() -> Array:
+	return ["human", "human", "elf", "passenger"]
+
+
+## The Mercy dress alike.
+func vary_cloths() -> Array:
+	return []

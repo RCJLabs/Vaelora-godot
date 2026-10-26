@@ -56,6 +56,32 @@ legs, body, arms, hands, a head with eyes and a nose, and hair.
 - **The player's third-person body** (`player/player_view.gd`). It takes your race and
   is rebuilt if your race changes. Held weapons sit at that race's shoulder height.
 
+### Enemies
+
+Humanoid enemies (`enemies/bandit.gd`, and the cultist and inquisitor scripts that extend it)
+are figures too. The look is set by three exports in the **Look** group:
+- `look_race`
+- `look_role`: `bandit` (hood, red face scarf, strap), `mercy` for cultists, `inquisitor`
+- `look_cloth`
+
+In game, the scene's placeholder body is replaced. The figure is built without arms, and
+`Figure.arm()` hangs the arms on the scene's own shoulder pivots, so every attack, guard,
+stagger and death pose still swings them, sword and all.
+
+The clothes get a material of their own (`own_cloth`), so a hit flash tints only the enemy you
+hit.
+
+**Variety:** `look_vary` (on by default) picks race and clothes from the enemy's place in the
+scene, so the same enemy looks the same every time. It uses separate hashes for race, colour and
+shade, so the three choices don't move together.
+- **Bandits:** mostly human, some orcs and elves, in leather, moss, grey wool or rust.
+- **The Mercy:** humans, elves and Passengers, in the same robes.
+- **Named enemies** turn it off and set their look. Inquisitor Hale does; so does Magister Vessa
+  in the Undercroft, as a Lamp College scholar.
+
+Wolves, wisps, the Stone Guardian and The First keep their own models. Wolves already had a head,
+snout, ears, legs and tail. The Guardian and The First are meant to look like constructs.
+
 ### Who's who
 
 These NPCs had their race set in the docs or dialogue:

@@ -23,7 +23,7 @@ const RACES := {
 
 ## Role -> clothes and kit. Unknown roles dress as commoners.
 const ROLES := ["commoner", "child", "guard", "merchant", "innkeeper", "priest", "scholar",
-		"worker", "hunter", "official", "physician", "inquisitor", "mercy"]
+		"worker", "hunter", "official", "physician", "inquisitor", "mercy", "bandit"]
 
 const METAL := Color(0.55, 0.56, 0.6)
 const LEATHER := Color(0.3, 0.2, 0.12)
@@ -47,8 +47,11 @@ static func height_of(race: String) -> float:
 
 ## A person: race (key or display name), role (one of ROLES), cloth (their clothes'
 ## colour). sitting folds the legs under them (on a bench or the ground). Meshes go
-## on render `layers`.
-static func build(race: String, role: String, cloth: Color, sitting := false, layers := 1) -> Node3D:
+## on render `layers`. Without `arms`, the arms are left off for the caller to hang
+## on its own shoulder pivots (arm()); `own_cloth` gives the clothes a material of
+## their own (meta "cloth_material"), so tinting it, as a hit flash does, tints only
+## this one.
+static func build(race: String, role: String, cloth: Color, sitting := false, layers := 1, arms := true, own_cloth := false) -> Node3D:
 	var r: Dictionary = RACES[race_key(race)]
 	var h: float = r["h"]
 	var w: float = r["w"]
@@ -58,13 +61,15 @@ static func build(race: String, role: String, cloth: Color, sitting := false, la
 		head_size *= 1.2
 	var root := Node3D.new()
 	root.name = "Figure"
+	var cloth_mat := _new_mat(cloth) if own_cloth else _mat(cloth, false)
+	root.set_meta("cloth_material", cloth_mat)
 	var trousers := cloth.darkened(0.45)
 	var robed := role in ["priest", "scholar", "physician", "inquisitor", "mercy"]
 	var drop := 0.42 * h if sitting else 0.0   # sitting: the seat is at knee height
 
 	# Legs and body.
 	if robed and not sitting:
-		_part(root, _cyl(0.2 * w, 0.36 * w, 1.3 * h), Vector3(0, 0.65 * h, 0), cloth)
+		_part(root, _cyl(0.2 * w, 0.36 * w, 1.3 * h), Vector3(0, 0.65 * h, 0), cloth).material_override = cloth_mat
 	else:
 		for side in [-1.0, 1.0]:
 			if sitting:
@@ -73,11 +78,12 @@ static func build(race: String, role: String, cloth: Color, sitting := false, la
 			else:
 				_part(root, _capsule(0.09 * w, 0.86 * h), Vector3(side * 0.1 * w, 0.43 * h, 0), trousers)
 		if robed:
-			_part(root, _cyl(0.24 * w, 0.3 * w, 0.4 * h), Vector3(0, 0.9 * h - drop, 0), cloth)
-	_part(root, _capsule(0.22 * w, 0.78 * h), Vector3(0, 1.13 * h - drop, 0), cloth)
-	for side in [-1.0, 1.0]:
-		_part(root, _capsule(0.065 * w, 0.68 * h), Vector3(side * 0.28 * w, 1.1 * h - drop, 0), cloth, Vector3(0, 0, side * 0.08))
-		_part(root, _sphere(0.055 * w), Vector3(side * 0.3 * w, 0.75 * h - drop, 0), r["skin"])
+			_part(root, _cyl(0.24 * w, 0.3 * w, 0.4 * h), Vector3(0, 0.9 * h - drop, 0), cloth).material_override = cloth_mat
+	_part(root, _capsule(0.22 * w, 0.78 * h), Vector3(0, 1.13 * h - drop, 0), cloth).material_override = cloth_mat
+	if arms:
+		for side in [-1.0, 1.0]:
+			_part(root, _capsule(0.065 * w, 0.68 * h), Vector3(side * 0.28 * w, 1.1 * h - drop, 0), cloth, Vector3(0, 0, side * 0.08)).material_override = cloth_mat
+			_part(root, _sphere(0.055 * w), Vector3(side * 0.3 * w, 0.75 * h - drop, 0), r["skin"])
 
 	# Head and face.
 	var head_y := 1.42 * h + 0.16 * head_size - drop
@@ -140,12 +146,38 @@ static func build(race: String, role: String, cloth: Color, sitting := false, la
 			_part(head, _cyl(head_r * 2.1, head_r * 2.1, 0.025), Vector3(0, head_r * 0.6, 0), Color(0.1, 0.09, 0.08))
 			_part(head, _cyl(head_r * 0.9, head_r, head_r * 0.7), Vector3(0, head_r * 0.9, 0), Color(0.1, 0.09, 0.08))
 			_part(root, _box(Vector3(0.1, 0.1, 0.1)), Vector3(0, 1.28 * h - drop, -0.24 * w), Color(1.0, 0.8, 0.4), Vector3(0, PI / 4.0, 0), true)   # lantern badge
+		"bandit":
+			_hood(head, head_r, cloth.darkened(0.35).lerp(Color(0.2, 0.26, 0.18), 0.5))
+			_part(head, _box(Vector3(0.24, 0.1, 0.06) * head_size), Vector3(0, -head_r * 0.45, -head_r * 0.8), Color(0.55, 0.1, 0.08))   # face scarf
+			_part(root, _box(Vector3(0.06, 0.06, 0.5) * Vector3(1, 1, w)), Vector3(0, 1.0 * h - drop, 0), LEATHER, Vector3(0, 0, 0.6))   # belt-strap
 		"mercy":
 			_hood(head, head_r, cloth.darkened(0.3))
 			_part(head, _box(Vector3(0.2, 0.22, 0.03) * head_size), Vector3(0, -0.01, -head_r * 0.98), Color(0.9, 0.88, 0.82))   # mask
 
 	_set_layers(root, layers)
 	return root
+
+
+## Where a figure's shoulder is (side: 1 right, -1 left), for arm pivots.
+static func shoulder(race: String, side: float) -> Vector3:
+	var r: Dictionary = RACES[race_key(race)]
+	return Vector3(side * 0.28 * r["w"], 1.44 * r["h"], 0)
+
+
+## How far below the shoulder the hand is.
+static func hand_drop(race: String) -> float:
+	return 0.66 * height_of(race)
+
+
+## An arm hanging from a shoulder pivot (the figure built without arms): a sleeve
+## in `cloth_material` and a hand at hand_drop(). The pivot swings it.
+static func arm(pivot: Node3D, race: String, cloth_material: Material, layers := 1) -> void:
+	var r: Dictionary = RACES[race_key(race)]
+	var h: float = r["h"]
+	var w: float = r["w"]
+	_part(pivot, _capsule(0.065 * w, 0.68 * h), Vector3(0, -0.33 * h, 0), Color.WHITE).material_override = cloth_material
+	_part(pivot, _sphere(0.055 * w), Vector3(0, -hand_drop(race), 0), r["skin"])
+	_set_layers(pivot, layers)
 
 
 static func _hood(head: Node3D, head_r: float, color: Color) -> void:
@@ -167,6 +199,13 @@ static func _part(parent: Node3D, mesh: Mesh, pos: Vector3, color: Color, rot :=
 	m.rotation = rot
 	m.material_override = _mat(color, glow)
 	parent.add_child(m)
+	return m
+
+
+static func _new_mat(color: Color) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = color
+	m.roughness = 0.85
 	return m
 
 

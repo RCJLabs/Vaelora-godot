@@ -47,6 +47,15 @@ enum Phase { WINDUP, ACTIVE, RECOVERY }
 @export var loot: Dictionary = {}
 ## Model in the right hand (a first-person weapon scene works).
 @export var weapon_scene: PackedScene
+@export_group("Look")
+## A greybox person (systems/figure.gd) instead of the scene's placeholder body:
+## a race (races/ file name), a role (Figure.ROLES) and the colour of their clothes.
+@export var look_race := "human"
+@export var look_role := "bandit"
+@export var look_cloth := Color(0.33, 0.24, 0.16)
+## Mix the race and shade the clothes per enemy (from its place in the scene, so the
+## same each time), so a camp isn't one person five times. Off for named people.
+@export var look_vary := true
 
 @onready var stats: Stats = $Stats
 @onready var effects: StatusEffects = $StatusEffects
@@ -105,8 +114,7 @@ func _ready() -> void:
 	stats.died.connect(_on_died)
 	stats.damaged.connect(_on_damaged)
 	stats.poise_broken.connect(func(): stagger(stagger_time))
-	_cloth = ($Model/Body as MeshInstance3D).mesh.surface_get_material(0).duplicate()
-	$Model/Body.material_override = _cloth
+	_dress()
 	_cloth_color = _cloth.albedo_color
 	if weapon_scene:
 		var held := weapon_scene.instantiate()
@@ -515,6 +523,44 @@ func _face(target: Vector3, delta: float) -> void:
 	if Vector2(dir.x, dir.z).length() < 0.05:
 		return
 	rotation.y = lerp_angle(rotation.y, atan2(-dir.x, -dir.z), minf(8.0 * delta, 1.0))
+
+
+## Who turns up in this kind of crowd (look_vary picks one). Bandits: mostly human,
+## some orcs and elves.
+func vary_races() -> Array:
+	return ["human", "human", "human", "orc", "elf"]
+
+
+## Clothes look_vary picks from (empty: keep look_cloth, only shaded). Bandits wear
+## what they've got: leather, moss, grey wool, rust.
+func vary_cloths() -> Array:
+	return [Color(0.33, 0.24, 0.16), Color(0.24, 0.3, 0.18), Color(0.34, 0.33, 0.31), Color(0.42, 0.22, 0.14)]
+
+
+## Swap the scene's placeholder body for a figure of look_race / look_role, with its
+## arms hung on the scene's own shoulder pivots (which the poses swing) and the
+## weapon in the hand. The clothes get their own material: hit flashes tint it.
+func _dress() -> void:
+	if look_vary:
+		var where := str(get_path())
+		look_race = vary_races()[absi(hash(where + "/race")) % vary_races().size()]
+		var cloths := vary_cloths()
+		if not cloths.is_empty():
+			look_cloth = cloths[absi(hash(where + "/cloth")) % cloths.size()]
+		var shade := float(absi(hash(where + "/shade")) % 100) / 100.0   # 0..1
+		look_cloth = look_cloth.darkened(0.3 * shade) if shade < 0.5 else look_cloth.lightened(0.25 * (shade - 0.5))
+	for part in ["Body", "LegL", "LegR", "Head", "Hood", "Mask", "RightArm/Arm", "LeftArm/Arm"]:
+		var old := model.get_node_or_null(part)
+		if old:
+			old.get_parent().remove_child(old)
+			old.free()
+	var figure := Figure.build(look_race, look_role, look_cloth, false, 1, false, true)
+	model.add_child(figure)
+	_cloth = figure.get_meta("cloth_material")
+	for arm in [[right_arm, 1.0], [left_arm, -1.0]]:
+		arm[0].position = Figure.shoulder(look_race, arm[1])
+		Figure.arm(arm[0], look_race, _cloth)
+	weapon_holder.position.y = -Figure.hand_drop(look_race)
 
 
 # Arms: tween both shoulders to a named pose.
