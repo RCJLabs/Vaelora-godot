@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "water_tally"
+display_name = "Samira's Water-Tally"
+description = "A clay tally-stone stamped with the Sovereign's seal and a family's mark: the right to draw from Sarabh's oasis. Without it, Samira's household drinks what it can buy."
+value = 0
+weight = 0.3
+quest_item = true

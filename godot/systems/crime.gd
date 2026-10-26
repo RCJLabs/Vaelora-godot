@@ -29,8 +29,9 @@ const REGIONS := {
 	"ilunhall": "capital",
 	"karrowdeep": "karrowdeep",
 	"ithmarren": "ithmarren",
+	"glass_coast": "glass_coast",
 }
-const REGION_NAMES := {"vale": "the Greywater Vale", "riverlands": "the Riverlands", "fields": "the Grieving Fields", "capital": "Ilunhall", "karrowdeep": "Karrowdeep", "ithmarren": "Ithmarren"}
+const REGION_NAMES := {"vale": "the Greywater Vale", "riverlands": "the Riverlands", "fields": "the Grieving Fields", "capital": "Ilunhall", "karrowdeep": "Karrowdeep", "ithmarren": "Ithmarren", "glass_coast": "the Glass Coast"}
 
 const WITNESS_RANGE := 15.0
 const NIGHT_MULT := 0.6          # standing, at the dead of night
@@ -47,7 +48,7 @@ const CALL_RANGE := 40.0         # guards this near you join the fight when you 
 const GUARD_SCENE := "res://enemies/bandit.tscn"   # loaded when guards first fight, not at startup
 const GUARD_SCRIPT := "res://enemies/guard.gd"
 ## A region's people, and what a seen crime costs you with them.
-const FACTIONS := {"vale": "riverwatch", "riverlands": "river_compact", "fields": "ashen_fields", "capital": "ilunar_empire", "karrowdeep": "deep_guilds", "ithmarren": "great_houses"}
+const FACTIONS := {"vale": "riverwatch", "riverlands": "river_compact", "fields": "ashen_fields", "capital": "ilunar_empire", "karrowdeep": "deep_guilds", "ithmarren": "great_houses", "glass_coast": "oasis_thrones"}
 const REPUTATION_LOSS := {"theft": 2, "pickpocket": 3, "resist": 2, "assault": 5}
 
 ## Pickpocketing: the base chance at Sneak 15, more per level above, more from behind.

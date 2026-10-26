@@ -1,0 +1,27 @@
+{
+	"start": [
+		{"node": "read", "requires_flag": "seal_read"},
+		{"node": "guarded", "requires_not_flag": "glass_sentinel_down"},
+		{"node": "look"}
+	],
+	"nodes": {
+		"guarded": {
+			"text": "A door of black glass at the end of the hall, a ring of sockets set in it. You can't study it with the Sentinel moving behind you.",
+			"choices": [{"text": "(Step back.)", "next": "end"}]
+		},
+		"look": {
+			"text": "The Seal of the Twelve: a door of black glass with no handle, no hinge and no keyhole, and set in a ring around its middle, twelve sockets of clear glass. Some of them are lit, green-white and steady; the rest are dark. You count the lit ones, and something cold settles in your stomach: they're the wells you've stood at and put right, one for each, and the deepest of them all, under your feet, lit the moment its keeper fell.\n\nWedged into the seam of the door, so old the glass has half grown over it, is a playing card.",
+			"choices": [
+				{"text": "Work the card free of the seam.", "next": "card", "set_flag": "seal_read", "give_item": "seal_card"}
+			]
+		},
+		"card": {
+			"text": "It comes away with a sound like a breath. The Pale Gate's face, and on the back, pin-writing. Behind the black glass, very faintly, something like paper rustles, as if the door had been holding its breath too.",
+			"choices": [{"text": "(Step back.)", "next": "end"}]
+		},
+		"read": {
+			"text": "The Seal of the Twelve. Some sockets lit, some dark. It won't open for you yet. It won't open for anyone, until every well answers.",
+			"choices": [{"text": "(Step back.)", "next": "end"}]
+		}
+	}
+}

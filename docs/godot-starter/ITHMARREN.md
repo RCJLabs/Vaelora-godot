@@ -105,7 +105,7 @@ Opening it with the key leaves the key in the knot.
 - the founders' confession wasn't burned: "Look under the glass."
 
 Show it to Calaneth (`card_shown`): she says that means the Glass Coast, in Sundra, where the
-Glass College stands. **That's the next lead**, and it isn't built.
+Glass College stands. **That's the next lead**: see GLASS_COAST.md. The ship sails from Ilunhall's quay.
 
 **Engine change:** a new dialogue action, `"add_corruption": 30` (`ui/dialogue_manager.gd`).
 
@@ -126,7 +126,7 @@ Glass College stands. **That's the next lead**, and it isn't built.
 - **A greybox canopy.** The trees are cylinders with flat green crowns, and the houses are
   the usual blocks.
 - **The Rootwell is one room, one fight.**
-- **The Glass Coast is a hook only.** A.'s visit "on the dark of the Wanderer" isn't
+- A.'s visit "on the dark of the Wanderer" isn't
   scheduled.
 - **The drunk ending:** the Gardens' lanterns keep their light (they fade by autumn), and only
   the Rootwell goes dark.

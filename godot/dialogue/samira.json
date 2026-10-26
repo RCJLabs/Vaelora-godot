@@ -1,0 +1,42 @@
+{
+	"start": [
+		{"node": "thanks_done", "requires_flag": "due_done"},
+		{"node": "again", "requires_flag": "due_started"},
+		{"node": "greet"}
+	],
+	"nodes": {
+		"greet": {
+			"text": "A woman at the door of a flat-roofed house, a water-jar on her hip, empty. Two children watch you from the shade behind her. \"If you're selling water, I've no coin. If you're from the Sovereign, I've less.\"",
+			"choices": [
+				{"text": "What happened?", "next": "tally"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"tally": {
+			"text": "\"The Sovereign's due. Sixty gold a season to draw from the oasis, and my husband's ship came in light. Collector Amir took our tally-stone till we pay.\" She sets the jar down. \"No tally, no water. We buy it by the cup from Nadira now. That lasts a week. Maybe two.\"",
+			"set_flag": "due_started",
+			"choices": [
+				{"text": "I'll get your tally back.", "next": "end"},
+				{"text": "I'm sorry.", "next": "end"}
+			]
+		},
+		"again": {
+			"text": "Samira looks up. \"Any word?\"",
+			"choices": [
+				{"text": "Here's your tally-stone.", "next": "returned", "requires_item": "water_tally"},
+				{"text": "Not yet.", "next": "end"}
+			]
+		},
+		"returned": {
+			"text": "She takes it in both hands and holds it to her chest, and for a moment can't speak. Then she fetches a small cloth purse from inside the door. \"It isn't much. Don't argue. The children will drink tonight.\"",
+			"set_flag": "due_done",
+			"take_item": "water_tally",
+			"give_gold": 25,
+			"choices": [{"text": "Goodbye.", "next": "end"}]
+		},
+		"thanks_done": {
+			"text": "Samira's jar is full. She smiles at you over it.",
+			"choices": [{"text": "Goodbye.", "next": "end"}]
+		}
+	}
+}

@@ -8,7 +8,7 @@ spells go through it; the self spells are plain status effects that combat reads
 
 ## The spells
 
-Each tome is a Glass College primer, sold by Maren for now.
+Each tome is a Glass College primer, sold by Maren (and two by Nadira on the Glass Coast). Trainers: Listener Ysolde in Greyfold (to 50), Seer-Magister Ophira at the Glass College (to 70).
 
 | Spell | Kind | Magicka | What it does | Tome |
 |---|---|---|---|---|
@@ -46,4 +46,3 @@ New modifiers: `mark_duration` and `true_sight_range`. The rest use the generic
 - A real time-slow (see above).
 - The ◆ is a text glyph, and True Sight doesn't put enemies on the compass. Both are easy to
   improve.
-- No trainer: the tomes are at Maren's. The Glass College is on the Glass Coast, far off.

@@ -50,6 +50,7 @@ var _state_left := 0.0
 var _cooldown := 0.0
 var _eye_material: StandardMaterial3D
 var _stone_material: StandardMaterial3D
+var body_color := Color(0.42, 0.4, 0.38)   # what a hit's flash fades back to
 var _player: Node3D
 var _tween: Tween
 
@@ -245,7 +246,7 @@ func _stagger() -> void:
 func _on_damaged(_amount: float) -> void:
 	var flash := create_tween()
 	flash.tween_property(_stone_material, "albedo_color", Color(0.9, 0.85, 0.8), 0.04)
-	flash.tween_property(_stone_material, "albedo_color", Color(0.42, 0.4, 0.38), 0.2)
+	flash.tween_property(_stone_material, "albedo_color", body_color, 0.2)
 	if phase == 1 and stats.health <= stats.max_health * 0.5 and stats.health > 0.0:
 		_enter_phase_two()
 

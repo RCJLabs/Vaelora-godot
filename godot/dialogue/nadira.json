@@ -1,0 +1,20 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "A trader under a red awning by the oasis, flasks and bread and odd bright shards laid out on a cloth. \"Nadira. Water by the flask, bread, blades for the Scar road, and books the College won't miss. What'll it be?\"",
+			"choices": [
+				{"text": "Let's trade.", "open_trade": "nadira", "next": "end"},
+				{"text": "Water by the flask?", "next": "water"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"water": {
+			"text": "\"For those without a tally-stone. The Sovereign's measure is a season at a time. Not everyone has a season's coin.\" She shrugs. \"I don't make the measure either. I just make it last.\"",
+			"choices": [
+				{"text": "Let's trade.", "open_trade": "nadira", "next": "end"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

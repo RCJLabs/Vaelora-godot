@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/item_data.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = "seal_card"
+display_name = "A Card in the Seal"
+description = "A playing card, the Pale Gate's face, wedged into the seam of the vault door so long ago the glass has half grown over it."
+value = 0
+weight = 0.0
+quest_item = true
+book_text = "On the back, in pin-writing, small and very old:
+
+Not yet, dear. Not for me, and not for you.
+
+It wants all twelve to answer. I've stood at this door every few hundred years and counted the lights, and there have never been more than five. The founders were clever: they locked their confession with the very wells they stole, so it can only be read once every one of them has been put right, or put out.
+
+Whoever you are, you've been to the Vale's stones, and the Weirstones, and under the Fields, and the mountain, and the tree, or some of them. You've been following me. That's all right. I've been following you.
+
+Count the dark sockets. That's how many are left. I'll see you at the next.
+
+- A.
+
+(And under that, in a newer, shakier hand, the same pin: The Wanderer goes dark again soon. I'm running out of hands to deal.)"

@@ -1,0 +1,31 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "A small-folk innkeeper in a turban too large for him, behind a counter in an open courtyard where a cistern keeps the air cool. \"The Cistern House! Mint tea, cold water, flatbread, and an alcove at the back for travellers. Sit, sit. The glass makes everyone thirsty.\"",
+			"choices": [
+				{"text": "I need a bed.", "next": "bed", "requires_not_flag": "cistern_bed"},
+				{"text": "What's the Scar like?", "next": "scar"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"bed": {
+			"text": "\"Ten gold, and the alcove's yours whenever you want it. The coolest bed on the coast; the cistern's under it.\"",
+			"choices": [
+				{"text": "Here's ten.", "next": "bed_paid", "requires_gold": 10, "take_gold": 10, "set_flag": "cistern_bed"},
+				{"text": "Not now.", "next": "end"}
+			]
+		},
+		"bed_paid": {
+			"text": "\"In the back, behind the curtain.\"",
+			"choices": [{"text": "Goodbye.", "next": "end"}]
+		},
+		"scar": {
+			"text": "\"Hot by day, cold by night, and it sings when it cools.\" He lowers his voice. \"My grandmother said the war put the lights in the glass. Melted them right in, when the sand ran. Listen out there at night and tell me she was wrong.\"",
+			"choices": [
+				{"text": "I need a bed.", "next": "bed", "requires_not_flag": "cistern_bed"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		}
+	}
+}

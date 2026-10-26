@@ -6,8 +6,8 @@ Each quest's state is worked out from flags (and items) every time the journal l
 
 ## Contents
 
-- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made), [Down the Greywater](#down-the-greywater), [The Weirstones](#the-weirstones), [The Deep Ring](#the-deep-ring), [The Light in the Eaves](#the-light-in-the-eaves), [The Seam That Whispers](#the-seam-that-whispers), [The Well Kept Badly](#the-well-kept-badly)
-- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook), [The Toll of the Weir](#toll-of-the-weir), [Fever in the Lanes](#lanes-fever), [The Toll-Road Gang](#toll-road-gang), [The Wisp-Finder](#the-wisp-finder), [Cairns of the Rising](#cairns-of-the-rising), [The Hundredth Horn](#the-hundredth-horn), [A Verse in the Eaves](#a-verse-in-the-eaves), [The Anvil and the Seal](#the-anvil-and-the-seal), [The Short Weight](#the-short-weight), [A Lie Well Told](#a-lie-well-told), [Night-Blooms](#night-blooms)
+- Main quests: [Wrong Things](#wrong-things), [The Waking Stones](#waking-stones), [Ask the Forest](#ask-forest), [The Barrow](#the-barrow), [What They Made](#what-they-made), [Down the Greywater](#down-the-greywater), [The Weirstones](#the-weirstones), [The Deep Ring](#the-deep-ring), [The Light in the Eaves](#the-light-in-the-eaves), [The Seam That Whispers](#the-seam-that-whispers), [The Well Kept Badly](#the-well-kept-badly), [Under the Glass](#under-the-glass)
+- Side quests: [The Greyfang Pack](#greyfang), [Thieves by the Fire](#bandit-camp), [Silent Shrine](#silent-shrine), [The Lost Wagon](#lost-wagon), [Licence to Burn](#licence-to-burn), [Readings Under the Wanderer](#readings), [The Merciful](#the-merciful), [What Riverwatch Was Founded On](#brannoc-founded), [Her Teacher's Notebook](#zora-notebook), [The Toll of the Weir](#toll-of-the-weir), [Fever in the Lanes](#lanes-fever), [The Toll-Road Gang](#toll-road-gang), [The Wisp-Finder](#the-wisp-finder), [Cairns of the Rising](#cairns-of-the-rising), [The Hundredth Horn](#the-hundredth-horn), [A Verse in the Eaves](#a-verse-in-the-eaves), [The Anvil and the Seal](#the-anvil-and-the-seal), [The Short Weight](#the-short-weight), [A Lie Well Told](#a-lie-well-told), [Night-Blooms](#night-blooms), [The Sovereign's Due](#the-sovereigns-due), [Glass That Sings](#glass-that-sings)
 - [Flag index](#flag-index)
 
 ## Main quests
@@ -424,6 +424,59 @@ flowchart TD
 | Stop the takers in the Rootwell. | rootwell_cleared | TheWell |
 | Decide what becomes of the well. | well_resolved | TheWell |
 | Tell Moot-Speaker Calaneth. | well_reported | Calaneth |
+
+<a id="under-the-glass"></a>
+
+### Under the Glass (`under_the_glass`)
+
+Given by: A.'s card, in the Rootwell. Starts when: well_reported. Done when: glass_reported.
+
+```mermaid
+flowchart TD
+  start(["Under the Glass<br/><i>starts: well_reported</i>"])
+  o0["Take ship to the Glass Coast from Ilunhall's quay."]
+  start --> o0
+  o1["Find out what's under the glass: ask the Glass College's Seer-Magister on the spire's steps, or whoever camps on the Scar's edge."]
+  o0 --> o1
+  o2["Get past the ward over the stair in the black ring, out on the Scar."]
+  o1 --> o2
+  o3["Go down under the glass."]
+  o2 --> o3
+  o4["Get past what keeps the vault."]
+  o3 --> o4
+  o5["Study the door at the end of the hall."]
+  o4 --> o5
+  o6["Tell Ophira, or Sister Ammara, what's under the glass."]
+  o5 --> o6
+  done(["Done<br/><i>glass_reported</i>"])
+  o6 --> done
+  r0["I looked at the College's ward through Ophira's lens, and it let me by."]
+  done -. "ward_lifted" .-> r0
+  r1["I went through the ward by the cut the Mercy made in it."]
+  done -. "mercy_way" .-> r1
+  r2["I Saw the old seam in the College's ward, and stepped through it."]
+  done -. "ward_seen" .-> r2
+  r3["A sentinel of fused glass kept the vault. It's glass again now."]
+  done -. "glass_sentinel_down" .-> r3
+  r4["The vault ends in the Seal of the Twelve: a door that opens only when all twelve wells ans…"]
+  done -. "seal_read" .-> r4
+  r5["I told Ophira everything. The Glass College will go after the wells too, and not all its s…"]
+  done -. "glass_told" .-> r5
+  r6["I told Ophira it was a dead end. She looked relieved."]
+  done -. "glass_lied" .-> r6
+  r7["I told Sister Ammara. The Mercy will go after the wells, gently, she hopes."]
+  done -. "glass_mercy" .-> r7
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Take ship to the Glass Coast from Ilunhall's quay. | discovered_glass_coast | ShipToGlass |
+| Find out what's under the glass: ask the Glass College's Seer-Magister on the spire's steps, or whoever camps on the Scar's edge. | under_glass_lead | ['Ophira', 'Ammara'] |
+| Get past the ward over the stair in the black ring, out on the Scar. | vault_open | UnderGlassWard |
+| Go down under the glass. | discovered_under_glass_vault | UnderGlassStair |
+| Get past what keeps the vault. | glass_sentinel_down | TheSeal |
+| Study the door at the end of the hall. | seal_read | TheSeal |
+| Tell Ophira, or Sister Ammara, what's under the glass. | glass_reported | ['Ophira', 'Ammara'] |
 
 ## Side quests
 
@@ -984,6 +1037,60 @@ flowchart TD
 | Pick three moonpetals from Fennick's beds, at night when they open. | has moonpetal x3 | ['NightBloom1', 'NightBloom2', 'NightBloom3'] |
 | Bring them to Fennick. | blooms_done | Fennick |
 
+<a id="the-sovereigns-due"></a>
+
+### The Sovereign's Due (`the_sovereigns_due`)
+
+Given by: Samira, in Sarabh. Starts when: due_started. Done when: due_done.
+
+```mermaid
+flowchart TD
+  start(["The Sovereign's Due<br/><i>starts: due_started</i>"])
+  o0["Get Samira's tally-stone back from Collector Amir: pay the due, lean on him, or take it from his chest."]
+  start --> o0
+  o1["Bring the tally-stone to Samira."]
+  o0 --> o1
+  done(["Done<br/><i>due_done</i>"])
+  o1 --> done
+  r0["I paid Samira's sixty gold to the Sovereign's collector."]
+  done -. "due_paid" .-> r0
+  r1["I leaned on Collector Amir until he handed the tally-stone over. The ledger will say she p…"]
+  done -. "due_scared" .-> r1
+  r2["I took Samira's tally-stone out of the collector's chest."]
+  done -. "due_done, not due_paid, not due_scared" .-> r2
+  r3["Samira's children will drink tonight."]
+  done -. "due_done" .-> r3
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Get Samira's tally-stone back from Collector Amir: pay the due, lean on him, or take it from his chest. | has water_tally | ['Amir', 'TallyChest'] |
+| Bring the tally-stone to Samira. | due_done | Samira |
+
+<a id="glass-that-sings"></a>
+
+### Glass That Sings (`glass_that_sings`)
+
+Given by: Jamila the Glassblower, in Sarabh. Starts when: sing_started. Done when: sing_done.
+
+```mermaid
+flowchart TD
+  start(["Glass That Sings<br/><i>starts: sing_started</i>"])
+  o0["Work three singing shards free of the glass on the Scar. They only sing at night."]
+  start --> o0
+  o1["Bring them to Jamila at her kiln."]
+  o0 --> o1
+  done(["Done<br/><i>sing_done</i>"])
+  o1 --> done
+  r0["I brought Jamila three singing shards from the Scar, and she paid in coin and the seers' b…"]
+  done -. "sing_done" .-> r0
+```
+
+| Step | Done when | Marker |
+|---|---|---|
+| Work three singing shards free of the glass on the Scar. They only sing at night. | has singing_glass x3 | ['SingingGlass1', 'SingingGlass2', 'SingingGlass3'] |
+| Bring them to Jamila at her kiln. | sing_done | Jamila |
+
 ## Flag index
 
 Every flag, where it's set, and where it's checked. **⚠ never set** means nothing in the game sets it: a typo or a missing step. *(never checked)* is usually fine: a record for later, or for the tests.
@@ -1026,6 +1133,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `cairns_thanked` | hesk: report | hesk (start → done)<br>quest cairns_of_the_rising |
 | `card_shown` | calaneth: card | calaneth: report, "There was a note on Lord Caerwyn's de..." |
 | `choir_verse_ilunhall` (never checked) | saelie: ready | – |
+| `cistern_bed` | rafiq: bed, "Here's ten." | levels/glass_coast.tscn (CisternBed)<br>rafiq: greet, "I need a bed."<br>rafiq: scar, "I need a bed." |
 | `companion_brannoc` | brannoc: join | brannoc: after_given, "Come with me. Now, not later."<br>brannoc: after_kept, "Come with me. Now, not later."<br>brannoc: after_restored, "Come with me. Now, not later."<br>brannoc: greet_again, "Come with me. Now, not later."<br>brannoc: progress, "Come with me. Now, not later."<br>brannoc: waiting_on_stones, "Come with me. Now, not later."<br>levels/test_level.tscn (BrannocAtPost)<br>zora: again, "Come with me."<br>zora: taught, "Come with me." |
 | `companion_cmd_dismiss` (never checked) | companion_brannoc: home<br>companion_zora: home | – |
 | `companion_cmd_follow` (never checked) | companion_brannoc: follow<br>companion_zora: follow | – |
@@ -1049,7 +1157,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `dace_reported` | varga: dace_report | quest toll_of_the_weir |
 | `dark_barges_started` | jory_weirholt: barges, "I'll look into it." | jory_weirholt: again, "Not yet."<br>jory_weirholt: again, "Tell me about the barges again."<br>quest down_the_greywater<br>tarle: again, "What do the barges carry at the dark ..."<br>tarle: greet, "What do the barges carry at the dark ..." |
 | `deep_ring_cleared` | levels/grieving_deep_ring.tscn (Mercy) | deep_ring_engine (start → open)<br>quest the_deep_ring |
-| `deep_ring_reported` | ysolde: report | quest the_deep_ring<br>ysolde: again, "The Deep Ring is broken. The lights a..."<br>ysolde: greet, "The Deep Ring is broken. The lights a..." |
+| `deep_ring_reported` | ysolde: report | levels/glass_vault.tscn (SocketLit3)<br>quest the_deep_ring<br>ysolde: again, "The Deep Ring is broken. The lights a..."<br>ysolde: greet, "The Deep Ring is broken. The lights a..." |
 | `deep_ring_started` | ysolde: screaming | quest the_deep_ring<br>ysolde: again, "What's wrong here?"<br>ysolde: elf, "What's wrong here?"<br>ysolde: greet, "What's wrong here?"<br>ysolde: kin, "What's wrong here?" |
 | `deep_ring_wisps_freed` (never checked) | deep_ring_engine: open, "Smash the rune-iron and let them go." | – |
 | `demo_finished` | brannoc: end_brannoc<br>brannoc: end_hollow<br>maren: end_hollow<br>maren: end_maren<br>mirela: end_hollow<br>mirela: end_mirela<br>mirela: end_mirela_cold | brannoc (start → end_hollow)<br>brannoc (start → end_intro)<br>maren (start → end_hollow)<br>maren (start → end_intro)<br>mirela (start → end_hollow)<br>mirela (start → end_intro)<br>quest what_they_made |
@@ -1061,6 +1169,8 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `discovered_counting_house` (never checked) | levels/weirholt.tscn (MapCountingHouse, when found) | – |
 | `discovered_ember_college` (never checked) | levels/ilunhall.tscn (MapEmberCollege, when found) | – |
 | `discovered_gate_landing` (never checked) | levels/ithmarren.tscn (MapGateLanding, when found) | – |
+| `discovered_glass_coast` | levels/glass_coast.tscn (MapGlassCoast, when found) | quest under_the_glass |
+| `discovered_glass_college` (never checked) | levels/glass_coast.tscn (MapGlassCollege, when found) | – |
 | `discovered_greyfang_hollow` (never checked) | levels/test_level.tscn (MapGreyfangHollow, when found) | – |
 | `discovered_greyfold` (never checked) | levels/grieving_fields.tscn (MapGreyfold, when found) | – |
 | `discovered_guild_table` (never checked) | levels/karrowdeep.tscn (MapTable, when found) | – |
@@ -1075,6 +1185,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `discovered_laying_grounds` (never checked) | levels/grieving_fields.tscn (MapLayingGrounds, when found) | – |
 | `discovered_long_table` (never checked) | levels/ilunhall.tscn (MapLongTable, when found) | – |
 | `discovered_market_bridge` (never checked) | levels/karrowdeep.tscn (MapMarketBridge, when found) | – |
+| `discovered_mercy_camp_scar` (never checked) | levels/glass_coast.tscn (MapMercyCamp, when found) | – |
 | `discovered_moot_hall` (never checked) | levels/ithmarren.tscn (MapMootHall, when found) | – |
 | `discovered_old_barrow` (never checked) | levels/test_level.tscn (MapOldBarrow, when found) | – |
 | `discovered_outlaw_camp` (never checked) | levels/test_level.tscn (MapOutlawCamp, when found) | – |
@@ -1082,6 +1193,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `discovered_root_door` (never checked) | levels/ithmarren.tscn (MapRootDoor, when found) | – |
 | `discovered_rootwell` | levels/ithmarren_rootwell.tscn (MapRootwell, when found) | quest the_well_kept_badly |
 | `discovered_rune_bridge` (never checked) | levels/ilunhall.tscn (MapRuneBridge, when found) | – |
+| `discovered_sarabh` (never checked) | levels/glass_coast.tscn (MapSarabh, when found) | – |
 | `discovered_seal_college` (never checked) | levels/karrowdeep.tscn (MapSealCollege, when found) | – |
 | `discovered_seam_nine` | levels/karrowdeep_seam.tscn (MapSeamNine, when found) | quest the_seam_that_whispers |
 | `discovered_sinkhole` | levels/grieving_fields.tscn (MapSinkhole, when found) | quest the_deep_ring |
@@ -1090,6 +1202,8 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `discovered_the_lanes` (never checked) | levels/weirholt.tscn (MapLanes, when found) | – |
 | `discovered_toll_fort` (never checked) | levels/weirholt.tscn (MapTollFort, when found) | – |
 | `discovered_toll_road_camp` (never checked) | levels/weirholt.tscn (MapGangCamp, when found) | – |
+| `discovered_under_glass` (never checked) | levels/glass_coast.tscn (MapUnderGlass, when found) | – |
+| `discovered_under_glass_vault` | levels/glass_vault.tscn (MapUnderGlassVault, when found) | quest under_the_glass |
 | `discovered_undercroft` | levels/ilunhall_undercroft.tscn (MapUndercroft, when found) | quest the_light_in_the_eaves |
 | `discovered_veil_college` (never checked) | levels/ithmarren.tscn (MapVeilCollege, when found) | – |
 | `discovered_waystation` (never checked) | levels/test_level.tscn (MapWaystation, when found) | – |
@@ -1098,6 +1212,10 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `discovered_weirholt_ford` (never checked) | levels/weirholt.tscn (MapFord, when found) | – |
 | `discovered_weirholt_mill` (never checked) | levels/weirholt.tscn (MapMill, when found) | – |
 | `discovered_weirstones` (never checked) | levels/weirholt.tscn (MapWeirstones, when found) | – |
+| `due_done` | samira: returned | amir: greet, "Samira's household. Give her the tall..."<br>quest the_sovereigns_due<br>samira (start → thanks_done) |
+| `due_paid` | amir: paid | quest the_sovereigns_due |
+| `due_scared` | amir: scared | quest the_sovereigns_due |
+| `due_started` | samira: tally | amir: greet, "Samira's household. Give her the tall..."<br>quest the_sovereigns_due<br>samira (start → again) |
 | `ebba_heard` | ebba: carts | ebba: again, "About the Seal Door."<br>ebba: again, "Anything strange down here?"<br>hrodna: refuses, "Your own hewers hear carts going thro..." |
 | `ebba_settled` | ebba: cold<br>ebba: thanks | ebba (start → weight_done) |
 | `feast_bed` | odo: bed, "Here's ten." | levels/ilunhall.tscn (FeastBed)<br>odo: feast, "I need a bed."<br>odo: greet, "I need a bed."<br>odo: greet_again, "I need a bed." |
@@ -1106,6 +1224,11 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `found_hidden_chamber` | props/puzzle/secret_wall.gd:7 | levels/test_dungeon.tscn (Cultist1)<br>levels/test_dungeon.tscn (Cultist2)<br>quest the_barrow |
 | `found_wagon` | wagon: look<br>wagon: merchant | quest lost_wagon<br>wagon (start → again) |
 | `freed_wisp` | caged_wisp: free | maren: end_letter, "It followed me out of the barrow. The..."<br>mirela (start → heard_freed)<br>quest the_barrow |
+| `glass_lied` | ophira: lied | quest under_the_glass |
+| `glass_mercy` | ammara: told | quest under_the_glass |
+| `glass_reported` | ammara: told<br>ophira: lied<br>ophira: told | ammara (start → after)<br>ophira (start → after)<br>quest under_the_glass |
+| `glass_sentinel_down` | enemies/glass_sentinel.gd:9<br>levels/glass_vault.tscn (GlassSentinel) | glass_seal (start → guarded)<br>levels/glass_vault.tscn (SocketLit6)<br>quest under_the_glass |
+| `glass_told` | ophira: told | quest under_the_glass |
 | `got_lantern_cake` | lf_hettie: greet | lf_hettie (start → again) |
 | `got_riverwatch_gift` | brannoc: gift | brannoc (start → gift) |
 | `got_supply_crate` | brannoc: crate | brannoc: after_given, "I need a crate of the garrison's supp..."<br>brannoc: after_restored, "I need a crate of the garrison's supp..."<br>brannoc: greet, "I need a crate of the garrison's supp..."<br>brannoc: greet_again, "I need a crate of the garrison's supp..."<br>brannoc: progress, "I need a crate of the garrison's supp..."<br>brannoc: waiting_on_stones, "I need a crate of the garrison's supp..." |
@@ -1174,8 +1297,12 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `mercy_cell_done` | halina: leave<br>halina: peace | halina (start → after)<br>levels/test_level.tscn (Merciful)<br>quest the_merciful |
 | `mercy_cell_fight` | halina: after<br>halina: fight | levels/test_level.tscn (HalinaHere)<br>props/mercy_cell.gd:10 |
 | `mercy_cell_left` | halina: leave<br>halina: peace | halina (start → after)<br>levels/test_level.tscn (MercyCell)<br>quest the_merciful |
+| `mercy_cut` | ammara: digging | ammara: again, "What are the Mercy doing on the Scar?"<br>ammara: greet, "What are the Mercy doing on the Scar?"<br>ammara: vessa, "What are the Mercy doing on the Scar?"<br>glass_ward: look, "Find the Mercy's cut on the west side..." |
 | `mercy_let_go` | halina: peace | quest the_merciful |
 | `mercy_offered_cure` | halina: same | halina: again, "You've got grey fingers. So do I." |
+| `mercy_way` | glass_ward: look, "Find the Mercy's cut on the west side..." | quest under_the_glass |
+| `met_amir` (never checked) | amir: greet | – |
+| `met_ammara` | ammara: greet | ammara (start → again) |
 | `met_bek` | bek: greet | bek (start → again) |
 | `met_brannoc` | brannoc: gift<br>brannoc: greet<br>brannoc: mark | brannoc (start → greet_again)<br>brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?" |
 | `met_calaneth` | calaneth: greet | calaneth (start → again) |
@@ -1190,6 +1317,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `met_ignatia` (never checked) | ignatia: greet | – |
 | `met_inquisitor` | inquisitor: greet<br>inquisitor: marked<br>inquisitor: suspicious | inquisitor (start → again) |
 | `met_ithariel` | ithariel: greet | ithariel (start → again) |
+| `met_jamila` | jamila: greet | jamila (start → again) |
 | `met_jory_weirholt` | jory_weirholt: greet<br>jory_weirholt: greet_known | jory_weirholt (start → again) |
 | `met_karra` (never checked) | karra: greet | – |
 | `met_lirael` | lirael: greet | lirael (start → again) |
@@ -1197,6 +1325,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `met_mirela` | mirela: greet | mirela (start → bandits_done)<br>mirela (start → greet_again)<br>mirela (start → sees_hollowing)<br>mirela (start → trusted)<br>quest ask_forest |
 | `met_nob` (never checked) | nob: greet | – |
 | `met_odo` | odo: greet | odo (start → greet_again) |
+| `met_ophira` | ophira: greet | ophira (start → again) |
 | `met_orsa` | orsa: greet | orsa (start → again) |
 | `met_quill` | quill: hello | quill (start → again) |
 | `met_saelie` (never checked) | saelie: greet | – |
@@ -1212,6 +1341,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `mirela_heard_essence` | mirela: heard_essence | mirela (start → heard_essence) |
 | `mirela_heard_freed` | mirela: heard_freed | mirela (start → heard_freed) |
 | `mirela_saw_hollowing` | mirela: sees_hollowing | mirela (start → sees_hollowing) |
+| `ophira_ward` | ophira: under | ophira: again, "The card says to look under the glass."<br>ophira: greet, "The card says to look under the glass." |
 | `outlaws_terms` | mirela: terms | brannoc: after_given, "I need a crate of the garrison's supp..."<br>brannoc: after_restored, "I need a crate of the garrison's supp..."<br>brannoc: greet, "I need a crate of the garrison's supp..."<br>brannoc: greet_again, "I need a crate of the garrison's supp..."<br>brannoc: progress, "I need a crate of the garrison's supp..."<br>brannoc: waiting_on_stones, "I need a crate of the garrison's supp..."<br>mirela (start → bandits_done)<br>mirela (start → waiting)<br>mirela: drain, "Then help me find who's doing it."<br>mirela: wolf_too, "Then help me find who's doing it." |
 | `outlaws_trust` | mirela: bandits_done<br>mirela: outlaw_vouch<br>mirela: supplies_done | brannoc: after_given, "I need a crate of the garrison's supp..."<br>brannoc: after_restored, "I need a crate of the garrison's supp..."<br>brannoc: greet, "I need a crate of the garrison's supp..."<br>brannoc: greet_again, "I need a crate of the garrison's supp..."<br>brannoc: progress, "I need a crate of the garrison's supp..."<br>brannoc: waiting_on_stones, "I need a crate of the garrison's supp..."<br>mirela (start → bandits_done)<br>mirela (start → trusted)<br>mirela: drain, "Then help me find who's doing it."<br>mirela: greet_again, "(Outlaw) There's a price on my head i..."<br>mirela: wolf_too, "Then help me find who's doing it."<br>quest ask_forest |
 | `outlaws_trust_bandits` | mirela: bandits_done | quest ask_forest |
@@ -1244,13 +1374,14 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `scales_rigged` | karrowdeep_scales: hollow | hrodna: after, "The assayer on the Gate Hall weighs t..."<br>hrodna: again, "The assayer on the Gate Hall weighs t..."<br>karrowdeep_scales (start → known)<br>pell (start → caught)<br>quest the_short_weight |
 | `scholar_read_mark` | hollow_wolf: mark_scholar | brannoc: mark, "(Scholar) It isn't a brand. Something..." |
 | `seal_key_given` | hrodna: persuaded<br>hrodna: proof | quest the_seam_that_whispers |
+| `seal_read` | glass_seal: look, "Work the card free of the seam." | ammara (start → report)<br>glass_seal (start → read)<br>ophira (start → report)<br>quest under_the_glass |
 | `seal_unpicked` | karrowdeep_seal_door: shut, "Read the seals and unpick them, one b..." | quest the_seam_that_whispers |
 | `seam_cleared` | levels/karrowdeep_seam.tscn (Mercy) | karrowdeep_seam (start → guarded)<br>quest the_seam_that_whispers |
 | `seam_collapsed` | karrowdeep_seam: choose, "Knock out the props. Let the face fal..." | hrodna: keld, "I brought the face down. The lights i..."<br>hrodna: report, "I brought the face down. The lights i..."<br>quest the_seam_that_whispers |
 | `seam_nine_named` | ebba: carts<br>hrodna: mark | hrodna: again, "About Seam Nine."<br>hrodna: again, "The Mercy lit Ilunhall's halls throug..."<br>hrodna: greet, "Someone's cutting Seam Nine. Your own..."<br>hrodna: greet, "The Mercy lit Ilunhall's halls throug..."<br>hrodna: table, "The Mercy lit Ilunhall's halls throug..."<br>quest the_seam_that_whispers |
 | `seam_nine_open` | karrowdeep_seal_door: keyed, "Turn the key."<br>karrowdeep_seal_door: shut, "Read the seals and unpick them, one b..." | hrodna: again, "About Seam Nine."<br>hrodna: greet, "Someone's cutting Seam Nine. Your own..."<br>hrodna: refuses, "Let me look. Seal it again after, wit..."<br>hrodna: refuses, "Your own hewers hear carts going thro..."<br>levels/karrowdeep.tscn (SealOpen)<br>levels/karrowdeep.tscn (SealShut)<br>quest the_seam_that_whispers |
 | `seam_reported` | hrodna: collapsed<br>hrodna: sealed | calaneth: again, "The Mercy's harvest comes to Ithmarre..."<br>calaneth: greet, "The Mercy's harvest comes to Ithmarre..."<br>hrodna (start → after)<br>quest the_seam_that_whispers<br>quest the_well_kept_badly |
-| `seam_resolved` | karrowdeep_seam: choose, "Knock out the props. Let the face fal..."<br>karrowdeep_seam: choose, "Shut the harvest-frame and leave the ..." | hrodna (start → report)<br>karrowdeep_seam (start → done)<br>quest the_seam_that_whispers |
+| `seam_resolved` | karrowdeep_seam: choose, "Knock out the props. Let the face fal..."<br>karrowdeep_seam: choose, "Shut the harvest-frame and leave the ..." | hrodna (start → report)<br>karrowdeep_seam (start → done)<br>levels/glass_vault.tscn (SocketLit4)<br>quest the_seam_that_whispers |
 | `seam_sealed` | karrowdeep_seam: choose, "Shut the harvest-frame and leave the ..." | hrodna: keld, "The Mercy are gone. I shut their fram..."<br>hrodna: report, "The Mercy are gone. I shut their fram..."<br>quest the_seam_that_whispers |
 | `severin_deal` | severin: deal, "Alive, then. If I can."<br>severin: deal, "I'll decide when I find her." | severin: again, "About Magister Vessa."<br>vessa: a, "The Lantern Order is waiting for you ..."<br>vessa: not_yet, "The Lantern Order is waiting for you ..." |
 | `shards_chose_stones` | brannoc: chose_stones | brannoc (start → waiting_on_stones)<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:67<br>props/floating_crystal.gd:76 |
@@ -1262,10 +1393,15 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `shrine_prayed` (never checked) | shrine: pray | – |
 | `shrine_rekindled` | shrine: offer | props/shrine.gd:24<br>props/shrine.gd:30<br>props/shrine.gd:55<br>quest silent_shrine |
 | `silent_shrine_started` | maren: report_acolyte<br>shrine: look | quest silent_shrine |
+| `sing_done` | jamila: paid | jamila: again, "I've brought singing glass."<br>quest glass_that_sings |
+| `sing_glass_1` | glass_singing_1: singing, "Work the singing shard free." | glass_singing_1 (start → taken) |
+| `sing_glass_2` | glass_singing_2: singing, "Work the singing shard free." | glass_singing_2 (start → taken) |
+| `sing_glass_3` | glass_singing_3: singing, "Work the singing shard free." | glass_singing_3 (start → taken) |
+| `sing_started` | jamila: need | jamila: again, "I've brought singing glass."<br>jamila: again, "Need anything?"<br>jamila: greet, "Need anything?"<br>quest glass_that_sings |
 | `slate_bought` | bek: sold | quest the_anvil_and_the_seal |
 | `slate_returned` | orsa: returned | bek: again, "The Seal College wants its slate back."<br>bek: greet, "The Seal College wants its slate back."<br>quest the_anvil_and_the_seal |
 | `slate_started` | orsa: rivals | bek: again, "The Seal College wants its slate back."<br>bek: greet, "The Seal College wants its slate back."<br>orsa: again, "I have your slate."<br>orsa: again, "The Seal College and the Anvil College?"<br>orsa: greet, "The Seal College and the Anvil College?"<br>quest the_anvil_and_the_seal |
-| `stones_quest_done` | brannoc: given<br>brannoc: kept<br>props/floating_crystal.gd:74 | brannoc: mark, "I'm already looking into the stones."<br>brannoc: mark_hunter, "I'm already looking into the stones."<br>brannoc: mark_scholar, "I'm already looking into the stones."<br>quest waking_stones<br>systems/save_system.gd:232 |
+| `stones_quest_done` | brannoc: given<br>brannoc: kept<br>props/floating_crystal.gd:74 | brannoc: mark, "I'm already looking into the stones."<br>brannoc: mark_hunter, "I'm already looking into the stones."<br>brannoc: mark_scholar, "I'm already looking into the stones."<br>levels/glass_vault.tscn (SocketLit1)<br>quest waking_stones<br>systems/save_system.gd:232 |
 | `stones_quest_started` | brannoc: accept | brannoc (start → progress)<br>brannoc: lore, "I'll look into it."<br>brannoc: mark, "I'm already looking into the stones."<br>brannoc: mark, "Then I'll look at the stones."<br>brannoc: mark_hunter, "I'm already looking into the stones."<br>brannoc: mark_hunter, "Then I'll look at the stones."<br>brannoc: mark_scholar, "I'm already looking into the stones."<br>brannoc: mark_scholar, "Then I'll look at the stones."<br>quest waking_stones |
 | `stones_restored` | props/floating_crystal.gd:72 | brannoc (start → after_restored)<br>props/floating_crystal.gd:30<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:67<br>quest waking_stones |
 | `strongbox_kept` | jory: keep_box | quest lost_wagon |
@@ -1289,8 +1425,10 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `toll_started` | ama: greet | ama (start → waiting)<br>dace: greet, "The board in the square says two."<br>quest toll_of_the_weir |
 | `took_wisp_essence` | caged_wisp: take | mirela (start → heard_essence)<br>mirela: end_dunya, "What will the Free do?"<br>mirela: end_letter, "What will the Free do?"<br>quest the_barrow<br>systems/save_system.gd:211 |
 | `touched_crystal` | props/floating_crystal.gd:81<br>props/floating_crystal.gd:86 | brannoc: progress, "The crystal answered when I touched i..."<br>props/floating_crystal.gd:48<br>props/floating_crystal.gd:85<br>quest waking_stones |
+| `under_glass_lead` | ammara: digging<br>ophira: under | quest under_the_glass |
 | `undercroft_cleared` | levels/ilunhall_undercroft.tscn (Mercy) | ilunhall_conduit (start → guarded)<br>quest the_light_in_the_eaves<br>vessa (start → busy) |
 | `undercroft_lead` | karra: below, "Thank you."<br>severin: deal, "Alive, then. If I can."<br>severin: deal, "I'll decide when I find her." | karra (start → again)<br>karra: grey, "From below?"<br>levels/ilunhall.tscn (GateBarred)<br>levels/ilunhall.tscn (GateOpen)<br>quest the_light_in_the_eaves |
+| `vault_open` | glass_ward: look, "(Sight.) See the seam where the ward ..."<br>glass_ward: look, "Find the Mercy's cut on the west side..."<br>glass_ward: look, "Look at it through the ward-glass." | levels/glass_coast.tscn (WardDown)<br>levels/glass_coast.tscn (WardUp)<br>quest under_the_glass |
 | `verse_rune_1` | ilunhall_runestone_1: read, "(Remember it)" | quest a_verse_in_the_eaves<br>saelie (start → ready) |
 | `verse_rune_2` | ilunhall_runestone_2: read, "(Remember it)" | quest a_verse_in_the_eaves<br>saelie (start → ready) |
 | `verse_rune_3` | ilunhall_runestone_3: read, "(Remember it)" | quest a_verse_in_the_eaves<br>saelie (start → ready) |
@@ -1302,11 +1440,13 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `vessa_killed` | levels/ilunhall_undercroft.tscn (VessaPack) | cassia (start → report)<br>quest the_light_in_the_eaves<br>severin (start → killed) |
 | `vessa_note_read` | deep_ring_engine: open | quest the_light_in_the_eaves<br>ysolde: report, "There was a note. V. is going to Ilun..." |
 | `vessa_spared` | vessa: a, "Go. Find your cure some other way."<br>vessa: a, "Turn on her. Help me end this properly."<br>vessa: not_yet, "Go. Find your cure some other way." | cassia (start → report)<br>quest the_light_in_the_eaves<br>severin (start → spared) |
-| `vessa_turned` | vessa: a, "Turn on her. Help me end this properly." | quest the_light_in_the_eaves |
+| `vessa_turned` | vessa: a, "Turn on her. Help me end this properly." | ammara: greet, "Vessa sent word about me?"<br>quest the_light_in_the_eaves |
+| `ward_lifted` | glass_ward: look, "Look at it through the ward-glass." | quest under_the_glass |
+| `ward_seen` | glass_ward: look, "(Sight.) See the seam where the ward ..." | quest under_the_glass |
 | `weight_hushed` | pell: caught, "Eighty gold. Done." | ebba (start → weight_done)<br>ebba: weight_done, "Pell won't be weighing light any more..."<br>hrodna: after, "The assayer on the Gate Hall weighs t..."<br>hrodna: again, "The assayer on the Gate Hall weighs t..."<br>pell (start → caught)<br>quest the_short_weight |
 | `weight_reported` | hrodna: weight | ebba (start → weight_done)<br>ebba: weight_done, "The Table's fined Pell. You'll be pai..."<br>hrodna: after, "The assayer on the Gate Hall weighs t..."<br>hrodna: again, "The assayer on the Gate Hall weighs t..."<br>pell (start → caught)<br>quest the_short_weight |
 | `weirstones_cleared` | levels/weirholt.tscn (Acolytes) | levels/weirholt.tscn (Weirstones)<br>quest the_weirstones<br>weirholt_focus (start → open) |
-| `weirstones_freed` | weirholt_focus: open, "Break the cage open and let the light..." | quest the_weirstones<br>varga: again, "Where does the ledger's trail go?"<br>varga: greet, "Where does the ledger's trail go?"<br>weirholt_focus (start → done) |
+| `weirstones_freed` | weirholt_focus: open, "Break the cage open and let the light..." | levels/glass_vault.tscn (SocketLit2)<br>quest the_weirstones<br>varga: again, "Where does the ledger's trail go?"<br>varga: greet, "Where does the ledger's trail go?"<br>weirholt_focus (start → done) |
 | `weirstones_hinted` (never checked) | varga: weirstones_hint | – |
 | `weirstones_letter` | weirholt_focus: open | varga: again, "The Weirstones are quiet. The Mercy's..."<br>varga: greet, "The Weirstones are quiet. The Mercy's..."<br>ysolde: screaming, "The Mercy. They came from the Riverla..." |
 | `weirstones_reported` | varga: weirstones_report | quest the_weirstones<br>varga: again, "The Weirstones are quiet. The Mercy's..."<br>varga: greet, "The Weirstones are quiet. The Mercy's..." |
@@ -1317,8 +1457,8 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `well_examined` | weirholt_well: look | quest lanes_fever<br>weirholt_millstone (start → known) |
 | `well_given` | ithmarren_well: choose, "Leave it bound, and give it to the Mo..." | calaneth: card, "The takers are gone. The well's still..."<br>calaneth: report, "The takers are gone. The well's still..."<br>quest the_well_kept_badly<br>rhosyn (start → after_given) |
 | `well_lead` | calaneth: harvest<br>rhosyn: buy | calaneth: again, "The Mercy's harvest comes to Ithmarre..."<br>calaneth: greet, "The Mercy's harvest comes to Ithmarre..."<br>ithariel: again, "Your house keeps the Rootwell."<br>ithariel: greet, "Your house keeps the Rootwell."<br>quest the_well_kept_badly<br>rhosyn: greet, "Where do you get it?"<br>rhosyn: who, "Where do you get it?" |
-| `well_reported` | calaneth: drunk<br>calaneth: given<br>calaneth: unbound | calaneth (start → after)<br>quest the_well_kept_badly |
-| `well_resolved` | ithmarren_well: choose, "Break the root-cages. Let the well em..."<br>ithmarren_well: choose, "Kneel, and drink."<br>ithmarren_well: choose, "Leave it bound, and give it to the Mo..." | calaneth (start → report)<br>ithariel (start → after)<br>ithmarren_well (start → done)<br>quest the_well_kept_badly |
+| `well_reported` | calaneth: drunk<br>calaneth: given<br>calaneth: unbound | calaneth (start → after)<br>quest the_well_kept_badly<br>quest under_the_glass |
+| `well_resolved` | ithmarren_well: choose, "Break the root-cages. Let the well em..."<br>ithmarren_well: choose, "Kneel, and drink."<br>ithmarren_well: choose, "Leave it bound, and give it to the Mo..." | calaneth (start → report)<br>ithariel (start → after)<br>ithmarren_well (start → done)<br>levels/glass_vault.tscn (SocketLit5)<br>quest the_well_kept_badly |
 | `well_unbound` | ithmarren_well: choose, "Break the root-cages. Let the well em..." | calaneth: card, "I broke the root-cages and let the we..."<br>calaneth: report, "I broke the root-cages and let the we..."<br>levels/ithmarren.tscn (GardenLanterns)<br>levels/ithmarren.tscn (GateLanterns)<br>levels/ithmarren.tscn (MootLanterns)<br>levels/ithmarren.tscn (VeilLanterns)<br>quest the_well_kept_badly<br>rhosyn (start → after_unbound) |
 | `wenna_discount` (never checked) | wenna: greet, "A friend's price, for a friend?" | – |
 | `wisp_choice_made` | caged_wisp: free<br>caged_wisp: take | props/caged_wisp.gd:23<br>props/caged_wisp.gd:29<br>quest the_barrow |

@@ -50,6 +50,7 @@ VARIANTS = {
     "test_ilunhall": [["turn"], ["hand"], ["fight"]],
     "test_karrowdeep": [["key"], ["steal"], ["rune"]],
     "test_ithmarren": [["letter"], ["steal"], ["glamour"]],
+    "test_glass_coast": [["college"], ["mercy"], ["sight"]],
     "test_rep": [["human_give"], ["keep"]],
     # Broken collision setups from FIRST_PERSON_SETUP.md: the first five fall, the rest stand.
     "test_wrong_things": [["mercy"], ["spare"], ["weapon"]],

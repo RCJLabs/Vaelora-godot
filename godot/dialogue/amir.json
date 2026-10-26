@@ -1,0 +1,45 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "A thin man in the Sovereign's saffron, a ledger chained to his belt and a ring of tally-keys on his wrist, sitting in the shade of his booth. \"Amir Tahan, the Sovereign's collector for Sarabh. Water is life, and life is measured. What do you owe?\"",
+			"set_flag": "met_amir",
+			"choices": [
+				{"text": "Samira's household. Give her the tally back.", "next": "samira", "requires_flag": "due_started", "requires_not_flag": "due_done", "requires_not_item": "water_tally"},
+				{"text": "Who are the Oasis Thrones?", "next": "thrones"},
+				{"text": "Goodbye.", "next": "end"}
+			]
+		},
+		"thrones": {
+			"text": "\"Every oasis in Sundra has its lord, and every lord a throne, and over them all the Sovereign of Wells. The water belongs to the throne; the throne lends it to you; I count.\" He taps the ledger. \"It's very simple, and everyone hates it.\"",
+			"choices": [{"text": "Goodbye.", "next": "end"}]
+		},
+		"samira": {
+			"text": "\"Sixty gold, a season's due. I don't make the measure. I only keep it.\" He doesn't look at you. \"Pay it and the stone's hers today.\"",
+			"choices": [
+				{"text": "Here's sixty.", "next": "paid", "requires_gold": 60, "take_gold": 60},
+				{"text": "Hand it over, or the next ship hears how Sarabh's collector treats widows' children.", "next": "scared", "fail_next": "unmoved",
+					"check": {"id": "amir_scare", "kind": "intimidate", "difficulty": 45}},
+				{"text": "Never mind.", "next": "end"}
+			]
+		},
+		"paid": {
+			"text": "He counts it twice, writes a line in the ledger, and unlocks a tally-stone from the chest behind his booth. \"Paid in full. The Sovereign thanks you.\" Quieter: \"So do I, if you must know.\"",
+			"set_flag": "due_paid",
+			"give_item": "water_tally",
+			"add_reputation": {"oasis_thrones": 5},
+			"choices": [{"text": "Goodbye.", "next": "end"}]
+		},
+		"scared": {
+			"text": "His pen stops. He looks at you properly for the first time, then fishes in the chest behind him and drops the stone in your hand. \"The ledger will say she paid. Don't come back.\"",
+			"set_flag": "due_scared",
+			"give_item": "water_tally",
+			"add_reputation": {"oasis_thrones": -5},
+			"choices": [{"text": "(Leave.)", "next": "end"}]
+		},
+		"unmoved": {
+			"text": "\"Ships come, ships go. The measure stays.\" He turns a page. \"Sixty gold.\"",
+			"choices": [{"text": "(Leave.)", "next": "end"}]
+		}
+	}
+}

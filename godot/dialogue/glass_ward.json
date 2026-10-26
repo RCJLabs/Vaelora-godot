@@ -1,0 +1,26 @@
+{
+	"start": "look",
+	"nodes": {
+		"look": {
+			"text": "A pane of light standing over the stair in the black ring, faint as heat-haze until you look straight at it, and then bright enough to make your eyes water. The Glass College's ward. When you reach toward it, your hand slides off the air.",
+			"choices": [
+				{"text": "Look at it through the ward-glass.", "next": "lifted", "requires_item": "ward_glass", "take_item": "ward_glass", "set_flag": ["vault_open", "ward_lifted"]},
+				{"text": "Find the Mercy's cut on the west side, and squeeze through.", "next": "cut", "requires_flag": "mercy_cut", "set_flag": ["vault_open", "mercy_way"]},
+				{"text": "(Sight.) See the seam where the ward was joined, and step through it.", "next": "seen", "requires_skill": {"sight": 40}, "set_flag": ["vault_open", "ward_seen"]},
+				{"text": "(Leave it.)", "next": "end"}
+			]
+		},
+		"lifted": {
+			"text": "Through Ophira's lens the ward has a grain, like wood, and every line of it bends aside for the lens and the hand that holds it. The light parts. A stair of black glass goes down.",
+			"choices": [{"text": "(Step back.)", "next": "end"}]
+		},
+		"cut": {
+			"text": "On the west side the ward is wrong: a slit through it no wider than a body, its edges ragged and cold. You turn sideways and go through, and it closes behind you like water. A stair of black glass goes down.",
+			"choices": [{"text": "(Step back.)", "next": "end"}]
+		},
+		"seen": {
+			"text": "You let your eyes unfocus the way the seers do, and there it is: the seam where the College joined the ward four hundred years ago, thin as a hair and never quite healed. You step through it. A stair of black glass goes down.",
+			"choices": [{"text": "(Step back.)", "next": "end"}]
+		}
+	}
+}
