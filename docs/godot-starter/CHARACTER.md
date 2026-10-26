@@ -13,7 +13,7 @@ on step 1 goes back to the title screen.
 
 | Step | What you pick |
 |---|---|
-| 1. Race | Human, Elf, Orc (attributes, pools, race power on **Z**) |
+| 1. Race | Human, Elf, Orc, Passenger, Ashen, Small Folk, Deepfolk (attributes, pools, race power on **Z**) |
 | 2. Background | Soldier, Scholar, Outlaw, Hunter, Acolyte, Merchant (skills, gear, gold, reputation, power on **X**) |
 | 3. Traits | Up to 2 strengths. Taking 1 flaw allows a 3rd strength. None is fine too |
 | 4. Attributes | Spend **4** points. **Next** stays disabled until all are spent |
@@ -60,6 +60,10 @@ with their cooldowns, and a notice says when one is ready again.
 | Adaptable (Human) | Skills improve twice as fast for 60 s | 5 min |
 | Innate Focus (Elf) | Spells cost half and hit 25% harder for 20 s | 3 min |
 | Battle Fury (Orc) | +25% damage dealt, −20% taken for 15 s | 2 min |
+| Lanes-Walk (Passenger) | While sneaking, enemies notice you at a third of the rate, 30 s | 2 min |
+| Kinship (Ashen) | Wisps let you be for 60 s, and −15% damage taken | 5 min |
+| Fortune's Favour (Small Folk) | A third of the blows aimed at you miss, 15 s (not bleeding or burning) | 2 min |
+| Steadfast (Deepfolk) | A quarter of the poise damage, −15% damage taken, 20 s | 2 min |
 | Second Wind | +50 Stamina, +20 Health now | 2 min |
 | Clarity | +60 Magicka now | 2 min |
 | Shadowstep | +40% speed for 6 s | 1 min |

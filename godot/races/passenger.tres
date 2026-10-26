@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/race_data.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+display_name = "Passenger"
+description = "Tall, thin, pale-eyed wanderers of the Lanes and the river-boats. They came with the lights, the songs say, and failed them. Blamed for the Hollowing by a myth that won't die."
+health = 90
+stamina = 100
+magicka = 120
+move_speed_mult = 1.05
+jump_height_mult = 1.05
+skill_xp_mult = 1.0
+reputation_gain_mult = 0.85
+melee_damage_mult = 1.0
+attribute_bonuses = {
+"agility": 1,
+"willpower": 1,
+"presence": 1,
+"strength": -1,
+"endurance": -1
+}
+skill_bonuses = {
+"sneak": 5,
+"speech": 5
+}
+starting_spells = Array[String](["healing"])
+traits = "More Magicka, a little quicker and lighter on their feet. Sneak and Speech start at 20.
+Less Health. People blame them: reputation rises 15% slower."
+signature_ability = "Lanes-Walk"
+ability_id = "lanes_walk"
+signature_description = "Power (Z): for 30 seconds, while sneaking, enemies notice you at a third of the usual rate."

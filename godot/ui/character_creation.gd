@@ -10,6 +10,10 @@ const RACE_FILES := [
 	"res://races/human.tres",
 	"res://races/elf.tres",
 	"res://races/orc.tres",
+	"res://races/passenger.tres",
+	"res://races/ashen.tres",
+	"res://races/small_folk.tres",
+	"res://races/deepfolk.tres",
 ]
 const START_LEVEL := "res://levels/test_level.tscn"
 const GOLD := Color(0.95, 0.8, 0.45)

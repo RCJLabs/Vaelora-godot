@@ -1,5 +1,8 @@
 # Starting Races
 
+*(The first three. The Passengers, the Ashen, small folk and Deepfolk are playable too now: their
+lore is `docs/lore/PEOPLES.md`, their numbers `docs/godot-starter/RACES.md`.)*
+
 Three races for the vertical slice and early game. Each has a clear fantasy, mechanical lean, and signature ability. More races can be added later.
 
 Visual target: stylized but grounded. Strong silhouettes, readable forms, atmospheric lighting, practical clothing/armor mixed with fantasy elements.

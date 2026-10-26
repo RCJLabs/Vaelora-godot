@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/race_data.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+display_name = "Small Folk"
+description = "Innkeepers, couriers and brokers from the Hearthlands, on every road in the Empire. Trusted go-betweens, because small folk don't do spells (so they say)."
+health = 85
+stamina = 115
+magicka = 60
+move_speed_mult = 0.95
+jump_height_mult = 0.9
+skill_xp_mult = 1.0
+reputation_gain_mult = 1.1
+melee_damage_mult = 0.9
+attribute_bonuses = {
+"agility": 2,
+"presence": 2,
+"strength": -2,
+"intellect": -1
+}
+skill_bonuses = {
+"speech": 10
+}
+starting_spells = Array[String]([])
+traits = "Nimble and well-liked: reputation rises 10% faster. Speech starts at 25.
+Less Health and Magicka, slower and shorter, 10% weaker in melee. Know no spells at the start."
+signature_ability = "Fortune's Favour"
+ability_id = "fortunes_favour"
+signature_description = "Power (Z): for 15 seconds, a third of the blows aimed at you miss."
