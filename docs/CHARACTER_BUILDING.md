@@ -87,7 +87,8 @@ ten that exist get theirs filled in along the way).
      (`docs/godot-starter/COMBAT.md`, "Spell-blades").
 6. ✅ **Classes**: chosen at creation, +20% XP in five skills, a class power on R, changed after
    Aurel's rite (`docs/godot-starter/CLASSES.md`).
-7. **Earned powers:** shrines, quests and the stones.
+7. ✅ **Earned powers:** eight, from quests and the stones, one held at a time on T and exchanged
+   in Tab → Powers (`docs/godot-starter/POWERS.md`). Sideways to the starting powers, not above.
 
 ## Classes (decided, after the questionnaire)
 

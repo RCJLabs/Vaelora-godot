@@ -21,8 +21,10 @@ var off_hand_button: Button     # a one-handed weapon into the left hand (dual-w
 const QUESTS_TAB := 3
 const MAP_TAB := 5
 const PERKS_TAB := 6
+const POWERS_TAB := 7
 var map_view: MapView
 var perk_tree: PerkTree
+var powers_page: PowersPage
 var _quest_ids: Array = []   # quest id for each row of quest_list
 
 var _item_ids: Array = []   # item id for each row of item_list
@@ -40,6 +42,8 @@ func _ready() -> void:
 	tabs.add_child(map_view)
 	perk_tree = PerkTree.new()
 	tabs.add_child(perk_tree)
+	powers_page = PowersPage.new()
+	tabs.add_child(powers_page)
 	%PerksButton.pressed.connect(func(): tabs.current_tab = PERKS_TAB; _focus_tab.call_deferred())
 	%HealthButton.pressed.connect(Skills.spend_level_up.bind("health"))
 	%StaminaButton.pressed.connect(Skills.spend_level_up.bind("stamina"))
@@ -222,6 +226,7 @@ func _identity_text() -> String:
 func _refresh_perks() -> void:
 	%PerksButton.text = "Perks  -  %d point%s to spend  >" % [Character.perk_points, "" if Character.perk_points == 1 else "s"]
 	perk_tree.refresh()
+	powers_page.refresh()
 
 
 func _refresh_inventory() -> void:

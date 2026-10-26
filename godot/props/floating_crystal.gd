@@ -56,6 +56,7 @@ func _release(player: Node) -> void:
 	Inventory.remove("wisp_essence", 1)
 	player.effects.apply("wisp_grace")
 	GameState.set_flag("released_wisp")
+	EarnedPowers.essence_released()   # 3 and 6 earn powers (systems/earned_powers.gd)
 	Sfx.play_at("wisp_freed", global_position)
 	player.show_message("You hold the essence up to the crystal. It doesn't sink in. It rises, slowly, and for a moment it has a shape, something like a hand, open. Then it's gone, and the night feels kinder. (Wisp's Grace: the wisps will let you be tonight.)")
 

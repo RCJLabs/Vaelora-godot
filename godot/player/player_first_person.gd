@@ -182,6 +182,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		Character.use_power(1)
 	elif event.is_action_pressed("power_class"):
 		Character.use_power(2)
+	elif event.is_action_pressed("power_earned"):
+		Character.use_power(3)
 	elif event.is_action_pressed("weapon_art"):
 		combat.weapon_art_pressed()   # systems/weapon_arts.gd
 	elif event.is_action_pressed("command"):
@@ -570,7 +572,7 @@ func _ensure_input_actions() -> void:
 		"move_left": KEY_A, "move_right": KEY_D,
 		"jump": KEY_SPACE, "sprint": KEY_SHIFT, "interact": KEY_E,
 		"quicksave": KEY_F5, "quickload": KEY_F9,
-		"power_race": KEY_Z, "power_background": KEY_X, "power_class": KEY_R, "dodge": KEY_ALT,
+		"power_race": KEY_Z, "power_background": KEY_X, "power_class": KEY_R, "power_earned": KEY_T, "dodge": KEY_ALT,
 	}
 	for action in defaults:
 		if not InputMap.has_action(action):

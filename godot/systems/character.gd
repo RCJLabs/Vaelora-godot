@@ -36,6 +36,8 @@ var ability_list: Dictionary = {}
 var player_name := "Traveller"
 var background := ""          # "" when a level is run directly (F6)
 var class_id := ""            # systems/classes.gd ("" for none: old saves, F6)
+var earned_power := ""        # the earned power in the fourth slot (systems/earned_powers.gd)
+var earned_seen: Array = []   # earned powers already announced
 var traits: Array = []
 var perks: Array = []
 var perk_points := 0
@@ -99,6 +101,8 @@ func create(race: RaceData, new_name: String, background_id: String, trait_ids: 
 	player_name = new_name.strip_edges() if new_name.strip_edges() != "" else "Traveller"
 	background = background_id
 	class_id = new_class if Classes.classes.has(new_class) else ""
+	earned_power = ""
+	earned_seen = []
 	traits = trait_ids.duplicate()
 	perks = []
 	perk_points = STARTING_PERK_POINTS
@@ -199,15 +203,16 @@ func stat_bonus(stat: String) -> float:
 	return total + Corruption.stat_bonus(stat)
 
 
-# --- active powers (Z = race, X = background, R = class) -------------------------------
+# --- active powers (Z = race, X = background, R = class, T = earned) ----------------
 
-## [race power id, background power id, class power id] ("" if none).
+## [race, background, class, earned] power ids ("" if none).
 func powers() -> Array:
 	var bg_power: String = backgrounds.get(background, {}).get("ability", "")
-	return [GameState.race_data.ability_id, bg_power, Classes.classes.get(class_id, {}).get("ability", "")]
+	return [GameState.race_data.ability_id, bg_power, Classes.classes.get(class_id, {}).get("ability", ""),
+			earned_power if EarnedPowers.has(earned_power) else ""]
 
 
-## Uses power 0 (race), 1 (background) or 2 (class). Returns true if it worked.
+## Uses power 0 (race), 1 (background), 2 (class) or 3 (earned). Returns true if it worked.
 func use_power(index: int) -> bool:
 	var id: String = powers()[index]
 	var player := get_tree().get_first_node_in_group("player")
@@ -219,6 +224,8 @@ func use_power(index: int) -> bool:
 		return false
 	if power.get("class", false) and not Classes.activate(id, player):
 		return false   # nothing to aim at, too little Health...: no cooldown
+	if power.get("scripted", false) and not EarnedPowers.activate(id, player):
+		return false
 	if power.has("effect"):
 		player.effects.apply(power["effect"])
 	var restore: Dictionary = power.get("restore", {})
@@ -302,7 +309,8 @@ func take_perk(id: String) -> bool:
 # --- saving --------------------------------------------------------------------------------
 
 func to_dict() -> Dictionary:
-	return {"name": player_name, "background": background, "class": class_id, "traits": traits, "perks": perks,
+	return {"name": player_name, "background": background, "class": class_id,
+			"earned_power": earned_power, "earned_seen": earned_seen, "traits": traits, "perks": perks,
 			"perk_points": perk_points, "attribute_points": attribute_points,
 			"modes": modes, "cooldowns": cooldowns}
 
@@ -311,6 +319,8 @@ func from_dict(data: Dictionary) -> void:
 	player_name = data.get("name", "Traveller")
 	background = data.get("background", "")
 	class_id = data.get("class", "") if Classes.classes.has(data.get("class", "")) else ""
+	earned_power = data.get("earned_power", "") if ability_list.has(data.get("earned_power", "")) else ""
+	earned_seen = data.get("earned_seen", []).filter(func(id): return ability_list.has(id))
 	traits = data.get("traits", []).filter(func(id): return trait_list.has(id))
 	perks = data.get("perks", []).filter(func(id): return perk_list.has(id))
 	perk_points = int(data.get("perk_points", 0))

@@ -546,23 +546,23 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `ritual_cultists_cleared` (never checked) | levels/test_level.tscn (RitualCultists) | – |
 | `ritual_site_seen_by_day` | props/ritual_site.gd:47 | props/ritual_site.gd:46 |
 | `ritual_started` | props/ritual_site.gd:16 | levels/test_level.tscn (Cultist1)<br>levels/test_level.tscn (Cultist2)<br>levels/test_level.tscn (Cultist3)<br>quest what_they_made |
-| `saw_drain_line` | props/floating_crystal.gd:72<br>props/floating_crystal.gd:77<br>systems/save_system.gd:231 | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..."<br>props/drain_line.gd:9<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:76<br>quest ask_forest<br>quest waking_stones<br>systems/save_system.gd:230 |
+| `saw_drain_line` | props/floating_crystal.gd:73<br>props/floating_crystal.gd:78<br>systems/save_system.gd:231 | brannoc: after_given, "The crystal showed me a thread of lig..."<br>brannoc: after_kept, "The crystal showed me a thread of lig..."<br>brannoc: after_restored, "The crystal showed me a thread of lig..."<br>brannoc: waiting_on_stones, "The crystal showed me a thread of lig..."<br>props/drain_line.gd:9<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:77<br>quest ask_forest<br>quest waking_stones<br>systems/save_system.gd:230 |
 | `saw_dunya` | dunya: look | mirela: end_letter, "Dunya?" |
 | `saw_hollow_wolf` | enemies/hollow_wolf.gd:55<br>hollow_wolf: look | brannoc (start → mark)<br>enemies/hollow_wolf.gd:53<br>enemies/hollow_wolf.gd:73<br>hollow_wolf (start → again)<br>maren: greet_again, "I found the hollow wolf."<br>maren: greet_hero, "I found the hollow wolf."<br>mirela: drain, "A wolf by Greyfang Hollow looked the ..."<br>quest wrong_things |
 | `saw_lanternfast` | systems/lanternfast.gd:22 | systems/lanternfast.gd:20 |
 | `saw_wisp_drained` | enemies/wisp_spawner.gd:61 | enemies/wisp_spawner.gd:60 |
 | `scholar_read_mark` | hollow_wolf: mark_scholar | brannoc: mark, "(Scholar) It isn't a brand. Something..." |
-| `shards_chose_stones` | brannoc: chose_stones | brannoc (start → waiting_on_stones)<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:66<br>props/floating_crystal.gd:75 |
-| `shards_decided` | brannoc: chose_stones<br>brannoc: given<br>brannoc: kept | props/floating_crystal.gd:52<br>props/floating_crystal.gd:75<br>quest waking_stones |
+| `shards_chose_stones` | brannoc: chose_stones | brannoc (start → waiting_on_stones)<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:52<br>props/floating_crystal.gd:67<br>props/floating_crystal.gd:76 |
+| `shards_decided` | brannoc: chose_stones<br>brannoc: given<br>brannoc: kept | props/floating_crystal.gd:52<br>props/floating_crystal.gd:76<br>quest waking_stones |
 | `shards_given` | brannoc: given | brannoc (start → after_given)<br>quest waking_stones |
 | `shards_kept` | brannoc: kept | brannoc (start → after_kept)<br>brannoc: after_given, "Any other work for the garrison?"<br>brannoc: after_restored, "Any other work for the garrison?"<br>brannoc: end_letter, "What happens now?"<br>brannoc: end_letter, "You kept your distance from the cryst..."<br>brannoc: end_letter, "You still think I should have handed ..."<br>brannoc: greet_again, "Any other work for the garrison?"<br>brannoc: progress, "Any other work for the garrison?"<br>brannoc: waiting_on_stones, "Any other work for the garrison?"<br>quest waking_stones |
 | `shrine_answered` | props/shrine.gd:34 | props/shrine.gd:33<br>props/shrine.gd:55<br>quest silent_shrine |
 | `shrine_prayed` (never checked) | shrine: pray | – |
 | `shrine_rekindled` | shrine: offer | props/shrine.gd:24<br>props/shrine.gd:30<br>props/shrine.gd:55<br>quest silent_shrine |
 | `silent_shrine_started` | maren: report_acolyte<br>shrine: look | quest silent_shrine |
-| `stones_quest_done` | brannoc: given<br>brannoc: kept<br>props/floating_crystal.gd:73 | brannoc: mark, "I'm already looking into the stones."<br>brannoc: mark_hunter, "I'm already looking into the stones."<br>brannoc: mark_scholar, "I'm already looking into the stones."<br>quest waking_stones<br>systems/save_system.gd:230 |
+| `stones_quest_done` | brannoc: given<br>brannoc: kept<br>props/floating_crystal.gd:74 | brannoc: mark, "I'm already looking into the stones."<br>brannoc: mark_hunter, "I'm already looking into the stones."<br>brannoc: mark_scholar, "I'm already looking into the stones."<br>quest waking_stones<br>systems/save_system.gd:230 |
 | `stones_quest_started` | brannoc: accept | brannoc (start → progress)<br>brannoc: lore, "I'll look into it."<br>brannoc: mark, "I'm already looking into the stones."<br>brannoc: mark, "Then I'll look at the stones."<br>brannoc: mark_hunter, "I'm already looking into the stones."<br>brannoc: mark_hunter, "Then I'll look at the stones."<br>brannoc: mark_scholar, "I'm already looking into the stones."<br>brannoc: mark_scholar, "Then I'll look at the stones."<br>quest waking_stones |
-| `stones_restored` | props/floating_crystal.gd:71 | brannoc (start → after_restored)<br>props/floating_crystal.gd:30<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:66<br>quest waking_stones |
+| `stones_restored` | props/floating_crystal.gd:72 | brannoc (start → after_restored)<br>props/floating_crystal.gd:30<br>props/floating_crystal.gd:50<br>props/floating_crystal.gd:67<br>quest waking_stones |
 | `strongbox_kept` | jory: keep_box | quest lost_wagon |
 | `strongbox_returned` | jory: return_box | quest lost_wagon |
 | `taken:test_dungeon/CultNotes` | interactables/pickup.gd sets taken:<level>/<node> when picked up | quest what_they_made |
@@ -575,7 +575,7 @@ Every flag, where it's set, and where it's checked. **⚠ never set** means noth
 | `told_mirela_end` | mirela: end_hollow<br>mirela: end_mirela<br>mirela: end_mirela_cold | quest what_they_made |
 | `told_mirela_wolf` | mirela: wolf_too | mirela: drain, "A wolf by Greyfang Hollow looked the ..." |
 | `took_wisp_essence` | caged_wisp: take | mirela (start → heard_essence)<br>mirela: end_dunya, "What will the Free do?"<br>mirela: end_letter, "What will the Free do?"<br>quest the_barrow<br>systems/save_system.gd:209 |
-| `touched_crystal` | props/floating_crystal.gd:80<br>props/floating_crystal.gd:85 | brannoc: progress, "The crystal answered when I touched i..."<br>props/floating_crystal.gd:48<br>props/floating_crystal.gd:84<br>quest waking_stones |
+| `touched_crystal` | props/floating_crystal.gd:81<br>props/floating_crystal.gd:86 | brannoc: progress, "The crystal answered when I touched i..."<br>props/floating_crystal.gd:48<br>props/floating_crystal.gd:85<br>quest waking_stones |
 | `wisp_choice_made` | caged_wisp: free<br>caged_wisp: take | props/caged_wisp.gd:23<br>props/caged_wisp.gd:29<br>quest the_barrow |
 | `wolf_quest_accepted` | maren: accept | maren: greet_again, "I'll deal with the Greyfang pack."<br>maren: wolves, "I'll deal with them."<br>maren: wolves_why, "I'll deal with them."<br>quest greyfang |
 | `wolf_quest_done` | maren: reward<br>maren: reward_driven | brannoc: greet, "Maren says she told Riverwatch about ..."<br>maren (start → greet_hero)<br>maren: greet_again, "The Greyfang pack is dead."<br>maren: greet_again, "The Greyfang pack ran. They won't be ..."<br>quest greyfang |

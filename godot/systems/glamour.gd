@@ -42,6 +42,8 @@ func target_for(enemy: Node3D, player: Node3D) -> Node3D:
 	if _spells.is_empty() and get_tree().get_nodes_in_group("decoy").is_empty():
 		return player
 	match kind_of(enemy):
+		"calm":
+			return null   # Shrine's Peace: nobody
 		"charm":
 			var ordered := Command.order_for_bound() if enemy.has_meta("bound") else null
 			return ordered if ordered else _nearest(enemy, _foes_of(enemy), CHARM_SEEK)   # Pack Leader (Command)
@@ -55,7 +57,7 @@ func target_for(enemy: Node3D, player: Node3D) -> Node3D:
 	return decoy if decoy else player
 
 
-## "charm", "frenzy" or "".
+## "charm", "frenzy", "calm" or "".
 func kind_of(enemy: Node) -> String:
 	return _spells[enemy]["kind"] if _spells.has(enemy) else ""
 
@@ -66,7 +68,7 @@ func is_charmed(enemy: Node) -> bool:
 
 ## Something hit `target`. If it was you and it's charmed, the charm breaks.
 func struck(target, by) -> void:   # untyped: an arrow's shooter may be gone
-	if is_instance_valid(target) and is_charmed(target) and is_instance_valid(by) and by.is_in_group("player") \
+	if is_instance_valid(target) and kind_of(target) in ["charm", "calm"] and is_instance_valid(by) and by.is_in_group("player") \
 			and not target.has_meta("bound"):   # a stray arrow doesn't break a binding
 		_end(target)
 
@@ -131,6 +133,23 @@ func enthrall(enemy: Node3D, kind: String, seconds: float) -> void:
 ## Makes `enemy` fight for you for `seconds`.
 func charm(enemy: Node3D, seconds: float) -> void:
 	enthrall(enemy, "charm", seconds)
+
+
+## Makes `enemy` stop fighting anyone for `seconds` (Shrine's Peace). Hitting it ends it.
+func calm(enemy: Node3D, seconds: float) -> void:
+	if not susceptible(enemy):
+		return
+	_spells[enemy] = {"kind": "calm", "left": seconds}
+	if _marks.has(enemy) and is_instance_valid(_marks[enemy]):
+		_marks[enemy].queue_free()
+	var mark := OmniLight3D.new()
+	mark.name = "CalmMark"
+	mark.light_color = Color(0.85, 0.9, 1.0)
+	mark.light_energy = 1.5
+	mark.omni_range = 2.5
+	mark.position = Vector3(0, 2.2, 0)
+	enemy.add_child(mark)
+	_marks[enemy] = mark
 
 
 func _physics_process(delta: float) -> void:
