@@ -48,6 +48,7 @@ func _ready() -> void:
 	tabs.add_child(powers_page)
 	world_page = WorldPage.new()
 	tabs.add_child(world_page)
+	tabs.tab_changed.connect(func(tab): if tab == WORLD_TAB and is_open: world_page.refresh())
 	%PerksButton.pressed.connect(func(): tabs.current_tab = PERKS_TAB; _focus_tab.call_deferred())
 	%HealthButton.pressed.connect(Skills.spend_level_up.bind("health"))
 	%StaminaButton.pressed.connect(Skills.spend_level_up.bind("stamina"))
@@ -231,7 +232,8 @@ func _refresh_perks() -> void:
 	%PerksButton.text = "Perks  -  %d point%s to spend  >" % [Character.perk_points, "" if Character.perk_points == 1 else "s"]
 	perk_tree.refresh()
 	powers_page.refresh()
-	world_page.refresh()
+	if tabs.current_tab == WORLD_TAB:
+		world_page.refresh()   # (it reads every region's scene: only when you're looking at it)
 
 
 func _refresh_inventory() -> void:

@@ -1,0 +1,84 @@
+{
+	"start": [
+		{
+			"node": "done",
+			"requires_flag": "cairns_thanked"
+		},
+		{
+			"node": "report",
+			"requires_flag": [
+				"cairn_west",
+				"cairn_east",
+				"cairn_south"
+			]
+		},
+		{
+			"node": "waiting",
+			"requires_flag": "cairns_started"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Hesk. I keep the cairns: one for every company that fell in the Rising, ours and theirs. Three have come down this year. Wind, the young ones say. Wind doesn't take the top stone off and throw it.",
+			"set_flag": "met_hesk",
+			"choices": [
+				{
+					"text": "I'll put them back.",
+					"next": "where"
+				},
+				{
+					"text": "Not my dead.",
+					"next": "end"
+				}
+			]
+		},
+		"where": {
+			"text": "West, by the old ford. East, past the laying grounds. And south, where the grass doesn't grow. Stack them as you find them; a cairn knows its own stones.",
+			"set_flag": "cairns_started",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"waiting": {
+			"text": "West by the ford, east past the laying grounds, south where the grass won't grow.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"report": {
+			"text": "\"All three.\" He doesn't smile, but his shoulders come down an inch. \"Take this. It was my brother's. He'd want it walking about.\"",
+			"give_item": {
+				"id": "iron_sword",
+				"count": 1
+			},
+			"set_flag": "cairns_thanked",
+			"add_reputation": {
+				"ashen_fields": 10
+			},
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"done": {
+			"text": "The cairns are standing. So am I. Most days.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

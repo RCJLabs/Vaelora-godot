@@ -1,0 +1,132 @@
+{
+	"start": [
+		{
+			"node": "resolved",
+			"requires_flag": "corin_resolved"
+		},
+		{
+			"node": "again",
+			"requires_flag": "corin_started"
+		},
+		{
+			"node": "greet"
+		}
+	],
+	"nodes": {
+		"greet": {
+			"text": "Corin Dray. I find wisps for people who pay. Don't look at me like that; the Listeners hear them for free, I just charge.",
+			"set_flag": "corin_started",
+			"choices": [
+				{
+					"text": "Who pays you?",
+					"next": "who"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"again": {
+			"text": "Still here? Still judging?",
+			"choices": [
+				{
+					"text": "Who pays you?",
+					"next": "who",
+					"requires_not_flag": "corin_confronted"
+				},
+				{
+					"text": "About your buyers.",
+					"next": "options",
+					"requires_flag": "corin_confronted"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"who": {
+			"text": "\"Masks. Good coin, no questions. They want to know where the lights gather, and I tell them, and they go away. That's all.\" He doesn't look at you.",
+			"set_flag": "corin_confronted",
+			"choices": [
+				{
+					"text": "It isn't all.",
+					"next": "options"
+				}
+			]
+		},
+		"options": {
+			"text": "\"So what? Greyfold's poor. Ysolde's lights don't buy bread.\"",
+			"choices": [
+				{
+					"text": "They're draining them under the fields. You're feeding it. Stop.",
+					"next": "quits",
+					"fail_next": "refuses",
+					"check": {
+						"id": "corin_quit",
+						"kind": "persuade",
+						"difficulty": 35
+					},
+					"set_flag": [
+						"corin_quit",
+						"corin_resolved"
+					]
+				},
+				{
+					"text": "Here: a hundred gold. That's more than they'd pay you all year. Stop.",
+					"next": "paid",
+					"requires_gold": 100,
+					"take_gold": 100,
+					"set_flag": [
+						"corin_paid_off",
+						"corin_resolved"
+					]
+				},
+				{
+					"text": "(Leave it for now)",
+					"next": "end"
+				}
+			]
+		},
+		"quits": {
+			"text": "He sits down on his doorstep, heavily. \"Under the fields. I sent them there.\" A long breath. \"No more. I'll tell Ysolde myself.\"",
+			"add_reputation": {
+				"ashen_fields": 5
+			},
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"refuses": {
+			"text": "\"Words are cheap. So am I, apparently.\" (You could pay him, or tell Listener Ysolde.)",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"paid": {
+			"text": "He weighs the purse, then you. \"No more masks. You've got a strange idea of a bargain.\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"resolved": {
+			"text": "\"No more lights for sale. Happy?\"",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}

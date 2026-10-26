@@ -1,0 +1,9 @@
+{
+	"start": "look",
+	"nodes": {
+		"look": {
+			"text": "Stone biers in rows, open to the sky. Some hold bones, some hold nothing yet. A few wisps drift over them at dusk, the Ashen say, so the dead aren't lonely. \"So the lights can see us.\"",
+			"choices": []
+		}
+	}
+}

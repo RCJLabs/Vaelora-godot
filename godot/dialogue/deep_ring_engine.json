@@ -1,0 +1,47 @@
+{
+	"start": [
+		{
+			"node": "done",
+			"requires_flag": "harvest_engine_broken"
+		},
+		{
+			"node": "open",
+			"requires_flag": "deep_ring_cleared"
+		},
+		{
+			"node": "shut"
+		}
+	],
+	"nodes": {
+		"shut": {
+			"text": "A frame of rune-iron taller than you, humming, with lights trapped in it. You'd have to get past the Mercy to touch it.",
+			"choices": []
+		},
+		"open": {
+			"text": "Dozens of cages of rune-iron, each with a wisp inside, all wired to a core of pale seam-stone that drinks their light. Pinned to the frame, a note in a clerk's hand: \"Warden: if the Fields are found, burn the engine and come to me at Ilunhall. The Empress's light-stone needs us more than she knows. - V.\"",
+			"set_flag": "vessa_note_read",
+			"choices": [
+				{
+					"text": "Smash the rune-iron and let them go.",
+					"next": "freed",
+					"set_flag": [
+						"harvest_engine_broken",
+						"deep_ring_wisps_freed"
+					]
+				},
+				{
+					"text": "(Leave it for now)",
+					"next": "end"
+				}
+			]
+		},
+		"freed": {
+			"text": "The first cage breaks, then the rest, one after another, like ice on a river. The lights pour up through the stones of the ring and out of the sinkhole, and somewhere far above, faintly, someone in Greyfold is laughing.",
+			"choices": []
+		},
+		"done": {
+			"text": "Broken rune-iron and a dull grey core. The ring stones are warm.",
+			"choices": []
+		}
+	}
+}

@@ -20,6 +20,7 @@ const TRAINERS := {
 	"zora": {"name": "Zora", "skill": "glamour", "max": 50},
 	"aurel": {"name": "Magister Aurel", "skill": "tidecraft", "max": 50},
 	"varga": {"name": "Captain Varga", "skill": "block", "max": 50},   # Weirholt
+	"ysolde": {"name": "Listener Ysolde", "skill": "sight", "max": 50},   # Greyfold
 }
 
 

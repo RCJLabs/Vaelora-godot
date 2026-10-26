@@ -1,0 +1,27 @@
+{
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Bram. I keep sheep, which is the most anyone keeps on the Fields. The sheep won't graze north-east any more. Sheep know things.",
+			"choices": [
+				{
+					"text": "North-east?",
+					"next": "ne"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"ne": {
+			"text": "Where the sinkhole opened. Carts there at night, and once a light came up out of it, screaming. Not like a wisp. Like a person.",
+			"choices": [
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		}
+	}
+}
