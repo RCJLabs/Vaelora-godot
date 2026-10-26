@@ -25,8 +25,8 @@ extends Node
 # "add_approval" (systems/conditions.gd, ui/dialogue_manager.gd).
 
 const DEFS := {
-	"brannoc": {"name": "Brannoc", "dialogue": "res://dialogue/companion_brannoc.json", "npc_dialogue": "res://dialogue/brannoc.json", "health": 150.0, "damage": 12.0, "reach": 1.9},
-	"zora": {"name": "Zora", "dialogue": "res://dialogue/companion_zora.json", "npc_dialogue": "res://dialogue/zora.json", "health": 90.0, "damage": 9.0, "reach": 6.0, "attack_interval": 1.6, "ranged": true},
+	"brannoc": {"name": "Brannoc", "dialogue": "res://dialogue/companion_brannoc.json", "npc_dialogue": "res://dialogue/brannoc.json", "health": 150.0, "damage": 12.0, "reach": 1.9, "race": "elf", "role": "hunter", "cloth": Color(0.4, 0.12, 0.1)},
+	"zora": {"name": "Zora", "dialogue": "res://dialogue/companion_zora.json", "npc_dialogue": "res://dialogue/zora.json", "health": 90.0, "damage": 9.0, "reach": 6.0, "attack_interval": 1.6, "ranged": true, "race": "human", "role": "priest", "cloth": Color(0.3, 0.25, 0.32)},
 }
 const COMMANDS := ["companion_cmd_wait", "companion_cmd_follow", "companion_cmd_dismiss", "companion_cmd_talk"]
 const COMPANION_SCRIPT := preload("res://companions/companion.gd")

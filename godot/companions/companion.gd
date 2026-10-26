@@ -58,7 +58,8 @@ var _down_left := 0.0
 var _since_hit := 100.0
 var _last_attacker: Node3D = null
 var _ordered := State.FOLLOW   # what they were doing before they went down
-var _body: MeshInstance3D
+var _body: Node3D
+var _look := {}   # race, role, cloth (Companions.DEFS)
 var _label: Label3D
 var _agent: NavigationAgent3D
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -76,6 +77,7 @@ func setup(id: String, def: Dictionary) -> void:
 	max_health = base_max_health * Command.health_mult()
 	health = max_health
 	name = "Companion_" + id
+	_look = def
 
 
 func _ready() -> void:
@@ -86,12 +88,7 @@ func _ready() -> void:
 	shape.shape = CapsuleShape3D.new()
 	shape.position.y = 0.9
 	add_child(shape)
-	_body = MeshInstance3D.new()
-	_body.mesh = CapsuleMesh.new()
-	_body.position.y = 0.9
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.35, 0.45, 0.6)
-	_body.material_override = mat
+	_body = Figure.build(_look.get("race", "human"), _look.get("role", "commoner"), _look.get("cloth", Color(0.35, 0.45, 0.6)))
 	add_child(_body)
 	_label = Label3D.new()
 	_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
@@ -150,8 +147,8 @@ func _go_down() -> void:
 	state = State.DOWN
 	_down_left = 8.0 if "unbowed" in Character.perks else DOWN_SECONDS   # Unbowed (Command)
 	target = null
-	_body.rotation.x = deg_to_rad(80)
-	_body.position.y = 0.35
+	_body.rotation.x = deg_to_rad(80)   # laid on the ground (the figure's origin is at its feet)
+	_body.position = Vector3(0, 0.25, -0.85)
 	var player = get_tree().get_first_node_in_group("player")
 	if player and player.get("hud"):
 		player.hud.notify("%s is down! Help them up (%s)." % [display_name, Hints.key("interact")])
@@ -161,7 +158,7 @@ func _get_up(share: float) -> void:
 	health = max_health * share
 	state = _ordered
 	_body.rotation.x = 0.0
-	_body.position.y = 0.9
+	_body.position = Vector3.ZERO
 	_update_label()
 
 

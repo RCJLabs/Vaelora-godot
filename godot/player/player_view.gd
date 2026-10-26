@@ -36,6 +36,7 @@ const BODY_HIDE_DISTANCE := 0.9
 ## from them than the first-person model is from the eye.
 const SHOULDERS := Vector3(0.0, 1.45, 0.0)
 const REACH_SCALE := 1.35
+const BODY_CLOTH := Color(0.45, 0.38, 0.3)
 
 var third_person := false
 ## Small pitch/yaw (radians) that points the eye at the crosshair; zero in first person.
@@ -50,6 +51,7 @@ var _eye: Camera3D
 var _rig: Node3D          # on the body at the shoulders; holds the copies
 var _held := {}           # first-person model -> its copy on the body
 var _held_from := {}      # first-person model -> what its copy was built from
+var _body_race := ""
 
 
 func _ready() -> void:
@@ -109,6 +111,8 @@ func _process(_delta: float) -> void:
 	camera.fov = _eye.fov   # including the bow's aiming zoom
 	var kick: Vector3 = _player._camera_kick   # degrees, as the eye gets it
 	camera.rotation = Vector3(deg_to_rad(kick.x), deg_to_rad(kick.y), deg_to_rad(kick.z))
+	if GameState.race != _body_race:
+		_dress_body(body)
 	body.visible = arm.get_hit_length() > BODY_HIDE_DISTANCE
 	_aim_eye_at_crosshair()
 	_mirror_held()
@@ -187,30 +191,24 @@ func _tag(node: Node) -> void:
 func _make_body() -> Node3D:
 	var root := Node3D.new()
 	root.name = "Body"
-	var capsule := MeshInstance3D.new()
-	var mesh := CapsuleMesh.new()
-	mesh.radius = 0.35
-	mesh.height = 1.8
-	capsule.mesh = mesh
-	capsule.position.y = 0.9
-	var cloth := StandardMaterial3D.new()
-	cloth.albedo_color = Color(0.45, 0.38, 0.3)
-	capsule.material_override = cloth
-	capsule.layers = BODY_LAYER
-	root.add_child(capsule)
-	var visor := MeshInstance3D.new()
-	var box := BoxMesh.new()
-	box.size = Vector3(0.4, 0.12, 0.2)
-	visor.mesh = box
-	visor.position = Vector3(0.0, 1.6, -0.28)
-	var dark := StandardMaterial3D.new()
-	dark.albedo_color = Color(0.15, 0.13, 0.12)
-	visor.material_override = dark
-	visor.layers = BODY_LAYER
-	root.add_child(visor)
+	_dress_body(root)
 	_rig = Node3D.new()
 	_rig.name = "Held"
-	_rig.position = SHOULDERS
+	_rig.position = SHOULDERS * Vector3(1, Figure.height_of(_body_race), 1)
 	root.add_child(_rig)
 	root.visible = false
 	return root
+
+
+## The body is a greybox person of your race (systems/figure.gd); built again if
+## the race changes (character creation happens with the player already there).
+func _dress_body(root: Node3D) -> void:
+	var old := root.get_node_or_null("Figure")
+	if old:
+		root.remove_child(old)
+		old.queue_free()
+	_body_race = GameState.race
+	var figure := Figure.build(_body_race, "commoner", BODY_CLOTH, false, BODY_LAYER)
+	root.add_child(figure)
+	if _rig:
+		_rig.position = SHOULDERS * Vector3(1, Figure.height_of(_body_race), 1)
