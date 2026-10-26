@@ -34,21 +34,26 @@ const UI_SCALES := [1.0, 1.15, 1.3, 1.5]
 ## built (a scene without volumetric fog doesn't gain it on Ultra); shadow_distance
 ## multiplies each sun's own shadow distance. clutter: how thick the ground cover
 ## (grass, flowers, stones: props/ground_cover.gd) grows, 0 for none; clutter_range:
-## how far away it's drawn.
+## how far away it's drawn. sdfgi: real-time bounce light (Forward+ only; gi_rays and
+## gi_half_res set its cost); ssil: screen-space bounce light, close up.
 const QUALITY_NAMES := ["Low", "Medium", "High", "Ultra"]
 const QUALITY := [
 	{"ssao": false, "volumetric_fog": false, "glow": false, "shadow_atlas": 1024, "shadow_distance": 0.5,
 		"soft_shadows": RenderingServer.SHADOW_QUALITY_HARD, "msaa": Viewport.MSAA_DISABLED, "fxaa": true,
-		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_VERY_LOW, "fog_volume": 48, "clutter": 0.0, "clutter_range": 30.0},
+		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_VERY_LOW, "fog_volume": 48, "clutter": 0.0, "clutter_range": 30.0,
+		"sdfgi": false, "ssil": false, "gi_rays": RenderingServer.ENV_SDFGI_RAY_COUNT_16, "gi_half_res": true},
 	{"ssao": true, "volumetric_fog": false, "glow": true, "shadow_atlas": 2048, "shadow_distance": 0.75,
 		"soft_shadows": RenderingServer.SHADOW_QUALITY_SOFT_VERY_LOW, "msaa": Viewport.MSAA_DISABLED, "fxaa": true,
-		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_LOW, "fog_volume": 48, "clutter": 0.5, "clutter_range": 40.0},
+		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_LOW, "fog_volume": 48, "clutter": 0.5, "clutter_range": 40.0,
+		"sdfgi": false, "ssil": false, "gi_rays": RenderingServer.ENV_SDFGI_RAY_COUNT_16, "gi_half_res": true},
 	{"ssao": true, "volumetric_fog": true, "glow": true, "shadow_atlas": 4096, "shadow_distance": 1.0,
 		"soft_shadows": RenderingServer.SHADOW_QUALITY_SOFT_LOW, "msaa": Viewport.MSAA_2X, "fxaa": false,
-		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_MEDIUM, "fog_volume": 64, "clutter": 1.0, "clutter_range": 55.0},
+		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_MEDIUM, "fog_volume": 64, "clutter": 1.0, "clutter_range": 55.0,
+		"sdfgi": true, "ssil": false, "gi_rays": RenderingServer.ENV_SDFGI_RAY_COUNT_32, "gi_half_res": true},
 	{"ssao": true, "volumetric_fog": true, "glow": true, "shadow_atlas": 8192, "shadow_distance": 1.5,
 		"soft_shadows": RenderingServer.SHADOW_QUALITY_SOFT_HIGH, "msaa": Viewport.MSAA_4X, "fxaa": false,
-		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_HIGH, "fog_volume": 96, "clutter": 1.6, "clutter_range": 85.0},
+		"ssao_quality": RenderingServer.ENV_SSAO_QUALITY_HIGH, "fog_volume": 96, "clutter": 1.6, "clutter_range": 85.0,
+		"sdfgi": true, "ssil": true, "gi_rays": RenderingServer.ENV_SDFGI_RAY_COUNT_64, "gi_half_res": false},
 ]
 const GRAPHICS_KEYS := ["graphics_quality", "render_scale"]
 
@@ -112,6 +117,11 @@ func apply_graphics() -> void:
 	RenderingServer.positional_soft_shadow_filter_set_quality(preset["soft_shadows"])
 	RenderingServer.environment_set_ssao_quality(preset["ssao_quality"], graphics_quality < 3, 0.5, 2, 50, 300)
 	RenderingServer.environment_set_volumetric_fog_volume_size(preset["fog_volume"], preset["fog_volume"])
+	RenderingServer.environment_set_sdfgi_ray_count(preset["gi_rays"])
+	RenderingServer.environment_set_sdfgi_frames_to_converge(RenderingServer.ENV_SDFGI_CONVERGE_IN_20_FRAMES)
+	RenderingServer.environment_set_sdfgi_frames_to_update_light(RenderingServer.ENV_SDFGI_UPDATE_LIGHT_IN_8_FRAMES)
+	RenderingServer.gi_set_use_half_resolution(preset["gi_half_res"])
+	RenderingServer.environment_set_ssil_quality(RenderingServer.ENV_SSIL_QUALITY_MEDIUM, true, 0.5, 2, 50, 300)
 	for node in viewport.find_children("*", "WorldEnvironment", true, false):
 		_apply_graphics_to(node)
 	for node in viewport.find_children("*", "DirectionalLight3D", true, false):
@@ -127,11 +137,13 @@ func _apply_graphics_to(node: Node) -> void:
 		# Remember what the scene was built with, the first time we see it.
 		if not env.has_meta("designed"):
 			env.set_meta("designed", {"ssao": env.ssao_enabled, "volumetric_fog": env.volumetric_fog_enabled,
-					"glow": env.glow_enabled})
+					"glow": env.glow_enabled, "sdfgi": env.sdfgi_enabled, "ssil": env.ssil_enabled})
 		var designed: Dictionary = env.get_meta("designed")
 		env.ssao_enabled = designed["ssao"] and preset["ssao"]
 		env.volumetric_fog_enabled = designed["volumetric_fog"] and preset["volumetric_fog"]
 		env.glow_enabled = designed["glow"] and preset["glow"]
+		env.sdfgi_enabled = designed["sdfgi"] and preset["sdfgi"]
+		env.ssil_enabled = designed["ssil"] and preset["ssil"]
 	elif node is DirectionalLight3D:
 		if not node.has_meta("designed_shadow_distance"):
 			node.set_meta("designed_shadow_distance", node.directional_shadow_max_distance)

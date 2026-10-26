@@ -143,7 +143,7 @@ A mood can set:
 Builders pass a mood to `common()`, as in `common("Ilunhall", true, "capital")`.
 
 **Nights are brighter now.** The shade's fill colour never drops below a moonlit blue
-(`NIGHT_FILL`), and the night's ambient light is 2.2, so you can see the ground on a phone. It's
+(`NIGHT_FILL`), and the night's ambient light is 2.2, so you can see the ground. It's
 still dark. Stealth goes by the clock, not by how bright it looks, so this changes nothing in
 play.
 
@@ -188,8 +188,7 @@ Changing the preset rebuilds the cover.
 
 **Cost:** the scatter is built when the level loads, in the loading frame, so it isn't a hitch a
 moment into play.
-- Weirholt, the biggest: about 25,000 pieces, 150 ms on a desktop. Expect a few times that on a
-  phone.
+- Weirholt, the biggest: about 25,000 pieces, 150 ms on a desktop.
 - Medium halves it.
 
 Builders: `ground_cover(style, area)`, plus `.add_to_group("ground_cover", true)` on the grass.
@@ -232,7 +231,7 @@ The Vale's waystation is hand-made and unchanged.
 - Cloud cover comes from the mood (`LevelMood.clouds`): Vale 0.4, Riverlands 0.55, Fields 0.85,
   Ilunhall 0.3.
 - They're not in the sky shader on purpose. A sky shader that animates recomputes the scene's
-  ambient light every frame, which phones can't spare.
+  ambient light every frame, which costs every frame for nothing.
 
 **The Vale** now has the ground skirt out to the horizon too, so there's no dark band past its
 edge.
@@ -251,13 +250,45 @@ These are CPU particles with a soft round sprite, so they work on every renderer
 The ambient effects (chimney smoke and motes) scale with the preset's `clutter`, so there are none
 on Low. Hit bursts and fires always show.
 
+## Lighting on PC (Forward+)
+
+The game targets PC on the **Forward+** renderer, so the outdoor look uses what only Forward+
+has. All of it is in the shared `levels/atmosphere.tres` or set by `levels/day_night.gd`, so
+every outdoor region gets it, including the hand-made Vale.
+
+| What | Where | Presets |
+|---|---|---|
+| **SDFGI bounce light**: sunlit ground and walls light the shade near them, in their own colour, and open sky is blocked under roofs and in alleys | `atmosphere.tres` (`sdfgi_*`) | High and Ultra (more rays, full resolution on Ultra) |
+| **SSIL**: screen-space bounce light, close up | `atmosphere.tres` (`ssil_*`) | Ultra |
+| **A sun with a size**: shadows stay sharp at the foot of what casts them and soften further out | `day_night.gd` (`SUN_SIZE`, 0.5°; overcast moods widen it to over 3°) | All |
+| **Blended shadow cascades**: no visible line where shadow detail drops off | `day_night.gd` | All |
+| **Morning mist**: volumetric fog that gathers before dawn and burns off by about 9:30 | `LevelMood.morning_mist`: Riverlands 0.03, Ithmarren 0.025, Fields 0.02, Vale 0.015 | High and Ultra (it's volumetric fog) |
+
+As with the other effects, a preset only ever switches these **off** relative to how a scene was
+built: a scene built without SDFGI (every interior, for now) doesn't gain it on Ultra.
+
+Weirholt at 6:30, before and after (High):
+
+![Before](../images/lighting_morning_before.jpg)
+![After: morning mist](../images/lighting_morning_after.jpg)
+
+**What hasn't been seen yet: the bounce light.** These screenshots come from a cloud session
+on a software Vulkan driver (llvmpipe). SDFGI and SSIL do nothing there: a test scene with a
+shadowed floor rendered pixel-identical with them on and off. The mist and the soft shadows
+do render. So SDFGI and SSIL are switched on, but unchecked by eye. To check them on a real
+GPU:
+- open `levels/weirholt.tscn` in the editor and select `levels/atmosphere.tres`;
+- toggle **SDFGI → Enabled** and watch the shade under the gate towers and eaves;
+- if it's too bright, lower **SDFGI → Energy** (1.0 now); if shade goes too dark, raise it.
+
+**Interiors are next.** Each generated interior has its own environment written into its scene,
+so giving them GI means changing `builder_base.common()` and rebuilding them.
+
 ## Renderers (a caveat)
 
-On Android the game runs on the **Mobile** renderer. The screenshots for this pass were
-taken with it (Vulkan, through a software driver).
-
-The Mobile renderer has no SSAO and no volumetric fog. `atmosphere.tres` has both
-turned on, but you only get them on desktop (Forward+).
+The game is made for **Forward+** (PC). The Android build, used only for testing on a phone,
+runs on the **Mobile** renderer: no SSAO, no volumetric fog, no SDFGI or SSIL, so it looks
+flatter. Older screenshots in this doc were taken with Mobile.
 
 The **Compatibility** (OpenGL) renderer looks quite different: brighter and more washed
 out. Don't judge the look from it.

@@ -13,7 +13,7 @@ materials, and the placeholder sounds in `assets/sfx/`, synthesised by
 ## License rules for this project
 - **CC0**: OK. No credit legally required, but list it anyway.
 - **CC-BY**: OK. Credit **must** appear in-game (credits screen) and here.
-- **Anything with NC (non-commercial)**: **don't use.** It blocks selling on Google Play.
+- **Anything with NC (non-commercial)**: **don't use.** It blocks selling the game.
 - **GPL / CC-BY-SA**: avoid. The share-alike terms are awkward for a closed-source game.
 - **Marketplace licenses** (Fab, Unity Asset Store, itch.io, Synty): read whether they
   allow use **in Godot** and in a **commercial** game before buying.
