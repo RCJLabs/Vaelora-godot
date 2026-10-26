@@ -51,6 +51,8 @@ var _effects: Node   # sibling StatusEffects, if any
 ## Anything with modifier(key) -> float that always applies (the player sets
 ## this to the Character autoload: traits, perks, Hardcore). null for others.
 var permanent: Object = null
+const FORTUNE_MISS := 0.33
+signal missed
 
 
 func _ready() -> void:
@@ -106,6 +108,9 @@ func _process(delta: float) -> void:
 ## `over_time` = bleeding, poison, burning ticks: they skip armour.
 func take_damage(amount: float, over_time: bool = false) -> void:
 	if is_dead or amount <= 0.0:
+		return
+	if not over_time and _effects and _effects.has("fortunes_favour") and randf() < FORTUNE_MISS:
+		missed.emit()   # Fortune's Favour (small folk)
 		return
 	amount *= modifier("damage_taken")
 	if over_time:

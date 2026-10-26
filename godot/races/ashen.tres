@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/race_data.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+display_name = "Ashen"
+description = "Grey-skinned, quiet, pale-eyed folk of the Grieving Fields, descended from the hollowed. They hear the wisps faintly, and feel them hurt."
+health = 115
+stamina = 105
+magicka = 85
+move_speed_mult = 1.0
+jump_height_mult = 1.0
+skill_xp_mult = 1.0
+reputation_gain_mult = 1.0
+melee_damage_mult = 1.0
+attribute_bonuses = {
+"endurance": 2,
+"willpower": 2,
+"presence": -2,
+"intellect": -1
+}
+skill_bonuses = {
+"survival": 5,
+"sight": 5
+}
+starting_spells = Array[String](["healing"])
+traits = "Hardy and strong-willed. Survival and Sight start at 20.
+Less Magicka, and people find them uncanny (lower Presence)."
+signature_ability = "Kinship"
+ability_id = "kinship"
+signature_description = "Power (Z): for 60 seconds the wisps let you be, and you take 15% less damage."

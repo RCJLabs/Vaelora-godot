@@ -44,7 +44,7 @@ VARIANTS = {
     "test_act_one": [["fight"], ["peace"]],
     "test_playthrough": [["normal"], ["hardcore"]],
     "test_quest": [["riverwatch"], ["stones"]],
-    "test_race": [["human"], ["elf"], ["orc"]],
+    "test_race": [["human"], ["elf"], ["orc"], ["passenger"], ["ashen"], ["small_folk"], ["deepfolk"]],
     "test_rep": [["human_give"], ["keep"]],
     # Broken collision setups from FIRST_PERSON_SETUP.md: the first five fall, the rest stand.
     "test_wrong_things": [["mercy"], ["spare"], ["weapon"]],

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StatusEffectData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/status_effect_data.gd" id="1_fx"]
+
+[resource]
+script = ExtResource("1_fx")
+id = "steadfast"
+display_name = "Steadfast"
+description = "A quarter of the poise damage, 15% less damage."
+is_harmful = false
+duration = 20.0
+modifiers = {
+"poise_damage_taken": 0.25,
+"damage_taken": 0.85
+}

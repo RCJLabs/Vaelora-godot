@@ -102,6 +102,26 @@
 					"requires_race": "Elf"
 				},
 				{
+					"text": "You can say it. A Passenger, on your step.",
+					"next": "passenger_line",
+					"requires_race": "Passenger"
+				},
+				{
+					"text": "You've gone quiet. Is it the grey?",
+					"next": "ashen_line",
+					"requires_race": "Ashen"
+				},
+				{
+					"text": "Small folk run half the inns on this road. Who runs yours?",
+					"next": "small_folk_line",
+					"requires_race": "Small Folk"
+				},
+				{
+					"text": "A long way from any mountain, I know.",
+					"next": "deepfolk_line",
+					"requires_race": "Deepfolk"
+				},
+				{
 					"text": "I served in a levy. A waystation this far out must see trouble.",
 					"next": "soldier_line",
 					"requires_background": "soldier"
@@ -618,6 +638,58 @@
 				},
 				{
 					"text": "Fair enough.",
+					"next": "end"
+				}
+			]
+		},
+		"passenger_line": {
+			"text": "I wasn't going to say anything. There've been Passengers on the river longer than there's been a bridge. Some here blame your lot for every fever that comes up the road. I blame the wolves.",
+			"choices": [
+				{
+					"text": "Why don't people come this way?",
+					"next": "wolves"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"ashen_line": {
+			"text": "Partly. My gran said the Ashen hear the lights. Out here, after dark, I'd almost envy you. Almost.",
+			"choices": [
+				{
+					"text": "Why don't people come this way?",
+					"next": "wolves"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"small_folk_line": {
+			"text": "I do, and no Hearthlands broker has bought me out yet, though one tried. Don't tell him the roof leaks.",
+			"choices": [
+				{
+					"text": "Why don't people come this way?",
+					"next": "wolves"
+				},
+				{
+					"text": "Goodbye.",
+					"next": "end"
+				}
+			]
+		},
+		"deepfolk_line": {
+			"text": "Not as far as you'd think. Your guilds sent surveyors to the stones up the hill last spring. They put their ears to the rock, went pale, and left before supper.",
+			"choices": [
+				{
+					"text": "Why don't people come this way?",
+					"next": "wolves"
+				},
+				{
+					"text": "Goodbye.",
 					"next": "end"
 				}
 			]

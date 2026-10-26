@@ -77,7 +77,7 @@ func notices(enemy: Node3D, foe: Node3D, base_range: float, dist: float, delta: 
 	var reach := base_range * range_mult()
 	var level: float = _awareness.get(id, 0.0)
 	if dist < reach and sees(enemy):
-		level += delta * AWARE_RATE * (0.4 + 1.2 * (1.0 - dist / reach)) * Character.modifier("awareness_rate")
+		level += delta * AWARE_RATE * (0.4 + 1.2 * (1.0 - dist / reach)) * (foe.stats.modifier("awareness_rate") if foe.get("stats") is Stats else Character.modifier("awareness_rate"))   # Lanes-Walk too
 	else:
 		level -= delta * AWARE_DECAY
 	if level >= 1.0:

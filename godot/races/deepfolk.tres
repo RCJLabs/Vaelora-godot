@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="RaceData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/race_data.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+display_name = "Deepfolk"
+description = "Miners and rune-smiths of Karrowdeep and the guild halls under the hills, who live by contracts carved in stone and the depth of a seam."
+health = 120
+stamina = 110
+magicka = 80
+move_speed_mult = 0.95
+jump_height_mult = 0.95
+skill_xp_mult = 1.0
+reputation_gain_mult = 1.0
+melee_damage_mult = 1.05
+attribute_bonuses = {
+"endurance": 2,
+"strength": 1,
+"agility": -1,
+"presence": -1
+}
+skill_bonuses = {
+"smithing": 10
+}
+starting_spells = Array[String](["healing"])
+traits = "Tough and stubborn, 5% stronger in melee. Smithing starts at 25.
+Less Magicka, a little slower."
+signature_ability = "Steadfast"
+ability_id = "steadfast"
+signature_description = "Power (Z): for 20 seconds, hard to stagger (a quarter of the poise damage) and 15% less damage taken."

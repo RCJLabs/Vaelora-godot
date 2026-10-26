@@ -96,9 +96,15 @@ func _check() -> void:
 		Character.changed.emit()
 
 
-## A power that needs code ("scripted": true). False if it can't go off now.
+## A power that needs code ("scripted": true; earned ones, and the Ashen's Kinship).
+## False if it can't go off now.
 func activate(id: String, player: Node3D) -> bool:
 	match id:
+		"kinship":
+			player.effects.apply("wisp_grace")
+			player.effects.active["wisp_grace"]["time_left"] = 60.0
+			player.effects.apply("kinship")
+			return true
 		"shrines_peace":
 			for enemy in _enemies_near(player.global_position, PEACE_RADIUS):
 				if not is_wisp(enemy):
