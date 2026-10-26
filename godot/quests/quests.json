@@ -923,5 +923,95 @@
 				"text": "I wedged the Lanes' pipe shut, and the fever eased. Physician Fenn still blames the Passengers, but fewer children are sick."
 			}
 		]
+	},
+	"toll_road_gang": {
+		"title": "The Toll-Road Gang",
+		"giver": "Captain Varga, or an overturned cart on the north road",
+		"region": "riverlands",
+		"description": "Somebody's robbing carts on the woods road north of Weirholt. Captain Varga has a hundred gold for whoever stops them.",
+		"started_when": {
+			"requires_flag": "bounty_started"
+		},
+		"completed_when": {
+			"requires_flag": "bounty_paid"
+		},
+		"objectives": [
+			{
+				"text": "Find the gang's camp in the woods west of the north road.",
+				"done_when": {
+					"requires_flag": "toll_gang_cleared"
+				},
+				"marker": "TollRoadGang"
+			},
+			{
+				"text": "Collect the bounty from Captain Varga.",
+				"done_when": {
+					"requires_flag": "bounty_paid"
+				},
+				"marker": "Varga"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "bounty_paid"
+				},
+				"text": "I cleared out the gang in the woods and collected Captain Varga's hundred gold. The carters are calling me all sorts of nice things."
+			}
+		]
+	},
+	"the_weirstones": {
+		"title": "The Weirstones",
+		"giver": "The smugglers' ledger",
+		"main": true,
+		"region": "riverlands",
+		"description": "The smugglers' ledger mentions a \"Weir-site, at the dark\". Across the ford on the east bank stands a ring of old stones: one of the twelve places the lights first touched.",
+		"started_when": {
+			"requires_flag": "barges_resolved"
+		},
+		"completed_when": {
+			"requires_flag": "weirstones_freed"
+		},
+		"objectives": [
+			{
+				"text": "Cross the ford to the Weirstones on the east bank, after dark.",
+				"done_when": {
+					"requires_flag": "weirstones_rite"
+				},
+				"marker": "Weirstones"
+			},
+			{
+				"text": "Stop whoever is feeding on the stones.",
+				"done_when": {
+					"requires_flag": "weirstones_cleared"
+				},
+				"marker": "Weirstones"
+			},
+			{
+				"text": "See what they were feeding, in the middle of the circle.",
+				"done_when": {
+					"requires_flag": "weirstones_freed"
+				},
+				"marker": "DrainFocus"
+			},
+			{
+				"text": "(Optional) Tell Captain Varga what the letter said.",
+				"show_when": {
+					"requires_flag": "weirstones_letter"
+				},
+				"done_when": {
+					"requires_flag": "weirstones_reported"
+				},
+				"marker": "Varga"
+			}
+		],
+		"outcomes": [
+			{
+				"when": {
+					"requires_flag": "weirstones_freed"
+				},
+				"text": "The Mercy were feeding a lump of seam-stone on the Weirstones' light. I broke their cage and gave the light back. Their letter, signed V., moves the harvest to the Grieving Fields, where the old site runs deeper."
+			}
+		]
 	}
 }

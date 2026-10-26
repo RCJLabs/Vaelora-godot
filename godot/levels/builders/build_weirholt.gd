@@ -21,6 +21,9 @@ var DAY_NIGHT
 var FLICKER
 var PACK
 var PRESENCE
+var CULTIST
+var RITUAL
+var WISPS
 var PLAYER
 var BANDIT
 var ATMOSPHERE
@@ -52,6 +55,9 @@ func _process(_delta: float) -> bool:
 	FLICKER = load("res://props/flicker_light.gd")
 	PACK = load("res://enemies/wolf_pack.gd")
 	PRESENCE = load("res://props/story_presence.gd")
+	CULTIST = load("res://enemies/cultist.gd")
+	RITUAL = load("res://props/ritual_site.gd")
+	WISPS = load("res://enemies/wisp_spawner.gd")
 	PLAYER = load("res://player/player.tscn")
 	BANDIT = load("res://enemies/bandit.tscn")
 	ATMOSPHERE = load("res://levels/atmosphere.tres")
@@ -283,19 +289,19 @@ func _build_town() -> Node3D:
 	common("Weirholt", true)
 
 	# Ground on both banks of the Greywater, the river between (x 22..34, flowing south).
-	box("GroundWest", Vector3(82, 1, 120), Vector3(-19, -0.5, 0), GRASS)
-	box("GroundEast", Vector3(26, 1, 120), Vector3(47, -0.5, 0), GRASS)
-	box("RiverBed", Vector3(12, 1, 120), Vector3(28, -1.9, 0), Color(0.25, 0.22, 0.18), "surface_stone")
+	box("GroundWest", Vector3(122, 1, 200), Vector3(-39, -0.5, 0), GRASS)
+	box("GroundEast", Vector3(66, 1, 200), Vector3(67, -0.5, 0), GRASS)
+	box("RiverBed", Vector3(12, 1, 200), Vector3(28, -1.9, 0), Color(0.25, 0.22, 0.18), "surface_stone")
 	var water := MeshInstance3D.new()
 	water.name = "River"
 	var wm := BoxMesh.new()
-	wm.size = Vector3(12, 0.1, 120)
+	wm.size = Vector3(12, 0.1, 200)
 	wm.material = mat(WATER, true)
 	water.mesh = wm
 	water.position = Vector3(28, -0.35, 0)
 	own(water)
 	box("Ford", Vector3(12, 0.6, 4), Vector3(28, -0.5, 44), Color(0.4, 0.37, 0.32), "surface_stone")
-	box("Road", Vector3(6, 0.04, 30), Vector3(0, 0.02, -45), Color(0.4, 0.33, 0.24))
+	box("Road", Vector3(6, 0.04, 64), Vector3(0, 0.02, -66), Color(0.4, 0.33, 0.24))
 
 	# Town walls (the river is the east side).
 	box("WallNorthW", Vector3(30, 4, 1), Vector3(-19, 2, -34), STONE, "surface_stone")
@@ -397,16 +403,19 @@ func _build_town() -> Node3D:
 
 	# The way back north, and where you arrive from it.
 	door("NorthRoad", "res://levels/test_level.tscn", "FromWeirholt", "the Greywater Vale", "Take the north road to",
-			Vector3(3, 2, 0.4), Vector3(0, 1, -57), Color(0.45, 0.32, 0.18))
-	marker("FromVale", Vector3(0, 0, -52), PI)
-	signpost("RoadSign", "North: the Greywater Vale, Riverwatch and the waystation.\nSouth: Weirholt.", Vector3(3, 1.4, -50), PI)
+			Vector3(3, 2, 0.4), Vector3(0, 1, -97), Color(0.45, 0.32, 0.18))
+	marker("FromVale", Vector3(0, 0, -92), PI)
+	signpost("RoadSign", "North: the Greywater Vale, Riverwatch and the waystation.\nSouth: Weirholt, a mile on. Mind the woods.", Vector3(3, 1.4, -90), PI)
+
+	_build_wilds()
 
 	# The map.
 	var level_map := Node.new()
 	level_map.name = "LevelMap"
 	level_map.set_script(LEVEL_MAP)
 	level_map.set("map_name", "Weirholt")
-	level_map.set("area", Rect2(-60, -60, 120, 120))
+	level_map.set("area", Rect2(-100, -100, 200, 200))
+	level_map.set("camera_height", 120.0)
 	own(level_map)
 	map_marker("MapWeirholt", "weirholt", "Weirholt", Vector3(0, 0, 0), 1, true)
 	map_marker("MapInn", "lantern_weir", "The Lantern Weir", Vector3(-14, 0, -17))
@@ -415,12 +424,164 @@ func _build_town() -> Node3D:
 	map_marker("MapTollFort", "toll_fort", "The toll-fort", Vector3(15, 0, 28))
 	map_marker("MapLanes", "the_lanes", "The Lanes", Vector3(-22, 0, 17))
 	map_marker("MapMill", "weirholt_mill", "The mill", Vector3(16, 0, -2))
+	map_marker("MapGangCamp", "toll_road_camp", "Camp in the woods", Vector3(-45, 0, -70))
+	map_marker("MapWeirstones", "weirstones", "The Weirstones", Vector3(70, 0, 30))
+	map_marker("MapFord", "weirholt_ford", "The ford", Vector3(28, 0, 44))
+	map_marker("MapFarm", "ama_farm", "Ama's farm", Vector3(-62, 0, 52))
 
 	var player: Node3D = PLAYER.instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE)
 	player.name = "Player"
-	player.position = Vector3(0, 1, -50)
+	player.position = Vector3(0, 1, -90)
 	own(player)
 	return scene
+
+
+# --- the wilds around the town ------------------------------------------------------------
+
+const TRUNK := Color(0.3, 0.2, 0.12)
+const LEAVES := Color(0.18, 0.32, 0.16)
+
+
+func tree(name: String, pos: Vector3, height: float) -> void:
+	var body := StaticBody3D.new()
+	body.name = name
+	body.position = pos
+	body.add_to_group("surface_wood", true)
+	own(body)
+	var trunk := MeshInstance3D.new()
+	trunk.name = "Trunk"
+	var cyl := CylinderMesh.new()
+	cyl.top_radius = 0.25
+	cyl.bottom_radius = 0.35
+	cyl.height = height
+	cyl.material = mat(TRUNK)
+	trunk.mesh = cyl
+	trunk.position.y = height / 2.0
+	own(trunk, body)
+	var crown := MeshInstance3D.new()
+	crown.name = "Crown"
+	var cone := CylinderMesh.new()
+	cone.top_radius = 0.0
+	cone.bottom_radius = 1.8
+	cone.height = height * 0.8
+	cone.material = mat(LEAVES)
+	crown.mesh = cone
+	crown.position.y = height * 0.9
+	own(crown, body)
+	var shape := CollisionShape3D.new()
+	shape.name = "Shape"
+	var cs := CylinderShape3D.new()
+	cs.radius = 0.35
+	cs.height = height
+	shape.shape = cs
+	shape.position.y = height / 2.0
+	own(shape, body)
+
+
+func enemy(parent: Node, name: String, display: String, pos: Vector3, facing: float, script: Script = null, props := {}) -> void:
+	var b: Node3D = BANDIT.instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE)
+	b.name = name
+	if script:
+		b.set_script(script)
+	b.set("display_name", display)
+	for key in props:
+		b.set(key, props[key])
+	b.position = pos
+	b.rotation.y = facing
+	parent.add_child(b)
+	b.owner = scene
+
+
+func _build_wilds() -> void:
+	# Woods either side of the north road (z -40..-95), kept off the road itself.
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 902
+	var placed := 0
+	while placed < 70:
+		var x := rng.randf_range(-95, 18)
+		var z := rng.randf_range(-96, -40)
+		if absf(x) < 6.0 or (x > -55 and x < -35 and z > -80 and z < -60):   # the road, the gang's clearing
+			continue
+		tree("Tree%d" % placed, Vector3(x, 0, z), rng.randf_range(5.0, 8.0))
+		placed += 1
+	# A robbed cart on the road, and the toll-road gang's camp in a clearing west of it.
+	examine("RobbedCart", "Look at the overturned cart", "", "res://dialogue/weirholt_cart.json",
+			Vector3(2.2, 1.2, 3.5), Vector3(4.5, 0.6, -72), Color(0.38, 0.27, 0.15))
+	box("GangTentA", Vector3(3, 2, 3), Vector3(-48, 1, -73), Color(0.45, 0.4, 0.3), "surface_wood")
+	box("GangTentB", Vector3(3, 2, 3), Vector3(-41, 1, -75), Color(0.42, 0.38, 0.3), "surface_wood")
+	var fire := OmniLight3D.new()
+	fire.name = "GangFire"
+	fire.set_script(FLICKER)
+	fire.light_color = Color(1, 0.6, 0.3)
+	fire.light_energy = 2.0
+	fire.omni_range = 10.0
+	fire.position = Vector3(-45, 0.8, -69)
+	own(fire)
+	var gang := Node3D.new()
+	gang.name = "TollRoadGang"
+	gang.set_script(PACK)
+	gang.set("cleared_flag", "toll_gang_cleared")
+	gang.set("cleared_message", "The camp in the woods is quiet. The north road's safe, for now.")
+	own(gang)
+	enemy(gang, "Highwayman1", "Highwayman", Vector3(-46, 0, -66), PI, null, {"gold": 10})
+	enemy(gang, "Highwayman2", "Highwayman", Vector3(-42, 0, -68), PI, null, {"gold": 10})
+	enemy(gang, "GangLeader", "Gang Leader", Vector3(-45, 0, -72), PI, null, {"gold": 30, "max_health": 90.0, "attack_damage": 13.0, "guard_chance": 0.7})
+	var gang_chest := box("GangChest", Vector3(1.2, 0.7, 0.8), Vector3(-44.5, 0.35, -76), Color(0.32, 0.22, 0.12), "surface_wood", null, LOOT)
+	gang_chest.set("container_name", "gang's chest")
+	gang_chest.set("contents", {"minor_healing_potion": 2, "lockpick": 3, "bread": 2})
+	gang_chest.set("gold", 60)
+
+	# The Weirstones: one of the twelve sites, on the east bank past the ford.
+	var circle := Vector3(70, 0, 30)
+	for i in 8:
+		var a := TAU * i / 8.0
+		box("Weirstone%d" % (i + 1), Vector3(1.2, 3.2, 0.8), circle + Vector3(cos(a) * 7.0, 1.6, sin(a) * 7.0), Color(0.5, 0.5, 0.48), "surface_stone").rotation.y = -a
+	examine("DrainFocus", "Look at the thing in the middle of the circle", "", "res://dialogue/weirholt_focus.json",
+			Vector3(1, 1.4, 1), circle + Vector3(0, 0.7, 0), Color(0.6, 0.7, 0.85))
+	var glow := OmniLight3D.new()
+	glow.name = "RiteGlow"
+	glow.light_color = Color(0.7, 0.8, 1.0)
+	glow.light_energy = 3.0
+	glow.omni_range = 14.0
+	glow.position = circle + Vector3(0, 2.5, 0)
+	own(glow)
+	var acolytes := Node3D.new()
+	acolytes.name = "Acolytes"
+	acolytes.set_script(PACK)
+	acolytes.set("cleared_flag", "weirstones_cleared")
+	acolytes.set("cleared_message", "The chanting stops. Whatever was humming in the middle of the circle falters.")
+	own(acolytes)
+	for i in 3:
+		var a := TAU * i / 3.0 + 0.4
+		enemy(acolytes, "Acolyte%d" % (i + 1), "Mercy Acolyte", circle + Vector3(cos(a) * 4.0, 0, sin(a) * 4.0), -a - PI / 2.0,
+				CULTIST, {"wait_for_flag": "weirstones_rite", "gold": 15})
+	var rite := Node3D.new()
+	rite.name = "Weirstones"
+	rite.set_script(RITUAL)
+	rite.position = circle
+	var hidden: Array[NodePath] = [NodePath("../Acolytes"), NodePath("../RiteGlow")]
+	rite.set("hidden_until_start", hidden)
+	rite.set("radius", 18.0)
+	rite.set("started_flag", "weirstones_rite")
+	rite.set("slain_flag", "weirstones_cleared")
+	rite.set("seen_by_day_flag", "weirstones_seen_by_day")
+	rite.set("day_message", "A ring of eight standing stones on the east bank, and in the middle something wrapped in oilcloth, humming. Cart ruts, boot prints, cold ashes. Whoever uses this place comes at night.")
+	rite.set("night_message", "Three hooded figures stand in the circle, hands out to the thing in the middle. The stones are glowing, and the light is running out of them into it.")
+	own(rite)
+	var wisps := Node3D.new()
+	wisps.name = "WeirstoneWisps"
+	wisps.set_script(WISPS)
+	wisps.position = circle
+	wisps.set("count", 2)
+	wisps.set("radius", 9.0)
+	wisps.set("drain_flag", "")
+	own(wisps)
+
+	# Ama's farm, west of the town.
+	house("Farmhouse", Vector3(7, 4, 5), Vector3(-62, 0, 52), PLASTER, ROOF)
+	for i in 3:
+		box("Field%d" % (i + 1), Vector3(12, 0.1, 6), Vector3(-80 + i * 13, 0.05, 66), Color(0.38, 0.3, 0.18))
+	box("Scarecrow", Vector3(0.3, 2.2, 0.3), Vector3(-67, 1.1, 66), Color(0.5, 0.42, 0.25))
 
 
 # --- the culvert -------------------------------------------------------------------------
