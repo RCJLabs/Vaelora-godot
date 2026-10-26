@@ -42,8 +42,8 @@ const JAIL_GOLD_PER_DAY := 100   # a day in the cells per this much bounty (1 to
 const GUARD_DIALOGUE := "res://dialogue/guard_crime.json"
 const ASSAULT := 40              # beating a guard until they yield
 const CALL_RANGE := 40.0         # guards this near you join the fight when you run
-const GUARD_SCENE := preload("res://enemies/bandit.tscn")
-const GUARD_SCRIPT := preload("res://enemies/guard.gd")
+const GUARD_SCENE := "res://enemies/bandit.tscn"   # loaded when guards first fight, not at startup
+const GUARD_SCRIPT := "res://enemies/guard.gd"
 ## A region's people, and what a seen crime costs you with them.
 const FACTIONS := {"vale": "riverwatch", "riverlands": "river_compact", "fields": "ashen_fields", "capital": "ilunar_empire"}
 const REPUTATION_LOSS := {"theft": 2, "pickpocket": 3, "resist": 2, "assault": 5}
@@ -365,12 +365,12 @@ func call_guards() -> int:
 
 # The guard NPC steps out of the scene; a fighter in their clothes steps in.
 func _to_arms(person: Node3D) -> void:
-	var fighter: CharacterBody3D = GUARD_SCENE.instantiate()
+	var fighter: CharacterBody3D = load(GUARD_SCENE).instantiate()
 	var kept := {}   # the scene's own settings (its swings, its sword), which a new script would drop
 	for prop in fighter.get_property_list():
 		if prop["usage"] & PROPERTY_USAGE_SCRIPT_VARIABLE and prop["usage"] & PROPERTY_USAGE_STORAGE:
 			kept[prop["name"]] = fighter.get(prop["name"])
-	fighter.set_script(GUARD_SCRIPT)
+	fighter.set_script(load(GUARD_SCRIPT))
 	for key in kept:
 		fighter.set(key, kept[key])
 	fighter.name = "%sArmed" % person.name
