@@ -17,13 +17,19 @@ extends CharacterBody3D
 # it last saw you rather than where you are. A friend who starts a fight shouts, and a
 # dead friend it sees sets it searching. docs/godot-starter/SNEAK.md.
 #
+# Fighting in a band, they spread round you (a ring, one place each) rather than
+# queueing in front, and the one behind you is keener to swing. Archers (archer) keep
+# their distance and shoot (a telegraphed draw: the arrowhead glints), back off if you
+# close in, and fight hand to hand when cornered. A band that loses heart (its pack's
+# morale, enemies/wolf_pack.gd) breaks: the living run (flee()) and are gone.
+#
 # Dead bandits can be searched (E) for their gold and loot. WorldState keeps
 # them dead and searched. Put them under a WolfPack-style node (enemy_pack.gd)
 # so they fight together and the camp has a "cleared" flag.
 
 signal died
 
-enum State { IDLE, CHASE, ENGAGE, ATTACK, GUARD, STAGGER, RETURN, DEAD, FLEE, INVESTIGATE, SEARCH }
+enum State { IDLE, CHASE, ENGAGE, ATTACK, GUARD, STAGGER, RETURN, DEAD, FLEE, INVESTIGATE, SEARCH, SHOOT }
 
 ## How many members of a group may swing at the player at once. The rest
 ## circle and guard, so a fight against three stays readable (and fair).
@@ -36,6 +42,16 @@ const SEARCH_RADIUS := 5.0   # how far from that spot it wanders, looking
 const SHOUT := 15.0          # starting a fight, it shouts: anyone who can hear this far comes to look
 const BODY_SIGHT := 14.0     # it notices a dead friend this far off (in view)
 const INVESTIGATE_TIME := 12.0   # gives up getting to a spot it can't reach
+const FLANK_KEENNESS := 1.0      # behind you, it's this much likelier to swing when its turn comes
+const DRAW_TIME := 1.0           # an archer's draw: the telegraph
+const SHOT_RECOVERY := 0.5
+const SHOT_SPEED := 32.0         # m/s
+const SHOT_SPREAD := 1.5         # degrees either way
+const BACK_OFF := 0.55           # an archer closer than this share of keep_range steps back
+const CORNERED := 3.0            # and closer than this, it fights hand to hand
+const ROUT_GONE := 30.0          # a routed bandit this far from you (or out of sight for ROUT_HIDDEN s) is gone
+const ROUT_HIDDEN := 3.0
+const ROUT_SECONDS := 15.0
 
 @export var display_name: String = "Bandit"
 @export var run_speed: float = 4.6       # slower than the player's sprint (8): you can flee
@@ -44,6 +60,14 @@ const INVESTIGATE_TIME := 12.0   # gives up getting to a spot it can't reach
 ## Needs to see you to notice you standing (in front of it, in the clear), and hears
 ## noise (systems/stealth.gd). Off: notices anyone in range, as wolves do.
 @export var hunts_by_sight := true
+## Its band's leader: its death shakes the rest (enemies/wolf_pack.gd leader_fear).
+@export var leader := false
+@export_group("Archer")
+## Shoots from range instead of closing in (a bow in hand, weapon_scene).
+@export var archer := false
+@export var shot_damage: float = 12.0
+## The distance it likes to shoot from.
+@export var keep_range: float = 11.0
 ## Distance it likes to fight from, and how far its swings reach.
 @export var fight_range: float = 1.8
 @export var reach: float = 2.2
@@ -109,6 +133,9 @@ var _last_seen := Vector3.INF    # where it last saw who it's after (INF: not ye
 var _unseen := 0.0               # seconds it hasn't
 var _body_check := 0.0
 var _bodies_seen := {}           # instance ids of dead friends it has already found
+var _shot_cooldown := 0.0
+var _routed := false             # its band broke: it runs, and doesn't come back
+var _hidden_for := 0.0
 var _cloth: StandardMaterial3D
 var _cloth_color: Color   # what a hit flash fades back to
 var _glint: StandardMaterial3D   # the blade's material, flashed as the telegraph
@@ -125,6 +152,7 @@ const ARM_POSES := {
 	"low_center": [Vector3(55, 0, 0), Vector3(50, 0, 0)],
 	"guard":      [Vector3(85, -55, 35), Vector3(70, 30, -20)],
 	"stagger":    [Vector3(-15, 20, -30), Vector3(-10, -20, 30)],
+	"aim":        [Vector3(80, 10, -10), Vector3(90, -25, 15)],   # an archer's draw
 }
 
 
@@ -145,6 +173,8 @@ func _ready() -> void:
 		weapon_holder.add_child(held)
 		_glint = _find_blade_material(held)
 	_pose("rest", 0.01)
+	if archer and _glint == null:
+		_glint = _arrowhead()   # what glints while it draws
 	WorldState.restore(self)
 
 
@@ -173,7 +203,10 @@ func _physics_process(delta: float) -> void:
 	_knockback = _knockback.move_toward(Vector3.ZERO, 25.0 * delta)
 	if _glint:
 		var target := 0.0
-		if state == State.ATTACK and _phase == Phase.WINDUP:
+		if state == State.SHOOT and _phase == Phase.WINDUP:
+			target = 3.0 + 3.0 * minf(_phase_time / DRAW_TIME, 1.0)   # brighter as the draw comes back
+			_glint.emission = Color(1.0, 0.9, 0.7)
+		elif state == State.ATTACK and _phase == Phase.WINDUP:
 			target = 6.0 if _is_heavy else 3.0
 			_glint.emission = Color(1.0, 0.25, 0.15) if _is_heavy else Color(1.0, 0.9, 0.7)
 		_glint.emission_energy_multiplier = lerpf(_glint.emission_energy_multiplier, target, minf(delta * 14.0, 1.0))
@@ -217,13 +250,25 @@ func _think(player: Node3D, delta: float) -> void:
 				state = State.RETURN
 			elif _unseen > LOSE_SIGHT:
 				_investigate(_last_seen)   # lost you: go and look where you were
-			elif dist <= fight_range + 0.4 and _unseen < 0.5:
+			elif dist <= (keep_range if archer else fight_range + 0.4) and _unseen < 0.5:
 				state = State.ENGAGE
 				_think_left = randf_range(0.2, 0.6)
 			else:
 				_move(player.global_position if _unseen < 0.5 else _last_seen, run_speed, delta)
 		State.ENGAGE:
-			_engage(player, to_player, dist, delta)
+			if archer and dist > CORNERED:
+				_archer_engage(player, to_player, dist, delta)
+			else:
+				_engage(player, to_player, dist, delta)
+		State.SHOOT:
+			if _phase == Phase.WINDUP and dist < keep_range * BACK_OFF:
+				state = State.ENGAGE   # you've closed in: let the draw go and back off (or fight, cornered)
+				_shot_cooldown = 0.6
+				_pose("rest", 0.15)
+			else:
+				_face(player.global_position, delta)
+				_move(Vector3.ZERO, 0.0, delta)
+				_update_shot(player, delta)
 		State.ATTACK:
 			_face(player.global_position, delta * (0.35 if _phase != Phase.RECOVERY else 1.0))
 			_move(Vector3.ZERO, 0.0, delta)
@@ -241,14 +286,19 @@ func _think(player: Node3D, delta: float) -> void:
 			_stagger_left -= delta
 			if _stagger_left <= 0.0:
 				_pose("rest", 0.25)
-				state = State.ENGAGE
+				state = State.FLEE if _routed else State.ENGAGE
 		State.FLEE:
 			_flee_left -= delta
-			if _flee_left <= 0.0:
+			if _routed:
+				_hidden_for = 0.0 if Stealth.clear_line(self, player) else _hidden_for + delta
+				if dist > ROUT_GONE or _hidden_for > ROUT_HIDDEN or _flee_left <= 0.0:
+					_escape()
+					return
+			elif _flee_left <= 0.0:
 				state = State.CHASE   # the fear wears off
-			else:
-				var away := -to_player.normalized() if dist > 0.1 else global_transform.basis.z
-				_move(global_position + away * 4.0, run_speed, delta)
+				return
+			var away := -to_player.normalized() if dist > 0.1 else global_transform.basis.z
+			_move(global_position + away * 4.0, run_speed * (1.1 if _routed else 1.0), delta)
 
 
 # In range: circle a little, keep its distance, and pick the next move.
@@ -259,11 +309,18 @@ func _engage(player: Node3D, to_player: Vector3, dist: float, delta: float) -> v
 	_face(player.global_position, delta)
 	var side := to_player.normalized().cross(Vector3.UP) * _strafe
 	var step := side * 0.4
+	var spot := _ring_spot(player)
+	if spot.is_finite() and Vector2(spot.x - global_position.x, spot.z - global_position.z).length() > 0.8:
+		# Round to its place in the ring (the long way round the side, not through you).
+		var around := (player.global_position - global_position).normalized().cross(Vector3.UP)
+		var to_spot := spot - global_position
+		to_spot.y = 0.0
+		step = around * signf(around.dot(to_spot)) + to_spot.normalized() * 0.5
 	if dist > fight_range + 0.2:
 		step += to_player.normalized()
 	elif dist < fight_range - 0.5:
 		step -= to_player.normalized()
-	_move(global_position + step, run_speed * 0.45, delta, false)
+	_move(global_position + step, run_speed * (0.6 if spot.is_finite() else 0.45), delta, false)
 
 	# You're winding up a swing: maybe raise the guard.
 	var combat = player.get("combat")
@@ -276,25 +333,155 @@ func _engage(player: Node3D, to_player: Vector3, dist: float, delta: float) -> v
 	_think_left = randf_range(0.5, 1.1)
 	if randf() < 0.3:
 		_strafe = -_strafe
+	if spot.is_finite() and Vector2(spot.x - global_position.x, spot.z - global_position.z).length() > 1.5:
+		return   # still getting round to its place: that first
 	var roll := randf()
+	var keen := FLANK_KEENNESS if _behind(player) else 1.0   # it can't be seen coming
 	if roll < 0.75 and _attackers() >= MAX_ATTACKERS:
 		if randf() < 0.4:   # someone else is swinging: wait your turn, maybe behind a guard
 			_start_guard(randf_range(0.4, 0.8))
-	elif roll < 0.6 and not attacks.is_empty():
+	elif roll < 0.6 * keen and not attacks.is_empty():
 		_start_attack(false)
-	elif roll < 0.75 and heavy_attack:
+	elif roll < 0.75 * keen and heavy_attack:
 		_start_attack(true)
 	elif roll < 0.9:
 		_start_guard(randf_range(0.6, 1.2))
 
 
-# Packmates swinging at the player right now.
+# Packmates swinging at the player right now (archers shooting don't count: they're off at range).
 func _attackers() -> int:
 	var count := 0
 	for other in get_parent().get_children():
 		if other != self and other.get("state") == State.ATTACK:
 			count += 1
 	return count
+
+
+## Its place in a ring round `target`, shared out evenly among the band fighting it hand
+## to hand (INF: alone, so no ring). The ring turns with the first of them, so they spread
+## round from wherever they came at you: two end up either side, three a third of the
+## way round each.
+func _ring_spot(target: Node3D) -> Vector3:
+	var ring := []
+	for other in get_parent().get_children():
+		if other.get("archer") == false and other.get("state") in [State.ENGAGE, State.ATTACK, State.GUARD, State.STAGGER]:
+			ring.append(other)
+	if ring.size() < 2 or not ring.has(self):
+		return Vector3.INF
+	ring.sort_custom(func(a, b): return a.get_instance_id() < b.get_instance_id())
+	var first: Vector3 = ring[0].global_position - target.global_position
+	first.y = 0.0
+	if first.length() < 0.1:
+		first = Vector3.FORWARD
+	var angle := TAU * ring.find(self) / ring.size()
+	return target.global_position + first.normalized().rotated(Vector3.UP, angle) * fight_range
+
+
+## Out of `target`'s sight: behind them (their facing, as Crime and Stealth see it).
+func _behind(target: Node3D) -> bool:
+	var to_me := global_position - target.global_position
+	to_me.y = 0.0
+	var forward := -target.global_basis.z
+	forward.y = 0.0
+	return to_me.length() > 0.1 and forward.normalized().dot(to_me.normalized()) < -0.3
+
+
+# --- archers ---------------------------------------------------------------------------
+
+## At range: keep its distance, step back if you close in, and shoot when it can see you.
+func _archer_engage(player: Node3D, to_player: Vector3, dist: float, delta: float) -> void:
+	if dist > keep_range + 4.0 or _unseen > 1.0:
+		state = State.CHASE
+		return
+	_face(player.global_position, delta)
+	_shot_cooldown -= delta
+	var step := to_player.normalized().cross(Vector3.UP) * _strafe * 0.3
+	if dist < keep_range * BACK_OFF:
+		step -= to_player.normalized()   # too close: back off, still facing you
+	_move(global_position + step, run_speed * 0.55, delta, false)
+	if not Stealth.clear_line(self, player):
+		_unseen += delta
+		return
+	_unseen = 0.0
+	if _shot_cooldown <= 0.0:
+		state = State.SHOOT
+		_phase = Phase.WINDUP
+		_phase_time = 0.0
+		_pose("aim", DRAW_TIME * 0.6)
+
+
+## The draw (the arrowhead glints), the loose, a breath, and back to keeping its distance.
+func _update_shot(target: Node3D, delta: float) -> void:
+	_phase_time += delta
+	if _phase == Phase.WINDUP and _phase_time >= DRAW_TIME:
+		_loose(target)
+		_phase = Phase.RECOVERY
+		_phase_time = 0.0
+		_pose("rest", SHOT_RECOVERY)
+	elif _phase == Phase.RECOVERY and _phase_time >= SHOT_RECOVERY:
+		state = State.ENGAGE
+		_shot_cooldown = randf_range(1.6, 2.6)
+		if randf() < 0.4:
+			_strafe = -_strafe
+
+
+func _loose(target: Node3D) -> void:
+	var from := global_position + Vector3.UP * 1.45 - global_basis.z * 0.5
+	var aim := target.global_position + Vector3.UP * 1.1
+	var flight := from.distance_to(aim) / SHOT_SPEED
+	var moving: Vector3 = target.get("velocity") if target.get("velocity") is Vector3 else Vector3.ZERO
+	aim += Vector3(moving.x, 0, moving.z) * flight * 0.5   # leads you a little, not all the way
+	aim.y += 0.5 * ProjectSettings.get_setting("physics/3d/default_gravity") * EnemyArrow.GRAVITY_SCALE * flight * flight
+	var dir := (aim - from).normalized()
+	dir = dir.rotated(Vector3.UP, deg_to_rad(randf_range(-SHOT_SPREAD, SHOT_SPREAD)))
+	var arrow := EnemyArrow.new()
+	arrow.damage = shot_damage
+	arrow.shooter = self
+	get_tree().current_scene.add_child(arrow)
+	arrow.launch(from, dir, SHOT_SPEED)
+	Sfx.play_at("bow_release", global_position, -2.0)
+	Stealth.noise(global_position, 6.0, self)
+
+
+## A small head on the arrow it nocks, to glint as the draw's telegraph.
+func _arrowhead() -> StandardMaterial3D:
+	var head := MeshInstance3D.new()
+	head.name = "Arrowhead"
+	var mesh := PrismMesh.new()
+	mesh.size = Vector3(0.06, 0.12, 0.02)
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.7, 0.72, 0.75)
+	material.metallic = 0.8
+	material.emission_enabled = true
+	material.emission = Color(1.0, 0.9, 0.7)
+	material.emission_energy_multiplier = 0.0
+	mesh.material = material
+	head.mesh = mesh
+	head.position = Vector3(0, 0.05, -0.45)
+	head.rotation_degrees = Vector3(-90, 0, 0)
+	weapon_holder.add_child(head)
+	return material
+
+
+# --- morale (enemies/wolf_pack.gd can_break) ---------------------------------------------
+
+## Its band has broken: run from the player, and don't come back.
+func flee() -> void:
+	if state == State.DEAD:
+		return
+	if state == State.ATTACK or state == State.GUARD or state == State.SHOOT:
+		_pose("rest", 0.2)
+	_routed = true
+	_hidden_for = 0.0
+	state = State.FLEE
+	_flee_left = ROUT_SECONDS
+
+
+## Got away: gone for good (its pack counts it as driven off).
+func _escape() -> void:
+	if get_parent().has_method("member_gone"):
+		get_parent().member_gone(self)
+	queue_free()
 
 
 # Nobody to go after (you've turned invisible, say): back home.
@@ -307,7 +494,7 @@ func _lost(delta: float) -> void:
 		State.INVESTIGATE, State.SEARCH:
 			_search(delta)        # nobody to see: keep looking
 		_:
-			if state == State.ATTACK or state == State.GUARD:
+			if state == State.ATTACK or state == State.GUARD or state == State.SHOOT:
 				_pose("rest", 0.2)
 			if Vector2(global_position.x - home.x, global_position.z - home.z).length() < 1.0:
 				state = State.IDLE
@@ -570,7 +757,7 @@ func is_unaware() -> bool:
 
 ## After you (or a companion), for the HUD's eye.
 func is_hunting() -> bool:
-	return state in [State.CHASE, State.ENGAGE, State.ATTACK, State.GUARD, State.STAGGER]
+	return state in [State.CHASE, State.ENGAGE, State.ATTACK, State.GUARD, State.STAGGER, State.SHOOT]
 
 
 func is_lifted() -> bool:
