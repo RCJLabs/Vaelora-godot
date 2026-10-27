@@ -43,7 +43,7 @@ The level is 200 × 200 m around the town (`_build_wilds()` in the builder):
 | Place | What's there |
 |---|---|
 | The woods road | 70 trees either side of the road north of the town; an overturned cart |
-| A clearing west of the road | The toll-road gang: two highwaymen, an archer on the bank above, and their leader, tents, a fire, a chest. The gang can break and run (COMBAT.md, "Bandits"): that clears it too |
+| A clearing west of the road | The toll-road gang: two highwaymen, an archer on the bank above, and their leader, tents, a fire, a chest. Kill the leader, or any two of the others, and the rest run (COMBAT.md, "Bandits"): that clears it too |
 | The ford | The easy way across the river, south-east of the town |
 | **The Weirstones** | On the east bank: a ring of eight standing stones, one of the **twelve sites**. Empty by day apart from a humming bundle; at night the Mercy's acolytes feed it, and wisps come out |
 | Ama's farm | West of the town: a farmhouse and fields |

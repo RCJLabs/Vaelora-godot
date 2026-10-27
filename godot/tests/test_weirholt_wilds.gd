@@ -60,7 +60,7 @@ func _physics_process(_d: float) -> bool:
 			ok(GS.has_flag("bounty_accepted"), "Varga puts a hundred gold on them")
 			DM.end()
 			ok(n("TollRoadGang").get_child_count() == 4 and n("TollRoadGang/GangArcher").archer, "four of them in the clearing, one with a bow")
-			ok(n("TollRoadGang/GangLeader").leader and n("TollRoadGang").can_break, "a leader, and a band that can break")
+			ok(n("TollRoadGang/GangLeader").leader and n("TollRoadGang").break_on_leader, "a leader, and a band that breaks without it")
 			kill_all("TollRoadGang")
 			wait = 10
 		2:

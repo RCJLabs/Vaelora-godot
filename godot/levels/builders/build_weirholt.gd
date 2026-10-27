@@ -232,13 +232,10 @@ func _build_wilds() -> void:
 	gang.set_script(PACK)
 	gang.set("cleared_flag", "toll_gang_cleared")
 	gang.set("cleared_message", "The camp in the woods is quiet. The north road's safe, for now.")
-	# Morale (enemies/wolf_pack.gd): lose one of them and enough blood, or their leader, and they run.
-	gang.set("can_break", true)
-	gang.set("break_fear", 160.0)
-	gang.set("death_fear", 45.0)
-	gang.set("leader_fear", 80.0)
-	gang.set("break_needs_death", true)
-	gang.set("break_sound", "")
+	# Morale (enemies/wolf_pack.gd): kill their leader, or half of them, and the rest run.
+	gang.set("break_on_leader", true)
+	gang.set("break_at_losses", 0.5)
+	gang.set("yelp_on_break", false)
 	gang.set("driven_off_flag", "toll_gang_driven_off")
 	gang.set("driven_off_message", "The gang breaks and scatters into the woods. The north road's safe, for now.")
 	own(gang)

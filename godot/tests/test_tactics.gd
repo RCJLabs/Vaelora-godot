@@ -3,9 +3,9 @@ extends "res://tests/test_base.gd"
 # hand spreads round you instead of queueing in front, and the one behind you is the
 # keener to swing. Archers keep their distance and shoot (a glinting draw, then an
 # arrow that hurts), back off if you close in, and fight hand to hand when cornered.
-# A band's morale: bruises alone don't break it; a death on top of enough blood does,
-# and its leader's death shakes it hardest. Broken, the living run and are gone, and
-# the camp is cleared and driven off.
+# A band's morale: it breaks when its leader falls, or once it has lost half its number.
+# Broken, the living run and are gone, and the camp is cleared and driven off; the
+# leader never runs.
 var f := 0
 var steps := []
 var p; var level; var b1; var b2; var lead; var archer; var camp
@@ -37,7 +37,7 @@ func _physics_process(_d: float) -> bool:
 		b1 = camp.get_node("Bandit1"); b2 = camp.get_node("Bandit2"); lead = camp.get_node("Leader")
 		p.stats.max_health = 5000; p.stats.health = 5000
 		p.global_position = SPOT; p.rotation.y = 0.0
-		ok(lead.leader and camp.can_break and camp.break_needs_death and camp.driven_off_flag == "bandits_driven_off", "the Vale camp: a leader, and a band that can break")
+		ok(lead.leader and camp.break_on_leader and camp.break_at_losses == 0.5 and camp.driven_off_flag == "bandits_driven_off", "the Vale camp: a leader, and a band that can break")
 		# A ring: two bandits, side by side in front of you.
 		park(lead, Vector3(-80, 0, -80))
 		for b in [b1, b2]: b.set_physics_process(true)
@@ -77,23 +77,49 @@ func _physics_process(_d: float) -> bool:
 					[get_meta("near"), archer.global_position.distance_to(p.global_position)])
 			p.global_position = archer.global_position + Vector3(0, 0, 1.8))
 		add(5, func(): ok(bst(archer) != "SHOOT", "cornered, it doesn't stand there drawing", bst(archer)))
-		# Morale.
+		# Morale: the Vale camp (two and a leader).
 		add(1, func():
 			archer.get_parent().queue_free()
 			p.global_position = SPOT
 			for b in [b1, b2, lead]:
 				b.set_physics_process(true); b.global_position = SPOT + Vector3(randf_range(-3, 3), 0, -3); b._start_fight()
-			b1.stats.take_damage(59.0); b2.stats.take_damage(59.0); lead.stats.take_damage(89.0))
-		add(2, func():
-			ok(camp.fear > camp.break_fear and not camp.broken, "badly hurt but nobody dead: they fight on (fear %.0f)" % camp.fear, camp.fear)
 			b1.stats.take_damage(9999.0))
 		add(2, func():
-			ok(camp.broken, "one of them dies: the band breaks")
-			ok(bst(b2) == "FLEE" and bst(lead) == "FLEE" and b2._routed, "the living run", [bst(b2), bst(lead)])
+			ok(not camp.broken and bst(b2) != "FLEE", "one of three dies: they fight on", bst(b2))
+			lead.stats.take_damage(9999.0))
+		add(2, func():
+			ok(camp.broken, "the leader dies: the band breaks")
+			ok(bst(b2) == "FLEE" and b2._routed, "the living run", bst(b2))
 			p.global_position = SPOT + Vector3(0, 0, 60))
 		add(30, func():
-			ok(not is_instance_valid(b2) and not is_instance_valid(lead), "and they're gone")
+			ok(not is_instance_valid(b2), "and they're gone")
 			ok(autoload("GameState").has_flag("bandits_cleared") and autoload("GameState").has_flag("bandits_driven_off"), "the camp's cleared, and driven off"))
+		# Losses: a band of four loses two; the third runs, the leader stands.
+		add(1, func():
+			var band := Node3D.new(); band.name = "TestBand"
+			band.set_script(load("res://enemies/wolf_pack.gd"))
+			band.cleared_flag = "test_band_cleared"; band.driven_off_flag = "test_band_off"
+			band.break_on_leader = true; band.break_at_losses = 0.5; band.yelp_on_break = false
+			for i in 4:
+				var b = load("res://enemies/bandit.tscn").instantiate()
+				b.name = "Leader" if i == 0 else "Member%d" % i
+				b.leader = i == 0
+				band.add_child(b)
+			level.add_child(band)
+			p.global_position = SPOT
+			for b in band.get_children():
+				b.global_position = SPOT + Vector3(randf_range(-3, 3), 0, -3); b.home = b.global_position; b._start_fight()
+			set_meta("band", band)
+			band.get_node("Member1").stats.take_damage(9999.0))
+		add(2, func():
+			var band = get_meta("band")
+			ok(not band.broken, "a quarter down: they fight on")
+			band.get_node("Member2").stats.take_damage(9999.0))
+		add(2, func():
+			var band = get_meta("band")
+			var l = band.get_node("Leader"); var m = band.get_node("Member3")
+			ok(band.broken and bst(m) == "FLEE", "half of them down: the band breaks and the rest run", bst(m))
+			ok(bst(l) != "FLEE" and not l._routed and l.is_hunting(), "but not the leader: it fights on", bst(l)))
 		add(1, func(): autoload("SaveSystem").delete_save())
 	if f > 3 and steps.size() > 0 and steps[0][1] != null and archer != null and is_instance_valid(archer) and archer.state == archer.State.SHOOT and archer._glint and archer._glint.emission_energy_multiplier > 1.0:
 		set_meta("drew", true)

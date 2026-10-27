@@ -24,13 +24,16 @@ func _physics_process(_d: float) -> bool:
 		p.stats.damaged.connect(func(a): if a >= 1.0: hits_taken += 1)
 		return false
 	if f < 3: return false
-	var alive := bandits.filter(func(b): return b.state != b.State.DEAD)
+	# Gone (the band broke and they ran: enemies/wolf_pack.gd morale) counts as beaten.
+	var alive := bandits.filter(func(b): return is_instance_valid(b) and b.state != b.State.DEAD and not b._routed)
 	if alive.is_empty():
 		print("%s: camp cleared at %.1fs, player H=%.0f/%.0f, hits taken=%d blocks=%d parries=%d" % [mode, f / 60.0, p.stats.health, p.stats.max_health, hits_taken, blocks, parries])
 		if mode == "skilled":
 			ok(true, "skilled bot clears the camp")
 			between(f / 60.0, 5.0, 45.0, "seconds to clear the camp")
-			between(p.stats.health, 60.0, 100.0, "skilled bot's health left")
+			# Surrounding (enemies/bandit.gd _ring_spot) costs even a skilled bot about 20 HP here
+			# (main before it: 81-100; with it: 57-94), and the bot never backs to a wall.
+			between(p.stats.health, 45.0, 100.0, "skilled bot's health left")
 			ok(parries >= 2, "skilled bot parried at least twice", parries)
 		else:
 			# Balance guard: never defending must not win comfortably.
@@ -61,6 +64,9 @@ func _physics_process(_d: float) -> bool:
 		for b in alive:
 			if b.state == b.State.ATTACK and b._phase == b.Phase.WINDUP and b._phase_time > b._attack.windup - 0.18 and b.global_position.distance_to(p.global_position) < 3.0:
 				threat = true
+				# A skilled player turns to meet the swing (a block only covers your front).
+				var bd: Vector3 = b.global_position - p.global_position
+				p.rotation.y = atan2(-bd.x, -bd.z)
 		if threat: Input.action_press("cast")
 		elif Input.is_action_pressed("cast") and c.state == c.State.BLOCKING and c._state_time > 0.4: Input.action_release("cast")
 	if threat or c.state == c.State.BLOCKING: return false
