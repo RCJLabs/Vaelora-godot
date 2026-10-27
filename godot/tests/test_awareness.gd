@@ -80,7 +80,7 @@ func _physics_process(_d: float) -> bool:
 			p.is_sneaking = false)
 		# Searching, then giving up.
 		add(1, func():
-			reset(b1); stand(Vector3(0, 0, 40))
+			reset(b1); stand(Vector3(0, 0, 25))   # out of its reach (16.8 m searching), inside the HUD's 40 m
 			b1.hear(HOME + Vector3(3, 0, 0)))
 		add(120, func():
 			ok(bst(b1) == "SEARCH", "at the spot: searching round", bst(b1))
