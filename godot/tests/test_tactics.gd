@@ -44,9 +44,13 @@ func _physics_process(_d: float) -> bool:
 		b1.global_position = SPOT + Vector3(-1, 0, -3); b2.global_position = SPOT + Vector3(1, 0, -3)
 		b1.rotation.y = 0; b2.rotation.y = 0
 		b1._start_fight(); b2._start_fight()
-		add(300, func():
-			var a := flat_angle(b1.global_position - p.global_position, b2.global_position - p.global_position)
-			ok(absf(a) > 90.0, "they spread round you (side by side is about 40) (%.0f degrees apart)" % absf(a), [b1.global_position, b2.global_position])
+		# Averaged over 2.5 s: whoever swings steps in, and pulls the angle down for a moment.
+		add(150, func(): set_meta("ring", []))
+		add(150, func():
+			var r: Array = get_meta("ring")
+			var a: float = r.reduce(func(acc, x): return acc + x, 0.0) / maxf(r.size(), 1)
+			remove_meta("ring")
+			ok(a > 90.0, "they spread round you (side by side is about 40) (%.0f degrees apart on average)" % a, [r.min(), r.max()])
 			p.rotation.y = 0.0
 			b1.global_position = SPOT + Vector3(0, 0, 2); b2.global_position = SPOT + Vector3(0, 0, -2)
 			ok(b1._behind(p) and not b2._behind(p), "it knows which of them is behind you"))
@@ -121,6 +125,8 @@ func _physics_process(_d: float) -> bool:
 			ok(band.broken and bst(m) == "FLEE", "half of them down: the band breaks and the rest run", bst(m))
 			ok(bst(l) != "FLEE" and not l._routed and l.is_hunting(), "but not the leader: it fights on", bst(l)))
 		add(1, func(): autoload("SaveSystem").delete_save())
+	if has_meta("ring"):
+		get_meta("ring").append(absf(flat_angle(b1.global_position - p.global_position, b2.global_position - p.global_position)))
 	if f > 3 and steps.size() > 0 and steps[0][1] != null and archer != null and is_instance_valid(archer) and archer.state == archer.State.SHOOT and archer._glint and archer._glint.emission_energy_multiplier > 1.0:
 		set_meta("drew", true)
 	if steps.is_empty():

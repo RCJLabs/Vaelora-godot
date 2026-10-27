@@ -34,7 +34,8 @@ func _physics_process(_d: float) -> bool:
 			# Surrounding (enemies/bandit.gd _ring_spot) costs even a skilled bot about 20 HP here
 			# (main before it: 81-100; with it: 57-94), and the bot never backs to a wall.
 			between(p.stats.health, 45.0, 100.0, "skilled bot's health left")
-			ok(parries >= 2, "skilled bot parried at least twice", parries)
+			# Kill the leader and the rest run (wolf_pack.gd morale): short fights give few swings to parry.
+			ok(parries >= 1, "skilled bot parried", parries)
 		else:
 			# Balance guard: never defending must not win comfortably.
 			between(p.stats.health, 0.0, 50.0, "naive bot (never defends) wins only barely")
