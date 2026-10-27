@@ -59,7 +59,8 @@ func _physics_process(_d: float) -> bool:
 			pick("Somebody's robbing carts")
 			ok(GS.has_flag("bounty_accepted"), "Varga puts a hundred gold on them")
 			DM.end()
-			ok(n("TollRoadGang").get_child_count() == 3, "three of them in the clearing")
+			ok(n("TollRoadGang").get_child_count() == 4 and n("TollRoadGang/GangArcher").archer, "four of them in the clearing, one with a bow")
+			ok(n("TollRoadGang/GangLeader").leader and n("TollRoadGang").can_break, "a leader, and a band that can break")
 			kill_all("TollRoadGang")
 			wait = 10
 		2:

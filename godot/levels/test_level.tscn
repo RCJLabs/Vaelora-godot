@@ -952,6 +952,14 @@ script = ExtResource("10_nav")
 script = ExtResource("7_pack")
 cleared_flag = "bandits_cleared"
 cleared_message = "The bandit camp falls silent."
+can_break = true
+break_fear = 160.0
+death_fear = 45.0
+driven_off_flag = "bandits_driven_off"
+driven_off_message = "The bandits break and run for the trees."
+leader_fear = 80.0
+break_needs_death = true
+break_sound = ""
 
 [node name="Bandit1" parent="BanditCamp" instance=ExtResource("13_bandit")]
 transform = Transform3D(-0.93969, 0, 0.34202, 0, 1, 0, -0.34202, 0, -0.93969, -35.5, 0, -32.2)
@@ -973,6 +981,7 @@ loot = {
 [node name="Leader" parent="BanditCamp" instance=ExtResource("13_bandit")]
 transform = Transform3D(-1.00000, 0, -0.00000, 0, 1, 0, 0.00000, 0, -1.00000, -33.7, 0, -36.2)
 display_name = "Bandit Leader"
+leader = true
 attack_damage = 13.0
 guard_chance = 0.7
 parry_chance = 0.3

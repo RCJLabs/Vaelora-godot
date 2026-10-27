@@ -7,13 +7,15 @@ extends Node3D
 # WorldState restored stay, so unsearched loot isn't lost). Individual dead
 # members are remembered by WorldState, so a half-killed pack stays that way.
 #
-# Morale (can_break, for animals): every point of damage to the pack adds to its
+# Morale (can_break: animals, and bandits): every point of damage to the pack adds to its
 # fear, twice as much while the hurt member is burning, and a member's death adds
 # death_fear. At break_fear the pack breaks and the living run. Once every member
 # is dead or has run off for good, the pack is cleared; if any ran, it's also
 # driven off (driven_off_flag). Run them all down instead and it's a plain kill.
 # With the defaults and three wolves: kill one and land one more hit, or burn them.
 # Saving while they're still running and loading brings them back home, unbroken.
+# A band of people (break_needs_death) doesn't break over bruises: only once one of
+# them has died. Its leader's death (a member with leader = true) adds leader_fear.
 
 @export var cleared_flag: String = "wolves_cleared"
 @export_multiline var cleared_message: String = "The last of the Greyfang pack falls."
@@ -22,11 +24,18 @@ extends Node3D
 @export var death_fear: float = 60.0
 @export var driven_off_flag: String = "wolves_driven_off"
 @export_multiline var driven_off_message: String = "The Greyfang pack breaks and scatters into the hills."
+## Fear its leader's death adds (on top of death_fear).
+@export var leader_fear: float = 0.0
+## Only breaks once a member has died (people don't run from bruises).
+@export var break_needs_death: bool = false
+## Played as it breaks ("" for none).
+@export var break_sound: String = "wolf_yelp"
 
 var fear := 0.0
 var broken := false
 var _alive := 0
 var _gone := 0
+var _dead := 0
 var _health := {}   # member -> Health when last hurt, so overkill doesn't count
 
 
@@ -42,7 +51,7 @@ func _ready() -> void:
 		if member.get("state") != null and member.state == member.State.DEAD:
 			continue
 		_alive += 1
-		member.died.connect(_on_member_died)
+		member.died.connect(_on_member_died.bind(member))
 		if member.get("stats"):
 			_health[member] = member.stats.health
 			member.stats.damaged.connect(_on_member_damaged.bind(member))
@@ -66,7 +75,7 @@ func _on_member_damaged(_amount: float, member: Node) -> void:
 
 func _add_fear(amount: float) -> void:
 	fear += amount
-	if fear >= break_fear and _alive > 0 and not broken:
+	if fear >= break_fear and _alive > 0 and not broken and (_dead > 0 or not break_needs_death):
 		_break()
 
 
@@ -77,8 +86,8 @@ func _break() -> void:
 	for member in get_children():
 		if member.has_method("flee") and member.get("state") != member.State.DEAD:
 			member.flee()
-			if not yelped:
-				Sfx.play_at("wolf_yelp", member.global_position)
+			if not yelped and break_sound != "":
+				Sfx.play_at(break_sound, member.global_position)
 				yelped = true
 	var player := get_tree().get_first_node_in_group("player")
 	if player:
@@ -101,10 +110,11 @@ func _physics_process(_delta: float) -> void:
 				_health[member] = member.stats.health   # refilled at the den
 
 
-func _on_member_died() -> void:
+func _on_member_died(member: Node) -> void:
 	_alive -= 1
+	_dead += 1
 	if can_break and _alive > 0:
-		_add_fear(death_fear)
+		_add_fear(death_fear + (leader_fear if member.get("leader") == true else 0.0))
 	_check_cleared()
 
 

@@ -176,9 +176,26 @@ They fight with the same swing system you do (`enemies/bandit.gd`, swings in
 - **Parrying a bandit's swing** staggers it for about 1.4 s: free hits.
 - **One at a time:** only one bandit swings at you at once; the others circle and guard.
   Without that, three swinging together was close to unwinnable for a normal player.
+- **They spread round you.** A band fighting you hand to hand takes places in a ring round you,
+  shared out evenly: two end up either side of you, three a third of the way round each. They
+  go the long way round your sides to get there, and get into place before they think about
+  swinging. The one **behind you** is a little keener (×1.2) to swing when its turn comes, so
+  watch your back, or put a wall behind you.
 - 60 Health each (the leader 90), slower than your sprint, and they give up 28 m from camp.
 - **Search the bodies** (E) for gold and their weapons. They stay dead and searched.
 
+- **Archers** (`archer = true`): they keep their distance (11 m), and when they can see you
+  they **draw** (1 s: the arrowhead **glints**, brighter as the string comes back) and loose.
+  An arrow (`combat/enemy_arrow.gd`, 12 damage) is taken like a swing: **block, parry or dodge**
+  it. Close in and they let the draw go and **back off**; corner one (3 m) and it fights hand
+  to hand. Archers don't count towards the one-at-a-time rule, but each shot takes a draw and
+  a 1.6–2.6 s pause. The toll-road gang in the Riverlands has one; the Vale camp doesn't.
+- **Morale** (`enemies/wolf_pack.gd`, as for wolves): every point of damage adds to the band's
+  fear, a death adds 45, and the **leader's** death 80 more. At 160 the band **breaks**, but
+  only once one of them has died: people don't run from bruises. The living run; once one is
+  30 m from you, or out of your sight for 3 s, it's gone. A broken camp counts as cleared, and
+  as driven off (`bandits_driven_off`, `toll_gang_driven_off`). Kill the leader first and the
+  rest usually scatter. Mercy cultists and guards never break.
 - **Hooded cultists** (`enemies/cultist.gd`, in the barrow's hidden chamber) fight exactly
   like bandits, in grey-violet robes. They don't take prisoners in Hardcore, and can wait
   (frozen) for a story flag before they wake.

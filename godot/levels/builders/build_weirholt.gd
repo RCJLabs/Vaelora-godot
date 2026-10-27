@@ -232,10 +232,22 @@ func _build_wilds() -> void:
 	gang.set_script(PACK)
 	gang.set("cleared_flag", "toll_gang_cleared")
 	gang.set("cleared_message", "The camp in the woods is quiet. The north road's safe, for now.")
+	# Morale (enemies/wolf_pack.gd): lose one of them and enough blood, or their leader, and they run.
+	gang.set("can_break", true)
+	gang.set("break_fear", 160.0)
+	gang.set("death_fear", 45.0)
+	gang.set("leader_fear", 80.0)
+	gang.set("break_needs_death", true)
+	gang.set("break_sound", "")
+	gang.set("driven_off_flag", "toll_gang_driven_off")
+	gang.set("driven_off_message", "The gang breaks and scatters into the woods. The north road's safe, for now.")
 	own(gang)
 	enemy(gang, "Highwayman1", "Highwayman", Vector3(-46, 0, -66), PI, null, {"gold": 10})
 	enemy(gang, "Highwayman2", "Highwayman", Vector3(-42, 0, -68), PI, null, {"gold": 10})
-	enemy(gang, "GangLeader", "Gang Leader", Vector3(-45, 0, -72), PI, null, {"gold": 30, "max_health": 90.0, "attack_damage": 13.0, "guard_chance": 0.7})
+	enemy(gang, "GangLeader", "Gang Leader", Vector3(-45, 0, -72), PI, null, {"gold": 30, "max_health": 90.0, "attack_damage": 13.0, "guard_chance": 0.7, "leader": true})
+	# On the bank above the camp: shoots, and backs off if you come up after it.
+	enemy(gang, "GangArcher", "Highway Archer", Vector3(-39, 0, -73), PI + 0.4, null,
+			{"gold": 8, "archer": true, "max_health": 45.0, "weapon_scene": load("res://items/models/hunting_bow_fp.tscn"), "loot": {"arrow": 8}})
 	var gang_chest := box("GangChest", Vector3(1.2, 0.7, 0.8), Vector3(-44.5, 0.35, -76), Color(0.32, 0.22, 0.12), "surface_wood", null, LOOT)
 	gang_chest.set("container_name", "gang's chest")
 	gang_chest.set("contents", {"minor_healing_potion": 2, "lockpick": 3, "bread": 2})
