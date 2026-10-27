@@ -23,8 +23,14 @@ The HUD shows a marker under the compass while you sneak:
 
 ## Being noticed
 
-**Standing up, nothing changed:** an enemy notices you the moment you're inside its range
-(wolves 14 m, bandits 12 m, wisps 16 m).
+**Standing up:** an enemy notices you the moment you're inside its range (wolves 14 m,
+bandits 12 m, wisps 16 m), except that **enemies that hunt by sight** (bandits, guards,
+cultists, inquisitors: `hunts_by_sight`) also have to **see** you:
+- in front of them, within about 100 degrees each side of where they face;
+- with a clear line from their eyes to you.
+
+Right beside them (2 m) they notice you whichever way they face. Wolves and wisps go by
+scent and sense, as before.
 
 **Crouched:**
 
@@ -47,16 +53,45 @@ The HUD shows a marker under the compass while you sneak:
 
 ### Noise
 
-While you sneak, these are heard by nearby enemies that haven't noticed you yet (through
-walls too). Each pushes their awareness to between half and nearly full.
+These are heard through walls. While you sneak, they push a watching enemy's awareness
+to between half and nearly full. Standing or sneaking, an enemy that hears one comes to
+look (below). Standing up, they carry half as far again (×1.5).
 
-| Noise | Heard within | Perk |
+| Noise | Heard within (sneaking) | Perk |
 |---|---|---|
 | A swing | 6 m | Quiet Blade: 40% |
 | A spell (cast, or every moment of a stream) | 8 m | Silent Casting: 25% |
 | Loosing an arrow | 3 m | Soft Release: silent |
 | A sneak-attack kill | 8 m around the body | Quiet Kill: silent |
 | A lockpick snapping | 5 m | Silent Picking (Lockpicking): silent |
+
+**Footsteps** (`Stealth.step`, from `player/player_footsteps.gd`):
+
+| Step | Heard within |
+|---|---|
+| Walking | 3 m |
+| Sprinting | 7 m |
+| Landing from a fall | 6 m |
+| Crouched | silent, or 1.5 m × your armour's noise in heavy armour |
+
+All of these are multiplied by your armour's noise (`Armor.noise_mult()`).
+
+### Hearing and searching
+
+Enemies that hunt by sight (`enemies/bandit.gd`) don't just notice or not:
+
+- **Hearing:** a noise or footstep in reach sends it to **look** (`INVESTIGATE`): it walks to
+  where the sound was, then **searches** round about (`SEARCH`), wandering up to 5 m and
+  turning to look, for 8 s. Then it gives up and goes back to its post.
+- **Searching, it's on its guard:** its range is ×1.4 and awareness fills ×1.4 as fast. It
+  still hasn't found you, so a sneak attack still lands.
+- **Losing you:** chasing, it heads for where it **last saw you**, not where you are. After
+  2.5 s out of its sight it goes there and searches. Master of Shadows still makes it give up
+  and go home (4 s unseen while you sneak).
+- **Shouting:** when one starts a fight it shouts. Anyone within 15 m comes to look, not only
+  its own band; its own band joins the fight, as before.
+- **Bodies:** on watch, a dead friend it can see within 14 m sets it searching where they lie.
+- **The HUD** says **SEARCHING** (amber) while you sneak and something nearby is looking.
 
 ## Sneak attacks
 
@@ -120,10 +155,16 @@ Then add `is_unaware()` (true while idle) and `is_hunting()` (true while it's af
 someone). Optionally, call `Stealth.lost_track(self, delta)` while it chases, so Master of
 Shadows works on it.
 
+To give it sight and hearing like a bandit's: `hunts_by_sight = true`, a `hear(where)` that
+sends it to look, and `is_alert()` (true while it's looking). `enemies/bandit.gd` has the
+whole thing: `_investigate()`, `_search()`, `_look_for_bodies()`.
+
 ## Not yet
 
-- No vision cone: an enemy facing away notices you as fast as one facing you.
-- Armour doesn't make you louder yet. Heavy Armour (phase 2) is the natural place for it.
+- Wolves and wisps have no vision cone and don't hear: they still notice anything in range.
+- Ordinary townsfolk don't react to noise (only Crime's witnesses, who see).
+- Searching enemies wander towards random spots near the noise; they don't check doorways
+  or hiding places on purpose.
 - Lights (a lantern, a spell in your hand) don't give you away.
 - In third-person view the body doesn't crouch (only the first-person camera drops).
 - Light Foot has no automated test (the pressure plate needs its scene); it's two lines in

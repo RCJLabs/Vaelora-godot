@@ -21,3 +21,10 @@ func _ready() -> void:
 	lantern.omni_range = 5.0
 	lantern.position = Vector3(0.35, 1.0, 0.0)
 	add_child(lantern)
+
+
+# He only appears (props/story_presence.gd switches him on) once he's drawn on you, face
+# to face: he knows where you are, whichever way he's standing.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_ENABLED and state == State.IDLE:
+		_start_fight()

@@ -214,7 +214,8 @@ func show_enemy_health(stats: Stats) -> void:
 
 
 ## While sneaking: how close the most watchful enemy is to noticing you
-## (systems/stealth.gd), white through amber, or red once something's after you.
+## (systems/stealth.gd), white through amber, SEARCHING while something is looking
+## for you, or red once something's after you.
 func _update_sneak() -> void:
 	var player := get_parent()
 	sneak_label.visible = player != null and player.get("is_sneaking") == true
@@ -225,6 +226,9 @@ func _update_sneak() -> void:
 	if status["hunted"]:
 		sneak_label.text = "[  SEEN  ]"
 		sneak_label.label_settings.font_color = Color(1.0, 0.35, 0.3)
+	elif status.get("searching", false) and level <= 0.5:
+		sneak_label.text = "[  SEARCHING  ]"   # something heard you, or lost you, and is looking
+		sneak_label.label_settings.font_color = Color(1.0, 0.75, 0.3)
 	elif level > 0.02:
 		sneak_label.text = "[  NOTICED  ]" if level > 0.5 else "[  hidden?  ]"
 		sneak_label.label_settings.font_color = Color(1.0, 0.95, 0.85).lerp(Color(1.0, 0.6, 0.2), level)
