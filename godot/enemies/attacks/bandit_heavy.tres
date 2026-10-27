@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://combat/attack_data.gd" id="1_attack"]
+
+[resource]
+script = ExtResource("1_attack")
+windup_pose = "overhead"
+strike_pose = "low_center"
+windup = 0.95
+active = 0.18
+recovery = 0.9
+damage_mult = 1.8
+poise_damage = 30.0
+knockback = 0.0
+lunge = 3.0

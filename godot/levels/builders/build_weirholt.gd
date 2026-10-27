@@ -272,8 +272,9 @@ func _build_wilds() -> void:
 	own(acolytes)
 	for i in 3:
 		var a := TAU * i / 3.0 + 0.4
-		enemy(acolytes, "Acolyte%d" % (i + 1), "Mercy Acolyte", circle + Vector3(cos(a) * 4.0, 0, sin(a) * 4.0), -a - PI / 2.0,
-				CULTIST, {"wait_for_flag": "weirstones_rite", "gold": 15})
+		var drawer := i == 2   # one of them casts (enemies/cultist.gd, caster)
+		enemy(acolytes, "Acolyte%d" % (i + 1), "Mercy Drawer" if drawer else "Mercy Acolyte", circle + Vector3(cos(a) * 4.0, 0, sin(a) * 4.0), -a - PI / 2.0,
+				CULTIST, {"wait_for_flag": "weirstones_rite", "gold": 15, "caster": drawer, "max_health": 45.0 if drawer else 60.0})
 	var rite := Node3D.new()
 	rite.name = "Weirstones"
 	rite.set_script(RITUAL)

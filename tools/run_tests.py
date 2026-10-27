@@ -35,6 +35,7 @@ VARIANTS = {
     "test_barrow": [["free"], ["take"]],
     "test_ask_forest": [["bandits"], ["supplies"], ["outlaw"]],
     "test_bandit_fight": [["skilled"]],   # "naive" (never defends) is a balance check: run it by hand
+    "test_mercy_fight": [["skilled"]],   # "naive" and "hunter" are balance checks: run them by hand
     "test_combat": [["human"]],
     "test_first": [["maren"], ["brannoc"], ["mirela"]],
     "test_first_fight": [["naive"], ["skilled"]],

@@ -180,7 +180,9 @@ func _build_deep_ring() -> Node3D:
 	own(mercy)
 	for i in 3:
 		var a := TAU * i / 3.0 + 0.5
-		enemy(mercy, "Acolyte%d" % (i + 1), "Mercy Acolyte", centre + Vector3(cos(a) * 5.5, 0, sin(a) * 5.5), PI, CULTIST, {"gold": 15})
+		var drawer := i == 2   # one of them casts (enemies/cultist.gd, caster)
+		enemy(mercy, "Acolyte%d" % (i + 1), "Mercy Drawer" if drawer else "Mercy Acolyte", centre + Vector3(cos(a) * 5.5, 0, sin(a) * 5.5), PI, CULTIST,
+				{"gold": 15, "caster": drawer, "max_health": 45.0 if drawer else 60.0})
 	enemy(mercy, "Warden", "Harvest-Warden", centre + Vector3(0, 0, -4), PI, CULTIST,
 			{"gold": 60, "max_health": 140.0, "attack_damage": 15.0, "guard_chance": 0.7, "parry_chance": 0.25})
 
