@@ -5,16 +5,26 @@ extends CharacterBody3D
 # to them (E) to have them wait, follow again, or go home.
 #   FOLLOW  keeps up; if you leave them far behind (a door, a cellar), catches up
 #   WAIT    stands where you left them
-#   FIGHT   the nearest enemy that's after you or them, within FIGHT_RADIUS
+#   FIGHT   an enemy in the fight within FIGHT_RADIUS: the one pointed out (Command),
+#           else the best by _score(): whatever's on you (more so when you're hurt),
+#           casters and archers, the staggered, what's on them, the nearest; and they
+#           stick with their choice unless another is clearly better.
+#           Brannoc goes round an enemy that's fighting you to its far side (it can't
+#           guard you both); Zora keeps her distance and backs off from what closes in.
+#   RETREAT badly hurt, they fall back behind you for a few seconds
 #   DOWN    knocked down at 0 health: out of the fight, and enemies leave them be.
 #           Help them up (E) or they get up on their own after DOWN_SECONDS.
 #           Companions don't die.
-# Enemies go for them as readily as for you (systems/targeting.gd). Waiting, they
-# still hit back at whatever's hitting them. Out of a fight they heal.
+# They read telegraphs (a bandit's wind-up, a wolf's crouch) three times in four:
+# Brannoc raises his guard (a blow from in front does a quarter), Zora jumps back out
+# of reach. Enemies go for them as readily as for you (systems/targeting.gd). Waiting,
+# they still hit back at whatever's hitting them. Out of a fight they heal.
 #
 # Greybox: a capsule, with a floating name and health while hurt.
 
-enum State { FOLLOW, WAIT, FIGHT, DOWN }
+enum State { FOLLOW, WAIT, FIGHT, DOWN, RETREAT }
+
+signal defended(result: String)   # "blocked" (a blow on the guard) or "dodged" (a jump back)
 
 const BOLT_SCENE := preload("res://combat/spell_bolt.tscn")
 
@@ -29,6 +39,25 @@ const GOT_UP := 0.3
 ## Out of a fight (not hit for this long) they heal this much a second.
 const REGEN_DELAY := 6.0
 const REGEN_PER_SECOND := 3.0
+## Reading a blow coming: they do three times in four, this long before it lands.
+const READ_CHANCE := 0.75
+const READ_LEAD := 0.25
+const GUARD_TIME := 0.6
+const GUARD_LETS_THROUGH := 0.25
+const DODGE_TIME := 0.3
+const DODGE_SPEED := 9.0
+## A ranged companion backs off from anything after them closer than this.
+const KEEP_CLEAR := 3.5
+## Under this share of their health they fall back behind you, for up to RETREAT_TIME.
+const RETREAT_BELOW := 0.25
+const RETREAT_TIME := 5.0
+const RETREAT_COOLDOWN := 12.0
+## Metres better another target has to score before they switch.
+const STICK := 3.0
+## Brannoc goes round an enemy fighting you till he's this far round it from you
+## (cos of about 115 degrees), for at most FLANK_TIME on one target.
+const FLANK_DOT := -0.4
+const FLANK_TIME := 3.0
 
 var companion_id := ""
 var display_name := "Companion"
@@ -62,6 +91,15 @@ var _body: Node3D
 var _look := {}   # race, role, cloth (Companions.DEFS)
 var _label: Label3D
 var _agent: NavigationAgent3D
+var _guard_left := 0.0
+var _dodge_left := 0.0
+var _dodge_dir := Vector3.ZERO
+var _read := {}            # enemy instance id -> whether they caught this wind-up
+var _retreat_left := 0.0
+var _retreat_cooldown := 0.0
+var _flank_left := FLANK_TIME
+var _flanking: Node3D       # the enemy they're going round
+var _back_off_turn := 0.0   # backing off into something: turn the way out this far (radians)
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
@@ -111,10 +149,16 @@ func interact(_player: Node) -> void:
 		DialogueManager.start(dialogue_file, display_name)
 
 
-## An enemy's attack landing (the same call the player gets). Returns "hit".
+## An enemy's attack landing (the same call the player gets). Returns "hit",
+## "blocked" (guarding, and it came from in front) or "dodged" (mid-jump).
 func receive_attack(amount: float, attacker: Node3D, _poise: float = 0.0) -> String:
 	if is_down:
 		return "hit"
+	if _dodge_left > 0.0:
+		return "dodged"
+	var blocked := _guard_left > 0.0 and is_instance_valid(attacker) and _in_front(attacker.global_position)
+	if blocked:
+		amount *= GUARD_LETS_THROUGH
 	if state == State.WAIT and "hold_the_line" in Character.perks:
 		amount *= 0.5
 	if "commanders_aura" in Character.perks:
@@ -125,6 +169,9 @@ func receive_attack(amount: float, attacker: Node3D, _poise: float = 0.0) -> Str
 	if health <= 0.0:
 		_go_down()
 	_update_label()
+	if blocked:
+		defended.emit("blocked")
+		return "blocked"
 	return "hit"
 
 
@@ -145,6 +192,9 @@ func order(new_state: State) -> void:
 func _go_down() -> void:
 	_ordered = State.WAIT if state == State.WAIT else State.FOLLOW
 	state = State.DOWN
+	_guard_left = 0.0
+	_dodge_left = 0.0
+	_retreat_left = 0.0
 	_down_left = 8.0 if "unbowed" in Character.perks else DOWN_SECONDS   # Unbowed (Command)
 	target = null
 	_body.rotation.x = deg_to_rad(80)   # laid on the ground (the figure's origin is at its feet)
@@ -191,6 +241,15 @@ func _physics_process(delta: float) -> void:
 	if _since_hit > REGEN_DELAY and health < max_health:
 		health = minf(health + REGEN_PER_SECOND * (2.0 if "hardened" in Character.perks else 1.0) * delta, max_health)
 		_update_label()
+	_guard_left -= delta
+	_dodge_left -= delta
+	_retreat_cooldown -= delta
+	_read_blows()
+	if _dodge_left > 0.0:
+		velocity.x = _dodge_dir.x * DODGE_SPEED
+		velocity.z = _dodge_dir.z * DODGE_SPEED
+		move_and_slide()
+		return
 	if state == State.WAIT:
 		# Waiting, but not standing there to be bitten: hit back at what's in reach.
 		var attacker := _last_attacker if is_instance_valid(_last_attacker) and not _calm(_last_attacker) else null
@@ -199,6 +258,13 @@ func _physics_process(delta: float) -> void:
 	else:
 		target = _find_target(player)
 		state = State.FIGHT if target else State.FOLLOW
+		if target and _should_retreat():
+			_retreat_left = RETREAT_TIME
+			_retreat_cooldown = RETREAT_COOLDOWN
+		if _retreat_left > 0.0:
+			_retreat_left -= delta
+			if target:
+				state = State.RETREAT
 	match state:
 		State.FOLLOW:
 			var dist := global_position.distance_to(player.global_position)
@@ -211,11 +277,137 @@ func _physics_process(delta: float) -> void:
 		State.WAIT:
 			_move(Vector3.ZERO, 0.0)
 		State.FIGHT:
-			if _flat_distance(target) > reach:
-				_move(target.global_position, _run_speed())
+			if _guard_left > 0.0:
+				_move(Vector3.ZERO, 0.0)   # behind the guard
+				_face(target.global_position)
+			elif ranged:
+				_fight_at_range(target)
 			else:
-				_strike(target)
+				_fight_close(target, player)
+		State.RETREAT:
+			# Behind you, away from the fight: whatever's on them is nearer you now.
+			var away := player.global_position - target.global_position
+			away.y = 0.0
+			var spot := player.global_position + (away.normalized() if away.length() > 0.1 else Vector3.BACK) * 2.5
+			if global_position.distance_to(spot) > 0.8:
+				_move(spot, _run_speed())
+			else:
+				_move(Vector3.ZERO, 0.0)
+				_face(target.global_position)
 	move_and_slide()
+
+
+# Close in and strike. On an enemy that's fighting you, go round to its far side first:
+# it can't face you both, and a blow from behind gets past a guard.
+func _fight_close(enemy: Node3D, player: Node3D) -> void:
+	var near_you: bool = enemy.has_meta("foe") and enemy.get_meta("foe") == player and _flat(enemy, player) < 4.0
+	var from_enemy := global_position - enemy.global_position
+	from_enemy.y = 0.0
+	var to_you := player.global_position - enemy.global_position
+	to_you.y = 0.0
+	if enemy != _flanking:
+		_flanking = enemy
+		_flank_left = FLANK_TIME
+	_flank_left -= get_physics_process_delta_time()
+	if near_you and _flank_left > 0.0 and to_you.length() > 0.1 and from_enemy.length() > 0.1 and from_enemy.normalized().dot(to_you.normalized()) > FLANK_DOT:
+		# Not round it yet: round its flank (the side they're already on), not through it.
+		var side := to_you.normalized().cross(Vector3.UP)
+		if side.dot(from_enemy) < 0.0:
+			side = -side
+		_move(enemy.global_position + side * reach * 1.2 - to_you.normalized() * reach * 0.6, _run_speed())
+	elif _flat_distance(enemy) > reach:
+		_move(enemy.global_position, _run_speed())
+	else:
+		_strike(enemy)
+
+
+# Keep a few metres off: back away from anything that's after them and too close,
+# step round anything in the way, and throw from range.
+func _fight_at_range(enemy: Node3D) -> void:
+	var pressing := _nearest_on_me(KEEP_CLEAR)
+	if not pressing:
+		_back_off_turn = 0.0
+	if pressing:
+		var away := global_position - pressing.global_position
+		away.y = 0.0
+		if Vector2(get_real_velocity().x, get_real_velocity().z).length() < 1.5:
+			_back_off_turn = wrapf(_back_off_turn + 0.12, -PI, PI)   # against a wall: work round it
+		_move(global_position + away.normalized().rotated(Vector3.UP, _back_off_turn) * 3.0, _run_speed())
+	elif _flat_distance(enemy) > reach:
+		_move(enemy.global_position, _run_speed())
+	elif not Stealth.clear_line(self, enemy):
+		var to := enemy.global_position - global_position
+		to.y = 0.0
+		_move(global_position + to.normalized().cross(Vector3.UP) * 2.0, _run_speed() * 0.7)
+	else:
+		_strike(enemy)
+
+
+# --- reading blows ---------------------------------------------------------------------
+
+## An enemy after them about to land a blow: maybe they see it coming (READ_CHANCE,
+## decided once per wind-up) and guard or jump back.
+func _read_blows() -> void:
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		var id: int = enemy.get_instance_id()
+		var left := _blow_in(enemy)
+		if left == INF or not (enemy.has_meta("foe") and enemy.get_meta("foe") == self):
+			_read.erase(id)
+			continue
+		if left > READ_LEAD or _flat_distance(enemy) > 4.0 or _read.has(id):
+			continue
+		_read[id] = randf() < READ_CHANCE
+		if _read[id]:
+			_defend(enemy)
+
+
+## Seconds until `enemy`'s blow lands (INF: none coming): a bandit's swing (bandit.gd,
+## ATTACK wind-up) or a wolf's bite (wolf.gd, _windup_left).
+func _blow_in(enemy: Node) -> float:
+	if enemy.get("bite_windup") != null:
+		return enemy._windup_left if enemy._windup_left > 0.0 else INF
+	if enemy.has_method("ranged") and enemy._attack != null and enemy.state == enemy.State.ATTACK and enemy._phase == enemy.Phase.WINDUP:
+		return enemy._attack.windup - enemy._phase_time
+	return INF
+
+
+func _defend(enemy: Node3D) -> void:
+	if ranged:
+		var away := global_position - enemy.global_position
+		away.y = 0.0
+		_dodge_dir = away.normalized().rotated(Vector3.UP, randf_range(-0.6, 0.6))
+		_dodge_left = DODGE_TIME
+		defended.emit("dodged")
+	else:
+		_guard_left = GUARD_TIME
+		_face(enemy.global_position)
+
+
+## Badly hurt, with something after them, and not told to go for something: fall back.
+func _should_retreat() -> bool:
+	return _retreat_left <= 0.0 and _retreat_cooldown <= 0.0 and health < max_health * RETREAT_BELOW \
+			and not is_instance_valid(_ordered_enemy) and _nearest_on_me(6.0) != null
+
+
+## The nearest enemy after them within `radius`.
+func _nearest_on_me(radius: float) -> Node3D:
+	var best: Node3D = null
+	var best_dist := radius
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		if enemy.has_meta("foe") and enemy.get_meta("foe") == self and not _calm(enemy) and not Glamour._dead(enemy):
+			var d := _flat_distance(enemy)
+			if d < best_dist:
+				best = enemy
+				best_dist = d
+	return best
+
+
+func _in_front(at: Vector3) -> bool:
+	var to := at - global_position
+	to.y = 0.0
+	var forward := -global_basis.z
+	forward.y = 0.0
+	return to.length() < 0.1 or rad_to_deg(forward.angle_to(to)) < 70.0
 
 
 func _strike(enemy: Node3D) -> void:
@@ -254,7 +446,11 @@ func _throw_bolt(enemy: Node3D, dealt: float) -> void:
 
 
 func _flat_distance(node: Node3D) -> float:
-	return Vector2(node.global_position.x - global_position.x, node.global_position.z - global_position.z).length()
+	return _flat(node, self)
+
+
+func _flat(a: Node3D, b: Node3D) -> float:
+	return Vector2(a.global_position.x - b.global_position.x, a.global_position.z - b.global_position.z).length()
 
 
 ## Puts them a couple of metres behind the player (on arrival in a level, or to catch up).
@@ -265,22 +461,45 @@ func arrive_behind(player: Node3D) -> void:
 	velocity = Vector3.ZERO
 
 
-# The nearest living enemy that's in the fight (not idle, not heading home, not
-# fleeing, not charmed onto your side), within FIGHT_RADIUS of the player or of them.
+# The enemy to fight: the one pointed out, else the best-scoring living enemy that's in
+# the fight (not idle, not heading home, not fleeing, not charmed onto your side),
+# within FIGHT_RADIUS of the player or of them. They keep their target unless another
+# scores STICK better.
 func _find_target(player: Node3D) -> Node3D:
 	if is_instance_valid(_ordered_enemy) and not Glamour._dead(_ordered_enemy) and _ordered_enemy.is_visible_in_tree():
 		return _ordered_enemy   # pointed out: that one, wherever it is and whatever it's doing
 	_ordered_enemy = null
 	var best: Node3D = null
-	var best_dist := INF
+	var best_score := INF
 	for enemy in get_tree().get_nodes_in_group("enemy"):
 		if not enemy.has_method("take_hit") or not enemy.is_visible_in_tree() or _calm(enemy) or Glamour.is_charmed(enemy):
 			continue
-		var d: float = minf(enemy.global_position.distance_to(player.global_position), enemy.global_position.distance_to(global_position))
-		if d < FIGHT_RADIUS and d < best_dist:
+		if minf(enemy.global_position.distance_to(player.global_position), enemy.global_position.distance_to(global_position)) >= FIGHT_RADIUS:
+			continue
+		var score := _score(enemy, player) - (STICK if enemy == target else 0.0)
+		if score < best_score:
 			best = enemy
-			best_dist = d
+			best_score = score
 	return best
+
+
+## How much they'd rather not fight `enemy` (metres, roughly: lower is better). Its
+## distance, less a bonus for each reason to go for it.
+func _score(enemy: Node3D, player: Node3D) -> float:
+	var score := _flat_distance(enemy)
+	var after_you: bool = enemy.has_meta("foe") and enemy.get_meta("foe") == player
+	if after_you and _flat(enemy, player) < 4.0:
+		var hurt: bool = player.get("stats") != null and player.stats.health < player.stats.max_health * 0.35
+		score -= 8.0 if hurt else 4.0   # on you: help
+	if enemy.has_meta("foe") and enemy.get_meta("foe") == self:
+		score -= 2.0
+	if enemy.has_method("ranged") and enemy.ranged():
+		score -= 8.0 if ranged else 3.0   # the archer or caster you can't reach while you fight
+		if enemy.state in [enemy.State.CAST, enemy.State.SHOOT]:
+			score -= 3.0   # mid-cast: a hit breaks it
+	if enemy.has_method("is_staggered") and enemy.is_staggered():
+		score -= 2.0   # free hits
+	return score
 
 
 func _calm(enemy: Node) -> bool:
