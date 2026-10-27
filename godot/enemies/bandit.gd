@@ -11,23 +11,39 @@ extends CharacterBody3D
 #   - Some (the leader) parry: your swing is thrown back and you stagger.
 #   - A parried swing or broken poise staggers it: that's your opening.
 #
+# It hunts by sight and sound (systems/stealth.gd): it has to see you in front of it,
+# hears footsteps, fights and spells, and goes to look (INVESTIGATE), then searches
+# round about (SEARCH) before giving up. Out of sight while chasing, it goes to where
+# it last saw you rather than where you are. A friend who starts a fight shouts, and a
+# dead friend it sees sets it searching. docs/godot-starter/SNEAK.md.
+#
 # Dead bandits can be searched (E) for their gold and loot. WorldState keeps
 # them dead and searched. Put them under a WolfPack-style node (enemy_pack.gd)
 # so they fight together and the camp has a "cleared" flag.
 
 signal died
 
-enum State { IDLE, CHASE, ENGAGE, ATTACK, GUARD, STAGGER, RETURN, DEAD, FLEE }
+enum State { IDLE, CHASE, ENGAGE, ATTACK, GUARD, STAGGER, RETURN, DEAD, FLEE, INVESTIGATE, SEARCH }
 
 ## How many members of a group may swing at the player at once. The rest
 ## circle and guard, so a fight against three stays readable (and fair).
 const MAX_ATTACKERS := 1
 enum Phase { WINDUP, ACTIVE, RECOVERY }
 
+const LOSE_SIGHT := 2.5      # seconds out of sight while chasing before it goes to where it last saw you
+const SEARCH_TIME := 8.0     # seconds it looks round where the noise was (or you were) before giving up
+const SEARCH_RADIUS := 5.0   # how far from that spot it wanders, looking
+const SHOUT := 15.0          # starting a fight, it shouts: anyone who can hear this far comes to look
+const BODY_SIGHT := 14.0     # it notices a dead friend this far off (in view)
+const INVESTIGATE_TIME := 12.0   # gives up getting to a spot it can't reach
+
 @export var display_name: String = "Bandit"
 @export var run_speed: float = 4.6       # slower than the player's sprint (8): you can flee
 @export var aggro_range: float = 12.0
 @export var leash_range: float = 28.0
+## Needs to see you to notice you standing (in front of it, in the clear), and hears
+## noise (systems/stealth.gd). Off: notices anyone in range, as wolves do.
+@export var hunts_by_sight := true
 ## Distance it likes to fight from, and how far its swings reach.
 @export var fight_range: float = 1.8
 @export var reach: float = 2.2
@@ -85,6 +101,14 @@ var _knockback := Vector3.ZERO
 var _lift_left := 0.0   # the Lifting Tide holds it up this much longer
 var _lift_to := 0.0
 var _searched := false
+var _goal := Vector3.ZERO        # where it's going to look (INVESTIGATE), or searching round (SEARCH)
+var _wander := Vector3.ZERO      # the spot it's looking at now, searching
+var _search_left := 0.0
+var _look_left := 0.0
+var _last_seen := Vector3.INF    # where it last saw who it's after (INF: not yet; it's told where you are)
+var _unseen := 0.0               # seconds it hasn't
+var _body_check := 0.0
+var _bodies_seen := {}           # instance ids of dead friends it has already found
 var _cloth: StandardMaterial3D
 var _cloth_color: Color   # what a hit flash fades back to
 var _glint: StandardMaterial3D   # the blade's material, flashed as the telegraph
@@ -166,6 +190,8 @@ func _think(player: Node3D, delta: float) -> void:
 			_move(Vector3.ZERO, 0.0, delta)
 			if Stealth.notices(self, player, aggro_range, dist, delta):
 				_start_fight()
+			else:
+				_look_for_bodies(delta)
 		State.RETURN:
 			if from_home < 1.0:
 				state = State.IDLE
@@ -174,14 +200,28 @@ func _think(player: Node3D, delta: float) -> void:
 				state = State.CHASE
 			else:
 				_move(home, run_speed * 0.7, delta)
+		State.INVESTIGATE, State.SEARCH:
+			if Stealth.notices(self, player, aggro_range, dist, delta):
+				_start_fight()
+			else:
+				_search(delta)
 		State.CHASE:
+			if not _last_seen.is_finite():
+				_last_seen = player.global_position   # a friend's shout, or a crime: it knows where you were
+			if not hunts_by_sight or Stealth.clear_line(self, player):
+				_last_seen = player.global_position
+				_unseen = 0.0
+			else:
+				_unseen += delta
 			if from_home > leash_range or Stealth.lost_track(self, delta):
 				state = State.RETURN
-			elif dist <= fight_range + 0.4:
+			elif _unseen > LOSE_SIGHT:
+				_investigate(_last_seen)   # lost you: go and look where you were
+			elif dist <= fight_range + 0.4 and _unseen < 0.5:
 				state = State.ENGAGE
 				_think_left = randf_range(0.2, 0.6)
 			else:
-				_move(player.global_position, run_speed, delta)
+				_move(player.global_position if _unseen < 0.5 else _last_seen, run_speed, delta)
 		State.ENGAGE:
 			_engage(player, to_player, dist, delta)
 		State.ATTACK:
@@ -264,6 +304,8 @@ func _lost(delta: float) -> void:
 			_move(Vector3.ZERO, 0.0, delta)
 		State.STAGGER, State.FLEE:
 			_think(self, delta)   # these don't need a target to play out
+		State.INVESTIGATE, State.SEARCH:
+			_search(delta)        # nobody to see: keep looking
 		_:
 			if state == State.ATTACK or state == State.GUARD:
 				_pose("rest", 0.2)
@@ -276,6 +318,9 @@ func _lost(delta: float) -> void:
 
 func _start_fight() -> void:
 	state = State.CHASE
+	_unseen = 0.0
+	_last_seen = Vector3.INF
+	Stealth.noise(global_position, SHOUT, self)   # a shout: anyone near comes to look
 	Hints.show_once("bandits", "Bandits raise their guard against quick swings. Hold %s for a heavy attack (or bash with a shield) to break it. Watch for the glint before they swing." % Hints.key("attack"))
 	if get_parent().has_method("alert"):
 		get_parent().alert(self)
@@ -283,8 +328,79 @@ func _start_fight() -> void:
 
 ## Called by its pack when a packmate starts fighting.
 func join_hunt() -> void:
-	if state == State.IDLE or state == State.RETURN:
+	if state in [State.IDLE, State.RETURN, State.INVESTIGATE, State.SEARCH]:
 		state = State.CHASE
+		_unseen = 0.0
+		_last_seen = Vector3.INF
+
+
+# --- hearing and searching (systems/stealth.gd) ---------------------------------------
+
+## A noise at `where` (Stealth.make_noise, noise, step): if it isn't already fighting,
+## it goes to look.
+func hear(where: Vector3) -> void:
+	if not hunts_by_sight:
+		return
+	if state in [State.IDLE, State.RETURN, State.INVESTIGATE, State.SEARCH]:
+		_investigate(where)
+
+
+func _investigate(where: Vector3) -> void:
+	if state == State.ATTACK or state == State.GUARD:
+		_pose("rest", 0.2)
+	state = State.INVESTIGATE
+	_goal = where
+	_search_left = INVESTIGATE_TIME   # to get there
+
+
+## Going to look, then looking round, then home.
+func _search(delta: float) -> void:
+	_search_left -= delta
+	if state == State.INVESTIGATE:
+		var to_goal := Vector2(_goal.x - global_position.x, _goal.z - global_position.z).length()
+		if to_goal < 1.5 or _search_left <= 0.0:
+			state = State.SEARCH
+			_search_left = SEARCH_TIME
+			_wander = _goal
+			_look_left = 0.0
+		else:
+			_move(_goal, run_speed * 0.6, delta)
+		return
+	if _search_left <= 0.0:
+		state = State.RETURN   # nothing there
+		return
+	_look_left -= delta
+	if _look_left <= 0.0:
+		_look_left = randf_range(1.2, 2.2)
+		var angle := randf() * TAU
+		_wander = _goal + Vector3(cos(angle), 0, sin(angle)) * randf_range(1.0, SEARCH_RADIUS)
+	if Vector2(_wander.x - global_position.x, _wander.z - global_position.z).length() > 0.8:
+		_move(_wander, run_speed * 0.4, delta)
+	else:
+		_move(Vector3.ZERO, 0.0, delta)
+		rotation.y += delta * 1.5   # looking round
+
+
+## Every half second while idle: a dead friend in view sets it searching where they lie.
+func _look_for_bodies(delta: float) -> void:
+	if not hunts_by_sight:
+		return
+	_body_check -= delta
+	if _body_check > 0.0:
+		return
+	_body_check = 0.5
+	for other in get_parent().get_children():
+		if other == self or other.get("state") != State.DEAD or _bodies_seen.has(other.get_instance_id()):
+			continue
+		if global_position.distance_to(other.global_position) < BODY_SIGHT and Stealth.in_view(self, other):
+			_bodies_seen[other.get_instance_id()] = true
+			_investigate(other.global_position)
+			return
+
+
+## Searching: it's heard something or lost you, and is looking (it notices you sooner).
+func is_alert() -> bool:
+	return state == State.INVESTIGATE or state == State.SEARCH
 
 
 # --- attacking ----------------------------------------------------------------------------
@@ -370,7 +486,7 @@ func _start_guard(seconds: float) -> void:
 func take_hit(damage: float, from_position: Vector3, knockback: float = 5.0, poise_damage: float = 0.0, heavy: bool = false) -> String:
 	if state == State.DEAD:
 		return "hit"
-	if state == State.IDLE or state == State.RETURN:
+	if state in [State.IDLE, State.RETURN, State.INVESTIGATE, State.SEARCH]:
 		_start_fight()
 	var is_spell := knockback <= 0.0 and poise_damage <= 0.0
 	if state == State.GUARD and not is_spell and _facing(from_position):
@@ -446,9 +562,10 @@ func is_staggered() -> bool:
 	return state == State.STAGGER
 
 
-## Hasn't noticed you: a sneak attack lands (systems/stealth.gd).
+## Hasn't noticed you: a sneak attack lands (systems/stealth.gd). Searching counts:
+## it's looking for you, but hasn't found you.
 func is_unaware() -> bool:
-	return state == State.IDLE
+	return state == State.IDLE or state == State.INVESTIGATE or state == State.SEARCH
 
 
 ## After you (or a companion), for the HUD's eye.

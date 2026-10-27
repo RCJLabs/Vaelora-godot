@@ -5,6 +5,8 @@ extends Node
 # louder one when landing. The sound depends on what's underfoot: put a floor's
 # StaticBody3D in the group "surface_stone" or "surface_wood"; anything else
 # counts as soft ground (grass, dirt). Sounds: assets/sfx/footstep_<surface>_1..3.
+# Enemies hear the steps too (Stealth.step): sprinting carries furthest, crouching
+# is silent unless your armour is heavy.
 
 ## Metres per step, walking and sprinting (longer strides when running).
 const WALK_STRIDE := 1.6
@@ -23,6 +25,7 @@ func update(delta: float, landed: bool, fall_speed: float) -> void:
 	var speed := Vector2(player.velocity.x, player.velocity.z).length()
 	if landed and fall_speed > 2.5:
 		_step(clampf((fall_speed - 2.5) * 1.5, 0.0, 6.0))
+		Stealth.step(player.global_position, "land")
 		_distance = 0.0
 		return
 	if speed < 0.5:
@@ -33,6 +36,7 @@ func update(delta: float, landed: bool, fall_speed: float) -> void:
 	if _distance >= stride:
 		_distance -= stride
 		_step(0.0)
+		Stealth.step(player.global_position, "run" if stride == SPRINT_STRIDE else "walk")   # enemies hear it
 
 
 func _step(extra_db: float) -> void:

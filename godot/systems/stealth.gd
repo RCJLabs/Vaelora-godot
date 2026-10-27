@@ -14,6 +14,14 @@ extends Node
 # after you, for the HUD). Sneak attacks (crouched, on an unaware enemy):
 # melee x3, arrows x2, more with perks. Swinging, casting, loosing and killing
 # make noise while you sneak (make_noise): nearby unaware enemies hear it.
+#
+# Enemies that hunt by sight (hunts_by_sight: bandits, guards, cultists) also need
+# to see you standing up: in front of them (SIGHT_COS) and in the clear, unless
+# you're right beside them (CLOSE). Wolves go by scent, as before. And they hear:
+# footsteps (step()), fights, spells, a dead friend, anything make_noise() or
+# noise() reports, standing or sneaking. An enemy with hear(where) goes to look
+# (docs/godot-starter/SNEAK.md, "Hearing and searching"). While it's searching
+# (is_alert()), it notices you sooner (ALERT_MULT).
 
 const RANGE_MULT := 0.65            # crouched at Sneak 15: 65% of an enemy's usual range
 const RANGE_PER_LEVEL := 0.005      # -0.5% of that per Sneak level above 15
@@ -28,6 +36,12 @@ const SNEAK_XP_PER_SECOND := 0.5    # crouched inside an unaware enemy's usual r
 const SNEAK_ATTACK_XP := 6.0
 const LOSE_TRACK_SECONDS := 4.0     # Master of Shadows
 const RECENT_MS := 400              # an enemy that checked this recently is "watching"
+const SIGHT_COS := -0.2             # as Crime: about 100 degrees each side of where they face
+const CLOSE := 2.0                  # this near, a standing player is noticed whichever way they face
+const ALERT_MULT := 1.4             # searching: its range, and how fast it notices, are this much more
+const LOUD_MULT := 1.5              # standing up, your noises carry this much further
+const STEP_NOISE := {"walk": 3.0, "run": 7.0, "land": 6.0}   # metres a footstep is heard at, standing
+const SNEAK_STEP_NOISE := 1.5       # crouched, only heavy armour is heard (times its noise)
 
 var _enemies := {}    # instance id -> WeakRef to an enemy that has called notices()
 var _awareness := {}  # instance id -> 0..1 while it's unaware
@@ -66,18 +80,23 @@ func notices(enemy: Node3D, foe: Node3D, base_range: float, dist: float, delta: 
 	var id := enemy.get_instance_id()
 	_enemies[id] = weakref(enemy)
 	_checked[id] = Time.get_ticks_msec()
+	var eyes: bool = enemy.get("hunts_by_sight") == true
+	var alert: bool = enemy.has_method("is_alert") and enemy.is_alert()
+	if alert:
+		base_range *= ALERT_MULT
 	if foe != player():
-		return dist < base_range   # companions don't sneak
+		return dist < base_range and (not eyes or in_view(enemy, foe))   # companions don't sneak
 	if not is_sneaking():
-		if dist < base_range:
+		if dist < base_range and (not eyes or dist < CLOSE or in_view(enemy, foe)):
 			_awareness.erase(id)
 			return true
 		_awareness[id] = maxf(_awareness.get(id, 0.0) - AWARE_DECAY * delta, 0.0)
 		return false
 	var reach := base_range * range_mult()
 	var level: float = _awareness.get(id, 0.0)
-	if dist < reach and sees(enemy):
-		level += delta * AWARE_RATE * (0.4 + 1.2 * (1.0 - dist / reach)) * (foe.stats.modifier("awareness_rate") if foe.get("stats") is Stats else Character.modifier("awareness_rate"))   # Lanes-Walk too
+	if dist < reach and sees(enemy) and (not eyes or in_view(enemy, foe)):
+		level += delta * AWARE_RATE * (0.4 + 1.2 * (1.0 - dist / reach)) * (foe.stats.modifier("awareness_rate") if foe.get("stats") is Stats else Character.modifier("awareness_rate")) \
+				* (ALERT_MULT if alert else 1.0)   # Lanes-Walk too
 	else:
 		level -= delta * AWARE_DECAY
 	if level >= 1.0:
@@ -92,33 +111,75 @@ func notices(enemy: Node3D, foe: Node3D, base_range: float, dist: float, delta: 
 
 ## A clear line from the enemy's eyes to the player's chest (walls and ground block it).
 func sees(enemy: Node3D) -> bool:
-	var p := player()
-	if p == null:
+	return clear_line(enemy, player())
+
+
+## A clear line from the enemy's eyes to `target`'s chest.
+func clear_line(enemy: Node3D, target: Node3D) -> bool:
+	if target == null:
 		return false
-	var query := PhysicsRayQueryParameters3D.create(enemy.global_position + Vector3.UP * 0.8, p.global_position + Vector3.UP * 1.0, 1)
+	var query := PhysicsRayQueryParameters3D.create(enemy.global_position + Vector3.UP * 0.8, target.global_position + Vector3.UP * 1.0, 1)
 	return enemy.get_world_3d().direct_space_state.intersect_ray(query).is_empty()
+
+
+## `target` is in front of the enemy (within SIGHT_COS of where it faces) and in the clear.
+func in_view(enemy: Node3D, target: Node3D) -> bool:
+	if target == null:
+		return false
+	var to := target.global_position - enemy.global_position
+	var flat := Vector3(to.x, 0, to.z)
+	var forward := -enemy.global_basis.z
+	if flat.length() > 0.5 and Vector3(forward.x, 0, forward.z).normalized().dot(flat.normalized()) < SIGHT_COS:
+		return false   # behind it
+	return clear_line(enemy, target)
 
 
 func awareness(enemy: Node) -> float:
 	return _awareness.get(enemy.get_instance_id(), 0.0)
 
 
-## A noise at `where` while you sneak ("melee", "spell", "archery", "kill", "lockpick"): every
-## watching enemy within its reach (less with perks) gets most of the way to noticing.
+## A noise you make at `where` ("melee", "spell", "archery", "kill", "lockpick"). Every enemy
+## within its reach (less with perks, more standing up) hears it and comes to look
+## (hear()); while you sneak, the watching ones also get most of the way to noticing.
 func make_noise(where: Vector3, kind: String) -> void:
-	if not is_sneaking():
+	var sneaking := is_sneaking()
+	if kind == "kill" and sneaking and has_perk("quiet_kill"):
 		return
-	if kind == "kill" and has_perk("quiet_kill"):
-		return
-	var radius: float = NOISE[kind] * Character.modifier("noise_" + kind)
+	var radius: float = NOISE[kind] * Character.modifier("noise_" + kind) * (1.0 if sneaking else LOUD_MULT)
 	var now := Time.get_ticks_msec()
 	for id in _enemies:
 		var enemy = _enemies[id].get_ref()
-		if enemy == null or now - int(_checked.get(id, 0)) > RECENT_MS:
+		if enemy == null:
 			continue
 		var dist: float = enemy.global_position.distance_to(where)
-		if dist < radius:
+		if dist >= radius:
+			continue
+		if sneaking and now - int(_checked.get(id, 0)) <= RECENT_MS:
 			_awareness[id] = minf(_awareness.get(id, 0.0) + 0.5 + 0.5 * (1.0 - dist / radius), 0.99)
+		if enemy.has_method("hear"):
+			enemy.hear(where)
+
+
+## Any other noise at `where`, heard `radius` metres away (an arrow striking, a friend
+## shouting, a body falling): enemies that can hear come to look.
+func noise(where: Vector3, radius: float, except: Node = null) -> void:
+	for id in _enemies:
+		var enemy = _enemies[id].get_ref()
+		if enemy != null and enemy != except and enemy.has_method("hear") and enemy.global_position.distance_to(where) < radius:
+			enemy.hear(where)
+
+
+## A footstep (systems: player/player_footsteps.gd): "walk", "run" or "land". Crouched, only
+## heavy armour makes a sound; standing, louder the faster you go.
+func step(where: Vector3, kind: String) -> void:
+	var radius: float
+	if is_sneaking():
+		if Armor.noise_mult() <= 1.0:
+			return
+		radius = SNEAK_STEP_NOISE * Armor.noise_mult()
+	else:
+		radius = STEP_NOISE[kind] * Armor.noise_mult()
+	noise(where, radius * Character.modifier("noise_footsteps"))
 
 
 ## The damage multiplier for hitting `target` now ("melee" or "archery"): 1 unless
@@ -169,6 +230,7 @@ func status() -> Dictionary:
 	var now := Time.get_ticks_msec()
 	var top := 0.0
 	var hunted := false
+	var searching := false
 	var p := player()
 	for id in _enemies.keys():
 		var enemy = _enemies[id].get_ref()
@@ -179,4 +241,6 @@ func status() -> Dictionary:
 			top = maxf(top, _awareness.get(id, 0.0))
 		if p and enemy.has_method("is_hunting") and enemy.is_hunting() and enemy.global_position.distance_to(p.global_position) < 40.0:
 			hunted = true
-	return {"awareness": top, "hunted": hunted}
+		if p and enemy.has_method("is_alert") and enemy.is_alert() and enemy.global_position.distance_to(p.global_position) < 40.0:
+			searching = true
+	return {"awareness": top, "hunted": hunted, "searching": searching}
