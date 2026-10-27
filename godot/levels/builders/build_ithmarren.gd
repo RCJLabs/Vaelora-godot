@@ -384,7 +384,7 @@ func _build_rootwell() -> Node3D:
 		enemy(takers, spot[0], "Mercy Acolyte", spot[1], PI, CULTIST, {"gold": 15})
 	for spot in [["Taker1", Vector3(-4, 0, 34)], ["Taker2", Vector3(4, 0, 35)]]:
 		enemy(takers, spot[0], "Sennaveth Essence-Taker", spot[1], PI, CULTIST,
-				{"gold": 20, "look_vary": false, "look_race": "elf", "look_role": "official", "look_cloth": SENNAVETH})
+				{"gold": 20, "caster": spot[0] == "Taker1", "look_vary": false, "look_race": "elf", "look_role": "official", "look_cloth": SENNAVETH})
 	enemy(takers, "Caerwyn", "Lord Caerwyn Sennaveth", Vector3(10, 0, 24), PI, CULTIST,
 			{"gold": 80, "max_health": 150.0, "attack_damage": 15.0, "guard_chance": 0.55, "parry_chance": 0.2,
 			"look_vary": false, "look_race": "elf", "look_role": "official", "look_cloth": Color(0.3, 0.12, 0.22)})

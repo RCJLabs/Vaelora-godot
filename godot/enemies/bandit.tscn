@@ -5,38 +5,9 @@
 [ext_resource type="Script" path="res://systems/status_effects.gd" id="3_fx"]
 [ext_resource type="Script" path="res://combat/attack_data.gd" id="4_attack"]
 [ext_resource type="PackedScene" path="res://items/models/iron_sword_fp.tscn" id="5_sword"]
-
-[sub_resource type="Resource" id="Attack_1"]
-script = ExtResource("4_attack")
-windup_pose = "high_right"
-strike_pose = "low_left"
-windup = 0.55
-active = 0.15
-recovery = 0.5
-poise_damage = 10.0
-knockback = 0.0
-
-[sub_resource type="Resource" id="Attack_2"]
-script = ExtResource("4_attack")
-windup_pose = "high_left"
-strike_pose = "low_right"
-windup = 0.45
-active = 0.15
-recovery = 0.6
-poise_damage = 10.0
-knockback = 0.0
-
-[sub_resource type="Resource" id="Attack_heavy"]
-script = ExtResource("4_attack")
-windup_pose = "overhead"
-strike_pose = "low_center"
-windup = 0.95
-active = 0.18
-recovery = 0.9
-damage_mult = 1.8
-poise_damage = 30.0
-knockback = 0.0
-lunge = 3.0
+[ext_resource type="Resource" path="res://enemies/attacks/bandit_swing_1.tres" id="6_swing1"]
+[ext_resource type="Resource" path="res://enemies/attacks/bandit_swing_2.tres" id="7_swing2"]
+[ext_resource type="Resource" path="res://enemies/attacks/bandit_heavy.tres" id="8_heavy"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_leather"]
 albedo_color = Color(0.33, 0.24, 0.16, 1)
@@ -98,8 +69,8 @@ size = Vector3(0.1, 0.55, 0.1)
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_bandit")
-attacks = Array[ExtResource("4_attack")]([SubResource("Attack_1"), SubResource("Attack_2")])
-heavy_attack = SubResource("Attack_heavy")
+attacks = Array[ExtResource("4_attack")]([ExtResource("6_swing1"), ExtResource("7_swing2")])
+heavy_attack = ExtResource("8_heavy")
 weapon_scene = ExtResource("5_sword")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

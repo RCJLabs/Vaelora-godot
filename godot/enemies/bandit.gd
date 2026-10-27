@@ -29,7 +29,7 @@ extends CharacterBody3D
 
 signal died
 
-enum State { IDLE, CHASE, ENGAGE, ATTACK, GUARD, STAGGER, RETURN, DEAD, FLEE, INVESTIGATE, SEARCH, SHOOT }
+enum State { IDLE, CHASE, ENGAGE, ATTACK, GUARD, STAGGER, RETURN, DEAD, FLEE, INVESTIGATE, SEARCH, SHOOT, CAST }
 
 ## How many members of a group may swing at the player at once. The rest
 ## circle and guard, so a fight against three stays readable (and fair).
@@ -47,11 +47,20 @@ const DRAW_TIME := 1.0           # an archer's draw: the telegraph
 const SHOT_RECOVERY := 0.5
 const SHOT_SPEED := 32.0         # m/s
 const SHOT_SPREAD := 1.5         # degrees either way
-const BACK_OFF := 0.55           # an archer closer than this share of keep_range steps back
+const BACK_OFF := 0.55           # an archer closer than this share of keep_range lets its draw go
+const RETREAT := 0.75            # and backs off till it's this share away (more than BACK_OFF, or it
+                                 # would stand on the edge, starting and dropping draws)
 const CORNERED := 3.0            # and closer than this, it fights hand to hand
 const ROUT_GONE := 30.0          # a routed bandit this far from you (or out of sight for ROUT_HIDDEN s) is gone
 const ROUT_HIDDEN := 3.0
 const ROUT_SECONDS := 15.0
+# Its swings and sword. The script's defaults, not only bandit.tscn's: a level that gives a
+# bandit.tscn another script (cultist.gd, by builder_base.enemy()) gets these, where the
+# scene's own values were wiped by the swap and it never swung.
+const SWING_1 := preload("res://enemies/attacks/bandit_swing_1.tres")
+const SWING_2 := preload("res://enemies/attacks/bandit_swing_2.tres")
+const HEAVY := preload("res://enemies/attacks/bandit_heavy.tres")
+const SWORD := preload("res://items/models/iron_sword_fp.tscn")
 
 @export var display_name: String = "Bandit"
 @export var run_speed: float = 4.6       # slower than the player's sprint (8): you can flee
@@ -72,8 +81,8 @@ const ROUT_SECONDS := 15.0
 @export var fight_range: float = 1.8
 @export var reach: float = 2.2
 @export var attack_damage: float = 10.0
-@export var attacks: Array[AttackData] = []   # the combo, in order
-@export var heavy_attack: AttackData
+@export var attacks: Array[AttackData] = [SWING_1, SWING_2]   # the combo, in order
+@export var heavy_attack: AttackData = HEAVY
 ## Chance (0-1) it raises its guard when it sees you start a swing.
 @export var guard_chance: float = 0.5
 ## Share of a hit its guard stops, and the chance a guarded hit is parried instead.
@@ -86,7 +95,7 @@ const ROUT_SECONDS := 15.0
 ## Item id -> count, given when the body is searched.
 @export var loot: Dictionary = {}
 ## Model in the right hand (a first-person weapon scene works).
-@export var weapon_scene: PackedScene
+@export var weapon_scene: PackedScene = SWORD
 @export_group("Look")
 ## A greybox person (systems/figure.gd) instead of the scene's placeholder body:
 ## a race (races/ file name), a role (Figure.ROLES) and the colour of their clothes.
@@ -153,6 +162,8 @@ const ARM_POSES := {
 	"guard":      [Vector3(85, -55, 35), Vector3(70, 30, -20)],
 	"stagger":    [Vector3(-15, 20, -30), Vector3(-10, -20, 30)],
 	"aim":        [Vector3(80, 10, -10), Vector3(90, -25, 15)],   # an archer's draw
+	"cast":       [Vector3(85, 15, -15), Vector3(85, -15, 15)],   # a caster's hands, out at you (cultist.gd)
+	"mend":       [Vector3(25, 0, -8), Vector3(130, -30, 20)],    # one hand raised over a friend
 }
 
 
@@ -250,14 +261,14 @@ func _think(player: Node3D, delta: float) -> void:
 				state = State.RETURN
 			elif _unseen > LOSE_SIGHT:
 				_investigate(_last_seen)   # lost you: go and look where you were
-			elif dist <= (keep_range if archer else fight_range + 0.4) and _unseen < 0.5:
+			elif dist <= (keep_range if ranged() else fight_range + 0.4) and _unseen < 0.5:
 				state = State.ENGAGE
 				_think_left = randf_range(0.2, 0.6)
 			else:
 				_move(player.global_position if _unseen < 0.5 else _last_seen, run_speed, delta)
 		State.ENGAGE:
-			if archer and dist > CORNERED:
-				_archer_engage(player, to_player, dist, delta)
+			if ranged() and dist > CORNERED:
+				_ranged_engage(player, to_player, dist, delta)
 			else:
 				_engage(player, to_player, dist, delta)
 		State.SHOOT:
@@ -348,7 +359,7 @@ func _engage(player: Node3D, to_player: Vector3, dist: float, delta: float) -> v
 		_start_guard(randf_range(0.6, 1.2))
 
 
-# Packmates swinging at the player right now (archers shooting don't count: they're off at range).
+# Packmates swinging at the player right now (archers and casters don't count: they're off at range).
 func _attackers() -> int:
 	var count := 0
 	for other in get_parent().get_children():
@@ -364,7 +375,7 @@ func _attackers() -> int:
 func _ring_spot(target: Node3D) -> Vector3:
 	var ring := []
 	for other in get_parent().get_children():
-		if other.get("archer") == false and other.get("state") in [State.ENGAGE, State.ATTACK, State.GUARD, State.STAGGER]:
+		if other.has_method("ranged") and not other.ranged() and other.get("state") in [State.ENGAGE, State.ATTACK, State.GUARD, State.STAGGER]:
 			ring.append(other)
 	if ring.size() < 2 or not ring.has(self):
 		return Vector3.INF
@@ -388,6 +399,16 @@ func _behind(target: Node3D) -> bool:
 
 # --- archers ---------------------------------------------------------------------------
 
+## Fights from a distance (an archer; a caster, enemies/cultist.gd): keeps out of the ring.
+func ranged() -> bool:
+	return archer
+
+
+## At range: what it does instead of closing in (cultist.gd's casters have their own).
+func _ranged_engage(player: Node3D, to_player: Vector3, dist: float, delta: float) -> void:
+	_archer_engage(player, to_player, dist, delta)
+
+
 ## At range: keep its distance, step back if you close in, and shoot when it can see you.
 func _archer_engage(player: Node3D, to_player: Vector3, dist: float, delta: float) -> void:
 	if dist > keep_range + 4.0 or _unseen > 1.0:
@@ -396,7 +417,7 @@ func _archer_engage(player: Node3D, to_player: Vector3, dist: float, delta: floa
 	_face(player.global_position, delta)
 	_shot_cooldown -= delta
 	var step := to_player.normalized().cross(Vector3.UP) * _strafe * 0.3
-	if dist < keep_range * BACK_OFF:
+	if dist < keep_range * RETREAT:
 		step -= to_player.normalized()   # too close: back off, still facing you
 	_move(global_position + step, run_speed * 0.55, delta, false)
 	if not Stealth.clear_line(self, player):
@@ -469,7 +490,7 @@ func _arrowhead() -> StandardMaterial3D:
 func flee() -> void:
 	if state == State.DEAD:
 		return
-	if state == State.ATTACK or state == State.GUARD or state == State.SHOOT:
+	if state in [State.ATTACK, State.GUARD, State.SHOOT, State.CAST]:
 		_pose("rest", 0.2)
 	_routed = true
 	_hidden_for = 0.0
@@ -494,7 +515,7 @@ func _lost(delta: float) -> void:
 		State.INVESTIGATE, State.SEARCH:
 			_search(delta)        # nobody to see: keep looking
 		_:
-			if state == State.ATTACK or state == State.GUARD or state == State.SHOOT:
+			if state in [State.ATTACK, State.GUARD, State.SHOOT, State.CAST]:
 				_pose("rest", 0.2)
 			if Vector2(global_position.x - home.x, global_position.z - home.z).length() < 1.0:
 				state = State.IDLE
@@ -757,7 +778,7 @@ func is_unaware() -> bool:
 
 ## After you (or a companion), for the HUD's eye.
 func is_hunting() -> bool:
-	return state in [State.CHASE, State.ENGAGE, State.ATTACK, State.GUARD, State.STAGGER, State.SHOOT]
+	return state in [State.CHASE, State.ENGAGE, State.ATTACK, State.GUARD, State.STAGGER, State.SHOOT, State.CAST]
 
 
 func is_lifted() -> bool:

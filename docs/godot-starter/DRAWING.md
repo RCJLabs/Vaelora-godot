@@ -28,6 +28,11 @@ corruption option D ("the Draw spell", `docs/CORRUPTION.md`) comes back, as a wh
   (which gives up the power too).
 - **Only what it takes counts.** Drawing at empty air costs Magicka but doesn't stain you.
 
+### The Mercy cast it too
+
+Mercy Drawers (`enemies/cultist.gd`, `caster = true`) use the school against you: a Draw
+beam that heals them, a hollow bolt, and a Mend for a hurt friend. COMBAT.md, "Mercy casters".
+
 ### Halina
 
 Sister Halina of the Mercy has two new lines:

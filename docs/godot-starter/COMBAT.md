@@ -202,6 +202,26 @@ They fight with the same swing system you do (`enemies/bandit.gd`, swings in
 - **Hooded cultists** (`enemies/cultist.gd`, in the barrow's hidden chamber) fight exactly
   like bandits, in grey-violet robes. They don't take prisoners in Hardcore, and can wait
   (frozen) for a story flag before they wake.
+- **Mercy casters** (`caster = true`; "Mercy Drawer") fight with Drawing (DRAWING.md) from
+  8 m, like archers. Every cast has a wind-up: the left hand **glows** (violet for a bolt,
+  pale for a Draw, gold for a Mend). **Any hit breaks a cast**, and the caster reels.
+  - **Hollow bolt** (14 damage): block, parry (it goes back at the caster) or dodge it.
+  - **Draw**: within 7 m and in plain sight, a grey beam takes 4 Health twice a second for
+    up to 2.5 s, and half of it heals the caster. Get out of reach or behind something and it
+    stops. A raised guard or a ward takes it like a hit.
+  - **Mend**: a friend within 10 m under half Health gets 25 back (once every 12 s).
+  - Close in and it backs off; cornered (3 m), it fights with its sword.
+  - One in each Mercy group: the Weirstones, the Deep Ring, the Undercroft (and **Magister
+    Vessa** herself: 18 bolts, 7 a pulse), and one of the Rootwell's Essence-Takers. The
+    Vale's Mercy cell and Seam Nine's miners have none.
+  - Bots against two cultists and a caster (`tests/test_mercy_fight.gd`): blocking and
+    fighting whoever's nearest leaves 48–100 Health (killing the leader breaks the band,
+    the caster with it); chasing the caster first does worse (25–70), as it backs off behind
+    the other two.
+- **Fixed:** cultists the level builders place never swung. Giving `bandit.tscn` another script
+  wiped the scene's swings and sword; they're now the script's own defaults
+  (`enemies/attacks/`). Every Mercy fight in the Riverlands, the Grieving Fields, Ilunhall,
+  Karrowdeep and Ithmarren is harder than it was.
 
 Tested with two bots: one that only swings (dies with the leader on about 15 HP, so one
 potion would have turned it) and one that blocks and parries every telegraphed swing

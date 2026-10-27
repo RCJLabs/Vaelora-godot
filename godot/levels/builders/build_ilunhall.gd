@@ -385,8 +385,9 @@ func _build_undercroft() -> Node3D:
 	mercy.set("cleared_flag", "undercroft_cleared")
 	mercy.set("cleared_message", "The Undercroft is quiet. Only the conduit hums, and Vessa hasn't moved.")
 	own(mercy)
-	for spot in [["Acolyte1", Vector3(-5, 0, 18)], ["Acolyte2", Vector3(5, 0, 19)], ["Acolyte3", Vector3(0, 0, 15)]]:
+	for spot in [["Acolyte1", Vector3(-5, 0, 18)], ["Acolyte2", Vector3(5, 0, 19)]]:
 		enemy(mercy, spot[0], "Mercy Acolyte", spot[1], PI, CULTIST, {"gold": 15})
+	enemy(mercy, "Acolyte3", "Mercy Drawer", Vector3(0, 0, 24), PI, CULTIST, {"gold": 15, "caster": true, "max_health": 45.0})
 	box("VessaDesk", Vector3(2.4, 0.9, 1.1), Vector3(8, 0.45, 31.5), DARK_TIMBER, "surface_wood")
 	var vessa_here := Node3D.new()
 	vessa_here.name = "VessaHere"
@@ -407,6 +408,7 @@ func _build_undercroft() -> Node3D:
 	own(vessa_pack, vessa_fight)
 	enemy(vessa_pack, "VessaFoe", "Magister Vessa", Vector3(8, 0, 30), 0.0, CULTIST,
 			{"gold": 80, "max_health": 160.0, "attack_damage": 16.0, "guard_chance": 0.6, "parry_chance": 0.2,
+			"caster": true, "bolt_damage": 18.0, "draw_damage": 7.0,   # a magister: she casts
 			"look_vary": false, "look_role": "scholar", "look_cloth": Color(0.4, 0.34, 0.45)})
 
 	map_marker("MapUndercroft", "undercroft", "The Undercroft", Vector3(0, 0, 12))
