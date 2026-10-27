@@ -13,6 +13,10 @@ func _initialize() -> void:
 	root.add_child(level); current_scene = level
 	level.get_node("Player").rotation.y = deg_to_rad(-90)   # face +X
 	level.get_node("Player").position = Vector3(-55, 1, 20)  # 110 m runway
+	# The Mercy cell's two cultists stand on the runway, and they hear a sprint
+	# (systems/stealth.gd) and come out: keep them out of a test about running.
+	for c in level.get_node("MercyCell/Merciful").get_children():
+		c.position.z += 40.0
 
 func _physics_process(_d: float) -> bool:
 	f += 1
