@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 	var to := from + velocity * delta
 	var query := PhysicsRayQueryParameters3D.create(from, to, 1 | (2 if hits_player else 4))
 	var exclude: Array[RID] = _dodged.duplicate()   # whoever dodged it: it's past them
-	if shooter is CollisionObject3D and is_instance_valid(shooter):
+	if is_instance_valid(shooter) and shooter is CollisionObject3D:
 		exclude.append(shooter.get_rid())
 	query.exclude = exclude
 	var result := get_world_3d().direct_space_state.intersect_ray(query)

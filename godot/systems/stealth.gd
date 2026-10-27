@@ -119,6 +119,8 @@ func clear_line(enemy: Node3D, target: Node3D) -> bool:
 	if target == null:
 		return false
 	var query := PhysicsRayQueryParameters3D.create(enemy.global_position + Vector3.UP * 0.8, target.global_position + Vector3.UP * 1.0, 1)
+	if target is CollisionObject3D:
+		query.exclude = [target.get_rid()]   # a companion is on layer 1 too: its own body isn't in the way
 	return enemy.get_world_3d().direct_space_state.intersect_ray(query).is_empty()
 
 

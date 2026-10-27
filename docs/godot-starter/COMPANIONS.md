@@ -62,9 +62,35 @@ thing); orders by a radial menu (wait / follow by key, not only by talking).
 
 ## Fighting
 
-While following, they fight the nearest enemy within 15 m of you or them that's in the
-fight (not idle, heading home, fleeing or charmed). Told to wait, they stay put but still hit
-back at whatever is hitting them. Brannoc has 150 health and hits for 12 in melee every 1.2 s;
+While following, they fight an enemy within 15 m of you or them that's in the fight (not
+idle, heading home, fleeing or charmed). Told to wait, they stay put but still hit back at
+whatever is hitting them. How they fight (`companions/companion.gd`):
+
+- **What they go for.** The one you pointed out (Command) first. Otherwise each enemy is
+  scored by its distance from them, less a bonus for each reason to go for it (`_score()`):
+  - on you, within 4 m: −4 m, or −8 m while you're under 35% Health;
+  - an archer or a caster: −8 m for Zora, −3 m for Brannoc, and −3 m more mid-draw or
+    mid-cast, since a hit breaks a cast;
+  - after them: −2 m. Staggered (free hits): −2 m.
+  - They keep the target they have unless another scores 3 m better, so they don't flip
+    between two enemies standing side by side.
+- **Brannoc flanks.** On an enemy fighting you, he goes round its side to the far side
+  (about 115° round from you) before he swings. It can't face you both, and a blow from
+  behind gets past a guard. He gives up after 3 s on the same enemy if it keeps turning.
+- **Zora keeps her distance.** She backs off from anything after her that's within 3.5 m,
+  works round a wall if she backs into one, steps sideways when something blocks her
+  line, and throws from 6 m.
+- **They read telegraphs**, three times in four: a bandit's wind-up or a wolf's crouch,
+  0.25 s before it lands. Brannoc raises his guard (0.6 s; a blow from in front does a
+  quarter). Zora jumps back out of reach (0.3 s, untouchable while she does).
+- **They fall back when badly hurt.** Under a quarter Health, with something after them,
+  they go behind you for up to 5 s (once every 12 s). Whatever was on them is nearer you
+  then, and turns on you. Not if you pointed them at something.
+- Measured on the Vale camp with a bot that never defends (`tests/test_bandit_fight.gd` with
+  a companion along): with Zora you end on 72–83 Health (46–67 before this), and Brannoc on
+  126–142 of 150 (91–127). With Brannoc, that camp was already easy before (90–100 for you).
+
+Brannoc has 150 health and hits for 12 in melee every 1.2 s;
 Zora has 90 and throws fire for 9 from 6 m every 1.6 s: a bolt (`combat/spell_bolt.tscn`,
 `"ranged": true` in her def) that flies from her chest and hurts what it lands on, so
 something in the way stops it. Numbers are in `DEFS` in `systems/companions.gd`.
@@ -119,11 +145,15 @@ game (`Companions.approval`).
 
 - They're capsules (`companions/companion.gd`), with no attack animations; Zora's bolt
   just leaves her chest.
-- They never block, dodge or retreat, and wisps and bosses ignore them.
+- Wisps and bosses ignore them. They read only bandit-kind and wolf telegraphs (not a
+  boss's, an archer's draw or a caster's spell), and their own blows have no wind-up.
 - Remarks and banter are on-screen text, not voiced or spoken in the world, and they can
   talk over other messages.
 - No romance, no gifts, and approval doesn't change how they fight.
+- **Fixed:** enemies couldn't see a companion. The sight ray (`Stealth.clear_line`) hit the
+  companion's own body (they're on the world's collision layer), so an enemy that lost
+  contact for a moment "lost" them and went searching.
 - Adding one: a `DEFS` entry, a `dialogue/companion_<id>.json`, a recruiting choice that
   sets `companion_<id>`, and a StoryPresence with `hide_flag companion_<id>` around the NPC.
 
-Tests: `tests/test_companions.gd`.
+Tests: `tests/test_companions.gd`, `tests/test_companion_tactics.gd` (how they fight).
